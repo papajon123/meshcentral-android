@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Debug-only manifest overlay.
+
+  Plain HTTP stays impossible in release builds; the debug build additionally allows cleartext
+  traffic so that the "Allow plain HTTP in this debug build" switch and a local MeshCentral test
+  server (for example http://10.0.2.2:8080) can actually be used.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application android:usesCleartextTraffic="true" />
+
+</manifest>

@@ -1,0 +1,37 @@
+.gradle/
+.kotlin/
+build/
+*/build/
+local.properties
+*.iml
+.idea/
+
+# Android generated artifacts
+captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+__pycache__/
+*.pyc
+
+# Signing and local secrets
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+.env
+.env.*
+keystore.properties
+secrets.properties
+google-services.json
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+
+# Local verification and release output
+dist/
+verification/
+.gradle-ci/

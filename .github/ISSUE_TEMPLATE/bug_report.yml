@@ -1,0 +1,21 @@
+name: Bug report
+description: Report a reproducible problem without credentials or private device data.
+body:
+  - type: input
+    id: version
+    attributes:
+      label: App version and Android version
+    validations:
+      required: true
+  - type: input
+    id: server
+    attributes:
+      label: MeshCentral version
+      description: Do not include your private server address or account details.
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps, expected result and actual result
+      description: Redact usernames, device names, tokens and remote screen content.
+    validations:
+      required: true

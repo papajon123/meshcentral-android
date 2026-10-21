@@ -1,0 +1,41 @@
+name: Signed APK release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  checks:
+    uses: ./.github/workflows/android.yml
+  release:
+    if: github.repository == 'papajon123/meshcentral-android'
+    needs: checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    environment: release
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Validate release tag
+        shell: bash
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          git merge-base --is-ancestor "$GITHUB_SHA" origin/main
+          echo "RELEASE_VERSION=${TAG#v}" >> "$GITHUB_ENV"
+      - uses: ./.github/actions/android-setup
+      - name: Build and verify signed APK
+        env:
+          ANDROID_RELEASE_KEYSTORE_B64: ${{ secrets.ANDROID_RELEASE_KEYSTORE_B64 }}
+          ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
+        run: bash ci/build-release.sh
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" dist/*.apk dist/SHA256SUMS dist/release-info.json --verify-tag --draft --prerelease --title "MeshCentral Android $RELEASE_VERSION" --notes-file .github/RELEASE_NOTES.md

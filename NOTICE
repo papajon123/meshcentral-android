@@ -1,0 +1,12 @@
+MeshCentral Android
+Copyright 2026 MeshCentral Android contributors
+
+This is an independent Android client for MeshCentral. It is not an official
+MeshCentral application and is not endorsed by the upstream project.
+
+MeshCentral protocol interoperability was developed with reference to the
+MeshCentral project, Copyright Intel Corporation, Ylian Saint-Hilaire and contributors,
+licensed under the Apache License, Version 2.0:
+https://github.com/Ylianst/MeshCentral
+
+See THIRD_PARTY_NOTICES.md for dependencies and their license sources.
