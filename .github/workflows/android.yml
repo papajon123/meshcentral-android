@@ -37,7 +37,26 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Reserve disk space for Android virtual devices
+        shell: bash
+        run: |
+          # Only disposable GitHub-hosted Linux VMs: these toolchains are unused by this project.
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$RUNNER_OS" = Linux
+          df -h /home/runner
+          for toolchain in /usr/share/dotnet /usr/local/.ghcup; do
+            if [ -d "$toolchain" ]; then
+              sudo du -sh "$toolchain"
+              sudo rm -rf -- "$toolchain"
+            fi
+          done
+          df -h /home/runner
       - uses: ./.github/actions/android-setup
+      - name: Check available emulator storage
+        shell: bash
+        run: |
+          available=$(df -Pk /home/runner | awk 'NR==2 {print $4}')
+          test "$available" -ge 12582912 || { echo 'At least 12 GiB free is required for the emulator and build'; exit 1; }
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm.rules
