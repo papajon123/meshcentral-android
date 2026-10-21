@@ -2,6 +2,8 @@ package ru.papajon.meshcentralmobile.settings
 
 import java.net.URI
 import java.net.URISyntaxException
+import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.UiText
 
 /**
  * Validates the MeshCentral endpoint typed by the user.
@@ -12,36 +14,36 @@ import java.net.URISyntaxException
  * it later.
  */
 object ServerUrlValidator {
-    fun validate(url: String, allowHttpInDebug: Boolean): String? {
+    fun validate(url: String, allowHttpInDebug: Boolean): UiText? {
         val trimmed = url.trim()
-        if (trimmed.isEmpty()) return "Введите адрес сервера."
+        if (trimmed.isEmpty()) return UiText.Resource(R.string.runtime_validation_url_required)
 
         val parsed = try {
             URI(trimmed)
         } catch (_: URISyntaxException) {
-            return "Адрес сервера указан неверно."
+            return UiText.Resource(R.string.runtime_validation_invalid_url)
         }
 
         val scheme = parsed.scheme?.lowercase()
         if (scheme != "https" && scheme != "http") {
-            return "Адрес сервера должен начинаться с\u00A0https://."
+            return UiText.Resource(R.string.runtime_validation_https_required)
         }
         if (scheme == "http" && !allowHttpInDebug) {
-            return "Обычный HTTP разрешён только в\u00A0отладочной сборке. Используйте https://."
+            return UiText.Resource(R.string.runtime_validation_http_debug_only)
         }
-        if (parsed.isOpaque) return "Адрес сервера указан неверно."
+        if (parsed.isOpaque) return UiText.Resource(R.string.runtime_validation_invalid_url)
         if (parsed.rawUserInfo != null) {
-            return "В\u00A0адресе не\u00A0должно быть имени пользователя или пароля."
+            return UiText.Resource(R.string.runtime_validation_credentials_not_allowed)
         }
         if (parsed.rawQuery != null) {
-            return "Адрес не\u00A0должен содержать параметры запроса после «?»."
+            return UiText.Resource(R.string.runtime_validation_query_not_allowed)
         }
         if (parsed.rawFragment != null) {
-            return "Адрес не\u00A0должен содержать фрагмент после «#»."
+            return UiText.Resource(R.string.runtime_validation_fragment_not_allowed)
         }
 
         val authority = parsed.rawAuthority
-        if (authority.isNullOrBlank()) return "В\u00A0адресе не\u00A0указано имя сервера."
+        if (authority.isNullOrBlank()) return UiText.Resource(R.string.runtime_validation_host_required)
 
         // Check the port before the host: `host:abc` parses as a URI but getHost() returns null,
         // and `host:` produces no port at all. Both are port errors, not missing-host errors.
@@ -49,12 +51,12 @@ object ServerUrlValidator {
 
         val host = parsed.host
         if (host.isNullOrBlank() || !isValidHost(host)) {
-            return "Имя сервера указано неверно."
+            return UiText.Resource(R.string.runtime_validation_host_invalid)
         }
         return null
     }
 
-    private fun portProblem(authority: String): String? {
+    private fun portProblem(authority: String): UiText? {
         // Userinfo is rejected earlier, but strip it here too so the parser stays self-contained.
         val hostAndPort = authority.substringAfterLast('@')
         val portText = when {
@@ -96,5 +98,5 @@ object ServerUrlValidator {
         }
     }
 
-    private const val PORT_ERROR = "Порт должен быть числом от 1 до 65535."
+    private val PORT_ERROR = UiText.Resource(R.string.runtime_validation_port_invalid)
 }

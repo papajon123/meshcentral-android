@@ -4,7 +4,7 @@ This release is preliminary. The limitations below are deliberate or currently u
 
 ## Validation status
 
-The 0.3.0 build has not been validated on a physical phone or against third-party MeshCentral servers. Earlier internal builds were exercised against a local MeshCentral 1.2.5 instance and an emulator; that is not validation of this release. See [VALIDATION.md](VALIDATION.md).
+The 0.4.0 build has not been validated on a physical phone or against third-party MeshCentral servers. Earlier internal builds were exercised against a local MeshCentral 1.2.5 instance and an emulator; that is not validation of this release. See [VALIDATION.md](VALIDATION.md).
 
 ## Remote desktop scope
 
@@ -56,9 +56,13 @@ Intel AMT KVM, Web-RDP, Web-VNC, WebRTC optimisation, terminal or shell sessions
 
 ## Interface and language
 
-- The interface is Russian. English project documentation does not imply an English UI.
-- User-visible strings live in `res/values/strings.xml`; engine-layer messages are Russian literals. There is no complete localisation framework or second locale yet.
+- The 0.4.0 build ships 22 languages in 23 locale variants, with English as the default. Android 8–12 follows the system language; Android 13+ also exposes the standard system per-app language setting. There is no separate in-app language picker.
+- If no supported language matches, the app falls back to English.
+- Arabic, Persian, and Urdu use a right-to-left layout and a mirrored navigation arrow.
+- User-visible strings live in `res/values/strings.xml` and `res/values/runtime_strings.xml`, with one catalog per `values-*` locale directory. Server messages, device names, and other server-provided text are shown verbatim and are not translated.
 - Product and protocol names remain in Latin script; physical key captions remain `Ctrl`, `Alt`, `Shift`, `Win`, `Esc`, `Tab`, `Enter`, `Backspace`, `Del`, and `F1`–`F12`.
+- Translations were produced with DeepSeek and have not yet been proofread by native speakers of every language; wording and terminology may still change.
+- The app contains no online translation or geolocation feature.
 
 ## App lock, biometrics, and screenshots
 
@@ -73,10 +77,11 @@ The WebView in Settings is a raw troubleshooting view. It is not the supported r
 
 ## Updates and distribution
 
-- There is no in-app updater or store in 0.3.0. Download APKs manually from GitHub Releases in a browser.
+- There is no in-app updater or store in 0.4.0. Download APKs manually from GitHub Releases in a browser.
 - Android accepts an update only with the same package name and signing key and a higher `versionCode`. A locally built APK has a different key and cannot replace a release APK.
+- Version 0.4.0 keeps the package name and signing key of the public 0.3.0 release, so it installs over that release and preserves local application data. Your server may still require authentication. Earlier private builds are separate applications and require their own sign-in.
 - APKs are distributed through GitHub Releases only; there is no store listing.
-- The repository does not provide an SLA, a supported-version matrix beyond 0.3.x, or a bug-fix timeline.
+- The repository does not provide an SLA, a supported-version matrix beyond 0.4.x, or a bug-fix timeline.
 
 ## Network and deployment
 

@@ -1,6 +1,7 @@
 package ru.papajon.meshcentralmobile.mesh
 
 import android.util.Log
+import androidx.annotation.StringRes
 import java.io.Closeable
 import java.security.KeyStore
 import java.security.SecureRandom
@@ -30,7 +31,9 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import org.json.JSONObject
 import ru.papajon.meshcentralmobile.BuildConfig
+import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.input.NativeRemoteInputSink
+import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.mesh.MeshControlEvent.AuthCookie
 import ru.papajon.meshcentralmobile.mesh.MeshControlEvent.ClipMessage
 import ru.papajon.meshcentralmobile.mesh.MeshControlEvent.Close
@@ -157,7 +160,7 @@ class MeshCentralClient(
         baseUrl = parsed
         _clientState.value = MeshClientState(
             connectionState = ConnectionState.Offline,
-            message = "Сервер сохранён.",
+            message = UiText.Resource(R.string.runtime_server_saved),
         )
     }
 
@@ -167,12 +170,17 @@ class MeshCentralClient(
         if (parsed == null) {
             _clientState.value = MeshClientState(
                 connectionState = ConnectionState.Failed,
-                message = "Адрес сервера указан неверно.",
+                message = UiText.Resource(R.string.runtime_server_invalid),
             )
             return
         }
         if (username.isBlank()) {
-            _clientState.update { it.copy(connectionState = ConnectionState.Failed, message = "Имя пользователя не\u00A0заполнено.") }
+            _clientState.update {
+                it.copy(
+                    connectionState = ConnectionState.Failed,
+                    message = UiText.Resource(R.string.runtime_username_required),
+                )
+            }
             return
         }
 
@@ -196,7 +204,7 @@ class MeshCentralClient(
         _clientState.update {
             it.copy(
                 connectionState = ConnectionState.Connecting,
-                message = "Подключаемся к серверу.",
+                message = UiText.Resource(R.string.runtime_connecting_server),
                 lastError = null,
                 twoFactorChallenge = null,
             )
@@ -267,20 +275,23 @@ class MeshCentralClient(
         val url = baseUrl
         if (url == null) {
             _clientState.update {
-                it.copy(connectionState = ConnectionState.Failed, message = "Адрес сервера не\u00A0задан.")
+                it.copy(connectionState = ConnectionState.Failed, message = UiText.Resource(R.string.runtime_server_not_set))
             }
             return
         }
         if (!controlConnected || !_clientState.value.devicesCurrent) {
             _clientState.update {
-                it.copy(connectionState = ConnectionState.Failed, message = "Сначала войдите, потом открывайте рабочий стол.")
+                it.copy(connectionState = ConnectionState.Failed, message = UiText.Resource(R.string.runtime_sign_in_before_desktop))
             }
             return
         }
         relay.connect(url, device)
         pendingDesktopResume = false
         _clientState.update {
-            it.copy(connectionState = ConnectionState.LoadingRemoteDesktop, message = "Открываем ${device.name}.")
+            it.copy(
+                connectionState = ConnectionState.LoadingRemoteDesktop,
+                message = UiText.resource(R.string.runtime_opening_device, device.name),
+            )
         }
     }
 
@@ -324,7 +335,7 @@ class MeshCentralClient(
         if (clearStoredCredentials) secureVault.clearCredentials()
         _clientState.value = MeshClientState(
             connectionState = ConnectionState.Offline,
-            message = "Сеанс завершён.",
+            message = UiText.Resource(R.string.runtime_session_ended),
         )
     }
 
@@ -343,7 +354,7 @@ class MeshCentralClient(
                 kind = ClipboardKind.Fetch,
                 nodeId = device.nodeId,
                 status = ClipboardStatus.Failed,
-                detail = "Сначала войдите, потом работайте с\u00A0буфером обмена.",
+                detail = UiText.Resource(R.string.runtime_sign_in_before_clipboard),
             )
             return false
         }
@@ -360,7 +371,7 @@ class MeshCentralClient(
                 kind = ClipboardKind.Send,
                 nodeId = device.nodeId,
                 status = ClipboardStatus.Failed,
-                detail = "Сначала войдите, потом работайте с\u00A0буфером обмена.",
+                detail = UiText.Resource(R.string.runtime_sign_in_before_clipboard),
             )
             return false
         }
@@ -369,7 +380,7 @@ class MeshCentralClient(
                 kind = ClipboardKind.Send,
                 nodeId = device.nodeId,
                 status = ClipboardStatus.Failed,
-                detail = "Текст для отправки не\u00A0заполнен.",
+                detail = UiText.Resource(R.string.runtime_clipboard_text_required),
             )
             return false
         }
@@ -393,7 +404,11 @@ class MeshCentralClient(
             nodeId = request.nodeId,
             text = request.text,
             status = ClipboardStatus.Pending,
-            detail = if (request.kind == ClipboardKind.Fetch) "Ждём буфер обмена от\u00A0компьютера." else "Отправляем текст в\u00A0буфер обмена компьютера.",
+            detail = if (request.kind == ClipboardKind.Fetch) {
+                UiText.Resource(R.string.runtime_clipboard_waiting_fetch)
+            } else {
+                UiText.Resource(R.string.runtime_clipboard_sending)
+            },
         )
         if (!sendControlJson(message(request.tag))) {
             clipboardRequest = null
@@ -401,7 +416,7 @@ class MeshCentralClient(
                 kind = request.kind,
                 nodeId = request.nodeId,
                 status = ClipboardStatus.Failed,
-                detail = "Канал управления не\u00A0подключён.",
+                detail = UiText.Resource(R.string.runtime_control_channel_not_connected),
             )
             return false
         }
@@ -415,9 +430,9 @@ class MeshCentralClient(
                     nodeId = pending.nodeId,
                     status = ClipboardStatus.Failed,
                     detail = if (pending.kind == ClipboardKind.Fetch) {
-                        "Агент не\u00A0ответил по\u00A0буферу обмена: компьютер не\u00A0в\u00A0сети или буфер пуст."
+                        UiText.Resource(R.string.runtime_clipboard_fetch_timeout)
                     } else {
-                        "Агент не\u00A0подтвердил отправку в\u00A0буфер обмена."
+                        UiText.Resource(R.string.runtime_clipboard_send_unconfirmed)
                     },
                 )
             }
@@ -434,7 +449,7 @@ class MeshCentralClient(
                     nodeId = "",
                     text = message.data,
                     status = ClipboardStatus.Success,
-                    detail = "Буфер обмена получен.",
+                    detail = UiText.Resource(R.string.runtime_clipboard_received),
                 )
             }
             return
@@ -451,7 +466,7 @@ class MeshCentralClient(
                 kind = pending.kind,
                 nodeId = pending.nodeId,
                 status = ClipboardStatus.Failed,
-                detail = "Агент отклонил запрос буфера обмена.",
+                detail = UiText.Resource(R.string.runtime_clipboard_rejected),
             )
 
             pending.kind == ClipboardKind.Fetch -> {
@@ -461,7 +476,7 @@ class MeshCentralClient(
                         kind = pending.kind,
                         nodeId = pending.nodeId,
                         status = ClipboardStatus.Failed,
-                        detail = "Агент вернул пустой буфер обмена.",
+                        detail = UiText.Resource(R.string.runtime_clipboard_empty_response),
                     )
                 } else {
                     ClipboardTransfer(
@@ -469,7 +484,7 @@ class MeshCentralClient(
                         nodeId = pending.nodeId,
                         text = text,
                         status = ClipboardStatus.Success,
-                        detail = "Буфер обмена получен: ${text.length} символов.",
+                        detail = UiText.resource(R.string.runtime_clipboard_received_chars, text.length),
                     )
                 }
             }
@@ -479,7 +494,7 @@ class MeshCentralClient(
                 nodeId = pending.nodeId,
                 text = pending.text,
                 status = ClipboardStatus.Success,
-                detail = "Текст отправлен в\u00A0буфер обмена компьютера.",
+                detail = UiText.Resource(R.string.runtime_clipboard_sent),
             )
         }
     }
@@ -521,7 +536,7 @@ class MeshCentralClient(
         disconnectControl(manual = true)
         manualClose = false
         _clientState.update {
-            it.copy(connectionState = ConnectionState.Connecting, message = "Открываем канал управления MeshCentral.")
+            it.copy(connectionState = ConnectionState.Connecting, message = UiText.Resource(R.string.runtime_opening_control_channel))
         }
         val request = Request.Builder()
             .url(url.toWebSocketUrl("/control.ashx"))
@@ -554,11 +569,14 @@ class MeshCentralClient(
         return controlSocket?.send(json.toString()) == true
     }
 
-    private fun reconnectControl(message: String) {
+    private fun reconnectControl(@StringRes reasonRes: Int) {
         if (manualClose || authRejected) return
         if (controlAttempt >= MAX_CONTROL_ATTEMPTS) {
             _clientState.update {
-                it.copy(connectionState = ConnectionState.Failed, message = "Не удалось восстановить связь. Нажмите «Повторить».")
+                it.copy(
+                    connectionState = ConnectionState.Failed,
+                    message = UiText.Resource(R.string.runtime_reconnect_exhausted),
+                )
             }
             return
         }
@@ -567,7 +585,12 @@ class MeshCentralClient(
         _clientState.update {
             it.copy(
                 connectionState = ConnectionState.Reconnecting,
-                message = "$message Переподключение через ${backoff / 1000} с\u00A0(попытка $controlAttempt из\u00A0$MAX_CONTROL_ATTEMPTS).",
+                message = UiText.resource(
+                    reasonRes,
+                    backoff / 1000,
+                    controlAttempt,
+                    MAX_CONTROL_ATTEMPTS,
+                ),
             )
         }
         controlReconnectJob?.cancel()
@@ -698,7 +721,7 @@ class MeshCentralClient(
             _clientState.update {
                 it.copy(
                     connectionState = ConnectionState.Authenticated,
-                    message = "Канал управления авторизован.",
+                    message = UiText.Resource(R.string.runtime_control_authorized),
                     socketConnected = true,
                     lastError = null,
                 )
@@ -746,7 +769,11 @@ class MeshCentralClient(
                             devices = devices,
                             devicesCurrent = true,
                             lastError = null,
-                            message = "Загружено компьютеров: ${devices.size}, в\u00A0сети: ${devices.count { device -> device.online }}.",
+                            message = UiText.resource(
+                                R.string.runtime_devices_loaded,
+                                devices.size,
+                                devices.count { device -> device.online },
+                            ),
                         )
                     }
                 }
@@ -768,7 +795,14 @@ class MeshCentralClient(
 
                 is RoutingResult -> {
                     if (event.result != null && !event.result.equals("OK", ignoreCase = true)) {
-                        _clientState.update { it.copy(message = "MeshCentral не\u00A0смог направить запрос: ${event.result}.") }
+                        _clientState.update {
+                            it.copy(
+                                message = UiText.resource(
+                                    R.string.runtime_routing_failed,
+                                    UiText.Literal(event.result),
+                                ),
+                            )
+                        }
                     }
                 }
 
@@ -795,7 +829,7 @@ class MeshCentralClient(
                     message = reason,
                 )
             }
-            reconnectControl("Сбой канала управления.")
+            reconnectControl(R.string.runtime_control_failure_reconnecting)
         }
 
         override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
@@ -821,11 +855,11 @@ class MeshCentralClient(
                     connectionState = ConnectionState.Failed,
                     socketConnected = false,
                     devicesCurrent = false,
-                    lastError = "Связь с сервером прервана.",
-                    message = "Связь с сервером прервана.",
+                    lastError = UiText.Resource(R.string.runtime_connection_lost),
+                    message = UiText.Resource(R.string.runtime_connection_lost),
                 )
             }
-            reconnectControl("Канал управления закрыт.")
+            reconnectControl(R.string.runtime_control_closed_reconnecting)
         }
     }
 

@@ -6,6 +6,8 @@ import android.content.Context
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
 import android.webkit.WebView
+import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.UiText
 
 object RemoteInputBridge {
     /** A labelled Ctrl shortcut always sends Ctrl, regardless of the modifier toggles in the sheet. */
@@ -26,7 +28,7 @@ object RemoteInputBridge {
         }
 
         if (webView == null) {
-            return RemoteInputResult.Failed("Удалённый WebView не\u00A0готов.")
+            return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_webview_not_ready))
         }
 
         webView.requestFocus()
@@ -46,21 +48,21 @@ object RemoteInputBridge {
     ): RemoteInputResult {
         if (nativeSink != null) {
             if (text.isEmpty()) {
-                return RemoteInputResult.Failed("Поле пустое.")
+                return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_text_required))
             }
             val eventCount = nativeSink.sendUnicodeText(text)
             return if (eventCount > 0) {
                 RemoteInputResult.Sent(eventCount)
             } else {
-                RemoteInputResult.Failed("Нативный рабочий стол не\u00A0подключён.")
+                RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_native_not_connected))
             }
         }
 
         if (webView == null) {
-            return RemoteInputResult.Failed("Удалённый WebView не\u00A0готов.")
+            return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_webview_not_ready))
         }
         if (text.isEmpty()) {
-            return RemoteInputResult.Failed("Поле пустое.")
+            return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_text_required))
         }
 
         webView.requestFocus()
@@ -69,7 +71,7 @@ object RemoteInputBridge {
             .getEvents(text.toCharArray())
 
         if (events == null || events.isEmpty()) {
-            return RemoteInputResult.Failed("Android не\u00A0смог превратить текст в\u00A0нажатия клавиш. Воспользуйтесь буфером обмена.")
+            return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_unmappable_text))
         }
 
         events.forEach { event ->
@@ -112,7 +114,7 @@ object RemoteInputBridge {
         meta: Boolean,
     ): RemoteInputResult {
         val remoteKeyCode = RemoteKeyCodeMapper.toVirtualKeyCode(keyCode)
-            ?: return RemoteInputResult.Failed("Эта клавиша пока не\u00A0поддерживается в\u00A0нативном рабочем столе.")
+            ?: return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_unsupported_key))
 
         val modifiers = buildList {
             if (ctrl) add(RemoteKeyCodeMapper.VK_CTRL)
@@ -124,23 +126,23 @@ object RemoteInputBridge {
         var events = 0
         modifiers.forEach { modifier ->
             if (!nativeSink.sendRemoteKey(modifier, down = true, extended = RemoteKeyCodeMapper.isExtended(modifier))) {
-                return RemoteInputResult.Failed("Нативный рабочий стол не\u00A0подключён.")
+                return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_native_not_connected))
             }
             events++
         }
 
         val extended = RemoteKeyCodeMapper.isExtended(remoteKeyCode)
         if (!nativeSink.sendRemoteKey(remoteKeyCode, down = true, extended = extended)) {
-            return RemoteInputResult.Failed("Нативный рабочий стол не\u00A0подключён.")
+            return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_native_not_connected))
         }
         if (!nativeSink.sendRemoteKey(remoteKeyCode, down = false, extended = extended)) {
-            return RemoteInputResult.Failed("Нативный рабочий стол не\u00A0подключён.")
+            return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_native_not_connected))
         }
         events += 2
 
         modifiers.asReversed().forEach { modifier ->
             if (!nativeSink.sendRemoteKey(modifier, down = false, extended = RemoteKeyCodeMapper.isExtended(modifier))) {
-                return RemoteInputResult.Failed("Нативный рабочий стол не\u00A0подключён.")
+                return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_native_not_connected))
             }
             events++
         }
@@ -151,5 +153,5 @@ object RemoteInputBridge {
 
 sealed interface RemoteInputResult {
     data class Sent(val eventCount: Int) : RemoteInputResult
-    data class Failed(val reason: String) : RemoteInputResult
+    data class Failed(val reason: UiText) : RemoteInputResult
 }

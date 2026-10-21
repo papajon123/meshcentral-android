@@ -1,5 +1,6 @@
 package ru.papajon.meshcentralmobile.ui.screens
 
+import ru.papajon.meshcentralmobile.R
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
@@ -34,7 +35,7 @@ class PublicSetupTest {
             SemanticsMatcher.expectValue(SemanticsProperties.EditableText, AnnotatedString("")),
         )
 
-        compose.onNodeWithText("Сохранить адрес").performScrollTo().performClick()
+        compose.onNodeWithText(compose.activity.getString(R.string.server_save)).performScrollTo().performClick()
         compose.waitForIdle()
 
         assertNull(savedUrl)
@@ -45,7 +46,7 @@ class PublicSetupTest {
 
         compose.onNode(hasSetTextAction())
             .performTextInput("https://example.com/meshcentral/")
-        compose.onNodeWithText("Сохранить адрес").performScrollTo().performClick()
+        compose.onNodeWithText(compose.activity.getString(R.string.server_save)).performScrollTo().performClick()
 
         compose.runOnIdle {
             assertEquals("https://example.com/meshcentral/", savedUrl)
@@ -59,7 +60,7 @@ class PublicSetupTest {
         compose.onNode(hasSetTextAction()).assert(
             SemanticsMatcher.expectValue(SemanticsProperties.EditableText, AnnotatedString(existing)),
         )
-        compose.onNodeWithText("Сохранить адрес").performScrollTo().performClick()
+        compose.onNodeWithText(compose.activity.getString(R.string.server_save)).performScrollTo().performClick()
 
         compose.runOnIdle {
             assertEquals(existing, savedUrl)

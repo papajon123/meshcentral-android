@@ -1,6 +1,8 @@
 package ru.papajon.meshcentralmobile.mesh
 
 import java.util.Base64
+import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.UiText
 
 /**
  * `x-meshauth` header construction and control-channel failure classification.
@@ -64,16 +66,18 @@ object MeshAuthDiagnostics {
         }
     }
 
-    fun describe(failure: MeshAuthFailure, challenge: TwoFactorChallenge? = null): String {
-        return when (failure) {
-            MeshAuthFailure.BadCredentials -> "MeshCentral отклонил имя пользователя или пароль."
-            MeshAuthFailure.MalformedHeader -> "MeshCentral отклонил заголовок авторизации."
-            MeshAuthFailure.TwoFactorRequired -> "Введите код подтверждения для входа."
-            MeshAuthFailure.AccessKeyRequired -> "Серверу нужен ключ доступа в\u00A0адресе, а\u00A0приложение его не\u00A0передаёт."
-            MeshAuthFailure.Banned -> "Этот IP-адрес заблокирован на\u00A0сервере."
-            MeshAuthFailure.ToolsDisabled -> "Учётной записи запрещены клиенты API (notools)."
-            MeshAuthFailure.EmailValidationRequired -> "Адрес электронной почты учётной записи нужно подтвердить на\u00A0сервере."
-            MeshAuthFailure.Unknown -> "MeshCentral закрыл канал управления."
-        }
+    fun describe(failure: MeshAuthFailure, challenge: TwoFactorChallenge? = null): UiText {
+        return UiText.Resource(
+            when (failure) {
+                MeshAuthFailure.BadCredentials -> R.string.runtime_auth_bad_credentials
+                MeshAuthFailure.MalformedHeader -> R.string.runtime_auth_malformed_header
+                MeshAuthFailure.TwoFactorRequired -> R.string.runtime_auth_two_factor_required
+                MeshAuthFailure.AccessKeyRequired -> R.string.runtime_auth_access_key_required
+                MeshAuthFailure.Banned -> R.string.runtime_auth_banned
+                MeshAuthFailure.ToolsDisabled -> R.string.runtime_auth_tools_disabled
+                MeshAuthFailure.EmailValidationRequired -> R.string.runtime_auth_email_validation
+                MeshAuthFailure.Unknown -> R.string.runtime_auth_unknown
+            },
+        )
     }
 }

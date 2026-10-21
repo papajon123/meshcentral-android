@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.ui.screens
 
+import ru.papajon.meshcentralmobile.localization.asString
+import ru.papajon.meshcentralmobile.localization.UiText
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
@@ -115,10 +117,11 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
 ) {
     var newPin by rememberSaveable { mutableStateOf("") }
-    val initialMessage = stringResource(
-        if (hasPin) R.string.settings_message_pin_configured else R.string.settings_message_pin_missing,
-    )
-    var message by rememberSaveable { mutableStateOf(initialMessage) }
+    var message by remember {
+        mutableStateOf<UiText>(UiText.resource(
+            if (hasPin) R.string.settings_message_pin_configured else R.string.settings_message_pin_missing,
+        ))
+    }
     var showDebugWebView by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
 
@@ -157,7 +160,7 @@ fun SettingsScreen(
             )
         }
 
-        SettingsStatusStrip(message = message)
+        SettingsStatusStrip(message = message.asString())
 
         SettingsSection(
             title = stringResource(R.string.settings_section_updates),
@@ -203,7 +206,7 @@ fun SettingsScreen(
                                 false
                             }
                             if (!opened) {
-                                message = context.getString(R.string.settings_update_unavailable)
+                                message = UiText.resource(R.string.settings_update_unavailable)
                             }
                         },
                         modifier = Modifier
@@ -277,9 +280,9 @@ fun SettingsScreen(
                         onCheckedChange = {
                             onBiometricUnlockChanged(it)
                             message = if (it) {
-                                context.getString(R.string.settings_biometric_enabled)
+                                UiText.resource(R.string.settings_biometric_enabled)
                             } else {
-                                context.getString(R.string.settings_biometric_disabled)
+                                UiText.resource(R.string.settings_biometric_disabled)
                             }
                         },
                     )
@@ -354,7 +357,7 @@ fun SettingsScreen(
                             onClick = {
                                 onPinSaved(newPin)
                                 newPin = ""
-                                message = context.getString(R.string.settings_pin_saved)
+                                message = UiText.resource(R.string.settings_pin_saved)
                             },
                             enabled = newPin.length >= 4,
                             modifier = Modifier
@@ -383,7 +386,7 @@ fun SettingsScreen(
                         destructive = true,
                         onClick = {
                             onPinCleared()
-                            message = context.getString(R.string.settings_pin_cleared)
+                            message = UiText.resource(R.string.settings_pin_cleared)
                         },
                     )
                 }
@@ -420,7 +423,7 @@ fun SettingsScreen(
                         onCredentialsCleared()
                         onMeshSessionCleared()
                         onWebViewSessionCleared()
-                        message = context.getString(R.string.settings_session_cleared)
+                        message = UiText.resource(R.string.settings_session_cleared)
                     },
                 )
             }

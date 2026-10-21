@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.ui.components.connectionStateLabel
 import ru.papajon.meshcentralmobile.web.MeshWebViewController
 import ru.papajon.meshcentralmobile.web.MeshWebViewStatus
@@ -65,7 +66,7 @@ fun MeshWebViewSurface(
         status.errorMessage?.let {
             Text(
                 modifier = Modifier.padding(horizontal = 12.dp),
-                text = it,
+                text = it.asString(),
                 color = MaterialTheme.colorScheme.error,
                 style = MaterialTheme.typography.bodyMedium,
             )

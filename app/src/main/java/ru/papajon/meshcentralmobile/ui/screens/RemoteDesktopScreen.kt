@@ -34,7 +34,7 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material.icons.outlined.ContentPaste
@@ -91,6 +91,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.input.NativeRemoteInputSink
+import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
 import ru.papajon.meshcentralmobile.mesh.MouseButton
 import ru.papajon.meshcentralmobile.mesh.RemoteDesktopState
@@ -423,7 +424,7 @@ private fun SessionTopBar(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
             IconButton(onClick = onBack) {
-                Icon(Icons.Outlined.ArrowBack, contentDescription = stringResource(R.string.session_action_end))
+                Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = stringResource(R.string.session_action_end))
             }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -777,7 +778,8 @@ private fun ConnectionOverlay(
         ) {
             if (failed) {
                 Text(
-                    text = state.message ?: stringResource(R.string.session_failed_fallback),
+                    text = state.message?.asString()
+                        ?: stringResource(R.string.session_failed_fallback),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                 )

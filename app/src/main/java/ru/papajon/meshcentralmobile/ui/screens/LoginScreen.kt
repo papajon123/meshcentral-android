@@ -51,6 +51,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
 import ru.papajon.meshcentralmobile.mesh.MeshClientState
 import ru.papajon.meshcentralmobile.mesh.TwoFactorChannel
@@ -144,7 +145,7 @@ internal fun LoginContent(
         }
 
         if (error != null) {
-            ConnectionNotice(message = error)
+            ConnectionNotice(message = error.asString())
         }
 
         OutlinedTextField(

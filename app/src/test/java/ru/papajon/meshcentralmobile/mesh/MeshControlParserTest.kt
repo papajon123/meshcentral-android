@@ -5,6 +5,8 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.UiText
 
 /**
  * Control channel parsing tests.
@@ -83,7 +85,7 @@ class MeshControlParserTest {
         assertTrue(resolved.hasDesktopPermission)
         assertTrue(resolved.canOpenNativeDesktop)
         assertFalse(resolved.inputAllowed)
-        assertEquals("online · view only", resolved.statusLabel)
+        assertEquals(UiText.Resource(R.string.runtime_status_online_view_only), resolved.statusLabel)
     }
 
     @Test
@@ -161,7 +163,10 @@ class MeshControlParserTest {
         assertTrue(challenge.email)
         assertFalse(challenge.sms)
         assertTrue(challenge.requestable)
-        assertEquals("Two-factor code required (email)", challenge.label)
+        assertEquals(
+            UiText.Resource(R.string.runtime_two_factor_required_with_channels, listOf("email")),
+            challenge.label,
+        )
     }
 
     @Test

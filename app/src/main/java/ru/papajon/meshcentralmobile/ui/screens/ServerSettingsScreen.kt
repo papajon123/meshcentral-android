@@ -47,7 +47,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
@@ -55,6 +54,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.BuildConfig
 import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.UiText
+import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.model.AppSettings
 import ru.papajon.meshcentralmobile.settings.ServerUrlValidator
 import ru.papajon.meshcentralmobile.ui.components.IconBadge
@@ -80,9 +81,10 @@ fun ServerSettingsScreen(
     modifier: Modifier = Modifier,
 ) {
     var serverUrl by rememberSaveable(settings.serverUrl) { mutableStateOf(settings.serverUrl) }
-    var validationMessage by rememberSaveable { mutableStateOf<String?>(null) }
-    var savedMessage by rememberSaveable { mutableStateOf<String?>(null) }
-    val context = LocalContext.current
+    var validationMessageId by rememberSaveable { mutableStateOf<Int?>(null) }
+    var savedMessageId by rememberSaveable { mutableStateOf<Int?>(null) }
+    val validationMessage = validationMessageId?.let { UiText.Resource(it) }
+    val savedMessage = savedMessageId?.let { UiText.Resource(it) }
 
     val spacing = MeshTheme.spacing
 
@@ -138,8 +140,8 @@ fun ServerSettingsScreen(
                         value = serverUrl,
                         onValueChange = {
                             serverUrl = it
-                            validationMessage = null
-                            savedMessage = null
+                            validationMessageId = null
+                            savedMessageId = null
                         },
                         label = { Text(stringResource(R.string.server_url_label)) },
                         placeholder = { Text(stringResource(R.string.server_url_placeholder)) },
@@ -159,7 +161,7 @@ fun ServerSettingsScreen(
                         ),
                         supportingText = {
                             Text(
-                                text = validationMessage
+                                text = validationMessage?.asString()
                                     ?: stringResource(R.string.server_url_supporting),
                                 style = MaterialTheme.typography.bodySmall,
                             )
@@ -208,11 +210,11 @@ fun ServerSettingsScreen(
                     serverUrl,
                     BuildConfig.DEBUG && settings.allowHttpInDebug,
                 )
-                validationMessage = error
-                savedMessage = null
+                validationMessageId = (error as? UiText.Resource)?.id
+                savedMessageId = null
                 if (error == null) {
                     onServerUrlSaved(serverUrl.trim())
-                    savedMessage = context.getString(R.string.server_saved)
+                    savedMessageId = R.string.server_saved
                 }
             },
             modifier = Modifier
@@ -231,14 +233,14 @@ fun ServerSettingsScreen(
 
         validationMessage?.let { error ->
             FormFeedback(
-                message = error,
+                message = error.asString(),
                 color = MaterialTheme.colorScheme.error,
                 icon = Icons.Outlined.ErrorOutline,
             )
         }
         savedMessage?.let { confirmation ->
             FormFeedback(
-                message = confirmation,
+                message = confirmation.asString(),
                 color = MeshTheme.colors.online,
                 icon = Icons.Outlined.CheckCircle,
             )

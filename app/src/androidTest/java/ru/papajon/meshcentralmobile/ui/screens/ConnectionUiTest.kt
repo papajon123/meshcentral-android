@@ -13,6 +13,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.mesh.*
 import ru.papajon.meshcentralmobile.model.AppDestination
 import ru.papajon.meshcentralmobile.model.ConnectionState
@@ -25,16 +27,16 @@ class ConnectionUiTest {
 
     @Test fun disconnectedComputersCannotBeOpenedOrReportedOnline() {
         devices(connected = false)
-        compose.onAllNodesWithContentDescription("Подключиться").assertCountEquals(0)
-        compose.onAllNodesWithContentDescription("статус неизвестен").assertCountEquals(2)
-        compose.onNodeWithText("Повторить").assertIsDisplayed()
+        compose.onAllNodesWithContentDescription(compose.activity.getString(R.string.devices_action_connect)).assertCountEquals(0)
+        compose.onAllNodesWithContentDescription(compose.activity.getString(R.string.connection_status_unknown)).assertCountEquals(2)
+        compose.onNodeWithText(compose.activity.getString(R.string.connection_retry)).assertIsDisplayed()
         snapshot("devices-offline.png")
     }
 
     @Test fun computerCardsAndNavigationFitTheScreen() {
         devices(connected = true)
-        compose.onAllNodesWithContentDescription("Подключиться").assertCountEquals(2)
-        compose.onNodeWithText("ПК").assertIsDisplayed()
+        compose.onAllNodesWithContentDescription(compose.activity.getString(R.string.devices_action_connect)).assertCountEquals(2)
+        compose.onNodeWithText(compose.activity.getString(R.string.common_nav_devices_short)).assertIsDisplayed()
         snapshot("devices-online.png")
     }
 
@@ -49,8 +51,8 @@ class ConnectionUiTest {
                 )
             }
         }
-        compose.onNodeWithText("Код подтверждения").performTextInput("123456")
-        compose.onNodeWithText("Войти с\u00A0кодом").performScrollTo().assertIsEnabled().performClick()
+        compose.onNodeWithText(compose.activity.getString(R.string.login_two_factor_code)).performTextInput("123456")
+        compose.onNodeWithText(compose.activity.getString(R.string.login_action_sign_in_with_code)).performScrollTo().assertIsEnabled().performClick()
         compose.runOnIdle { assertEquals("123456", submitted) }
     }
 
@@ -65,7 +67,7 @@ class ConnectionUiTest {
                 )
             }
         }
-        compose.onNodeWithContentDescription("Изменить адрес сервера").assertIsDisplayed()
+        compose.onNodeWithContentDescription(compose.activity.getString(R.string.login_edit_server)).assertIsDisplayed()
         snapshot("login-offline.png")
     }
 
@@ -84,7 +86,7 @@ class ConnectionUiTest {
                             socketConnected = connected, devicesCurrent = connected, requiresSignIn = false,
                             connectionState = if (connected) ConnectionState.Authenticated else ConnectionState.Reconnecting,
                             serverName = "server.example",
-                            lastError = if (connected) null else "Не удалось найти сервер. Проверьте интернет, VPN и адрес сервера.",
+                            lastError = if (connected) null else UiText.Resource(R.string.runtime_error_host_not_found),
                             groups = listOf(MeshGroup("fixture", "Рабочие компьютеры")),
                             devices = listOf(
                                 MeshDevice("one", "fixture", "Рабочий компьютер", conn = 1, agentId = 4, osDescription = "Майкрософт Windows 11 Профессиональная"),

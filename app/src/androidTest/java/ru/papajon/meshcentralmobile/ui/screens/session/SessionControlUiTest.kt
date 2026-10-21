@@ -1,5 +1,6 @@
 package ru.papajon.meshcentralmobile.ui.screens.session
 
+import ru.papajon.meshcentralmobile.R
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -39,7 +40,7 @@ class SessionControlUiTest {
             }
         }
 
-        compose.onNodeWithText("Прокрутка").performScrollTo().assertIsDisplayed().performClick()
+        compose.onNodeWithText(compose.activity.getString(R.string.session_mode_scroll)).performScrollTo().assertIsDisplayed().performClick()
         compose.runOnIdle { assertEquals(RemoteControlMode.Scroll, selected) }
     }
 

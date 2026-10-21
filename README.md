@@ -6,7 +6,7 @@ An independent native Android client for an existing [MeshCentral](https://githu
 
 This is **not** an official MeshCentral application, **not** a MeshCentral agent, and **not** affiliated with the MeshCentral project. You need your own MeshCentral deployment and an account on it.
 
-> **Status: 0.3.0 (versionCode 7), preliminary.** This release has not yet been validated on a physical device or against third-party servers. The interface is mostly Russian. See [Known limitations](docs/KNOWN_LIMITATIONS.md).
+> **Status: 0.4.0 (versionCode 8), preliminary.** This release has not yet been validated on a physical device or against third-party servers. The interface is available in 22 languages (23 locale variants), with English as the default; translations have not yet been proofread by native speakers of every language. See [Known limitations](docs/KNOWN_LIMITATIONS.md).
 
 ## Download and install
 
@@ -14,12 +14,27 @@ This is **not** an official MeshCentral application, **not** a MeshCentral agent
 - Android 8.0 (API 26) or newer.
 - Open the downloaded APK. Android will ask you to allow installs from the browser or file manager you used: enable **Install unknown apps** for that app, then confirm the installation.
 - Updates are manual: install a newer APK from Releases. Android accepts an update only when the package name (`io.github.papajon123.meshcentral`), the signing key, and a higher `versionCode` match. A build made with your own key will not install over a release APK.
-- This public application installs alongside earlier private builds. Sign in again with your own server account; no credentials are copied between applications. Debug builds have an additional `.debug` application ID suffix.
+- Version 0.4.0 keeps the package name and signing key of the public 0.3.0 release, so it installs over that release and preserves local application data. The update does not force a new sign-in; your server may still require authentication. Earlier private builds remain separate applications with their own sign-in. Debug builds have an additional `.debug` application ID suffix.
 
 The public signing certificate SHA-256 is
 `5458084705359e0dfa9cbb83ed73a0d77c7758370cffe2a7d6b036e9275eeb2f`.
 Each release includes APK checksums and `release-info.json`. Maintainers should follow
 [the release procedure](docs/RELEASING.md).
+
+## Languages
+
+The 0.4.0 interface is available in 22 languages (23 locale variants), with English as the default:
+
+English, русский, 简体中文, 繁體中文, español, français, português, Deutsch, العربية, हिन्दी, বাংলা, اردو, 日本語, 한국어, Bahasa Indonesia, Türkçe, Tiếng Việt, ไทย, italiano, فارسی, தமிழ், తెలుగు, मराठी.
+
+Simplified and Traditional Chinese are counted as one language and two locale variants. Each variant translates the same 389 strings; the application name is shared.
+
+- Android 8–12: the app follows the system language automatically.
+- Android 13 and newer: the app also appears in the system per-app language settings (usually **Settings → System → Languages & input → App languages**, or the app's App info page; the exact path varies by device). This is the standard Android setting; the app has no separate in-app language picker.
+- If none of the supported languages matches, the app falls back to English.
+- Arabic, Persian, and Urdu use a right-to-left layout; the navigation arrow is mirrored.
+- Server messages, device names, and physical key captions (`Ctrl`, `F1`, …) are not translated.
+- Translations were produced with DeepSeek and have not yet been proofread by native speakers of every language. The app does not use online translation or geolocation.
 
 ## Your own server
 
@@ -43,7 +58,8 @@ Each release includes APK checksums and `release-info.json`. Maintainers should 
 - Two-factor sign-in by e-mail, SMS, or push, as offered by the server.
 - Credentials and PIN protected with Android Keystore AES-GCM; optional PIN or biometric app lock and optional screenshot blocking.
 - Saved credentials and in-progress sign-in fields are isolated when the server address changes.
-- No ads, analytics, telemetry, or project-operated backend. The 0.3.0 release has no in-app store, self-updater, microphone access, or APK installation flow.
+- Interface in 22 languages (23 locale variants) with English as the default, automatic system-language selection, the Android 13+ per-app language setting, and right-to-left layouts for Arabic, Persian, and Urdu.
+- No ads, analytics, telemetry, or project-operated backend. The 0.4.0 release has no in-app store, self-updater, microphone access, or APK installation flow.
 
 ## Not supported
 
@@ -85,6 +101,15 @@ Instrumented tests need a dedicated emulator or test device; use reserved exampl
 ./gradlew connectedDebugAndroidTest
 ```
 
+Translation catalogs have their own local checks:
+
+```bash
+python3 ci/check_translations.py
+python3 -m unittest discover -s ci -p 'test_*.py'
+```
+
+`ci/check_translations.py` verifies that every locale has the same 389 strings, that format placeholders match, and that no Russian text leaks into another locale. The unittest command runs the checker's own tests.
+
 Final test counts and release evidence are recorded in [docs/VALIDATION.md](docs/VALIDATION.md) by the maintainer.
 
 ## Documentation
@@ -115,4 +140,6 @@ Apache License 2.0. See [LICENSE](LICENSE), [NOTICE](NOTICE), and [THIRD_PARTY_N
 - Разрешите установку из выбранного приложения (браузера или файлового менеджера) и установите APK.
 - Укажите адрес своего сервера по HTTPS с действующим сертификатом и войдите в MeshCentral.
 - Обновления ставятся вручную из Releases; должны совпадать пакет и подпись, а `versionCode` — увеличиваться.
-- Интерфейс пока в основном русский. Выпуск 0.3.0 предварительный: на реальных устройствах и чужих серверах он ещё не проверялся.
+- 0.4.0 ставится поверх публичного 0.3.0 без повторного входа; более ранние частные сборки остаются отдельными приложениями.
+- Интерфейс переведён на 22 языка (23 варианта), по умолчанию английский. На Android 8–12 приложение следует языку системы, на Android 13+ язык выбирается в настройках приложения. Подробнее — в [README.ru.md](README.ru.md).
+- Выпуск 0.4.0 предварительный: на физических устройствах и чужих серверах он ещё не проверялся.

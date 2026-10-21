@@ -17,7 +17,9 @@ import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
 import org.json.JSONObject
+import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.input.NativeRemoteInputSink
+import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.model.ConnectionState
 
 /**
@@ -69,7 +71,7 @@ class MeshDesktopRelay(
             _desktopState.value = RemoteDesktopState(
                 connectionState = ConnectionState.Failed,
                 device = device,
-                message = "Нативный рабочий стол работает только с\u00A0устройствами Mesh Agent в\u00A0сети и\u00A0с\u00A0правом удалённого управления.",
+                message = UiText.Resource(R.string.runtime_desktop_requires_agent),
             )
             return
         }
@@ -83,7 +85,7 @@ class MeshDesktopRelay(
         _desktopState.value = RemoteDesktopState(
             connectionState = ConnectionState.LoadingRemoteDesktop,
             device = device,
-            message = "Запрашиваем туннель к\u00A0рабочему столу Mesh Agent.",
+            message = UiText.Resource(R.string.runtime_desktop_tunnel_requesting),
             viewOnly = device.viewOnly,
         )
         openRelay()
@@ -103,7 +105,7 @@ class MeshDesktopRelay(
         previousSocket?.close(CLOSE_NORMAL, "Reconnecting desktop")
         attempt = 0
         _desktopState.update {
-            it.copy(connectionState = ConnectionState.Reconnecting, message = "Переподключаемся к\u00A0ретранслятору рабочего стола.")
+            it.copy(connectionState = ConnectionState.Reconnecting, message = UiText.Resource(R.string.runtime_desktop_reconnecting_relay))
         }
         openRelay()
     }
@@ -279,7 +281,7 @@ class MeshDesktopRelay(
             _desktopState.update {
                 it.copy(
                     connectionState = ConnectionState.Failed,
-                    message = "Канал управления не\u00A0авторизован, туннель к\u00A0рабочему столу запросить нельзя.",
+                    message = UiText.Resource(R.string.runtime_desktop_tunnel_requires_control),
                 )
             }
             return
@@ -306,7 +308,7 @@ class MeshDesktopRelay(
                 it.copy(
                     connectionState = ConnectionState.LoadingRemoteDesktop,
                     device = device,
-                    message = "Ретранслятор подключён, ждём подтверждения от\u00A0агента.",
+                    message = UiText.Resource(R.string.runtime_desktop_relay_waiting_agent),
                     viewOnly = device.viewOnly,
                 )
             }
@@ -339,18 +341,19 @@ class MeshDesktopRelay(
                 _desktopState.update {
                     it.copy(
                         connectionState = ConnectionState.Offline,
-                        message = reason.ifBlank { "Сеанс рабочего стола завершён." },
+                        message = UiText.Resource(R.string.runtime_desktop_session_finished),
                     )
                 }
                 return
             }
+            val serverReason = UiText.raw(reason)
             _desktopState.update {
                 it.copy(
                     connectionState = ConnectionState.Failed,
-                    message = reason.ifBlank { "Ретранслятор рабочего стола закрыт." },
+                    message = serverReason ?: UiText.Resource(R.string.runtime_desktop_relay_closed),
                 )
             }
-            scheduleReconnect(reason.ifBlank { "ретранслятор закрыт" })
+            scheduleReconnect(serverReason ?: UiText.Resource(R.string.runtime_desktop_relay_closed_reason))
         }
     }
 
@@ -364,7 +367,7 @@ class MeshDesktopRelay(
                 _desktopState.update {
                     it.copy(
                         connectionState = ConnectionState.Connected,
-                        message = "Агент подключён, начинаем поток KVM.",
+                        message = UiText.Resource(R.string.runtime_desktop_agent_connected),
                         handshakeComplete = false,
                     )
                 }
@@ -443,7 +446,7 @@ class MeshDesktopRelay(
             cursor?.let { next = next.copy(cursorIndex = it.index) }
             inputLock?.let { next = next.copy(inputLocked = it.locked) }
             keyState?.let { next = next.copy(keyboardState = it.mask) }
-            if (message != null) next = next.copy(message = message)
+            if (message != null) next = next.copy(message = UiText.Literal(message))
             next
         }
 
@@ -522,7 +525,7 @@ class MeshDesktopRelay(
         )
     }
 
-    private fun scheduleReconnect(reason: String) {
+    private fun scheduleReconnect(reason: UiText) {
         if (manualClose) return
         val baseUrl = currentBaseUrl ?: return
         val device = currentDevice ?: return
@@ -530,7 +533,11 @@ class MeshDesktopRelay(
             _desktopState.update {
                 it.copy(
                     connectionState = ConnectionState.Failed,
-                    message = "Ретранслятор рабочего стола остановлен после $MAX_ATTEMPTS попыток: $reason",
+                    message = UiText.resource(
+                        R.string.runtime_desktop_relay_stopped,
+                        MAX_ATTEMPTS,
+                        reason,
+                    ),
                 )
             }
             return
@@ -541,7 +548,12 @@ class MeshDesktopRelay(
             it.copy(
                 connectionState = ConnectionState.Reconnecting,
                 attempt = attempt,
-                message = "Переподключение через ${backoff / 1000} с\u00A0(попытка $attempt из\u00A0$MAX_ATTEMPTS).",
+                message = UiText.resource(
+                    R.string.runtime_desktop_reconnecting_attempt,
+                    backoff / 1000,
+                    attempt,
+                    MAX_ATTEMPTS,
+                ),
             )
         }
         reconnectJob?.cancel()

@@ -2,7 +2,7 @@
 
 The app is a control tool used while looking at someone else's desktop, so the interface is dark, quiet, and dense: the remote screen is the focus and the controls are a thin layer over it.
 
-This document describes the current Compose interface. The UI is Russian; English documentation does not imply an English build.
+This document describes the current Compose interface. The default interface language is English; the 0.4.0 build ships 22 languages (23 locale variants) and follows the system language.
 
 ## Design tokens
 
@@ -51,21 +51,27 @@ Implementation rules:
 
 ## Switching remote displays
 
-The dock has a display button between the pointer-mode button and the keyboard button. It shows the display the stream is currently on (`Все экраны`, `Экран 1`, `Экран 2`, …) and one tap moves to the next display in the agent's list, wrapping around. The full list with sizes is in **Сеанс → Экраны**.
+The dock has a display button between the pointer-mode button and the keyboard button. It shows the current display (`All displays`, `Display 1`, `Display 2`, … in English; labels follow the selected locale) and one tap moves to the next display in the agent's list, wrapping around. The full list with sizes is in **Session → Displays**.
 
 The switch happens on the agent, so the phone receives one display at a time and keeps the whole canvas for it. A split-canvas experiment was rejected: on a phone the halves are small, zoom in one pane bleeds into the other, and a switching button is the clearer interaction.
 
 ## Language
 
-The interface is Russian. User-visible strings live in `app/src/main/res/values/strings.xml` and are read with `stringResource`. The engine layer (`mesh/`, `input/`, `settings/`, `web/`) keeps its user-facing messages as Russian literals because those classes have no `Context`; the text is shown verbatim in snackbars, error banners, the connection overlay, and sheets.
+The default interface language is English. The 0.4.0 build ships 22 languages in 23 locale variants: English, Russian, Simplified Chinese, Traditional Chinese, Spanish, French, Portuguese, German, Arabic, Hindi, Bengali, Urdu, Japanese, Korean, Indonesian, Turkish, Vietnamese, Thai, Italian, Persian, Tamil, Telugu, and Marathi. Simplified and Traditional Chinese are counted as one language and two locale variants. Each locale catalog contains the same 389 translated strings; the shared application name is not translated.
+
+- Android 8–12 follows the system language. Android 13+ also exposes the app in the system per-app language settings; there is no separate in-app language picker.
+- When no supported locale matches, Android falls back to the default catalog, which is English.
+- Arabic, Persian, and Urdu use a right-to-left layout; the session navigation arrow uses `Icons.AutoMirrored.Outlined.ArrowBack` and is mirrored automatically.
+- User-visible strings live in `res/values/strings.xml` and `res/values/runtime_strings.xml`, with one catalog per `values-*` locale directory. Runtime messages from `mesh/`, `input/`, `settings/`, and `web/` are referenced through `UiText.Resource`, so a language change re-renders pending status text. Server-provided text stays `UiText.Literal` and is shown verbatim.
+- Server messages, device names, and physical key captions are not translated.
 
 Conventions:
 
 - Product and protocol names stay in Latin script: MeshCentral, Mesh Agent, KVM, WebView, Android Keystore, `x-meshauth`, `noauth-2d`, `notools`.
 - Key captions stay Latin (`Ctrl`, `Alt`, `Shift`, `Win`, `Esc`, `Tab`, `Enter`, `Backspace`, `Del`, `F1`–`F12`) because they name the physical keys of the controlled computer.
-- Enum labels the model carries in English are translated at the UI boundary in `ui/components/StatusLabels.kt`, so the model stays language-neutral.
-- The navigation label «ПК» is used instead of «Компьютеры» because the full word does not fit the tab.
-- There is no second locale and no complete localisation framework yet; do not assume that changing the phone language changes the app.
+- Enum labels use resource identifiers or are mapped to resources in `ui/components/StatusLabels.kt`; text is resolved when rendered, so the model does not cache a language.
+- The navigation uses the short label **PC**; the full name **Computers** is used on the devices screen.
+- Translations were produced with DeepSeek and have not yet been proofread by native speakers of every language.
 
 ## Screens
 
@@ -88,7 +94,7 @@ Shared components live in `ui/components/Common.kt` (`MeshCard`, `SectionHeader`
 
 ## Navigation
 
-Three destinations — **ПК**, **Сеанс**, **Настройки** — in a floating pill bar. Signing in and choosing a server are flows inside those destinations rather than separate tabs: the sign-in screen appears when the session is not authenticated and can be dismissed, onboarding runs once on first launch, and the session hides the tab bar so the canvas owns the window.
+Three destinations — **PC**, **Session**, **Settings** — in a floating pill bar. Signing in and choosing a server are flows inside those destinations rather than separate tabs: the sign-in screen appears when the session is not authenticated and can be dismissed, onboarding runs once on first launch, and the session hides the tab bar so the canvas owns the window.
 
 ## Motion
 

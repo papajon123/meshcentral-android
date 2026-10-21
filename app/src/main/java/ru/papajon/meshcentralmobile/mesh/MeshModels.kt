@@ -1,6 +1,9 @@
 package ru.papajon.meshcentralmobile.mesh
 
 import android.graphics.Bitmap
+import androidx.annotation.StringRes
+import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.model.ConnectionState
 
 /**
@@ -93,24 +96,30 @@ data class MeshDevice(
     val inputAllowed: Boolean
         get() = canOpenNativeDesktop && !viewOnly
 
-    val statusLabel: String
+    val statusLabel: UiText
         get() = when {
-            !online -> "offline"
-            viewOnly -> "online · view only"
-            else -> "online"
+            !online -> UiText.Resource(R.string.common_status_offline)
+            viewOnly -> UiText.Resource(R.string.runtime_status_online_view_only)
+            else -> UiText.Resource(R.string.common_status_online)
         }
 }
 
-enum class DeviceStatus(val label: String) {
-    Online("online"),
-    Offline("offline"),
+enum class DeviceStatus(@StringRes private val labelRes: Int) {
+    Online(R.string.common_status_online),
+    Offline(R.string.common_status_offline);
+
+    val label: UiText
+        get() = UiText.Resource(labelRes)
 }
 
-enum class DesktopCapability(val label: String) {
-    MeshAgentDesktop("Mesh Agent desktop"),
-    UnsupportedOffline("offline"),
-    UnsupportedNonMeshAgent("not a Mesh Agent session"),
-    UnsupportedNoPermission("no remote-control permission for this device group"),
+enum class DesktopCapability(@StringRes private val labelRes: Int) {
+    MeshAgentDesktop(R.string.runtime_capability_mesh_agent),
+    UnsupportedOffline(R.string.common_status_offline),
+    UnsupportedNonMeshAgent(R.string.runtime_capability_not_agent),
+    UnsupportedNoPermission(R.string.runtime_capability_no_permission);
+
+    val label: UiText
+        get() = UiText.Resource(labelRes)
 }
 
 data class TwoFactorChallenge(
@@ -123,23 +132,29 @@ data class TwoFactorChallenge(
 ) {
     val requestable: Boolean get() = email || sms || push
 
-    val label: String
-        get() = buildString {
-            append("Two-factor code required")
+    val label: UiText
+        get() {
             val channels = buildList {
                 if (email) add("email")
                 if (sms) add("SMS")
                 if (push) add("push")
             }
-            if (channels.isNotEmpty()) append(" (").append(channels.joinToString(", ")).append(")")
+            return if (channels.isEmpty()) {
+                UiText.Resource(R.string.runtime_two_factor_required)
+            } else {
+                UiText.resource(
+                    R.string.runtime_two_factor_required_with_channels,
+                    channels.joinToString(", "),
+                )
+            }
         }
 }
 
 data class MeshClientState(
     val connectionState: ConnectionState = ConnectionState.Offline,
     val serverName: String? = null,
-    val message: String? = null,
-    val lastError: String? = null,
+    val message: UiText? = null,
+    val lastError: UiText? = null,
     val groups: List<MeshGroup> = emptyList(),
     val devices: List<MeshDevice> = emptyList(),
     val userId: String? = null,
@@ -175,13 +190,13 @@ data class ClipboardTransfer(
     val nodeId: String,
     val text: String? = null,
     val status: ClipboardStatus,
-    val detail: String? = null,
+    val detail: UiText? = null,
 )
 
 data class RemoteDesktopState(
     val connectionState: ConnectionState = ConnectionState.Offline,
     val device: MeshDevice? = null,
-    val message: String? = null,
+    val message: UiText? = null,
     val framebuffer: Bitmap? = null,
     val remoteWidth: Int = 0,
     val remoteHeight: Int = 0,
@@ -209,15 +224,17 @@ data class RemoteDesktopState(
             !viewOnly &&
             !inputLocked
 
-    val qualityLabel: String
+    val qualityLabel: UiText
         get() {
-            val rtt = rttMillis ?: return "measuring"
-            return when {
-                rtt < 80 -> "excellent"
-                rtt < 180 -> "good"
-                rtt < 400 -> "fair"
-                else -> "poor"
-            }
+            val rtt = rttMillis ?: return UiText.Resource(R.string.common_quality_measuring)
+            return UiText.Resource(
+                when {
+                    rtt < 80 -> R.string.common_quality_excellent
+                    rtt < 180 -> R.string.common_quality_good
+                    rtt < 400 -> R.string.common_quality_fair
+                    else -> R.string.common_quality_poor
+                },
+            )
         }
 }
 

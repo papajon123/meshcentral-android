@@ -1,5 +1,8 @@
 package ru.papajon.meshcentralmobile.ui.screens
 
+import ru.papajon.meshcentralmobile.localization.asString
+import ru.papajon.meshcentralmobile.localization.UiText
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Animatable
@@ -47,7 +50,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
@@ -76,11 +78,14 @@ fun LockScreen(
     modifier: Modifier = Modifier,
 ) {
     var pin by rememberSaveable { mutableStateOf("") }
-    val lockedMessage = stringResource(R.string.lock_message_locked)
-    var message by rememberSaveable { mutableStateOf(lockedMessage) }
+    var message by remember { mutableStateOf<UiText>(UiText.resource(R.string.lock_message_locked)) }
     var failed by rememberSaveable { mutableStateOf(false) }
     var shakeTrigger by rememberSaveable { mutableIntStateOf(0) }
-    val context = LocalContext.current
+    val languageTags = LocalConfiguration.current.locales.toLanguageTags()
+    LaunchedEffect(languageTags) {
+        // A previous OS biometric error cannot be retranslated; show the current-language summary.
+        if (message is UiText.Literal) message = UiText.resource(R.string.lock_biometric_failed)
+    }
 
     val spacing = MeshTheme.spacing
     val motion = MeshTheme.motion
@@ -100,7 +105,7 @@ fun LockScreen(
             pin = ""
             failed = false
         } else {
-            message = context.getString(R.string.lock_invalid_pin)
+            message = UiText.resource(R.string.lock_invalid_pin)
             failed = true
             shakeTrigger += 1
         }
@@ -110,9 +115,9 @@ fun LockScreen(
         onBiometricUnlockRequested { success, error ->
             failed = !success
             message = if (success) {
-                context.getString(R.string.lock_unlocked)
+                UiText.resource(R.string.lock_unlocked)
             } else {
-                error ?: context.getString(R.string.lock_biometric_failed)
+                error?.let(UiText::literal) ?: UiText.resource(R.string.lock_biometric_failed)
             }
         }
     }
@@ -158,7 +163,7 @@ fun LockScreen(
             modifier = Modifier.offset(x = shake.value.dp),
         )
 
-        LockMessage(message = message, failed = failed)
+        LockMessage(message = message.asString(), failed = failed)
 
         Column(
             modifier = Modifier

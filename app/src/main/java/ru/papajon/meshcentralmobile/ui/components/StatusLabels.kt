@@ -10,10 +10,10 @@ import ru.papajon.meshcentralmobile.model.ConnectionState
 import ru.papajon.meshcentralmobile.model.RemoteControlMode
 
 /**
- * Russian wording for the words that the model and mesh layers carry as English labels.
+ * Localized labels for the closed sets of states that the model and mesh layers carry.
  *
- * The enums themselves stay untouched: only the text the screens show is translated here, so the
- * mapping exists in one place instead of being repeated inside every screen that renders a state.
+ * The enums themselves stay free of display strings: only the text the screens show is translated
+ * here, so the mapping exists in one place instead of being repeated inside every screen.
  */
 @Composable
 fun connectionStateLabel(state: ConnectionState): String = when (state) {
@@ -53,7 +53,7 @@ fun desktopCapabilityShortLabel(capability: DesktopCapability): String = when (c
     DesktopCapability.UnsupportedNoPermission -> stringResource(R.string.devices_capability_no_rights)
 }
 
-/** Words that finish the sentence «Подключение недоступно: …». */
+/** Words that finish the sentence "Connection unavailable: …". */
 @Composable
 fun desktopCapabilityReason(capability: DesktopCapability): String = when (capability) {
     DesktopCapability.MeshAgentDesktop -> stringResource(R.string.devices_capability_mesh_agent)
@@ -75,18 +75,4 @@ fun appDestinationLabel(destination: AppDestination): String = when (destination
 fun clipboardKindLabel(kind: ClipboardKind): String = when (kind) {
     ClipboardKind.Fetch -> stringResource(R.string.session_clipboard_kind_fetch)
     ClipboardKind.Send -> stringResource(R.string.session_clipboard_kind_send)
-}
-
-/**
- * The mesh layer already reduces the round-trip time to one English word; translate the closed set
- * it can produce and keep anything unexpected exactly as it arrived.
- */
-@Composable
-fun remoteQualityLabel(label: String): String = when (label) {
-    "excellent" -> stringResource(R.string.common_quality_excellent)
-    "good" -> stringResource(R.string.common_quality_good)
-    "fair" -> stringResource(R.string.common_quality_fair)
-    "poor" -> stringResource(R.string.common_quality_poor)
-    "measuring" -> stringResource(R.string.common_quality_measuring)
-    else -> label
 }

@@ -3,8 +3,9 @@ package ru.papajon.meshcentralmobile.settings
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
 import org.junit.Test
+import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.UiText
 
 class ServerUrlValidatorTest {
     @Test fun acceptsHttpsRootAndMeshCentralSubPath() {
@@ -22,8 +23,14 @@ class ServerUrlValidatorTest {
     }
 
     @Test fun rejectsEmptyAddress() {
-        assertNotNull(ServerUrlValidator.validate("", allowHttpInDebug = false))
-        assertNotNull(ServerUrlValidator.validate("   ", allowHttpInDebug = false))
+        assertEquals(
+            R.string.runtime_validation_url_required,
+            resourceId(ServerUrlValidator.validate("", allowHttpInDebug = false)),
+        )
+        assertEquals(
+            R.string.runtime_validation_url_required,
+            resourceId(ServerUrlValidator.validate("   ", allowHttpInDebug = false)),
+        )
     }
 
     @Test fun httpIsAllowedOnlyWhenDebugOptInIsPassed() {
@@ -66,19 +73,20 @@ class ServerUrlValidatorTest {
         ).forEach { address ->
             val error = ServerUrlValidator.validate(address, allowHttpInDebug = false)
             assertNotNull(address, error)
-            assertTrue("$address -> $error", error!!.contains("Порт"))
+            assertEquals(address, R.string.runtime_validation_port_invalid, resourceId(error))
         }
         assertNull(ServerUrlValidator.validate("https://example.com:443/", allowHttpInDebug = false))
     }
 
-    @Test fun rejectsMalformedSyntaxWithRussianMessage() {
+    @Test fun rejectsMalformedSyntaxWithAnInvalidAddressMessage() {
         val error = ServerUrlValidator.validate("https://example.com/mesh central/", allowHttpInDebug = false)
-        assertNotNull(error)
-        assertTrue(error!!.contains("неверно"))
+        assertEquals(R.string.runtime_validation_invalid_url, resourceId(error))
     }
 
     @Test fun httpRejectionExplainsTheDebugOnlyRule() {
         val error = ServerUrlValidator.validate("http://example.com/", allowHttpInDebug = false)
-        assertEquals("Обычный HTTP разрешён только в\u00A0отладочной сборке. Используйте https://.", error)
+        assertEquals(R.string.runtime_validation_http_debug_only, resourceId(error))
     }
+
+    private fun resourceId(error: UiText?): Int? = (error as? UiText.Resource)?.id
 }

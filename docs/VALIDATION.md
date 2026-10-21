@@ -2,7 +2,36 @@
 
 ## Current status
 
-This is a preliminary release. Version 0.3.0 has **not** been validated on a physical phone or against third-party MeshCentral servers.
+This is a preliminary release. Version 0.4.0 has **not** been validated on a physical phone or against third-party MeshCentral servers.
+
+## Version 0.4.0 localization verification — 2026-10-21
+
+| Check | Result |
+| --- | --- |
+| Translation catalogs | 23 locale variants, 389 translated strings each, one shared application name; exact locale set and format placeholders verified |
+| Translation checker tests | 3 passed |
+| JVM unit tests | 108 passed, no failures |
+| Instrumented tests on a dedicated Android 16 / API 36.1 emulator | 29 passed, no failures |
+| Debug and signed release assembly, debug/release lint | Passed; debug lint: 0 errors, 28 warnings, 6 informational findings |
+| APK package, version 0.4.0/code 8, pinned certificate, v2 signature and safety flags | Passed with `ci/verify_apk.py` |
+| Real Android system-language selection | Russian and Simplified Chinese followed system language; unsupported Dutch fell back to English |
+| Android per-app language | Arabic app override rendered correctly with an English system; original emulator language restored afterward |
+| Rendered setup action | All 23 locales: action reachable and glyph bounds not clipped; screenshots inspected for English, Russian, both Chinese scripts, Arabic, German, Hindi and Tamil |
+| Pending feedback after language change | Setup validation, Settings error, PIN error and runtime messages tested; no repeated action required |
+| Gitleaks 8.30.1 on the working tree | No findings |
+
+The additional tests are in `localization/LocaleResourcesTest.kt`, `LocalizedScreensTest.kt`,
+and `LocaleFeedbackTest.kt`. They cover both Chinese scripts, RTL direction, supported-language
+fallback, formatted resource resolution and visible feedback changing from English to Russian.
+The platform checks also launched the actual application with system and per-app language settings.
+
+Translations were produced with DeepSeek. Technical checks and selected visual inspection do not
+replace proofreading by native speakers of all 22 languages. Complete live remote-desktop workflows,
+biometrics and every dialog in every locale remain outside this validation. The release workflow
+reruns the checks and instrumented tests on API 26 and API 35 before creating a signed draft APK.
+The final workflow and APK metadata are attached or linked from the GitHub release.
+
+## Version 0.3.0 historical verification
 
 Local verification on 2026-10-21, for the application source in this public release:
 

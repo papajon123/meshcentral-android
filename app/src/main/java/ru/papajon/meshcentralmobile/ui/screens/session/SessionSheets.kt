@@ -66,6 +66,8 @@ import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.input.NativeRemoteInputSink
 import ru.papajon.meshcentralmobile.input.RemoteInputBridge
 import ru.papajon.meshcentralmobile.input.RemoteInputResult
+import ru.papajon.meshcentralmobile.localization.UiText
+import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.mesh.ClipboardKind
 import ru.papajon.meshcentralmobile.mesh.ClipboardStatus
 import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
@@ -192,7 +194,7 @@ fun KeyboardSheet(
     var ctrl by rememberSaveable { mutableStateOf(false) }
     var alt by rememberSaveable { mutableStateOf(false) }
     var shift by rememberSaveable { mutableStateOf(false) }
-    var message by rememberSaveable { mutableStateOf<String?>(null) }
+    var message by remember { mutableStateOf<UiText?>(null) }
     val context = LocalContext.current
 
     fun send(keyCode: Int, meta: Boolean = false, shortcut: Boolean = false) {
@@ -210,7 +212,7 @@ fun KeyboardSheet(
             )
         }
         message = when (result) {
-            is RemoteInputResult.Sent -> context.getString(R.string.session_key_sent)
+            is RemoteInputResult.Sent -> UiText.Resource(R.string.session_key_sent)
             is RemoteInputResult.Failed -> result.reason
         }
     }
@@ -271,16 +273,16 @@ fun KeyboardSheet(
                 ShortcutChip("Ctrl+Enter") { send(android.view.KeyEvent.KEYCODE_ENTER, shortcut = true) }
                 ShortcutChip("Ctrl+Alt+Del") {
                     message = if (input?.sendCtrlAltDel() == true) {
-                        context.getString(R.string.session_ctrl_alt_del_sent)
+                        UiText.Resource(R.string.session_ctrl_alt_del_sent)
                     } else {
-                        context.getString(R.string.common_not_connected)
+                        UiText.Resource(R.string.common_not_connected)
                     }
                 }
             }
 
             message?.let {
                 Text(
-                    text = it,
+                    text = it.asString(),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -349,7 +351,7 @@ fun TextSheet(
 ) {
     val context = LocalContext.current
     var draft by rememberSaveable { mutableStateOf("") }
-    var message by rememberSaveable { mutableStateOf<String?>(null) }
+    var message by remember { mutableStateOf<UiText?>(null) }
 
     MeshSheet(onDismissRequest = onClose) {
         Column(
@@ -379,14 +381,14 @@ fun TextSheet(
                 Button(
                     onClick = {
                         if (draft.isEmpty()) {
-                            message = context.getString(R.string.session_text_nothing_to_send)
+                            message = UiText.Resource(R.string.session_text_nothing_to_send)
                             return@Button
                         }
                         val events = input?.sendUnicodeText(draft) ?: 0
                         message = if (events > 0) {
-                            context.getString(R.string.session_text_typed, events)
+                            UiText.resource(R.string.session_text_typed, events)
                         } else {
-                            context.getString(R.string.common_not_connected)
+                            UiText.Resource(R.string.common_not_connected)
                         }
                     },
                     shape = PillShape,
@@ -398,9 +400,9 @@ fun TextSheet(
                         val text = RemoteInputBridge.readFromAndroidClipboard(context)
                         draft = text
                         message = if (text.isBlank()) {
-                            context.getString(R.string.session_text_clipboard_empty)
+                            UiText.Resource(R.string.session_text_clipboard_empty)
                         } else {
-                            context.getString(R.string.session_text_pasted)
+                            UiText.Resource(R.string.session_text_pasted)
                         }
                     },
                     shape = PillShape,
@@ -417,7 +419,7 @@ fun TextSheet(
                                 context.getString(R.string.session_text_clip_label),
                                 draft,
                             )
-                            message = context.getString(R.string.session_text_copied)
+                            message = UiText.Resource(R.string.session_text_copied)
                         }
                     },
                     shape = PillShape,
@@ -430,7 +432,7 @@ fun TextSheet(
             }
             message?.let {
                 Text(
-                    text = it,
+                    text = it.asString(),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 16.dp),
@@ -530,7 +532,7 @@ fun ClipboardSheet(
                             }
                         }
                         Text(
-                            text = current.detail.orEmpty(),
+                            text = current.detail?.asString().orEmpty(),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -733,7 +735,7 @@ fun SessionOptionsSheet(
                         modifier = Modifier.size(16.dp),
                     )
                     Text(
-                        text = state.message,
+                        text = state.message?.asString().orEmpty(),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )

@@ -16,12 +16,14 @@ import android.webkit.WebStorage
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import ru.papajon.meshcentralmobile.BuildConfig
+import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.model.ConnectionState
 
 data class MeshWebViewStatus(
     val state: ConnectionState = ConnectionState.Offline,
     val isLoading: Boolean = false,
-    val errorMessage: String? = null,
+    val errorMessage: UiText? = null,
     val progress: Int = 0,
 )
 
@@ -82,7 +84,7 @@ object MeshWebViewController {
                 onStatusChanged(
                     MeshWebViewStatus(
                         state = ConnectionState.Failed,
-                        errorMessage = "Ссылка с\u00A0такой схемой заблокирована: ${targetUri.scheme}",
+                        errorMessage = UiText.resource(R.string.runtime_web_scheme_blocked, targetUri.scheme.orEmpty()),
                     ),
                 )
                 return true
@@ -118,7 +120,8 @@ object MeshWebViewController {
                         MeshWebViewStatus(
                             state = ConnectionState.Failed,
                             isLoading = false,
-                            errorMessage = error?.description?.toString() ?: "Не\u00A0удалось загрузить страницу в\u00A0WebView.",
+                            errorMessage = UiText.raw(error?.description?.toString())
+                                ?: UiText.Resource(R.string.runtime_web_page_load_failed),
                         ),
                     )
                 }
@@ -134,7 +137,10 @@ object MeshWebViewController {
                         MeshWebViewStatus(
                             state = ConnectionState.Failed,
                             isLoading = false,
-                            errorMessage = "HTTP ${errorResponse?.statusCode ?: "error"}",
+                            errorMessage = UiText.resource(
+                                R.string.runtime_web_http_error,
+                                errorResponse?.statusCode?.toString() ?: "error",
+                            ),
                         ),
                     )
                 }

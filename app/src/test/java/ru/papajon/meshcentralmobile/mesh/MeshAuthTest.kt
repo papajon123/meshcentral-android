@@ -3,6 +3,7 @@ package ru.papajon.meshcentralmobile.mesh
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import ru.papajon.meshcentralmobile.localization.UiText
 
 /**
  * `x-meshauth` header tests.
@@ -59,7 +60,9 @@ class MeshAuthTest {
     @Test
     fun everyFailureHasAHumanReadableExplanation() {
         MeshAuthFailure.entries.forEach { failure ->
-            assertTrue(failure.name, MeshAuthDiagnostics.describe(failure).isNotBlank())
+            val text = MeshAuthDiagnostics.describe(failure)
+            assertTrue(failure.name, text is UiText.Resource)
+            assertTrue(failure.name, (text as UiText.Resource).id != 0)
         }
     }
 }

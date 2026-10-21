@@ -48,6 +48,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.CircleShape
 import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
 import ru.papajon.meshcentralmobile.mesh.MeshClientState
 import ru.papajon.meshcentralmobile.mesh.MeshDevice
@@ -171,7 +172,7 @@ internal fun DevicesContent(
             clientState.devices.isEmpty() -> EmptyState(
                 icon = Icons.Outlined.DesktopWindows,
                 title = stringResource(R.string.devices_empty_title),
-                description = clientState.lastError
+                description = clientState.lastError?.asString()
                     ?: stringResource(R.string.devices_empty_description),
                 actionLabel = stringResource(R.string.devices_empty_action),
                 onAction = onRefresh,
@@ -191,7 +192,10 @@ internal fun DevicesContent(
                 if (!current) {
                     ConnectionNotice(
                         message = if (signedIn) stringResource(R.string.devices_syncing) else
-                            listOfNotNull(clientState.lastError, stringResource(R.string.devices_stale)).joinToString("\n"),
+                            listOfNotNull(
+                                clientState.lastError?.asString(),
+                                stringResource(R.string.devices_stale),
+                            ).joinToString("\n"),
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 6.dp),
                         onRetry = onRefresh,
                     )
