@@ -56,7 +56,31 @@ Those individual device runs had no test failures, but a later v0.5.0 candidate 
 terminal-key defect and stopped signing. The v0.5.0 tag remains unchanged and no APK was published
 for it. The earlier API 36.1 run had 71 passing tests; it is not validation of the later CSS change.
 The first CI run also exposed a post-test shell-status collection error, fixed by
-`ci/run-device-tests.sh`. The 0.5.1 release workflow reruns checks before signing; publication is pending.
+`ci/run-device-tests.sh`. The final [0.5.1 release workflow](https://github.com/papajon123/meshcentral-android/actions/runs/39613502450)
+passed its build, API 26 and API 35 jobs before signing.
+
+### Published artifact
+
+The CI-produced 0.5.1 APK was independently checked for package/version, signer, release manifest
+flags and SHA-256. Updating the signed 0.4.0 APK to it and launching it on the dedicated API 35 emulator
+succeeded. GitHub and the personal F-Droid repository anonymously serve the identical 12,218,131 bytes:
+`804c90c962c1968c841c4d723747cef1304ec8e984d0ff75ad16652632b296c6`.
+The F-Droid index signature, advertised artifact hash and downloaded bytes were also verified.
+This is publication in a personal repository, not admission to the official F-Droid catalogue.
+
+## 0.5.2 presentation and delivery
+
+The application runtime is unchanged from 0.5.1. The opt-in international gallery passed on API 35:
+nine screenshots of real production Composables with fictional data, in English, Simplified Chinese
+and Russian. It checks actual pixels and text bounds, not only Compose semantics. Three additional
+setup screenshots were captured from the signed 0.5.1 APK with Android per-app language settings.
+The three READMEs were rendered with GitHub's Markdown API and passed **48 browser checks** at
+1366, 390 and 320 pixel widths, with no reported serious accessibility, reflow or console violations.
+The visual sheets were inspected. This verifies the local preview of GitHub-rendered Markdown;
+dynamic badges reflect their external providers and can be cached.
+Release-snapshot tests use local Git repositories to verify that private development history is
+not transferred and that conflicting tags and invalid source trees are rejected. See
+[the delivery guide](GITLAB_RELEASES.md) for the enforced release boundaries.
 
 ## Earlier readability and product review — 2026-10-21
 

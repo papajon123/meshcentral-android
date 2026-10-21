@@ -58,6 +58,12 @@ Unit tests must stay offline and deterministic. They cover control-message parsi
 
 ## Pull requests
 
+GitHub remains the public place for issues and proposed changes. Maintainers develop and integrate
+accepted changes in a private GitLab repository, then publish a checked source snapshot and APK.
+GitHub `main` contains release snapshots rather than the private development history. A contribution
+may therefore be integrated in GitLab and linked from its release instead of being merged directly
+into GitHub `main`. See [the release workflow](docs/GITLAB_RELEASES.md).
+
 - Keep the change focused; describe the user-visible behaviour and the reason for it.
 - Include the commands you ran and their result. Screenshots of synthetic data are welcome; screenshots of a real desktop are not.
 - Do not bump `versionCode`/`versionName`, change signing configuration, or publish a release; the maintainer handles versioning and signing.

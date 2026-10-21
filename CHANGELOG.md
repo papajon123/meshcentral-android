@@ -2,9 +2,20 @@
 
 Notable changes to MeshCentral Mobile. This project is an independent client and does not follow the MeshCentral server's release cycle.
 
-## Unreleased — 0.5.1 (versionCode 10)
+## 0.5.2 — 2026-10-21
 
-Prepared release; not published on GitHub Releases or F-Droid at documentation time. The v0.5.0 tag was an unpublished candidate whose checks stopped signing; it remains unchanged.
+Preview release; `versionCode` 11. Application runtime is unchanged from 0.5.1.
+
+### Added
+
+- English, Simplified Chinese and Russian guides with a shared visual header, live GitHub badges and genuine localized screenshots.
+- A repeatable opt-in screenshot gallery using production screens with fictional data; setup screenshots come from the signed release APK.
+- A private GitLab development pipeline and a release-snapshot bridge to GitHub. Only the selected source tree is exported; private development commits are not published.
+- Snapshot checks for version/tag agreement, immutable tags, clean public ancestry and an atomic fast-forward publication. Android signing remains in the GitHub release environment.
+
+## 0.5.1 — 2026-10-21 (`versionCode` 10)
+
+Published on GitHub Releases and the personal F-Droid repository. Both serve the same signed APK; the signed F-Droid index and anonymous downloads were verified. The v0.5.0 tag was an unpublished candidate whose checks stopped signing; it remains unchanged.
 
 ### Added
 

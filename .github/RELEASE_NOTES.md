@@ -1,33 +1,35 @@
-## MeshCentral Mobile 0.5.1 — preview
+## MeshCentral Mobile 0.5.2 — preview
 
-### English
+English · [简体中文](#简体中文) · [Русский](#русский)
 
-Control your own MeshCentral server from Android 8 or newer.
+This release improves the project's international presentation and delivery. Application runtime is unchanged from 0.5.1: remote desktop, Agent terminal and files, SSH and SFTP, with 22 interface languages and automatic language selection.
 
-- New device details and tabs: Desktop, Terminal, Files, SSH and SFTP.
-- Native Agent terminal and file operations; SSH/SFTP through your MeshCentral server.
-- Upload verification by reading back SHA-256; downloads through Android's system file picker.
-- Sessions survive Activity recreation without replaying commands. No automatic reconnect for terminal/file tools.
-- 22 languages (23 locale variants), 529 translated strings each, automatic system-language selection and improved layouts for larger text.
-- Terminal uses bundled xterm.js and requires a working, updated Android System WebView. Old providers receive an update instruction. Files and SFTP do not need WebView.
+- English, Simplified Chinese and Russian guides, a new header, live GitHub badges and localized app screenshots.
+- Private development in GitLab; only selected release source snapshots are published to GitHub. Private development commits are excluded.
+- GitHub reruns Android checks before signing. The APK retains the existing public signing identity; `versionCode` is 11.
 
-Download the APK below and allow installation from the browser/file manager when Android asks. It updates public 0.3.0/0.4.0 with the same package and signing key; earlier private builds remain separate. Use your own HTTPS server; none is preconfigured.
+Download the APK below and install it over a previous public build, or use the [personal F-Droid repository](https://distribution.example.invalid/repo/?fingerprint=REDACTED_REPOSITORY_FINGERPRINT). This is a preview and is not in the official F-Droid catalogue. Earlier private builds use a different package.
 
-Validated locally: 170 JVM tests, 66 regular Android tests and six isolated live scenarios on MeshCentral 1.2.5. The live evidence spans two runs after one HTTP-fixture bootstrap error; details are in docs/VALIDATION.md. GitHub Actions supplies separate API 26/35 results. Physical phones, Windows Agent tools, third-party servers and live restrictive-right/consent flows remain unverified. Translations are machine-produced and not yet proofread in every language. See [known limitations](https://github.com/papajon123/meshcentral-android/blob/v0.5.1/docs/KNOWN_LIMITATIONS.md).
+Checks and limits: [validation](https://github.com/papajon123/meshcentral-android/blob/v0.5.2/docs/VALIDATION.md), [known limitations](https://github.com/papajon123/meshcentral-android/blob/v0.5.2/docs/KNOWN_LIMITATIONS.md). Physical phones, Windows Agent tools and live restrictive-right/consent flows remain unverified. Translations are machine-produced.
 
-### По-русски
+## 简体中文
 
-Управление вашим сервером MeshCentral с Android 8 или новее.
+此预览版本改进了项目的多语言文档和发布流程。应用运行代码与 0.5.1 相同：远程桌面、Agent 终端和文件、SSH、SFTP，以及自动选择的 22 种界面语言。
 
-- Карточка компьютера и вкладки: рабочий стол, терминал, файлы, SSH и SFTP.
-- Терминал и файловые операции Mesh Agent; SSH/SFTP через ваш сервер MeshCentral.
-- Проверка загруженного файла обратным чтением SHA-256; скачивание через системный выбор файлов Android.
-- Сеанс сохраняется при пересоздании окна, команды не повторяются. Автоматического переподключения терминала и файлов нет.
-- 22 языка (23 языковых варианта), по 529 переведённых строк, автоматический выбор языка системы и улучшенная работа с крупным текстом.
-- Терминалу нужен исправный обновлённый Android System WebView. Для старого компонента показана инструкция обновления. Файлы и SFTP работают без WebView.
+- 提供英文、简体中文和俄文指南及对应的应用截图。
+- 在私有 GitLab 中开发，仅将选定版本的源代码快照发布到 GitHub，不公开私有开发提交历史。
+- 签名前重新运行 Android 检查。保持原有公开版本的签名，`versionCode` 为 11。
 
-Скачайте APK ниже и при запросе Android разрешите установку из браузера или файлового менеджера. Выпуск обновляет публичные 0.3.0/0.4.0 с сохранением имени пакета и ключа подписи; старые частные сборки остаются отдельными приложениями. Нужен ваш сервер по HTTPS, предустановленного сервера нет.
+下载下方 APK 覆盖安装旧的公开版本，或添加上述个人 F-Droid 仓库。此应用尚未进入 F-Droid 官方目录。实体手机、Windows Agent 工具和真实受限权限场景尚未完成验收；翻译由机器生成。
 
-Локально прошли 170 модульных, 66 обычных проверок Android и шесть живых сценариев на отдельном стенде MeshCentral 1.2.5. Живые сценарии подтверждены в двух запусках после одного сбоя HTTP-стенда до открытия приложения; подробности в docs/VALIDATION.md. Результаты API 26/35 доступны в GitHub Actions. Физические телефоны, инструменты Windows Agent, чужие серверы и реальные сценарии ограниченных прав/согласия ещё не проверены. Переводы выполнены машинно и не вычитаны носителями всех языков. Подробнее — в [ограничениях](https://github.com/papajon123/meshcentral-android/blob/v0.5.1/docs/KNOWN_LIMITATIONS.md).
+## Русский
 
-`SHA256SUMS` verifies APK bytes; `release-info.json` records package, version and signing certificate.
+Этот предварительный выпуск улучшает международное оформление и процесс публикации. Код работы приложения не изменён относительно 0.5.1: удалённый рабочий стол, терминал и файлы Agent, SSH и SFTP, 22 языка с автоматическим выбором.
+
+- Инструкции и снимки на английском, китайском и русском, новая шапка и реальные показатели GitHub.
+- Разработка в закрытом GitLab; в GitHub передаётся снимок исходников выбранной версии без частной истории коммитов.
+- Перед подписью повторяются проверки Android. Сохранён прежний ключ публичного приложения; `versionCode` — 11.
+
+Скачайте APK ниже и установите поверх предыдущей публичной версии либо добавьте личный репозиторий F-Droid по ссылке выше. В официальный каталог F-Droid приложение пока не включено. Прежняя частная сборка имеет другой идентификатор.
+
+Физические телефоны, инструменты Windows Agent и реальные сценарии ограниченных прав/согласия ещё не проверены. Переводы выполнены машинно. Подробные результаты и ограничения доступны по ссылкам выше.

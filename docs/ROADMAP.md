@@ -2,7 +2,7 @@
 
 [Русская версия](ROADMAP.ru.md)
 
-The documentation target is the prepared **0.5.1** release (`versionCode` 10), not a date commitment. The implementation and validation status below is deliberately separated from features that still need a gate. 0.5.1 has not been published at documentation time; GitHub Releases and a personal F-Droid repository are planned.
+The functional baseline is the published **0.5.1** release (`versionCode` 10). **0.5.2** adds international presentation and the GitLab release workflow without changing application runtime. Implementation and validation are separated below from work that still needs acceptance.
 
 ## Delivered in 0.5.1
 
@@ -25,10 +25,10 @@ The documentation target is the prepared **0.5.1** release (`versionCode` 10), n
 | Agent files | Implemented; bench-validated | Browse/upload/download with readback checks on the isolated Linux Agent; cancellation and large-file edge cases remain open. |
 | SSH terminal | Implemented; bench-validated | Isolated SSH host through npm MeshCentral 1.2.5; host-key policy and restrictive live accounts remain open. |
 | SFTP | Implemented; bench-validated | Isolated SFTP host; empty and exact-block downloads and upload readback; directory permissions/cancellation remain open. |
-| Local terminal renderer | Implemented | Bundled xterm 5.5.0 / addon-fit 0.10.0; synthetic parser tests and API 36.1 emulator checks. Physical IME, Android 8 WebView and TalkBack remain open. |
+| Local terminal renderer | Implemented | Bundled xterm 5.5.0 / addon-fit 0.10.0; synthetic parser tests and final API 35/WebView 124 checks; API 26 checks verify the old-provider update instruction. Physical IME, current Android 8 WebView and TalkBack remain open. |
 | Privacy/documentation | Updated for 0.5.1 | Endpoint and local-renderer boundaries documented; no native-speaker review yet. |
-| Distribution | Pending | GitHub upload and personal F-Droid repository are not live at documentation time; official F-Droid inclusion is not promised. |
-| GitLab workflow | Not implemented | Repository checks use GitHub Actions; no GitLab pipeline is claimed. |
+| Distribution | Published | Signed 0.5.1 APK on GitHub and personal F-Droid; signatures, hashes, update and anonymous downloads verified. Official F-Droid inclusion is not promised. |
+| GitLab workflow | Implemented for 0.5.2 | Private development; protected release tags export source snapshots to GitHub, where device checks and signing run. See [delivery](GITLAB_RELEASES.md). |
 
 ## Remaining release gates
 
@@ -39,7 +39,7 @@ The documentation target is the prepared **0.5.1** release (`versionCode` 10), n
 5. **SSH/SFTP policy:** real server host-key behavior, wrong host key, wrong password/key/passphrase, disabled SSH/SFTP features, restrictive file permissions and directory-delete semantics.
 6. **Transfer failure matrix:** pending mkdir/rename/delete cancellation, upload cancellation, network loss during download, partial SAF documents, large files and 1 MiB/20,000-entry limits.
 7. **Language review:** native-speaker review of priority languages; current translations are DeepSeek-produced and not native-verified.
-8. **Distribution:** publish the signed APK, verify its version/certificate/checksum, finalize the README distribution text, and only then announce GitHub/F-Droid availability.
+8. **Distribution:** repeat version/certificate/checksum, update and anonymous-download checks for every release; preserve the established signing identity.
 
 ## Next work after the release gates
 
@@ -47,7 +47,7 @@ The documentation target is the prepared **0.5.1** release (`versionCode` 10), n
 - Improve file-transfer resilience only with verified resume or cancellation semantics; do not claim either before live proof.
 - Expand the device screen toward events and operations only where per-action rights, confirmation and visible results are available.
 - Keep AMT, RDP, VNC, WebRTC, registry/software, chat and server administration as separate product decisions. The web-panel handoff remains the default for unsupported or risky operations.
-- Consider a GitLab workflow separately; none exists today.
+- Maintain the GitLab-to-GitHub release boundary and exercise failure/retry behavior without moving published tags.
 
 ## Capability and lifecycle rules
 
