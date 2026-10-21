@@ -2,6 +2,14 @@
 
 Notable changes to MeshCentral Mobile. This project is an independent client and does not follow the MeshCentral server's release cycle.
 
+## 0.5.4 — 2026-10-21
+
+Preview release; `versionCode` 13.
+
+- Fix the PIN keypad zero button, which incorrectly deleted the previous digit. Existing PINs containing zero can now unlock the app.
+- Add actual-keypad regression tests for zero input, backspace and the 12-digit limit.
+- Remove private distribution references from public documentation and enforce a publication text policy.
+
 ## 0.5.3 — 2026-10-21
 
 Preview release; `versionCode` 12.

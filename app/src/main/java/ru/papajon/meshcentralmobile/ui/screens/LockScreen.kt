@@ -209,7 +209,7 @@ fun LockScreen(
                 LockKey(
                     modifier = Modifier.weight(1f),
                     onClick = {
-                        pin = pin.dropLast(1)
+                        pin = (pin + "0").take(12)
                         failed = false
                     },
                 ) {
