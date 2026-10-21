@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
@@ -40,12 +39,25 @@ fun OnboardingScreen(
     onAllowHttpInDebugChanged: (Boolean) -> Unit,
     onTrustSelfSignedChanged: (Boolean) -> Unit,
 ) {
+    // Introduction and form share one scroll container. A large font or a short landscape window
+    // must never leave the form with zero height below a fixed introduction.
+    ServerSettingsScreen(
+        settings = settings,
+        onServerUrlSaved = onServerUrlSaved,
+        onAllowHttpInDebugChanged = onAllowHttpInDebugChanged,
+        onTrustSelfSignedChanged = onTrustSelfSignedChanged,
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.background)
+            .windowInsetsPadding(WindowInsets.systemBars),
+        introductoryContent = { OnboardingIntroduction() },
+    )
+}
+
+@Composable
+private fun OnboardingIntroduction() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+            .padding(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -63,7 +75,7 @@ fun OnboardingScreen(
                     modifier = Modifier.size(28.dp),
                 )
             }
-            Column {
+            Column(Modifier.weight(1f)) {
                 Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineSmall)
                 Text(
                     text = stringResource(R.string.onboarding_subtitle),
@@ -95,16 +107,6 @@ fun OnboardingScreen(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp),
         )
-        // The server form owns its own scrolling; give it a bounded height instead of nesting
-        // two vertically scrollable containers.
-        Box(modifier = Modifier.weight(1f)) {
-            ServerSettingsScreen(
-                settings = settings,
-                onServerUrlSaved = onServerUrlSaved,
-                onAllowHttpInDebugChanged = onAllowHttpInDebugChanged,
-                onTrustSelfSignedChanged = onTrustSelfSignedChanged,
-            )
-        }
     }
 }
 
@@ -117,7 +119,7 @@ private fun FeatureRow(icon: ImageVector, title: String, description: String) {
             container = MaterialTheme.colorScheme.secondaryContainer,
             size = 40.dp,
         )
-        Column {
+        Column(Modifier.weight(1f)) {
             Text(title, style = MaterialTheme.typography.titleSmall)
             Text(
                 text = description,

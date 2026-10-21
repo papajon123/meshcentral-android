@@ -1,90 +1,93 @@
 # Known Limitations
 
-This release is preliminary. The limitations below are deliberate or currently unimplemented; they are not promises of future work.
+This page describes the prepared 0.5.0 release. It is not a stable-release claim, and publication is handled separately by the maintainer. Limitations below are deliberate, unverified, or outside the native client.
 
 ## Validation status
 
-The 0.4.0 build has not been validated on a physical phone or against third-party MeshCentral servers. Earlier internal builds were exercised against a local MeshCentral 1.2.5 instance and an emulator; that is not validation of this release. See [VALIDATION.md](VALIDATION.md).
+- Feature checks used a real isolated Linux Mesh Agent and SSH/SFTP host through npm MeshCentral 1.2.5.
+- Protocol review used MeshCentral package 1.2.6 at commit `60cea8731f88b91a09704ff9a00dab4992a98ef1`. npm 1.2.6 was unavailable, so no MeshCentral 1.2.6 server was tested and compatibility with that version is not claimed.
+- The build has not been validated on a physical phone, with a Windows Mesh Agent, with live restrictive-right accounts, or with live consent/refusal flows.
+- SSH host-key policy, pending mutation cancellation, and some partial/interrupted transfer paths remain unverified.
+- Exact test counts are not claimed here. Results and the release record are maintained in [VALIDATION.md](VALIDATION.md); that file also contains historical 0.4.0 evidence.
+
+## Device screen and capabilities
+
+- Details uses information already present in the device list: group, operating system, address and Agent version. Events, network details, power and wake actions are not native.
+- Desktop, Terminal, Files, SSH and SFTP tabs are shown but disabled for a known denial, a known offline/unsupported state, or a missing required right. Unknown optional metadata enables an explicit attempt; the server decides the result.
+- The app does not infer a grant from a missing field, nor does it bypass a server denial. A failed attempt reports the server's reason.
+- Selecting another tool closes the current one. There is no parallel terminal + files workspace.
+- The **Open web panel** action opens the configured MeshCentral URL in a browser with a separate sign-in. No app credential or session is passed to the browser.
+
+## Terminal
+
+- The terminal needs a working, updated Android System WebView. A missing or obsolete provider, failed local script initialisation, or a 15-second startup timeout produces an actionable update/reopen message; the terminal cannot promise to run on every Android 8 device with an old WebView.
+- Rendering is a local xterm.js 5.5.0 / addon-fit 0.10.0 view (MIT). It has no network/file access, no remote navigation, no OSC 8 links and no OSC 52 clipboard writes. Copy is limited to the explicit toolbar action and selection cap.
+- Input is capped at 64 KiB per action, scrollback at 3,000 lines and the grid at 500 × 300 cells. Pending output is bounded to 1 MiB; a full buffer applies backpressure, and an individual frame over 1 MiB closes the session with an explicit error. Output is not silently dropped.
+- A terminal is one-shot. Closing, losing the control/server/account session, or a relay failure ends it; reopen the tab for a new session. Previous input is never replayed automatically.
+- MeshCentral can record terminal activity. The app shows a recording notice when the Agent relay reports it (`cr`). The audited SSH relay does not forward this marker to the client; absence of a notice never proves that recording is disabled.
+- Fragmented UTF-8 at the MeshCentral SSH relay boundary is an upstream limitation noted in the renderer audit. The local renderer preserves split UTF-8 for raw Agent bytes; physical IMEs and composition remain a test gap.
+- Terminal output and scrollback are not written to app storage. They are lost when the session is disposed.
+
+## Files and transfers
+
+- Directory replies are limited to 1 MiB of JSON and 20,000 entries. Over-limit replies are rejected, not truncated.
+- Downloads use a fresh listing for the expected size, SAF truncation and post-transfer checks. A failed or cancelled download may still leave a partial document at the user-selected location; the app does not delete or automatically rewrite it.
+- Both Agent and SFTP uploads are verified by readback SHA-256 and a fresh directory listing. An upload acknowledgement alone is not treated as success.
+- There is no transfer resume and no automatic retry of a file operation. Reopening the tab or retrying requires a new explicit action.
+- Cancelling an unconfirmed mkdir, rename or delete reports “unverified”, not success. The server may already have applied the mutation; live cancellation semantics remain unverified.
+- Existing entries whose names cannot be safely created or operated are read-only. Use **Open web panel** for those entries; the app does not guess at destructive operations.
+- SFTP directory deletion semantics and restrictive SSH/SFTP file permissions are server-dependent and were not exhaustively tested. Agent file permissions are not assumed to match SFTP permissions.
+- SAF grants are temporary. The app does not request broad storage permission or persist a URI grant.
+
+## SSH and SFTP
+
+- SSH is performed by the MeshCentral server through `/sshterminalrelay.ashx`; SFTP uses `/sshfilesrelay.ashx`. The app does not open a direct SSH connection from Android.
+- The Android app does not implement or claim SSH host-key pinning. Host-key policy belongs to the server side and was not live-audited for this release.
+- New SSH passwords, private keys and passphrases are ephemeral and sent with `keep=false` (SFTP) or `keep:0` (Agent terminal) where the relay carries a keep flag; a server-saved key uses `sshkeyauth`. The app does not save the key or passphrase.
+- SSH/SFTP require enabled server features and the relevant device rights. Known disabled features are blocked; missing metadata permits an explicit server attempt. Server configuration and SSH host policy remain external.
+- The server may record SSH/SFTP sessions. The app cannot guarantee the absence of server-side recording.
 
 ## Remote desktop scope
 
-Only the native Mesh Agent desktop path is supported: `/meshrelay.ashx?p=2` through the MeshCentral server.
+- Only the native Mesh Agent desktop path is supported: `/meshrelay.ashx?p=2`.
+- Intel AMT KVM, RDP, VNC and WebRTC are not native clients. Device events, wake/power, chat, registry/software and server administration are also outside this release; use the web panel where appropriate.
+- The KVM cursor-shape index is parsed but the app draws its own pointer; the Agent does not paint the cursor into tiles.
+- Touch uses mouse packets, not the KVM touch command. Pinch zoom is bounded at 16×; a tap outside the picture is ignored.
+- View-only desktop sessions do not send input. Input can also be blocked by the remote input lock or keyboard state.
 
-Intel AMT KVM, Web-RDP, Web-VNC, WebRTC optimisation, terminal or shell sessions, file transfer, and a native file manager are not implemented. The device list explains why a computer cannot be opened instead of silently falling back. A computer must be online, be a Mesh Agent session, and grant remote-control or remote-view rights.
+## Clipboard and text input
 
-## Server and account compatibility
+- Clipboard exchange is text-only, uses `getclip`/`setclip`, and needs the Agent to run as a service. Domain settings can disable it. An empty remote clipboard or a disabled setting may look like a timeout.
+- Clipboard access happens only on an explicit action; there is no background sync.
+- Phone keyboard input goes through a hidden native field and `InputConnection`. Vendor IMEs and physical keyboards can differ; composing text is not reproduced character by character.
+- Some Android key codes have no MeshCentral virtual-key mapping and are unsupported. Voice dictation is not implemented and the app does not request microphone permission.
 
-- The client was written against MeshCentral 1.2.5. Compatibility with other server versions is not claimed; protocol details can change.
-- Authentication uses the `x-meshauth` header, not the browser login form. Browser SSO (SAML, OIDC, or a similar redirect flow) is not supported.
-- Domain URL access keys (`?key=`) are not supported. The setup form rejects query parameters in the server URL.
-- An account with the `notools` site right can use the browser but is refused for API-style clients. The app reports this refusal as-is.
-- Two-factor codes are supported through `tokenrequired`; a new code can be requested by e-mail, SMS, or push where the server offers it.
-- Server-issued login-token credentials must be entered in their corresponding username and password fields; the token username starts with `~t:`. The app does not create login tokens.
-- The server must offer HTTPS with a certificate valid for its host name. Release builds validate against platform CAs.
-- The app does not administer the server: it cannot create meshes, users, policies, or server settings.
+## Interface, language and accessibility
 
-## Clipboard
+- The 0.5.0 interface has 22 languages in 23 locale variants, with 529 translated strings per variant and a shared application name. English is the default and fallback.
+- Android 8–12 follows the system language; Android 13+ also exposes the standard per-app language setting. There is no in-app language picker.
+- Arabic, Persian and Urdu use right-to-left layout. Server messages, device names, terminal output and physical key captions are not translated.
+- Translations were produced with DeepSeek and have not been proofread by native speakers of every language.
+- Phone, tablet, short-landscape, large-font, RTL and TalkBack coverage is not complete for every new device/terminal/files/SSH screen. The emulator checks are not physical-device acceptance.
 
-- The exchange uses MeshCentral `getclip`/`setclip`, not simulated keystrokes.
-- The agent answers clipboard commands only when it runs as a service, and `getclip` produces no answer when the remote clipboard is empty. The app waits 15 seconds and then reports the failure with that explanation.
-- Domain settings `clipboardget` / `clipboardset` can disable the feature server-side; when they are off, the server silently drops the command and the app reports a timeout.
-- Text only. Images, HTML, files, and rich formats are not transferred.
-- Clipboard access happens only on an explicit user action; there is no background clipboard sync.
+## WebView and app lock
 
-## Remote text and keyboard
-
-- Text sending uses Mesh Agent KVM Unicode key packets (command 85) while the native relay is connected, so the remote keyboard layout does not matter for the characters themselves.
-- The focused window, the remote input lock, and the agent-side keyboard state can still affect the result.
-- The phone keyboard is forwarded through a hidden native input field and an `InputConnection`. Vendor IMEs and physical keyboards can behave differently; composing text is not reproduced character-by-character.
-- The debug WebView fallback uses Android `KeyEvent` dispatch and is less reliable than the native path.
-- Some Android key codes have no MeshCentral virtual-key mapping and are reported as unsupported.
-- Voice dictation is not implemented in this source tree, although the manifest declares `RECORD_AUDIO`. If dictation is added through Android's system speech provider, review [PRIVACY.md](../PRIVACY.md) for the external-processing caveat.
-
-## Pointer, touch, and zoom
-
-- The KVM touch protocol (command 15) is not used. The app drives the pointer with mouse packets, which Mesh Agent accepts.
-- Direct touch sends absolute positions; Trackpad moves relatively. Long press is the right button; long press plus drag drags on the computer; two fingers scroll; two-finger tap right-clicks.
-- Multi-finger gestures are limited to the modes the session implements. There is no three-finger gesture and no custom gesture editor.
-- Pinch zoom is clamped to 16x. Panning is bounded at fit zoom (35% of the canvas) so the picture can still be moved.
-- A tap outside the picture is ignored rather than clamped to the nearest framebuffer edge.
-
-## Multi-monitor
-
-- The display list (command 11) and geometry (command 82) are parsed and shown when a computer has more than one display; switching sends command 12.
-- Combined "all displays" framebuffers are supported.
-- The cursor shape command (command 88) is parsed but not drawn: MeshCentral sends an index into a browser CSS cursor list, which has no Android equivalent. The client draws its own pointer at the last position it sent.
-
-## Interface and language
-
-- The 0.4.0 build ships 22 languages in 23 locale variants, with English as the default. Android 8–12 follows the system language; Android 13+ also exposes the standard system per-app language setting. There is no separate in-app language picker.
-- If no supported language matches, the app falls back to English.
-- Arabic, Persian, and Urdu use a right-to-left layout and a mirrored navigation arrow.
-- User-visible strings live in `res/values/strings.xml` and `res/values/runtime_strings.xml`, with one catalog per `values-*` locale directory. Server messages, device names, and other server-provided text are shown verbatim and are not translated.
-- Product and protocol names remain in Latin script; physical key captions remain `Ctrl`, `Alt`, `Shift`, `Win`, `Esc`, `Tab`, `Enter`, `Backspace`, `Del`, and `F1`–`F12`.
-- Translations were produced with DeepSeek and have not yet been proofread by native speakers of every language; wording and terminology may still change.
-- The app contains no online translation or geolocation feature.
-
-## App lock, biometrics, and screenshots
-
-- PIN and biometric lock are optional; the app lock can be disabled.
-- Biometric unlock uses Android's platform `BiometricPrompt` and requires Android 9 or newer. On Android 8 the app reports that biometric unlock is unavailable and keeps PIN as the fallback.
-- Screenshot blocking (`FLAG_SECURE`) is opt-in and off by default. It does not stop a camera pointed at the screen, and it may also hide the app from the recent-apps preview.
-- App lock protects the UI, not the MeshCentral account. Anyone with the account password can sign in from another client.
-
-## WebView fallback
-
-The WebView in Settings is a raw troubleshooting view. It is not the supported remote-desktop path, does not mirror the native UI, and may not support the same server features. It disables file and content access, blocks mixed content, and is configured with WebView debugging only in debug builds. Its cookies are stored by Android WebView and can be cleared from Settings → Data.
+- **Settings → Debug WebView** is a raw view of the configured MeshCentral page, not the local terminal renderer. It has its own WebView cookies and storage, cleared by **Settings → Data**. WebView contents debugging is enabled only in debug builds.
+- The terminal's local WebView serves only bundled assets from a reserved origin and blocks network/file access. It receives no MeshCentral cookie or SSH secret.
+- App lock is optional. Biometrics require Android 9+; the PIN remains the fallback. App lock protects the UI, not the MeshCentral account.
+- Screenshot blocking (`FLAG_SECURE`) is opt-in and off by default. It does not stop a camera pointed at the screen and may hide the app from the recent-apps preview.
 
 ## Updates and distribution
 
-- There is no in-app updater or store in 0.4.0. Download APKs manually from GitHub Releases in a browser.
-- Android accepts an update only with the same package name and signing key and a higher `versionCode`. A locally built APK has a different key and cannot replace a release APK.
-- Version 0.4.0 keeps the package name and signing key of the public 0.3.0 release, so it installs over that release and preserves local application data. Your server may still require authentication. Earlier private builds are separate applications and require their own sign-in.
-- APKs are distributed through GitHub Releases only; there is no store listing.
-- The repository does not provide an SLA, a supported-version matrix beyond 0.4.x, or a bug-fix timeline.
+- GitHub Releases and a personal F-Droid repository are planned for 0.5.0; neither 0.5.0 channel is published at documentation time. Official F-Droid inclusion is not promised.
+- There is no in-app updater or store. Android accepts an update only with the same package name and signing key and a higher `versionCode`.
+- The public package/signing identity is unchanged; earlier private builds use a distinct package and remain separate applications.
+- The repo uses GitHub Actions. No GitLab workflow is implemented.
 
 ## Network and deployment
 
-- The app needs a working HTTPS/WSS path to `/control.ashx` and `/meshrelay.ashx`. A reverse proxy that blocks WebSocket upgrades will break sign-in or the desktop session.
-- The app does not configure Nginx, certificates, firewalls, or MeshCentral itself.
-- Network address changes, VPNs, captive portals, and proxy interception can produce TLS or connection failures; the app reports the failure but cannot repair the network.
+- The app needs an HTTPS/WSS path to `/control.ashx`, `/meshrelay.ashx`, `/sshterminalrelay.ashx` and `/sshfilesrelay.ashx`. A reverse proxy that blocks WebSocket upgrades breaks sign-in or a tool session.
+- Browser SSO, domain URL access keys (`?key=`) and server administration are not supported by the native sign-in path. The app reports policy refusals instead of bypassing them.
+- A reverse proxy with a subpath still needs live compatibility testing.
+- Network changes, VPNs, captive portals and TLS interception can cause failures that the app reports but cannot repair.
+- No SLA, general server-version support matrix, or bug-fix timeline is provided.

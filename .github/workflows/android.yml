@@ -76,12 +76,18 @@ jobs:
           disable-animations: true
           script: |
             adb shell settings put secure show_ime_with_hard_keyboard 1
-            ./gradlew --no-daemon connectedDebugAndroidTest
+            test_status=0
+            ./gradlew --no-daemon connectedDebugAndroidTest || test_status=$?
+            mkdir -p app/build/reports/webview
+            adb shell dumpsys webviewupdate > app/build/reports/webview/provider.txt
+            adb exec-out run-as io.github.papajon123.meshcentral.debug sh -c 'cd cache && tar cf - terminal-webview-*.json' > app/build/reports/webview/renderer-decisions.tar || true
+            exit "$test_status"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
           name: device-reports-api-${{ matrix.api }}
           path: |
             app/build/reports/androidTests/
+            app/build/reports/webview/
             app/build/outputs/androidTest-results/
           retention-days: 14

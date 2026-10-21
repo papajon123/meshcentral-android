@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_overview">Сведения</string>
+    <string name="device_desktop">Рабочий стол</string>
+    <string name="device_terminal">Терминал</string>
+    <string name="device_files">Файлы</string>
+    <string name="device_ssh">SSH</string>
+    <string name="device_sftp">SFTP</string>
+    <string name="device_open_details">Открыть сведения о компьютере</string>
+    <string name="device_back">К списку компьютеров</string>
+    <string name="device_missing">Этого компьютера больше нет в текущем списке.</string>
+    <string name="device_group">Группа</string>
+    <string name="device_os">Операционная система</string>
+    <string name="device_address">Адрес</string>
+    <string name="device_agent_version">Версия агента</string>
+    <string name="device_not_reported">Не указано</string>
+    <string name="device_actions">Подключения</string>
+    <string name="device_signin_needed">Войдите и обновите список компьютеров для подключения.</string>
+    <string name="device_session_hint">Новое подключение закрывает предыдущий сеанс терминала или файлов.</string>
+    <string name="device_web_panel">Открыть веб-панель</string>
+    <string name="device_web_panel_hint">Дополнительные функции сервера откроются в браузере с отдельным входом.</string>
+    <string name="device_browser_unavailable">Нет браузера для открытия веб-панели.</string>
+    <string name="device_close_transfer_title">Закрыть файловый сеанс?</string>
+    <string name="device_close_transfer_message">Текущая операция остановится. Частично переданный файл может остаться.</string>
+    <string name="device_close_session">Закрыть сеанс</string>
+</resources>

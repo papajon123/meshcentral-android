@@ -2,7 +2,7 @@
 
 ## Supported versions
 
-This is a preliminary open-source release. Only the latest 0.3.x build is supported; there is no long-term support branch. The project is an independent client, not an official MeshCentral component.
+This is a preliminary open-source release. Only the latest published preview is supported; there is no long-term support branch. The project is an independent client, not an official MeshCentral component.
 
 ## Reporting a vulnerability
 
@@ -27,7 +27,7 @@ Never attach a production keystore, a signed production APK, or a database dump.
 
 In scope: this app's source and release APK. Examples include credential storage, PIN and lock handling, TLS validation in release builds, `x-meshauth` handling, two-factor flows, the WebView fallback configuration, and remote input or clipboard handling.
 
-Out of scope: vulnerabilities in MeshCentral itself (report them to the upstream project), a compromised MeshCentral server or Mesh Agent, a rooted or otherwise compromised Android device, denial of service caused by a hostile server, missing features, the Russian-only interface, and risks that require debug-only HTTP or self-signed certificate settings.
+Out of scope: vulnerabilities in MeshCentral itself (report them to the upstream project), a compromised MeshCentral server or Mesh Agent, a rooted or otherwise compromised Android device, denial of service caused by a hostile server, missing features, and risks that require debug-only HTTP or self-signed certificate settings.
 
 ## Security model
 
@@ -40,7 +40,7 @@ These properties are implemented in the current source tree:
 - Logs contain connection outcomes and event counts, not credentials, cookies, PINs, tokens, or full request payloads.
 - The WebView fallback disables file and content access, blocks mixed content, and enables WebView debugging only in debug builds.
 - Screenshot blocking is optional and uses `FLAG_SECURE` when enabled.
-- The 0.3.0 release has no in-app updater or installer; users install APKs manually from GitHub Releases.
+- The app has no in-app updater or installer. GitHub Releases distribute APKs; a separately configured F-Droid client can manage repository updates.
 
 ## Updates
 

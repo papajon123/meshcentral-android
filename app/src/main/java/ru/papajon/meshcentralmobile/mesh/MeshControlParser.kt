@@ -23,6 +23,12 @@ object MeshControlParser {
                     name = info?.optString("name")?.takeIf { it.isNotBlank() }
                         ?: json.optString("name").takeIf { it.isNotBlank() },
                     domain = info?.optString("domain")?.takeIf { it.isNotBlank() },
+                    capabilities = MeshServerCapabilities(
+                        features2 = (info?.opt("features2") as? Number)?.toLong(),
+                        consent = info?.optIntOrNull("consent"),
+                        linuxShell = info?.optString("linuxshell")?.takeIf { it.isNotBlank() },
+                        domainSuffix = info?.optString("domainsuffix")?.takeIf { it.isNotBlank() },
+                    ),
                 )
             }
 
@@ -32,6 +38,7 @@ object MeshControlParser {
                     userId = info?.optString("_id")?.takeIf { it.isNotBlank() },
                     name = info?.optString("name")?.takeIf { it.isNotBlank() },
                     siteAdmin = readSiteAdmin(info?.opt("siteadmin")),
+                    userGroupIds = parseLinks(info?.optJSONObject("links")).keys.filter { it.startsWith("ugrp/") }.toSet(),
                 )
             }
 
@@ -135,6 +142,7 @@ object MeshControlParser {
                         name = item.optString("name").ifBlank { id },
                         description = item.optString("desc"),
                         rightsByUser = parseLinks(item.optJSONObject("links")),
+                        relayNodeId = item.optString("relayid").takeIf { it.isNotBlank() },
                     ),
                 )
             }
@@ -206,6 +214,10 @@ object MeshControlParser {
             agentId = agent?.optIntOrNull("id"),
             agentVersion = agent?.optString("ver")?.takeIf { it.isNotBlank() },
             agentCaps = agent?.optIntOrNull("caps"),
+            host = item.optString("host").takeIf { it.isNotBlank() },
+            sshPort = item.optIntOrNull("sshport")?.takeIf { it in 1..65535 },
+            rightsByUser = parseLinks(item.optJSONObject("links")),
+            connectivityKnown = item.has("conn") && !item.isNull("conn"),
         )
     }
 
@@ -218,6 +230,7 @@ object MeshControlParser {
         groups: List<MeshGroup>,
         userId: String?,
         siteAdmin: Boolean,
+        userGroupIds: Set<String> = emptySet(),
     ): List<MeshDevice> {
         if (devices.isEmpty()) return devices
         val rightsByMesh = groups.mapNotNull { group ->
@@ -225,12 +238,15 @@ object MeshControlParser {
             group.id to rights
         }.toMap()
         return devices.map { device ->
+            val group = groups.firstOrNull { it.id == device.meshId }
+            val grants = listOfNotNull(rightsByMesh[device.meshId], device.rightsByUser[userId]) +
+                userGroupIds.mapNotNull { group?.rightsByUser?.get(it) } + userGroupIds.mapNotNull { device.rightsByUser[it] }
             val rights = if (siteAdmin) {
                 MeshRights.FULL
             } else {
-                rightsByMesh[device.meshId]
+                grants.reduceOrNull { accumulated, grant -> accumulated or grant }
             }
-            device.copy(rights = rights ?: device.rights)
+            device.copy(rights = rights, relayNodeId = groups.firstOrNull { it.id == device.meshId }?.relayNodeId)
         }
     }
 
@@ -264,8 +280,8 @@ object MeshControlParser {
         return when (value) {
             null, JSONObject.NULL -> false
             is Boolean -> value
-            is Number -> value.toLong() != 0L
-            is String -> value.equals("true", ignoreCase = true) || (value.toLongOrNull() ?: 0L) != 0L
+            is Number -> value.toLong().toInt() == MeshRights.FULL
+            is String -> value.equals("true", ignoreCase = true) || value.toLongOrNull()?.toInt() == MeshRights.FULL
             else -> false
         }
     }

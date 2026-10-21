@@ -2,6 +2,33 @@
 
 Notable changes to MeshCentral Mobile. This project is an independent client and does not follow the MeshCentral server's release cycle.
 
+## Unreleased — 0.5.0 (versionCode 9)
+
+Prepared release; not published on GitHub Releases or F-Droid at documentation time. The maintainer sets the final release metadata and completes distribution after the signed APK is uploaded.
+
+### Added
+
+- Device details screen with Details, Desktop, Terminal, Files, SSH and SFTP tabs, one tool session at a time, and an explicit web-panel handoff.
+- Mesh Agent terminal over `/meshrelay.ashx?p=1` with a locally bundled xterm.js 5.5.0 / addon-fit 0.10.0 renderer, bounded output and no automatic reconnect or input replay.
+- Mesh Agent files over `/meshrelay.ashx?p=5`: browse, SAF download, confirmed upload, mkdir, rename and delete.
+- SSH terminal and SFTP through `/sshterminalrelay.ashx` and `/sshfilesrelay.ashx`, using the same server authentication cookie as the native relay path.
+- Upload verification through readback SHA-256 and a fresh directory listing for both Agent files and SFTP; download size checks and SFTP empty/exact-block handling.
+- Capability states that distinguish known denial from unknown metadata; unknown permits an explicit attempt, with the server remaining authoritative.
+
+### Changed
+
+- Localization now covers 529 translated strings in each of 23 locale variants (22 languages). Translations remain machine-produced with DeepSeek and are not native-speaker verified.
+- README and user documentation describe the delivered terminal/files/SSH/SFTP scope, privacy traffic paths and remaining validation gates.
+- Keep first-launch setup reachable with large text and short landscape windows by scrolling the introduction and server form together.
+- Wrap two-factor delivery actions, allow the sign-in button to grow with text, and keep the selected navigation label readable at large font scales.
+- Render server addresses left-to-right inside RTL interfaces and respect the explicit desktop-denial permission.
+
+### Validation and remaining gates
+
+- Feature checks used an isolated real Linux Mesh Agent and SSH/SFTP host through npm MeshCentral 1.2.5. The protocol review used MeshCentral 1.2.6 source at commit `60cea8731f88b91a09704ff9a00dab4992a98ef1`, but no MeshCentral 1.2.6 server was tested.
+- Not yet verified: physical phone, Windows Agent, live restrictive-right and consent/refusal flows, SSH host-key policy, and cancellation/partial-transfer edge cases.
+- Pending mkdir/rename/delete cancellation is reported as unverified, not success. A failed or cancelled download may leave a partial SAF document. No exact test counts are claimed here; results are maintained in `docs/VALIDATION.md`.
+
 ## 0.4.0 — 2026-10-21
 
 Preliminary public release; `versionCode` 8.

@@ -41,20 +41,22 @@ object MeshControlMessages {
         relayCookie: String? = null,
         usage: Int = KVM_USAGE,
         responseId: String? = null,
+        domainPath: String = "/",
     ): JSONObject {
         val json = JSONObject()
             .put("action", "msg")
             .put("type", "tunnel")
             .put("nodeid", nodeId)
             .put("usage", usage)
-            .put("value", tunnelValue(nodeId, tunnelId, relayCookie, usage))
+            .put("value", tunnelValue(nodeId, tunnelId, relayCookie, usage, domainPath))
         if (responseId != null) json.put("responseid", responseId)
         return json
     }
 
     /** Relative relay path exactly as the MeshCentral browser client sends it. */
-    fun tunnelValue(nodeId: String, tunnelId: String, relayCookie: String? = null, usage: Int = KVM_USAGE): String {
-        val builder = StringBuilder("*/meshrelay.ashx?p=")
+    fun tunnelValue(nodeId: String, tunnelId: String, relayCookie: String? = null, usage: Int = KVM_USAGE, domainPath: String = "/"): String {
+        val path = "/" + domainPath.trim('/')
+        val builder = StringBuilder("*" + path.trimEnd('/') + "/meshrelay.ashx?p=")
             .append(usage)
             .append("&nodeid=")
             .append(urlEncode(nodeId))
@@ -98,12 +100,13 @@ object MeshControlMessages {
         tunnelId: String,
         authCookie: String? = null,
         relayCookie: String? = null,
+        usage: Int = KVM_USAGE,
     ): String {
         val builder = baseUrl.newBuilder()
             .encodedPath(baseUrl.encodedPath.trimEnd('/') + "/meshrelay.ashx")
             .query(null)
             .addQueryParameter("browser", "1")
-            .addQueryParameter("p", KVM_USAGE.toString())
+            .addQueryParameter("p", usage.toString())
             .addQueryParameter("nodeid", nodeId)
             .addQueryParameter("id", tunnelId)
         if (!authCookie.isNullOrBlank()) builder.addQueryParameter("auth", authCookie)
@@ -120,6 +123,17 @@ object MeshControlMessages {
         val bytes = ByteArray(16)
         random.nextBytes(bytes)
         return bytes.joinToString(separator = "") { "%02x".format(java.util.Locale.US, it.toInt() and 0xff) }
+    }
+
+    /** Authenticated device SSH endpoints; these do not use the Agent c/options/protocol handshake. */
+    fun sshViewerUrl(baseUrl: HttpUrl, nodeId: String, authCookie: String, files: Boolean): String {
+        val endpoint = if (files) "sshfilesrelay.ashx" else "sshterminalrelay.ashx"
+        return baseUrl.newBuilder()
+            .encodedPath(baseUrl.encodedPath.trimEnd('/') + "/" + endpoint)
+            .query(null)
+            .addQueryParameter("nodeid", nodeId)
+            .addQueryParameter("auth", authCookie)
+            .build().toString().let { if (baseUrl.isHttps) "wss://" + it.removePrefix("https://") else "ws://" + it.removePrefix("http://") }
     }
 
     private fun urlEncode(value: String): String = URLEncoder.encode(value, Charsets.UTF_8.name())

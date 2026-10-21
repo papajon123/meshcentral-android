@@ -84,6 +84,7 @@ fun DevicesScreen(
     onOpenSettings: () -> Unit,
     onSignIn: () -> Unit,
     modifier: Modifier = Modifier,
+    onOpenDevice: ((MeshDevice) -> Unit)? = null,
 ) {
     val clientState by meshClient.clientState.collectAsState()
     DevicesContent(
@@ -91,6 +92,7 @@ fun DevicesScreen(
         onConnect = { device -> meshClient.connectDesktop(device); onOpenRemote() },
         onRefresh = meshClient::refreshDevices,
         onOpenSettings = onOpenSettings, onSignIn = onSignIn, modifier = modifier,
+        onOpenDevice = onOpenDevice,
     )
 }
 
@@ -105,6 +107,7 @@ internal fun DevicesContent(
     onOpenSettings: () -> Unit,
     onSignIn: () -> Unit,
     modifier: Modifier = Modifier,
+    onOpenDevice: ((MeshDevice) -> Unit)? = null,
 ) {
     var filter by rememberSaveable { mutableStateOf(DeviceFilter.All) }
     val favoriteIds = favorites.map { it.url }.toSet()
@@ -264,6 +267,7 @@ internal fun DevicesContent(
                                 onConnect = {
                                     onConnect(device)
                                 },
+                                onOpenDetails = onOpenDevice?.let { callback -> { callback(device) } },
                             )
                         }
                     }
@@ -311,6 +315,7 @@ private fun DeviceCard(
     statusCurrent: Boolean,
     onFavoriteChanged: (Boolean) -> Unit,
     onConnect: () -> Unit,
+    onOpenDetails: (() -> Unit)? = null,
 ) {
     val online = statusCurrent && device.online
     val canConnect = statusCurrent && device.canOpenNativeDesktop
@@ -333,7 +338,7 @@ private fun DeviceCard(
         ).joinToString(" · ")
     }
     val subtitle = details.ifBlank { status }
-    MeshCard(modifier = Modifier.fillMaxWidth(), onClick = if (canConnect) onConnect else null) {
+    MeshCard(modifier = Modifier.fillMaxWidth(), onClick = onOpenDetails ?: if (canConnect) onConnect else null) {
         Row(
             modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -358,14 +363,14 @@ private fun DeviceCard(
                 Text(
                     device.name,
                     style = MaterialTheme.typography.titleSmall,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
                 Text(
                     subtitle,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    maxLines = 1,
+                    maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
                 )
             }

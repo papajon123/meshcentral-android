@@ -9,6 +9,8 @@ import java.security.cert.X509Certificate
 import java.util.Locale
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.ConcurrentHashMap
 import javax.net.ssl.HttpsURLConnection
 import javax.net.ssl.SSLContext
 import javax.net.ssl.TrustManager
@@ -45,6 +47,11 @@ import ru.papajon.meshcentralmobile.mesh.MeshControlEvent.ServerInfo
 import ru.papajon.meshcentralmobile.mesh.MeshControlEvent.UserInfo
 import ru.papajon.meshcentralmobile.model.ConnectionState
 import ru.papajon.meshcentralmobile.security.SecureVault
+import ru.papajon.meshcentralmobile.mesh.session.ManagedRelayConnection
+import ru.papajon.meshcentralmobile.mesh.session.RelayConnection
+import ru.papajon.meshcentralmobile.mesh.session.RelayCredentials
+import ru.papajon.meshcentralmobile.mesh.session.RelayProtocol
+import ru.papajon.meshcentralmobile.mesh.session.SessionAvailability
 
 /**
  * MeshCentral control channel (`/control.ashx`) plus the desktop relay it drives.
@@ -85,8 +92,10 @@ class MeshCentralClient(
     private var sessionUsername: String? = null
     private var sessionPassword: String? = null
     private var sessionToken: String? = null
-    private var authCookie: String? = null
-    private var relayCookie: String? = null
+    @Volatile private var authCookie: String? = null
+    @Volatile private var relayCookie: String? = null
+    private val sessionGeneration = AtomicLong()
+    private val additionalRelays = ConcurrentHashMap.newKeySet<ManagedRelayConnection>()
 
     private var clipboardRequest: ClipboardRequest? = null
     private var clipboardTimeoutJob: Job? = null
@@ -157,6 +166,7 @@ class MeshCentralClient(
         relayCookie = null
         relay.updateRelayCredentials(null, null)
         isSiteAdmin = false
+        userGroupIds = emptySet()
         baseUrl = parsed
         _clientState.value = MeshClientState(
             connectionState = ConnectionState.Offline,
@@ -184,9 +194,11 @@ class MeshCentralClient(
             return
         }
 
+        closeAdditionalRelays()
         if (baseUrl != parsed || sessionUsername != username.trim()) {
             relay.disconnect()
             isSiteAdmin = false
+            userGroupIds = emptySet()
             _clientState.value = MeshClientState()
         }
         manualClose = false
@@ -295,6 +307,46 @@ class MeshCentralClient(
         }
     }
 
+    /** Creates a single-use connection. Unknown metadata leaves the decision to the server. */
+    fun createRelayConnection(device: MeshDevice, protocol: RelayProtocol, options: JSONObject? = null): RelayConnection {
+        val generation = sessionGeneration.get()
+        val server = baseUrl
+        val connection = ManagedRelayConnection(
+            protocol = protocol,
+            nodeId = device.nodeId,
+            socketFactory = okHttpClient,
+            scope = scope,
+            credentials = {
+                val cookie = authCookie
+                if (server != null && !cookie.isNullOrBlank()) RelayCredentials(server, cookie, relayCookie) else null
+            },
+            validSession = {
+                generation == sessionGeneration.get() && controlConnected &&
+                    !_clientState.value.requiresSignIn && _clientState.value.devicesCurrent &&
+                    _clientState.value.devices.any { it.nodeId == device.nodeId }
+            },
+            availability = {
+                val state = _clientState.value
+                state.devices.firstOrNull { it.nodeId == device.nodeId }
+                    ?.sessionAvailability(protocol, state.serverCapabilities) ?: SessionAvailability.Unknown
+            },
+            sendControl = ::sendControlJson,
+            onFinished = { additionalRelays.remove(it) },
+            options = options,
+        )
+        additionalRelays.add(connection)
+        // Also covers a concurrent logout during creation; the stale object can never connect.
+        if (generation != sessionGeneration.get()) connection.close()
+        return connection
+    }
+
+    private fun closeAdditionalRelays() {
+        // Invalidate before walking the registry so a concurrent creation cannot start in the gap.
+        controlConnected = false
+        sessionGeneration.incrementAndGet()
+        additionalRelays.toList().forEach { it.close() }
+    }
+
     fun reconnectDesktop() = relay.reconnect()
 
     fun requestRemoteRefresh(): Boolean = relay.requestRefresh()
@@ -320,6 +372,8 @@ class MeshCentralClient(
     }
 
     fun logout(clearStoredCredentials: Boolean) {
+        isSiteAdmin = false
+        userGroupIds = emptySet()
         relay.disconnect()
         disconnectControl(manual = true)
         cookieJar.clear()
@@ -546,6 +600,7 @@ class MeshCentralClient(
     }
 
     private fun disconnectControl(manual: Boolean) {
+        closeAdditionalRelays()
         if (manual) manualClose = true
         controlConnected = false
         _clientState.update { it.copy(socketConnected = false, devicesCurrent = false) }
@@ -621,6 +676,7 @@ class MeshCentralClient(
             groups = state.groups,
             userId = state.userId,
             siteAdmin = state.userId != null && isSiteAdmin,
+            userGroupIds = userGroupIds,
         )
         return resolved.sortedWith(
             compareBy<MeshDevice> { !it.online }
@@ -630,6 +686,7 @@ class MeshCentralClient(
     }
 
     private var isSiteAdmin = false
+    private var userGroupIds: Set<String> = emptySet()
 
     /** Keeps fields the server does not resend (for example `agent` on `changenode`). */
     private fun mergeDevice(existing: MeshDevice, incoming: MeshDevice): MeshDevice {
@@ -644,6 +701,12 @@ class MeshCentralClient(
             agentVersion = incoming.agentVersion ?: existing.agentVersion,
             agentCaps = incoming.agentCaps ?: existing.agentCaps,
             rights = incoming.rights ?: existing.rights,
+            host = incoming.host ?: existing.host,
+            sshPort = incoming.sshPort ?: existing.sshPort,
+            rightsByUser = incoming.rightsByUser,
+            relayNodeId = incoming.relayNodeId ?: existing.relayNodeId,
+            conn = if (incoming.connectivityKnown) incoming.conn else existing.conn,
+            connectivityKnown = incoming.connectivityKnown || existing.connectivityKnown,
         )
     }
 
@@ -656,6 +719,7 @@ class MeshCentralClient(
             groups = named,
             userId = state.userId,
             siteAdmin = isSiteAdmin,
+            userGroupIds = userGroupIds,
         ).map { device ->
             device.copy(meshName = namesById[device.meshId]?.name ?: device.meshName)
         }.sortedWith(
@@ -670,7 +734,7 @@ class MeshCentralClient(
         when (event) {
             is MeshNodeEvent.NodeConnected -> {
                 val devices = _clientState.value.devices.map { device ->
-                    if (device.nodeId == event.nodeId) device.copy(conn = event.conn, pwr = event.pwr) else device
+                    if (device.nodeId == event.nodeId) device.copy(conn = event.conn, pwr = event.pwr, connectivityKnown = true) else device
                 }
                 _clientState.update { it.copy(devices = sortDevices(devices)) }
             }
@@ -697,6 +761,7 @@ class MeshCentralClient(
                 groups = state.groups,
                 userId = state.userId,
                 siteAdmin = isSiteAdmin,
+                userGroupIds = userGroupIds,
             ).first().let { resolved ->
                 resolved.copy(meshName = state.groups.firstOrNull { it.id == resolved.meshId }?.name ?: resolved.meshName)
             }
@@ -733,11 +798,12 @@ class MeshCentralClient(
             if (controlSocket !== webSocket) return
             when (val event = MeshControlParser.parse(text)) {
                 is ServerInfo -> _clientState.update {
-                    it.copy(serverName = event.name ?: it.serverName)
+                    it.copy(serverName = event.name ?: it.serverName, serverCapabilities = event.capabilities)
                 }
 
                 is UserInfo -> {
                     isSiteAdmin = event.siteAdmin
+                    userGroupIds = event.userGroupIds
                     _clientState.update { state ->
                         state.copy(
                             userId = event.userId ?: state.userId,
@@ -795,6 +861,7 @@ class MeshCentralClient(
 
                 is RoutingResult -> {
                     if (event.result != null && !event.result.equals("OK", ignoreCase = true)) {
+                        additionalRelays.firstOrNull { it.responseId == event.responseId }?.routingFailed()
                         _clientState.update {
                             it.copy(
                                 message = UiText.resource(
@@ -814,6 +881,7 @@ class MeshCentralClient(
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
             if (controlSocket !== webSocket) return
+            closeAdditionalRelays()
             if (relay.hasActiveSession()) pendingDesktopResume = true
             controlConnected = false
             val reason = MeshConnectionError.describe(t, response?.code)
@@ -838,6 +906,7 @@ class MeshCentralClient(
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
             if (controlSocket !== webSocket) return
+            closeAdditionalRelays()
             if (relay.hasActiveSession()) pendingDesktopResume = true
             controlConnected = false
             if (manualClose || authRejected) {
@@ -864,6 +933,7 @@ class MeshCentralClient(
     }
 
     private fun handleClose(event: Close) {
+        closeAdditionalRelays()
         controlConnected = false
         val failure = MeshAuthDiagnostics.classify(event.cause, event.message)
         authRejected = failure != MeshAuthFailure.Unknown || event.cause.equals("noauth", ignoreCase = true)

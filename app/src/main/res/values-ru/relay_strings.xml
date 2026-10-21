@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="relay_available">Доступно</string>
+    <string name="relay_availability_unknown">Поддержка или права неизвестны; сервер проверит доступ</string>
+    <string name="relay_unsupported">Не поддерживается</string>
+    <string name="relay_sign_in_required">Войдите заново, чтобы открыть новый сеанс</string>
+    <string name="relay_timeout">Истекло время подключения. Для повтора откройте новый сеанс.</string>
+    <string name="relay_connection_failed">Не удалось подключиться. Для повтора откройте новый сеанс.</string>
+    <string name="relay_buffer_limit">Сеанс закрыт из-за превышения размера буфера данных</string>
+    <string name="relay_routing_failed">Сервер не смог связаться с устройством</string>
+    <string name="relay_remote_closed">Удалённый сеанс завершён. Для подключения откройте новый сеанс.</string>
+    <string name="relay_protocol_error">Сервер прислал неожиданные данные сеанса</string>
+</resources>

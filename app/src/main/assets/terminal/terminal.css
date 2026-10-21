@@ -1,0 +1,4 @@
+html,body,#terminal { width:100%; height:100%; margin:0; padding:0; overflow:hidden; }
+#terminal { box-sizing:border-box; padding:4px; }
+.xterm { height:100%; }
+.xterm-viewport { overscroll-behavior:contain; }

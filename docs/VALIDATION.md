@@ -2,7 +2,71 @@
 
 ## Current status
 
-This is a preliminary release. Version 0.4.0 has **not** been validated on a physical phone or against third-party MeshCentral servers.
+This is a preliminary release. Physical phones, Windows Agent tools, third-party servers and live
+restrictive-right/consent flows have not been accepted for 0.5.0.
+
+## 0.5.0 local acceptance — 2026-10-21
+
+Source: the 0.5.0 / versionCode 9 changes after `3c5086d`; the final revision and APK metadata are
+recorded by the release tag and `release-info.json`. These results are not evidence for the older
+published 0.4.0 APK.
+
+- **170 JVM tests passed**, no failures or errors.
+- **71 Android tests passed** on the dedicated Android 16 / API 36.1 emulator, with the isolated
+  live fixture enabled. This includes four real Agent/SSH/files/SFTP controller tests and two real
+  Activity/navigation/SAF tests, rather than counting opt-in skips as passes.
+- The live UI test verifies the same session and previous output after Activity recreation, no
+  command replay, actual visible header/terminal pixels and a real `ACTION_CREATE_DOCUMENT` save
+  followed by a byte/hash check. A reproduced blank-rendering defect was fixed with an independently
+  clipped native host and parent-specific release of the retained WebView.
+- Four renderer tests cover ANSI/split UTF-8, OSC clipboard isolation, direct/composing CJK input,
+  hardware keys, selection/copy, disconnect rejection and detach/reattach.
+- Both file adapters have checks for failed/cancelled transfers and unconfirmed remote mutations;
+  the real fixture exercised Linux Agent and server-mediated SFTP. Mock tests are not live server
+  acceptance of every failure mode.
+- Translation validation: **23 locale variants, 529 translated strings each**. Machine translation
+  has not received native-speaker review in all languages.
+- Debug assembly and Android Lint passed; final CI reports retain exact warning counts.
+
+Live server: **npm MeshCentral 1.2.5** in owned isolated containers, with no host filesystem mounts.
+The source audit at `60cea8731f88b91a09704ff9a00dab4992a98ef1` has package version 1.2.6; npm 1.2.6 was
+unavailable, so no live 1.2.6 compatibility is claimed. No production account or computer was used.
+
+The additional WebView compatibility test records the actual provider version. The four successful
+renderer scenarios may be skipped only on Android below API 35 with a known Chromium major below 80;
+then a separate real-provider test must show the localized update instruction within 20 seconds.
+Unknown provider versions do not permit a skip. Chromium 80 is a syntax floor, not a tested minimum.
+API 26/35 CI and signed-APK publication remain pending until linked below.
+
+## Earlier readability and product review — 2026-10-21
+
+These results apply to the local follow-up changes after commit `3c5086d`, not to the published
+0.4.0 APK. That earlier stage did not change the version/signing identity or publish a new APK.
+
+- JVM: **111 tests passed**. Added tests cover the desktop-denial bit, administrator rights and
+  compatibility when the server omits rights metadata.
+- Instrumented suite on the dedicated Android 16/API 36.1 emulator: **33 tests passed**.
+  The four new adaptive tests failed before the UI fixes, then passed with the full existing suite.
+- Debug assembly and Android Lint passed: **0 errors, 28 warnings, 6 informational findings**.
+- Translation validation still passes for all **23 locale variants / 389 translated strings**.
+- GitHub-rendered English/Russian README previews passed **28 browser checks**, with no reported
+  overflow, serious accessibility violations or console errors at 1366/390/320-pixel widths.
+  This is a local preview shell around the GitHub Markdown API output, not the live GitHub page.
+- The lead and an independent reviewer inspected native screenshots and both README contact sheets.
+  The Arabic selected-tab label, all three 2FA actions and the German landscape Save action are
+  readable in the inspected cases.
+
+`AdaptiveLayoutTest.kt` uses bounded Compose viewports with synthetic density/font settings and
+consumed system insets. It verifies rendered glyph bounds, visible actions and callbacks; it does
+not recreate the Activity, test physical rotation or prove persistence of edited settings. The
+onboarding checks use a reserved example endpoint and never contact a live server. Screenshot
+status-bar overlap belongs to this test harness. Physical-device acceptance, TalkBack, real IME
+composition across locales, desktop toolbar coverage and all screen/locale combinations remain open.
+Password and 2FA input currently reset on Activity recreation; storing these in a saved Bundle is
+not proposed as a workaround.
+
+The two-round product/protocol council and delivery gates are recorded in [ROADMAP.md](ROADMAP.md)
+and [ROADMAP.ru.md](ROADMAP.ru.md). Terminal, SSH, SFTP and file management were not part of that earlier review stage; their later acceptance is recorded above.
 
 ## Version 0.4.0 localization verification — 2026-10-21
 

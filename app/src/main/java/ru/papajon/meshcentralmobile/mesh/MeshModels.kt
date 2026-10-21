@@ -5,6 +5,9 @@ import androidx.annotation.StringRes
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.model.ConnectionState
+import ru.papajon.meshcentralmobile.mesh.session.RelayProtocol
+import ru.papajon.meshcentralmobile.mesh.session.SessionAvailability
+import ru.papajon.meshcentralmobile.mesh.session.availabilityFor
 
 /**
  * MeshCentral mesh (device group) rights.
@@ -22,6 +25,10 @@ object MeshRights {
     const val WAKE_DEVICE = 64
     const val SET_NOTES = 128
     const val REMOTE_VIEW = 256
+    const val NO_TERMINAL = 512
+    const val NO_FILES = 1024
+    const val DESKTOP_LIMITED_INPUT = 4096
+    const val NO_DESKTOP = 65536
 
     /** Site administrators receive this value in `meshes[].links[userid].rights`. */
     const val FULL = -1
@@ -33,6 +40,7 @@ data class MeshGroup(
     val description: String = "",
     /** Raw `links` map from the control channel: MeshCentral user id -> rights bitmask. */
     val rightsByUser: Map<String, Int> = emptyMap(),
+    val relayNodeId: String? = null,
 ) {
     fun rightsFor(userId: String?): Int? {
         if (userId.isNullOrBlank()) return null
@@ -56,7 +64,17 @@ data class MeshDevice(
     val agentCaps: Int? = null,
     /** Resolved from the mesh `links` for the signed-in user; null when the server did not send links. */
     val rights: Int? = null,
+    val host: String? = null,
+    val sshPort: Int? = null,
+    /** Effective direct node grants, independent of the group grant. No credentials are retained. */
+    val rightsByUser: Map<String, Int> = emptyMap(),
+    val relayNodeId: String? = null,
+    /** False for an omitted conn field; never turn missing metadata into a known offline state. */
+    val connectivityKnown: Boolean = true,
 ) {
+    fun sessionAvailability(protocol: RelayProtocol, serverCapabilities: MeshServerCapabilities = MeshServerCapabilities()): SessionAvailability =
+        availabilityFor(this, protocol, serverCapabilities)
+
     val status: DeviceStatus
         get() = if (conn > 0) DeviceStatus.Online else DeviceStatus.Offline
 
@@ -78,6 +96,7 @@ data class MeshDevice(
         get() {
             val value = rights ?: return true // Server did not send links; let the server decide.
             if (value == MeshRights.FULL) return true
+            if ((value and MeshRights.NO_DESKTOP) != 0) return false
             return (value and MeshRights.REMOTE_CONTROL) != 0 || (value and MeshRights.REMOTE_VIEW) != 0
         }
 
@@ -150,6 +169,19 @@ data class TwoFactorChallenge(
         }
 }
 
+/** Flags sent by serverinfo; absence is distinct from a known disabled feature. */
+data class MeshServerCapabilities(
+    val features2: Long? = null,
+    val consent: Int? = null,
+    val linuxShell: String? = null,
+    val domainSuffix: String? = null,
+) {
+    val sshEnabled: Boolean? get() = features2?.let { it and 0x200L != 0L }
+    val sftpEnabled: Boolean? get() = features2?.let { it and 0x200L != 0L && it and 0x800000L == 0L }
+    val sshTerminalEnabled: Boolean? get() = features2?.let { it and 0x200L != 0L && it and 0x1000000L == 0L }
+    val savingDeviceCredentialsAllowed: Boolean? get() = features2?.let { it and 0x400000L == 0L }
+}
+
 data class MeshClientState(
     val connectionState: ConnectionState = ConnectionState.Offline,
     val serverName: String? = null,
@@ -163,6 +195,7 @@ data class MeshClientState(
     val requiresSignIn: Boolean = true,
     /** False until a fresh nodes snapshot arrives after reconnecting. */
     val devicesCurrent: Boolean = false,
+    val serverCapabilities: MeshServerCapabilities = MeshServerCapabilities(),
 ) {
     val authenticated: Boolean
         get() = connectionState == ConnectionState.Authenticated ||
@@ -240,8 +273,8 @@ data class RemoteDesktopState(
 
 /** Events emitted by the control channel parser. */
 sealed interface MeshControlEvent {
-    data class ServerInfo(val name: String?, val domain: String?) : MeshControlEvent
-    data class UserInfo(val userId: String?, val name: String?, val siteAdmin: Boolean) : MeshControlEvent
+    data class ServerInfo(val name: String?, val domain: String?, val capabilities: MeshServerCapabilities = MeshServerCapabilities()) : MeshControlEvent
+    data class UserInfo(val userId: String?, val name: String?, val siteAdmin: Boolean, val userGroupIds: Set<String> = emptySet()) : MeshControlEvent
     data class Meshes(val groups: List<MeshGroup>) : MeshControlEvent
     data class Nodes(val devices: List<MeshDevice>) : MeshControlEvent
     data class AuthCookie(val cookie: String?, val relayCookie: String?) : MeshControlEvent

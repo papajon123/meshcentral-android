@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -51,6 +52,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.BuildConfig
 import ru.papajon.meshcentralmobile.R
@@ -79,6 +81,7 @@ fun ServerSettingsScreen(
     onAllowHttpInDebugChanged: (Boolean) -> Unit,
     onTrustSelfSignedChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    introductoryContent: (@Composable () -> Unit)? = null,
 ) {
     var serverUrl by rememberSaveable(settings.serverUrl) { mutableStateOf(settings.serverUrl) }
     var validationMessageId by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -91,11 +94,13 @@ fun ServerSettingsScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
+            .imePadding()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = spacing.lg)
             .padding(bottom = spacing.xxl),
         verticalArrangement = Arrangement.spacedBy(spacing.lg),
     ) {
+        introductoryContent?.invoke()
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -138,6 +143,7 @@ fun ServerSettingsScreen(
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = serverUrl,
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(textDirection = TextDirection.Ltr),
                         onValueChange = {
                             serverUrl = it
                             validationMessageId = null

@@ -8,6 +8,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,6 +37,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -97,17 +100,31 @@ fun MeshNavigationBar(
         border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
         tonalElevation = 3.dp,
     ) {
-        Row(
-            modifier = Modifier.selectableGroup().padding(6.dp),
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            AppDestination.entries.forEach { destination ->
-                NavigationPill(
-                    destination = destination,
-                    selected = destination == current,
-                    onClick = { onSelect(destination) },
-                    modifier = Modifier.weight(1f),
+        BoxWithConstraints {
+            // At large text sizes a full-width caption keeps words intact while all three
+            // navigation targets retain their touch area. The active label is never hidden.
+            val separateCaption = maxWidth < 600.dp && LocalDensity.current.fontScale >= 1.3f
+            Column {
+                Row(
+                    modifier = Modifier.selectableGroup().padding(6.dp),
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    AppDestination.entries.forEach { destination ->
+                        NavigationPill(
+                            destination = destination,
+                            selected = destination == current,
+                            onClick = { onSelect(destination) },
+                            modifier = Modifier.weight(if (!separateCaption && destination == current) 2.2f else 1f),
+                            showLabel = !separateCaption,
+                        )
+                    }
+                }
+                if (separateCaption) Text(
+                    text = appDestinationLabel(current),
+                    style = MaterialTheme.typography.labelLarge,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, bottom = 10.dp),
                 )
             }
         }
@@ -120,6 +137,7 @@ private fun NavigationPill(
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    showLabel: Boolean = true,
 ) {
     val interaction = remember { MutableInteractionSource() }
     val pressed by interaction.collectIsPressedAsState()
@@ -155,15 +173,15 @@ private fun NavigationPill(
             tint = content,
             modifier = Modifier.size(22.dp),
         )
-        if (selected) {
+        if (selected && showLabel) {
             Box(modifier = Modifier.size(width = 8.dp, height = 1.dp))
             Text(
                 text = appDestinationLabel(destination),
                 style = MaterialTheme.typography.labelLarge,
                 color = content,
-                maxLines = 1,
-                softWrap = false,
-                overflow = androidx.compose.ui.text.style.TextOverflow.Clip,
+                // Keep the selected destination readable at large font scales and in long locales.
+                // The pill grows vertically instead of clipping or shrinking the user's text.
+                softWrap = true,
             )
         }
     }

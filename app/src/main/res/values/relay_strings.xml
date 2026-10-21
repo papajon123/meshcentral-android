@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="relay_available">Available</string>
+    <string name="relay_availability_unknown">Support or permission is unknown; the server will check</string>
+    <string name="relay_unsupported">Not supported</string>
+    <string name="relay_sign_in_required">Sign in again before starting a new session</string>
+    <string name="relay_timeout">The connection timed out. Start a new session to retry.</string>
+    <string name="relay_connection_failed">The connection failed. Start a new session to retry.</string>
+    <string name="relay_buffer_limit">The session exceeded its data buffer limit and was closed</string>
+    <string name="relay_routing_failed">The server could not reach the device</string>
+    <string name="relay_remote_closed">The remote session ended. Start a new session to reconnect.</string>
+    <string name="relay_protocol_error">The server sent unexpected session data</string>
+</resources>

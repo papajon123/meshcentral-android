@@ -1,23 +1,33 @@
-## MeshCentral Mobile 0.4.0 — preview
+## MeshCentral Mobile 0.5.0 — preview
 
 ### English
 
-- Independent native Android client for your own MeshCentral server; Android 8.0 or newer.
-- Interface in 22 languages (23 locale variants), English by default, with right-to-left layouts for Arabic, Persian, and Urdu. Android 8–12 follows the system language. On Android 13+ choose the app language in system settings (usually Settings → System → Languages & input → App languages, or the app's App info page).
-- If no supported language matches, the app uses English. Server messages, device names, and physical key captions are not translated.
-- Translations were produced with DeepSeek and have not yet been proofread by native speakers of every language.
-- Install: download the APK below, allow your browser or file manager to install unknown apps, and open the file. The package and signing key are unchanged, so 0.4.0 installs over the public 0.3.0 release and preserves local data. Your server may still require authentication. Earlier private builds are separate and need their own sign-in.
-- Updates are manual from GitHub Releases. Use your own HTTPS MeshCentral server; no server or account is preconfigured.
-- Preview: the build has not yet been accepted on physical devices or third-party servers. See README and docs/KNOWN_LIMITATIONS.md.
+Control your own MeshCentral server from Android 8 or newer.
+
+- New device details and tabs: Desktop, Terminal, Files, SSH and SFTP.
+- Native Agent terminal and file operations; SSH/SFTP through your MeshCentral server.
+- Upload verification by reading back SHA-256; downloads through Android's system file picker.
+- Sessions survive Activity recreation without replaying commands. No automatic reconnect for terminal/file tools.
+- 22 languages (23 locale variants), 529 translated strings each, automatic system-language selection and improved layouts for larger text.
+- Terminal uses bundled xterm.js and requires a working, updated Android System WebView. Old providers receive an update instruction. Files and SFTP do not need WebView.
+
+Download the APK below and allow installation from the browser/file manager when Android asks. It updates public 0.3.0/0.4.0 with the same package and signing key; earlier private builds remain separate. Use your own HTTPS server; none is preconfigured.
+
+Validated locally: 170 JVM tests and 71 Android tests, including real isolated Linux Agent/SSH/SFTP and system file selection on MeshCentral 1.2.5. GitHub Actions supplies separate API 26/35 results. Physical phones, Windows Agent tools, third-party servers and live restrictive-right/consent flows remain unverified. Translations are machine-produced and not yet proofread in every language. See [known limitations](https://github.com/papajon123/meshcentral-android/blob/v0.5.0/docs/KNOWN_LIMITATIONS.md).
 
 ### По-русски
 
-- Независимый нативный Android-клиент для вашего сервера MeshCentral; Android 8.0 или новее.
-- Интерфейс на 22 языках (23 варианта), по умолчанию английский; для арабского, персидского и урду — раскладка справа налево. Android 8–12 следует языку системы. На Android 13+ язык приложения выбирается в настройках Android (обычно «Настройки → Система → Языки и ввод → Языки приложений» или на странице приложения).
-- Если подходящего языка нет, используется английский. Сообщения сервера, имена устройств и подписи физических клавиш не переводятся.
-- Переводы выполнены с помощью DeepSeek и ещё не вычитаны носителями всех языков.
-- Установка: скачайте APK ниже, разрешите браузеру или файловому менеджеру установку из неизвестных источников и откройте файл. Имя пакета и ключ подписи не изменились, поэтому 0.4.0 ставится поверх публичного 0.3.0 с сохранением локальных данных. Сервер при этом может потребовать авторизацию. Более ранние частные сборки — отдельные приложения со своим входом.
-- Обновления устанавливаются вручную из GitHub Releases. Нужен собственный сервер MeshCentral по HTTPS; сервер и учётная запись не предустановлены.
-- Предварительный выпуск: сборка ещё не принята на физических устройствах и чужих серверах. См. README и docs/KNOWN_LIMITATIONS.md.
+Управление вашим сервером MeshCentral с Android 8 или новее.
 
-`SHA256SUMS` verifies the APK; `release-info.json` records its package, version, and certificate fingerprint.
+- Карточка компьютера и вкладки: рабочий стол, терминал, файлы, SSH и SFTP.
+- Терминал и файловые операции Mesh Agent; SSH/SFTP через ваш сервер MeshCentral.
+- Проверка загруженного файла обратным чтением SHA-256; скачивание через системный выбор файлов Android.
+- Сеанс сохраняется при пересоздании окна, команды не повторяются. Автоматического переподключения терминала и файлов нет.
+- 22 языка (23 языковых варианта), по 529 переведённых строк, автоматический выбор языка системы и улучшенная работа с крупным текстом.
+- Терминалу нужен исправный обновлённый Android System WebView. Для старого компонента показана инструкция обновления. Файлы и SFTP работают без WebView.
+
+Скачайте APK ниже и при запросе Android разрешите установку из браузера или файлового менеджера. Выпуск обновляет публичные 0.3.0/0.4.0 с сохранением имени пакета и ключа подписи; старые частные сборки остаются отдельными приложениями. Нужен ваш сервер по HTTPS, предустановленного сервера нет.
+
+Локально прошли 170 модульных и 71 проверка Android, включая реальные Linux Agent/SSH/SFTP и системное сохранение файла на отдельном стенде MeshCentral 1.2.5. Результаты API 26/35 доступны в GitHub Actions. Физические телефоны, инструменты Windows Agent, чужие серверы и реальные сценарии ограниченных прав/согласия ещё не проверены. Переводы выполнены машинно и не вычитаны носителями всех языков. Подробнее — в [ограничениях](https://github.com/papajon123/meshcentral-android/blob/v0.5.0/docs/KNOWN_LIMITATIONS.md).
+
+`SHA256SUMS` verifies APK bytes; `release-info.json` records package, version and signing certificate.

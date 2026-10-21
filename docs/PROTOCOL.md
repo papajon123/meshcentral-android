@@ -166,10 +166,43 @@ Notes:
   `getclip` reply when the remote clipboard is not empty, so a client must apply its own timeout.
 - Remote control (8) or remote view (256) rights are required to route the command (`meshuser.js:287`).
 
+## 4. Terminal and file tools (0.5.0)
+
+These paths were additionally reviewed against upstream commit
+`60cea8731f88b91a09704ff9a00dab4992a98ef1` (package 1.2.6). Live acceptance used npm
+MeshCentral **1.2.5**, an isolated Linux Mesh Agent and an SSH/SFTP host; it does not certify 1.2.6.
+
+| Tool | Endpoint and handshake |
+| --- | --- |
+| Mesh Agent terminal | `meshrelay.ashx?p=1`; `c`/`cr`, terminal options, then protocol `1`; raw UTF-8 bytes and terminal-size controls |
+| Mesh Agent files | `meshrelay.ashx?p=5`; `c`/`cr`, then protocol `5`; JSON commands and bounded binary download/upload frames |
+| SSH terminal | `sshterminalrelay.ashx` with the authenticated server cookie and node; `sshauth`/`sshautoauth`, `c`, then `~`-prefixed shell output |
+| SFTP | `sshfilesrelay.ashx`; its own authentication and file-framing adapter, not the Agent files handshake |
+
+Server SSH relays terminate SSH on the MeshCentral server. For `mtype=2`, they use an Agent TCP
+tunnel; direct `localrelay` applies to `mtype=3` without an alternate relay. Thus an explicitly
+offline Agent node without an alternate relay is unavailable, while missing metadata permits an
+explicit server-authorized attempt. Server authorization remains authoritative.
+
+Upstream can send SSH `c` before the shell callback is attached. The client enables input only
+after nonempty shell output; a silent shell times out after 30 seconds. It also bounds the pre-`c`
+handshake, excluding time spent entering credentials. It never reconnects or replays terminal input.
+
+Both upload adapters verify success by reading back SHA-256 and refreshing the directory. SFTP's
+upstream `uploaddone` can occur after a write failure; this frame alone is not success. Downloads
+check the expected byte count; the SFTP adapter also handles empty and exact-block files where the
+server can omit a final EOF block. A remote change after verification is still possible: these
+protocols do not provide an atomic snapshot or an atomic no-overwrite operation.
+
+Directory responses are capped at 1 MiB and 20,000 entries. Terminal queues apply bounded backpressure
+outside locks; closing releases waiting producers. Individual frames above 1 MiB fail explicitly.
+File changes already sent when cancelled remain unconfirmed; failed SAF downloads can leave a partial
+document. See the protocol/controller tests and [validation](VALIDATION.md) for actual coverage.
+
 ## Compatibility
 
-The client targets the native Mesh Agent desktop relay (`usage 2`). Intel AMT KVM, Web-RDP, Web-VNC, WebRTC,
-terminal sessions, and file transfer use different paths and are not implemented.
+The client supports native Mesh Agent desktop, terminal and files, plus server-mediated SSH/SFTP.
+Intel AMT KVM, Web-RDP, Web-VNC and WebRTC remain unimplemented.
 
 A server that requires a domain URL access key (`?key=`), blocks tool clients with `notools`, or requires
 browser SSO may refuse the native sign-in path. The app surfaces the server's message; it does not bypass

@@ -3,12 +3,14 @@ package ru.papajon.meshcentralmobile.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -49,6 +51,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.localization.asString
@@ -92,6 +95,7 @@ fun LoginScreen(
 }
 
 @Composable
+@OptIn(ExperimentalLayoutApi::class)
 internal fun LoginContent(
     clientState: MeshClientState,
     serverUrl: String,
@@ -135,7 +139,7 @@ internal fun LoginContent(
                 Text(stringResource(R.string.login_title), style = MaterialTheme.typography.headlineSmall)
                 Text(
                     text = serverUrl,
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodySmall.copy(textDirection = TextDirection.Ltr),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
@@ -209,7 +213,10 @@ internal fun LoginContent(
                         label = { Text(stringResource(R.string.login_two_factor_code)) },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword, imeAction = ImeAction.Done),
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                    ) {
                         if (challenge.email) {
                             OutlinedButton(
                                 onClick = { onRequestCode(TwoFactorChannel.Email) },
@@ -262,7 +269,7 @@ internal fun LoginContent(
             shape = PillShape,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(52.dp),
+                .heightIn(min = 52.dp),
         ) {
             if (connecting) {
                 MeshLoadingIndicator(size = 22.dp, color = MaterialTheme.colorScheme.onPrimary)
