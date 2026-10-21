@@ -16,8 +16,14 @@ This is **not** an official MeshCentral application, **not** a MeshCentral agent
 
 ## Your own server
 
+<p>
+  <img src="docs/screenshots/setup.png" width="260" alt="First launch with an empty server address">
+  <img src="docs/screenshots/sign-in.png" width="260" alt="Sign-in screen using a reserved example server">
+</p>
+
 - Enter the full MeshCentral URL manually, for example `https://meshcentral.example.com/`. No server is preconfigured.
 - Use HTTPS with a certificate valid for that host name. The release build validates certificates against the platform trust store.
+- Use the final server URL. Authenticated requests do not follow HTTP redirects. Domain paths are preserved in control and viewer URLs; live deployments with reverse-proxy subpaths still need compatibility testing.
 - Plain HTTP and self-signed certificates are available only in debug builds, for a local test server.
 - The account needs the remote-control right for the computer group; view-only sessions are supported.
 
@@ -29,6 +35,7 @@ This is **not** an official MeshCentral application, **not** a MeshCentral agent
 - Text clipboard exchange in both directions, subject to MeshCentral and Mesh Agent limits.
 - Two-factor sign-in by e-mail, SMS, or push, as offered by the server.
 - Credentials and PIN protected with Android Keystore AES-GCM; optional PIN or biometric app lock and optional screenshot blocking.
+- Saved credentials and in-progress sign-in fields are isolated when the server address changes.
 - No ads, analytics, telemetry, or project-operated backend. The 0.3.0 release has no in-app store, self-updater, microphone access, or APK installation flow.
 
 ## Not supported

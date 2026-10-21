@@ -2,9 +2,29 @@
 
 ## Current status
 
-This is a preliminary release. The exact 0.3.0 revision has **not** been validated on a physical phone or against third-party MeshCentral servers. Do not treat this document as a pass record for 0.3.0 until the maintainer fills in the release record at the end.
+This is a preliminary release. Version 0.3.0 has **not** been validated on a physical phone or against third-party MeshCentral servers.
 
-Earlier internal builds were exercised against a local MeshCentral 1.2.5 test instance and an Android emulator, but the test set changed for this release. The final test counts, device results, and signing evidence must be recorded after the release build is cut; do not copy numbers from older builds.
+Local verification on 2026-10-21, for the application source in this public release:
+
+| Check | Result |
+| --- | --- |
+| JVM unit tests | 108 passed, no failures |
+| Instrumented tests on a dedicated Android 16 / API 36.1 emulator | 21 passed, no failures |
+| Debug and signed release assembly | Passed |
+| Android Lint (debug) | No errors; 18 warnings and 6 informational findings |
+| APK identity, release version, certificate, v2 signature, debug/test flags | Passed with `ci/verify_apk.py` |
+| Gitleaks 8.30.1 on the initial public history | No findings; private project history was not imported |
+| Signed APK installation and first-launch screenshots | Passed on the dedicated emulator; only a reserved example endpoint was entered |
+
+The tests include rejection of cross-endpoint saved credentials, prevention of credential-bearing
+HTTP redirects, clearing typed sign-in fields after a server change, empty first-launch setup,
+connection recovery, desktop controls and keyboard input. The Android test libraries were updated
+to Espresso 3.7.0 / AndroidX Test JUnit 1.3.0 after the previous test runtime failed on Android 16.
+These results do not establish live remote-desktop compatibility with arbitrary MeshCentral servers.
+
+Earlier internal builds were exercised against a local MeshCentral 1.2.5 test instance. That historical
+evidence is not counted as acceptance of this public build. GitHub Actions results and the final APK
+hash are linked from the release; `release-info.json` contains the published APK metadata.
 
 ## Automated checks
 
