@@ -14,6 +14,11 @@ This is **not** an official MeshCentral application, **not** a MeshCentral agent
 - Updates are manual: install a newer APK from Releases. Android accepts an update only when the package name (`io.github.papajon123.meshcentral`), the signing key, and a higher `versionCode` match. A build made with your own key will not install over a release APK.
 - This public application installs alongside earlier private builds. Sign in again with your own server account; no credentials are copied between applications. Debug builds have an additional `.debug` application ID suffix.
 
+The public signing certificate SHA-256 is
+`5458084705359e0dfa9cbb83ed73a0d77c7758370cffe2a7d6b036e9275eeb2f`.
+Each release includes APK checksums and `release-info.json`. Maintainers should follow
+[the release procedure](docs/RELEASING.md).
+
 ## Your own server
 
 <p>

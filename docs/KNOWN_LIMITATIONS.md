@@ -16,10 +16,10 @@ Intel AMT KVM, Web-RDP, Web-VNC, WebRTC optimisation, terminal or shell sessions
 
 - The client was written against MeshCentral 1.2.5. Compatibility with other server versions is not claimed; protocol details can change.
 - Authentication uses the `x-meshauth` header, not the browser login form. Browser SSO (SAML, OIDC, or a similar redirect flow) is not supported.
-- A server that requires a domain URL access key (`?key=`) is refused with the server's `nokey` message.
+- Domain URL access keys (`?key=`) are not supported. The setup form rejects query parameters in the server URL.
 - An account with the `notools` site right can use the browser but is refused for API-style clients. The app reports this refusal as-is.
 - Two-factor codes are supported through `tokenrequired`; a new code can be requested by e-mail, SMS, or push where the server offers it.
-- A login token (user name beginning `~t:`) can be used in the password field, but the app does not mint tokens.
+- Server-issued login-token credentials must be entered in their corresponding username and password fields; the token username starts with `~t:`. The app does not create login tokens.
 - The server must offer HTTPS with a certificate valid for its host name. Release builds validate against platform CAs.
 - The app does not administer the server: it cannot create meshes, users, policies, or server settings.
 
