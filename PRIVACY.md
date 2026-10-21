@@ -45,7 +45,7 @@ The native client opens HTTPS/WSS connections only to the MeshCentral base URL y
 
 The SSH/SFTP sockets include the device `nodeid` and the server-issued authentication cookie. SSH is terminated by MeshCentral; Android does not connect directly to the SSH host. The server operator can see the connecting IP address, account name, device list, session timing, SSH host selection, and traffic passing through these relays. Server-side logging, SSH host-key policy, terminal recording, and access control are outside the app.
 
-The app does not send data to a project-operated backend. Release APKs are obtained from GitHub (or a personal F-Droid repository when published) outside the app; the app itself does not contact those services.
+The app does not send data to a project-operated backend. Release APKs are obtained from GitHub outside the app; the app itself does not contact GitHub.
 
 The terminal renderer is local: it loads only bundled xterm assets through an intercepted reserved origin, with network and file access blocked. It receives no MeshCentral cookie or SSH secret. This is separate from the raw **Debug WebView**, which loads pages from the configured MeshCentral server; those pages may request other resources according to the server configuration and may create WebView cookies.
 

@@ -6,8 +6,6 @@
 
 <p align="center">
   <a href="https://github.com/papajon123/meshcentral-android/releases"><strong>Download APK</strong></a>
-  ·
-  <a href="https://distribution.example.invalid/repo/?fingerprint=REDACTED_REPOSITORY_FINGERPRINT">Personal F-Droid repository</a>
 </p>
 
 <p align="center">
@@ -35,7 +33,7 @@
 
 ## Quick start
 
-1. **Install the app.** Download the [signed APK](https://github.com/papajon123/meshcentral-android/releases) or add the [personal F-Droid repository](https://distribution.example.invalid/repo/?fingerprint=REDACTED_REPOSITORY_FINGERPRINT). This is a third-party personal repository, not the official F-Droid catalogue; allow pre-release (beta) versions if your client asks. Android 8.0 (API 26) or newer is required.
+1. **Install the app.** Download the [signed APK](https://github.com/papajon123/meshcentral-android/releases). Android 8.0 (API 26) or newer is required.
 2. **Allow the install and keep the same signer.** Android will ask you to allow installs from the browser or file manager you used. Updates need the same package name, the same signing key and a higher `versionCode`.
 3. **Connect your own server.** Enter the full HTTPS URL of your MeshCentral server, for example `https://meshcentral.example.com/`, then sign in with a MeshCentral account. No server or account is preconfigured. Browser SSO is not supported. For the terminal, install a current Android System WebView. See the [first-launch setup screen](docs/screenshots/en/setup.png).
 
@@ -78,10 +76,10 @@ English, русский, 简体中文, 繁體中文, español, français, portug
 ## FAQ
 
 ### How do I update?
-With a configured personal F-Droid repository, updates are automatic if your F-Droid client is set up that way. With the GitHub APK, download and install the new APK manually. There is no in-app updater. Android accepts an update only with the same package name, the same signing key and a higher `versionCode`. The public releases use the same signing key; earlier private builds are a separate app.
+Download the new APK from [GitHub Releases](https://github.com/papajon123/meshcentral-android/releases) and install it manually. There is no in-app updater. Android accepts an update only with the same package name, the same signing key and a higher `versionCode`. The public releases use the same signing key; earlier private builds are a separate app.
 
 ### Do I need GitHub Packages?
-No. The app is installed from GitHub Releases or the personal F-Droid repository. GitHub Packages is for libraries and containers, not a replacement for the APK.
+No. The app is installed from GitHub Releases. GitHub Packages is for libraries and containers, not a replacement for the APK.
 
 ### Which certificate signs the APK?
 The public package is `io.github.papajon123.meshcentral`. The full SHA-256 of the signing certificate is in the release identity section below and in [ci/release-identity.json](ci/release-identity.json). Do not install a build signed by a different key over this one.

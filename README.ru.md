@@ -6,8 +6,6 @@
 
 <p align="center">
   <a href="https://github.com/papajon123/meshcentral-android/releases"><strong>Скачать APK</strong></a>
-  ·
-  <a href="https://distribution.example.invalid/repo/?fingerprint=REDACTED_REPOSITORY_FINGERPRINT">Личный репозиторий F-Droid</a>
 </p>
 
 <p align="center">
@@ -35,7 +33,7 @@
 
 ## Быстрый старт
 
-1. **Установите приложение.** Скачайте [подписанный APK](https://github.com/papajon123/meshcentral-android/releases) или добавьте [личный репозиторий F-Droid](https://distribution.example.invalid/repo/?fingerprint=REDACTED_REPOSITORY_FINGERPRINT). Это сторонний личный репозиторий, а не официальный каталог F-Droid; если клиент спросит, разрешите предварительные (beta) версии. Нужен Android 8.0 (API 26) или новее.
+1. **Установите приложение.** Скачайте [подписанный APK](https://github.com/papajon123/meshcentral-android/releases). Нужен Android 8.0 (API 26) или новее.
 2. **Разрешите установку и сохраните подпись.** Android попросит разрешить установку из браузера или файлового менеджера. Для обновления нужны то же имя пакета, тот же ключ подписи и больший `versionCode`.
 3. **Подключите свой сервер.** Введите полный HTTPS-адрес вашего MeshCentral, например `https://meshcentral.example.com/`, и войдите с учётной записью MeshCentral. Сервер и учётная запись не предустановлены. Браузерный SSO не поддерживается. Для терминала установите актуальный Android System WebView. См. [экран первой настройки](docs/screenshots/ru/setup.png).
 
@@ -78,10 +76,10 @@ English, русский, 简体中文, 繁體中文, español, français, portug
 ## Вопросы и ответы
 
 ### Как обновляться?
-С настроенным личным репозиторием F-Droid обновления приходят автоматически, если ваш клиент F-Droid так настроен. С APK из GitHub новую версию нужно скачать и установить вручную. Встроенного обновления нет. Android принимает обновление только с тем же именем пакета, тем же ключом подписи и большим `versionCode`. Публичные выпуски используют один ключ подписи; прежние частные сборки — отдельное приложение.
+Скачайте новый APK со страницы [GitHub Releases](https://github.com/papajon123/meshcentral-android/releases) и установите его вручную. Встроенного обновления нет. Android принимает обновление только с тем же именем пакета, тем же ключом подписи и большим `versionCode`. Публичные выпуски используют один ключ подписи; прежние частные сборки — отдельное приложение.
 
 ### Нужен ли GitHub Packages?
-Нет. Приложение устанавливается из GitHub Releases или личного репозитория F-Droid. GitHub Packages предназначен для библиотек и контейнеров и не заменяет APK.
+Нет. Приложение распространяется через GitHub Releases. GitHub Packages предназначен для библиотек и контейнеров и не заменяет APK.
 
 ### Каким сертификатом подписан APK?
 Публичный пакет — `io.github.papajon123.meshcentral`. Полный SHA-256 сертификата подписи указан ниже в разделе об идентичности выпуска и в [ci/release-identity.json](ci/release-identity.json). Не устанавливайте поверх этого выпуска сборку с другим ключом.

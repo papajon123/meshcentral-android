@@ -80,7 +80,7 @@ This page describes the prepared 0.5.1 release. It is not a stable-release claim
 
 ## Updates and distribution
 
-- GitHub Releases and a personal F-Droid repository are planned for 0.5.1; neither 0.5.1 channel is published at documentation time. Official F-Droid inclusion is not promised.
+- GitHub Releases is the public distribution channel. There is no official F-Droid package, and inclusion in the official F-Droid catalogue is not promised.
 - There is no in-app updater or store. Android accepts an update only with the same package name and signing key and a higher `versionCode`.
 - The public package/signing identity is unchanged; earlier private builds use a distinct package and remain separate applications.
 - The repo uses GitHub Actions. No GitLab workflow is implemented.

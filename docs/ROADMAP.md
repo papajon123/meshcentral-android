@@ -27,7 +27,7 @@ The functional baseline is the published **0.5.1** release (`versionCode` 10). *
 | SFTP | Implemented; bench-validated | Isolated SFTP host; empty and exact-block downloads and upload readback; directory permissions/cancellation remain open. |
 | Local terminal renderer | Implemented | Bundled xterm 5.5.0 / addon-fit 0.10.0; synthetic parser tests and final API 35/WebView 124 checks; API 26 checks verify the old-provider update instruction. Physical IME, current Android 8 WebView and TalkBack remain open. |
 | Privacy/documentation | Updated for 0.5.1 | Endpoint and local-renderer boundaries documented; no native-speaker review yet. |
-| Distribution | Published | Signed 0.5.1 APK on GitHub and personal F-Droid; signatures, hashes, update and anonymous downloads verified. Official F-Droid inclusion is not promised. |
+| Distribution | Published | Signed 0.5.1 APK on GitHub; signature, hash and published-artifact checks recorded. Official F-Droid inclusion is not promised. |
 | GitLab workflow | Implemented for 0.5.2 | Private development; protected release tags export source snapshots to GitHub, where device checks and signing run. See [delivery](GITLAB_RELEASES.md). |
 
 ## Remaining release gates

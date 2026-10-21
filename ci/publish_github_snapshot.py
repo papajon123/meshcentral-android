@@ -110,6 +110,16 @@ def environment_secret_values(env: Mapping[str, str]) -> tuple[bytes, ...]:
     if encoded:
         with contextlib.suppress(ValueError):
             values.add(base64.b64decode(encoded, validate=True))
+    publication_policy = env.get("PRIVATE_PUBLICATION_TEXT_B64")
+    if publication_policy:
+        try:
+            restricted = {line.strip() for line in base64.b64decode(publication_policy, validate=True).splitlines()
+                          if len(line.strip()) >= 16}
+        except ValueError:
+            raise BridgeError("Private publication policy is malformed; values are not emitted") from None
+        if not restricted:
+            raise BridgeError("Private publication policy has no bounded entries")
+        values.update(restricted)
     return tuple(value for value in values if len(value) >= 16)
 
 
@@ -210,6 +220,8 @@ def validate_publish_context(tag: str, commit: str, env: Mapping[str, str]) -> N
         raise BridgeError("Debug tracing must be disabled for the deployment-key job")
     if env.get("GITHUB_REPOSITORY", GITHUB_REPOSITORY) != GITHUB_REPOSITORY:
         raise BridgeError("Unexpected GitHub repository")
+    if not env.get("PRIVATE_PUBLICATION_TEXT_B64"):
+        raise BridgeError("Protected publication requires its private-text exclusion policy")
 
 
 @contextlib.contextmanager

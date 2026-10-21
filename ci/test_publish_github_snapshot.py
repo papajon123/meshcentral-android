@@ -237,11 +237,12 @@ class SnapshotTests(unittest.TestCase):
         env = {"CI_SERVER_HOST": bridge.GITLAB_HOST, "CI_PROJECT_ID": "124", "CI_PROJECT_NAMESPACE_ID": "154",
                "CI_PROJECT_PATH": bridge.GITLAB_PROJECT_PATH, "CI_PROJECT_VISIBILITY": "private",
                "CI_COMMIT_REF_PROTECTED": "true", "CI_COMMIT_TAG": "v0.5.2", "CI_COMMIT_SHA": commit, "CI_RUNNER_ID": "15",
-               "CI_ENVIRONMENT_NAME": "github-release"}
+               "CI_ENVIRONMENT_NAME": "github-release",
+               "PRIVATE_PUBLICATION_TEXT_B64": base64.b64encode(b"private-distribution.example.invalid").decode()}
         bridge.validate_publish_context("v0.5.2", commit, env)
         for key, value in (("CI_PROJECT_ID", "107"), ("CI_COMMIT_REF_PROTECTED", "false"),
                            ("CI_RUNNER_ID", "1"), ("CI_DEBUG_TRACE", "true"), ("CI_COMMIT_SHA", self.base),
-                           ("CI_ENVIRONMENT_NAME", "build")):
+                           ("CI_ENVIRONMENT_NAME", "build"), ("PRIVATE_PUBLICATION_TEXT_B64", "")):
             with self.subTest(key=key), self.assertRaises(bridge.BridgeError):
                 bridge.validate_publish_context("v0.5.2", commit, dict(env, **{key: value}))
 
@@ -299,6 +300,23 @@ class SnapshotTests(unittest.TestCase):
         self.assertEqual(addition["input"], key)
         self.assertTrue(all(key.decode() not in str(command) for command, _ in calls))
         self.assertEqual(calls[-1][0], ["ssh-agent", "-k"])
+
+
+class PrivatePublicationPolicyTests(unittest.TestCase):
+    def test_decoded_private_text_is_rejected_without_emitting_it(self):
+        private_text = b"private-distribution.example.invalid"
+        env = {"PRIVATE_PUBLICATION_TEXT_B64": base64.b64encode(private_text + b"\n").decode()}
+        policy = bridge.environment_secret_values(env)
+        self.assertIn(private_text, policy)
+        with self.assertRaises(bridge.BridgeError) as result:
+            bridge.validate_content(b"An accidental reference: " + private_text, policy)
+        self.assertNotIn(private_text.decode(), str(result.exception))
+        bridge.validate_content(b"https://github.com/example/project/releases", policy)
+
+    def test_invalid_or_empty_policy_is_rejected(self):
+        for encoded in ("not-valid-base64!", base64.b64encode(b"short").decode()):
+            with self.subTest(encoded=encoded), self.assertRaises(bridge.BridgeError):
+                bridge.environment_secret_values({"PRIVATE_PUBLICATION_TEXT_B64": encoded})
 
 
 if __name__ == "__main__":

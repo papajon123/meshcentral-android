@@ -13,7 +13,7 @@ Preview release; `versionCode` 12.
 
 Unpublished APK candidate; `versionCode` 11. The immutable source tag remains available.
 The GitLab-to-GitHub snapshot transfer succeeded, but an API 35 release check exposed an IME input
-race and stopped signing. No 0.5.2 APK was published to GitHub or F-Droid.
+race and stopped signing. No 0.5.2 APK was published to GitHub Releases.
 Application runtime was unchanged from 0.5.1.
 
 ### Added
@@ -25,7 +25,7 @@ Application runtime was unchanged from 0.5.1.
 
 ## 0.5.1 — 2026-10-21 (`versionCode` 10)
 
-Published on GitHub Releases and the personal F-Droid repository. Both serve the same signed APK; the signed F-Droid index and anonymous downloads were verified. The v0.5.0 tag was an unpublished candidate whose checks stopped signing; it remains unchanged.
+Published on GitHub Releases. The signed APK and anonymous downloads were verified. The v0.5.0 tag was an unpublished candidate whose checks stopped signing; it remains unchanged.
 
 ### Added
 

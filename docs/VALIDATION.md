@@ -63,10 +63,9 @@ passed its build, API 26 and API 35 jobs before signing.
 
 The CI-produced 0.5.1 APK was independently checked for package/version, signer, release manifest
 flags and SHA-256. Updating the signed 0.4.0 APK to it and launching it on the dedicated API 35 emulator
-succeeded. GitHub and the personal F-Droid repository anonymously serve the identical 12,218,131 bytes:
+succeeded. The GitHub release hosts the 12,218,131-byte artifact:
 `804c90c962c1968c841c4d723747cef1304ec8e984d0ff75ad16652632b296c6`.
-The F-Droid index signature, advertised artifact hash and downloaded bytes were also verified.
-This is publication in a personal repository, not admission to the official F-Droid catalogue.
+This is not admission to the official F-Droid catalogue.
 
 ## 0.5.3 Android IME correction
 

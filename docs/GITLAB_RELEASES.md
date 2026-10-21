@@ -46,6 +46,7 @@ jobs cannot read the deployment credential:
 | --- | --- |
 | `GITHUB_DEPLOY_KEY_B64` | Protected, masked, raw/non-expanding; base64 of the dedicated unencrypted GitHub **repository-only write deploy key**. Never a personal account key or PAT. |
 | `GITHUB_KNOWN_HOSTS` | Protected; explicit `github.com` public host-key lines verified against GitHub's official SSH metadata/fingerprints. Public pins, not a secret. |
+| `PRIVATE_PUBLICATION_TEXT_B64` | Protected, masked and non-expanding, with scope `github-release`; base64 of a private newline-delimited exclusion policy. Keep its values out of source and logs. |
 | `GITHUB_REPOSITORY` | `papajon123/meshcentral-android`; this is also the script's fixed allowlisted destination. |
 
 The publish job must declare `environment: {name: github-release}`. The script additionally requires
