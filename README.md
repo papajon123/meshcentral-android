@@ -1,5 +1,7 @@
 # MeshCentral Mobile
 
+[Русская инструкция](README.ru.md)
+
 An independent native Android client for an existing [MeshCentral](https://github.com/Ylianst/MeshCentral) server. It lets you sign in to your own server, see your computers, and open a Mesh Agent remote desktop from a phone or tablet.
 
 This is **not** an official MeshCentral application, **not** a MeshCentral agent, and **not** affiliated with the MeshCentral project. You need your own MeshCentral deployment and an account on it.

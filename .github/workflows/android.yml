@@ -48,8 +48,13 @@ jobs:
           api-level: ${{ matrix.api }}
           arch: x86_64
           target: google_apis
+          disk-size: 2048M
+          emulator-boot-timeout: 300
+          enable-hw-keyboard: false
           disable-animations: true
-          script: ./gradlew --no-daemon connectedDebugAndroidTest
+          script: |
+            adb shell settings put secure show_ime_with_hard_keyboard 1
+            ./gradlew --no-daemon connectedDebugAndroidTest
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
