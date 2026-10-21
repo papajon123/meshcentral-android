@@ -74,14 +74,7 @@ jobs:
           emulator-boot-timeout: 300
           enable-hw-keyboard: false
           disable-animations: true
-          script: |
-            adb shell settings put secure show_ime_with_hard_keyboard 1
-            test_status=0
-            ./gradlew --no-daemon connectedDebugAndroidTest || test_status=$?
-            mkdir -p app/build/reports/webview
-            adb shell dumpsys webviewupdate > app/build/reports/webview/provider.txt
-            adb exec-out run-as io.github.papajon123.meshcentral.debug sh -c 'cd cache && tar cf - terminal-webview-*.json' > app/build/reports/webview/renderer-decisions.tar || true
-            exit "$test_status"
+          script: bash ci/run-device-tests.sh
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
