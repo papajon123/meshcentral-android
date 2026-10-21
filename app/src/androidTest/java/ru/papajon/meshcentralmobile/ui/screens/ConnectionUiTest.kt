@@ -72,7 +72,9 @@ class ConnectionUiTest {
     private fun devices(connected: Boolean) {
         compose.activityRule.scenario.onActivity {
             it.enableEdgeToEdge(statusBarStyle = SystemBarStyle.dark(0), navigationBarStyle = SystemBarStyle.dark(0))
-            it.window.isNavigationBarContrastEnforced = false
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                it.window.isNavigationBarContrastEnforced = false
+            }
         }
         compose.setContent {
             MeshCentralMobileTheme {
