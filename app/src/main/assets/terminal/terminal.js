@@ -32,21 +32,43 @@
   let composing = false;
   let finishingComposition = false;
   const input = terminal.textarea;
-  input.addEventListener('keydown', () => { keyDown = true; }, true);
+  let imeValue = null;
+  // Android commitText can wrap insertText in synthetic key 229. xterm's fallback for that
+  // key samples textarea.value in a zero-delay task, which can run BEFORE the native insert.
+  // Own only this non-composition fallback, using the actual input event instead of a timer.
+  // Suppressing xterm's task also prevents duplicate data when it would run AFTER the insert.
+  terminal.attachCustomKeyEventHandler(event => {
+    if (event.type === 'keydown' && event.keyCode === 229 && !composing && !finishingComposition) {
+      imeValue = input.value;
+      return false;
+    }
+    return true;
+  });
+  input.addEventListener('keydown', event => { keyDown = event.keyCode !== 229; }, true);
   input.addEventListener('keypress', () => { keyPress = true; }, true);
-  input.addEventListener('keyup', () => { keyDown = false; keyPress = false; }, true);
-  input.addEventListener('compositionstart', () => { composing = true; finishingComposition = false; });
+  input.addEventListener('keyup', () => { keyDown = false; keyPress = false; imeValue = null; }, true);
+  input.addEventListener('compositionstart', () => { composing = true; finishingComposition = false; imeValue = null; });
   input.addEventListener('compositionend', () => {
     composing = false;
     finishingComposition = true;
     // xterm's CompositionHelper finalizes the same composition in its preceding zero-delay task.
     setTimeout(() => { finishingComposition = false; }, 0);
   });
-  input.addEventListener('blur', () => { keyDown = false; keyPress = false; });
+  input.addEventListener('blur', () => { keyDown = false; keyPress = false; imeValue = null; });
   input.addEventListener('input', event => {
-    if (enabled && terminal.options.screenReaderMode && event.inputType === 'insertText' && event.data &&
+    if (enabled && terminal.options.screenReaderMode &&
         !event.isComposing && !composing && !finishingComposition && !keyDown && !keyPress) {
-      terminal.input(event.data, true);
+      if (event.inputType === 'insertText' && event.data) {
+        terminal.input(event.data, true);
+      } else if (imeValue !== null) {
+        // Preserve xterm's key-229 fallback for native deletion/replacement, without guessing
+        // a key from inputType. Composition and ordinary Backspace/Delete remain with xterm.
+        const value = input.value;
+        if (value.length > imeValue.length) terminal.input(value.replace(imeValue, ''), true);
+        else if (value.length < imeValue.length) terminal.input('\x7f', true);
+        else if (value !== imeValue) terminal.input(value, true);
+      }
+      if (imeValue !== null) imeValue = input.value;
     }
   });
   const resize = () => {

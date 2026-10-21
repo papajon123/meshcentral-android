@@ -307,6 +307,56 @@ class TerminalRendererTest {
         compose.runOnIdle { assertEquals(count, relay.binary.size) }
     }
 
+    @Test fun directImeInputEventsAreSingleAcrossSentinelTaskOrdering() {
+        setup()
+        installImeEventProbe()
+        readyInputConnection("sentinel-ordering")
+        // A controlled DOM regression complements the real InputConnection test above. Android's
+        // native dispatch cannot deterministically force a JS timer between keydown229 and input.
+        // Both orderings must work, including a repeated identical character and native deletion.
+        fun dispatch(before: String, after: String, data: String?, sentinel: Boolean, drainBeforeInput: Boolean) {
+            val dataJson = data?.let(JSONObject::quote) ?: "null"
+            evaluate("""
+                (() => {
+                  window.terminalTestSequenceDone=false;
+                  const field=document.querySelector('.xterm-helper-textarea');
+                  field.value=${JSONObject.quote(before)};
+                  const key=type=>field.dispatchEvent(new KeyboardEvent(type,
+                    {key:'Process',keyCode:229,which:229,bubbles:true}));
+                  if ($sentinel) key('keydown');
+                  const insert=()=>{
+                    const options={bubbles:true,inputType:${JSONObject.quote(if (data == null) "deleteContentBackward" else "insertText")},data:$dataJson};
+                    field.dispatchEvent(new InputEvent('beforeinput',options));
+                    field.value=${JSONObject.quote(after)};
+                    field.dispatchEvent(new InputEvent('input',options));
+                    if ($sentinel) key('keyup');
+                    setTimeout(()=>setTimeout(()=>window.terminalTestSequenceDone=true,0),0);
+                  };
+                  if ($drainBeforeInput) setTimeout(insert,0); else insert();
+                  return true;
+                })()
+            """.trimIndent())
+            compose.waitUntil(5000) { evaluate("window.terminalTestSequenceDone") == "true" }
+        }
+        var expected = ""
+        listOf(Triple("无", false, false), Triple("早", true, true), Triple("晚", true, false),
+            Triple("晚", true, true)).forEach { (text, sentinel, drain) ->
+            dispatch("", text, text, sentinel, drain)
+            expected += text
+            compose.waitUntil(5000) { relay.binary.sumOf { it.size } >= expected.toByteArray(Charsets.UTF_8).size }
+            compose.runOnIdle {
+                assertEquals("One insert per input event, sentinel=$sentinel timerBeforeInput=$drain", expected,
+                    relay.binary.flatMap { it.toList() }.toByteArray().toString(Charsets.UTF_8))
+            }
+        }
+        dispatch("xy", "x", null, sentinel = true, drainBeforeInput = true)
+        expected += '\u007f'
+        compose.waitUntil(5000) { relay.binary.sumOf { it.size } >= expected.toByteArray(Charsets.UTF_8).size }
+        compose.runOnIdle {
+            assertEquals(expected, relay.binary.flatMap { it.toList() }.toByteArray().toString(Charsets.UTF_8))
+        }
+    }
+
     private fun commitAndVerifyCjkComposition(input: InputConnection) {
         compose.runOnIdle {
             assertTrue(input.setComposingText("中", 1))

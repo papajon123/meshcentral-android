@@ -128,7 +128,7 @@ An API 36.1 Android `InputConnection.commitText` trace showed only `beforeinput`
 `inputType=insertText`, with correct native/DOM focus and a ready controller. xterm 5.5.0
 `src/browser/Terminal.ts:1172-1194` intentionally ignores that path when `screenReaderMode=true`.
 The project adapter handles this direct, non-composing input while keeping accessible output enabled.
-Keyboard and active/finalizing composition events remain handled by xterm to prevent duplicate input.
+Ordinary keyboard and active/finalizing composition events remain handled by xterm to prevent duplicate input.
 The vendor bundle and its checksums are unchanged. Android regression coverage includes direct CJK
 commit, composing CJK commit, hardware input, Ctrl and disconnect rejection.
 All four renderer tests passed on the dedicated API 36.1 emulator after this correction. Runtime
@@ -144,8 +144,27 @@ its original geometry and z-index with opacity 1 and transparent background/text
 The project `terminal.css` therefore hides paint instead of opacity and disables helper pointer events
 and outline. Vendor files, Activity context, transport and terminal geometry remain unchanged.
 
-The final five renderer checks passed on that provider, including exact CJK followed by a single key
+The 0.5.1 five renderer checks passed on that provider, including exact CJK followed by a single key
 via both `InputConnection.sendKeyEvent` and the system injection path. Native editor readiness and the
 helper's invisible paint are asserted. Real Bluetooth keyboards and TalkBack remain manual checks.
 The full regular Android suite passed 66 cases with seven expected skips; live-case evidence and its
 fixture-bootstrap exception are recorded in [Validation](../../../../../docs/VALIDATION.md).
+
+### Android processing-key ordering in 0.5.3
+
+The 0.5.2 API 35 release check captured direct `commitText` as `keydown(229)` followed by
+`beforeinput/input(insertText)` and `keyup(229)`. The textarea contained the committed characters,
+but no input reached the relay. The adapter's hardware-key guard blocked its direct-input path;
+xterm's `CompositionHelper.keydown(229)` schedules a zero-delay textarea comparison which can
+run before Android applies the insertion. Merely ignoring 229 in the guard would instead duplicate
+input when that upstream timer runs after insertion.
+
+The project now claims non-composition 229 through the public `attachCustomKeyEventHandler`,
+preventing that upstream fallback timer, and handles the actual `input` event exactly once.
+Composition remains owned by xterm. Existing fallback deletion/replacement semantics are preserved;
+this does not implement arbitrary remote-line editing or IME autocorrection.
+
+The new deterministic regression fails on the previous adapter and passes with the correction,
+covering absent/before/after processing-key order, repeated identical text and one deletion.
+Six renderer checks and the full 67-pass Android suite passed on API 35/WebView 124. Vendor payloads
+and the paint-transparent CSS fix are unchanged. See `docs/VALIDATION.md` for scope and skips.

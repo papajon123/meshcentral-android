@@ -36,6 +36,8 @@ The candidate configuration is installed by the project owner, not by the bridge
 Use the pinned Android SDK 35 image and dedicated protected runner **15** with tag
 `meshcentral-android`. The runner stays locked; shared runners and Auto DevOps are disabled for 124.
 Serialize publication jobs with one `resource_group`.
+Only the checks job caches Gradle data under a project-specific key; the publication job does not
+restore this cache. GitLab's separate protected-ref cache scope should remain enabled.
 
 Configure these variables with **environment scope `github-release`**, so the normal build/Gradle
 jobs cannot read the deployment credential:

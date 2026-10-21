@@ -68,9 +68,30 @@ succeeded. GitHub and the personal F-Droid repository anonymously serve the iden
 The F-Droid index signature, advertised artifact hash and downloaded bytes were also verified.
 This is publication in a personal repository, not admission to the official F-Droid catalogue.
 
-## 0.5.2 presentation and delivery
+## 0.5.3 Android IME correction
 
-The application runtime is unchanged from 0.5.1. The opt-in international gallery passed on API 35:
+The 0.5.2 release run stopped signing after API 35 exposed a direct-input race: Android emitted
+`keydown(229)`, `beforeinput(insertText)`, `input(insertText)`, `keyup(229)`, but no relay input.
+The native editor, window focus and controller were ready. The independent main-branch run passed,
+so a successful retry alone would not establish a fix. The immutable 0.5.2 source tag remains;
+no 0.5.2 APK was published.
+
+The adapter now owns non-composition processing-key events through xterm's public custom-key hook,
+and forwards their actual input event rather than racing xterm's zero-delay textarea comparison.
+Ordinary keys and composition remain handled by xterm. A deterministic regression fails against
+the old JavaScript and passes with the correction. It covers input without 229, both timer orderings,
+repeated identical characters and a single native deletion; the real InputConnection checks remain.
+
+On the dedicated API 35 / WebView 124.0.6367.219 emulator, **six renderer checks passed** with one
+legacy-provider skip. The full suite passed **67 tests**, with eight expected skips: six opt-in live
+cases, the opt-in gallery and the legacy-provider-only case. The APK's JavaScript bytes matched the
+reviewed source. The existing limitations for non-composition IME replacement and multi-character
+deletion are documented in [known limitations](KNOWN_LIMITATIONS.md); arbitrary remote-line editing
+is not claimed. Transport code is unchanged; the 0.5.1 live-server evidence was not rerun for this fix.
+
+## 0.5.2 source candidate: presentation and delivery
+
+This candidate's application runtime was unchanged from 0.5.1. The opt-in international gallery passed on API 35:
 nine screenshots of real production Composables with fictional data, in English, Simplified Chinese
 and Russian. It checks actual pixels and text bounds, not only Compose semantics. Three additional
 setup screenshots were captured from the signed 0.5.1 APK with Android per-app language settings.

@@ -23,6 +23,7 @@ This page describes the prepared 0.5.1 release. It is not a stable-release claim
 - The terminal needs a working, updated Android System WebView. A missing or obsolete provider, failed local script initialisation, or a 15-second startup timeout produces an actionable update/reopen message; the terminal cannot promise to run on every Android 8 device with an old WebView.
 - Rendering is a local xterm.js 5.5.0 / addon-fit 0.10.0 view (MIT). It has no network/file access, no remote navigation, no OSC 8 links and no OSC 52 clipboard writes. Copy is limited to the explicit toolbar action and selection cap.
 - Input is capped at 64 KiB per action, scrollback at 3,000 lines and the grid at 500 × 300 cells. Pending output is bounded to 1 MiB; a full buffer applies backpressure, and an individual frame over 1 MiB closes the session with an explicit error. Output is not silently dropped.
+- Non-composition IME replacement and multi-character deletion retain xterm 5.5's limited terminal semantics: replacement text can be appended, and a multi-character deletion can produce one DEL. Use terminal editing keys for these operations; a full remote-line editor is not implemented.
 - A terminal is one-shot. Closing, losing the control/server/account session, or a relay failure ends it; reopen the tab for a new session. Previous input is never replayed automatically.
 - MeshCentral can record terminal activity. The app shows a recording notice when the Agent relay reports it (`cr`). The audited SSH relay does not forward this marker to the client; absence of a notice never proves that recording is disabled.
 - Fragmented UTF-8 at the MeshCentral SSH relay boundary is an upstream limitation noted in the renderer audit. The local renderer preserves split UTF-8 for raw Agent bytes; physical IMEs and composition remain a test gap.
@@ -43,7 +44,7 @@ This page describes the prepared 0.5.1 release. It is not a stable-release claim
 
 - SSH is performed by the MeshCentral server through `/sshterminalrelay.ashx`; SFTP uses `/sshfilesrelay.ashx`. The app does not open a direct SSH connection from Android.
 - The Android app does not implement or claim SSH host-key pinning. Host-key policy belongs to the server side and was not live-audited for this release.
-- New SSH passwords, private keys and passphrases are ephemeral and sent with `keep=false` (SFTP) or `keep:0` (Agent terminal) where the relay carries a keep flag; a server-saved key uses `sshkeyauth`. The app does not save the key or passphrase.
+- New SSH passwords, private keys and passphrases are ephemeral and sent with `keep=false` (SFTP) or `keep:0` (SSH terminal) where the relay carries a keep flag; a server-saved key uses `sshkeyauth`. The app does not save the key or passphrase.
 - SSH/SFTP require enabled server features and the relevant device rights. Known disabled features are blocked; missing metadata permits an explicit server attempt. Server configuration and SSH host policy remain external.
 - The server may record SSH/SFTP sessions. The app cannot guarantee the absence of server-side recording.
 

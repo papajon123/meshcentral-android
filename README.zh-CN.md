@@ -5,9 +5,7 @@
 <p align="center"><strong>面向你自己的 MeshCentral 服务器的独立 Android 客户端：在手机或平板上查看计算机，并使用桌面、终端、文件、SSH 和 SFTP。</strong></p>
 
 <p align="center">
-  <a href="https://github.com/papajon123/meshcentral-android/releases/download/v0.5.2/meshcentral-android-0.5.2.apk"><strong>下载 APK 0.5.2</strong></a>
-  ·
-  <a href="https://github.com/papajon123/meshcentral-android/releases/tag/v0.5.2">发行说明</a>
+  <a href="https://github.com/papajon123/meshcentral-android/releases"><strong>下载 APK</strong></a>
   ·
   <a href="https://distribution.example.invalid/repo/?fingerprint=REDACTED_REPOSITORY_FINGERPRINT">个人 F-Droid 软件源</a>
 </p>
@@ -37,7 +35,7 @@
 
 ## 快速开始
 
-1. **安装应用。** 下载[已签名 APK 0.5.2](https://github.com/papajon123/meshcentral-android/releases/download/v0.5.2/meshcentral-android-0.5.2.apk) 或添加[个人 F-Droid 软件源](https://distribution.example.invalid/repo/?fingerprint=REDACTED_REPOSITORY_FINGERPRINT)。这是第三方个人软件源，不是 F-Droid 官方目录；如果客户端提示，请允许预发布（beta）版本。需要 Android 8.0（API 26）或更高版本。
+1. **安装应用。** 下载[已签名 APK](https://github.com/papajon123/meshcentral-android/releases) 或添加[个人 F-Droid 软件源](https://distribution.example.invalid/repo/?fingerprint=REDACTED_REPOSITORY_FINGERPRINT)。这是第三方个人软件源，不是 F-Droid 官方目录；如果客户端提示，请允许预发布（beta）版本。需要 Android 8.0（API 26）或更高版本。
 2. **允许安装并保持签名一致。** Android 会询问是否允许从你使用的浏览器或文件管理器安装。更新必须使用相同的包名、相同的签名密钥和更高的 `versionCode`。
 3. **连接你自己的服务器。** 输入 MeshCentral 服务器的完整 HTTPS 地址，例如 `https://meshcentral.example.com/`，然后使用 MeshCentral 账户登录。应用没有预置服务器或账户。不支持浏览器 SSO。使用终端前，请安装最新版 Android System WebView。参见[首次启动设置界面](docs/screenshots/zh-CN/setup.png)。
 
@@ -80,7 +78,7 @@ English, русский, 简体中文, 繁體中文, español, français, portug
 ## 常见问题
 
 ### 如何更新？
-配置个人 F-Droid 软件源后，如果你的 F-Droid 客户端已这样设置，更新会自动进行。使用 GitHub APK 时，需要手动下载并安装新的 APK。应用内没有更新器。Android 只接受包名相同、签名密钥相同且 `versionCode` 更高的更新。公开的 0.3 和 0.4 版本使用同一密钥更新到 0.5.2。
+配置个人 F-Droid 软件源后，如果你的 F-Droid 客户端已这样设置，更新会自动进行。使用 GitHub APK 时，需要手动下载并安装新的 APK。应用内没有更新器。Android 只接受包名相同、签名密钥相同且 `versionCode` 更高的更新。公开版本使用同一签名密钥；早期私有版本是单独的应用。
 
 ### 需要 GitHub Packages 吗？
 不需要。应用从 GitHub Releases 或个人 F-Droid 软件源安装。GitHub Packages 用于库和容器，不能替代 APK。

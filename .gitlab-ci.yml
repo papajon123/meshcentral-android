@@ -21,6 +21,11 @@ workflow:
 checks:
   stage: checks
   timeout: 30m
+  cache:
+    key: "android-35-gradle-$CI_PROJECT_ID"
+    paths:
+      - .gradle/caches/
+      - .gradle/wrapper/
   script:
     - python3 ci/check_translations.py
     - python3 -B -m unittest discover -s ci -p 'test_*.py'

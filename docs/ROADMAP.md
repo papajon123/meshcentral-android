@@ -2,7 +2,7 @@
 
 [Русская версия](ROADMAP.ru.md)
 
-The functional baseline is the published **0.5.1** release (`versionCode` 10). **0.5.2** adds international presentation and the GitLab release workflow without changing application runtime. Implementation and validation are separated below from work that still needs acceptance.
+The functional baseline is the published **0.5.1** release (`versionCode` 10). **0.5.3** adds international presentation, the GitLab release workflow and an Android IME input correction. Implementation and validation are separated below from work that still needs acceptance.
 
 ## Delivered in 0.5.1
 

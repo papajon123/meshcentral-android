@@ -2,9 +2,19 @@
 
 Notable changes to MeshCentral Mobile. This project is an independent client and does not follow the MeshCentral server's release cycle.
 
-## 0.5.2 — 2026-10-21
+## 0.5.3 — 2026-10-21
 
-Preview release; `versionCode` 11. Application runtime is unchanged from 0.5.1.
+Preview release; `versionCode` 12.
+
+- Correct terminal input ownership for Android IME processing-key events (`keyCode` 229), including the direct CJK input path exposed by the 0.5.2 release checks.
+- Keep README download links pointed at published Releases, so an unpublished candidate never replaces the working download destination.
+
+## 0.5.2 source candidate — 2026-10-21
+
+Unpublished APK candidate; `versionCode` 11. The immutable source tag remains available.
+The GitLab-to-GitHub snapshot transfer succeeded, but an API 35 release check exposed an IME input
+race and stopped signing. No 0.5.2 APK was published to GitHub or F-Droid.
+Application runtime was unchanged from 0.5.1.
 
 ### Added
 
