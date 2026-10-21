@@ -36,7 +36,16 @@ The additional WebView compatibility test records the actual provider version. T
 renderer scenarios may be skipped only on Android below API 35 with a known Chromium major below 80;
 then a separate real-provider test must show the localized update instruction within 20 seconds.
 Unknown provider versions do not permit a skip. Chromium 80 is a syntax floor, not a tested minimum.
-API 26/35 CI and signed-APK publication remain pending until linked below.
+CI also ran the same application sources on these real emulator providers:
+
+| Environment | Passed | Skipped | Provider and scope |
+| --- | ---: | ---: | --- |
+| API 26 / Android 8 | 62 | 10 | Chrome 69.0.3497.100; the old-provider update instruction passed in 3.487 seconds. Four incompatible renderer scenarios and six opt-in live-fixture cases were skipped. |
+| API 35 / Android 15 | 65 | 7 | WebView 124.0.6367.219; all four renderer scenarios passed. The legacy-only case and six opt-in live-fixture cases were skipped. |
+
+These device results contain zero failures or errors. The first CI run's post-test shell-status
+collection failed after Gradle succeeded; `ci/run-device-tests.sh` fixes that independent reporting
+error. The release workflow reruns checks before signing. Signed-APK publication remains pending.
 
 ## Earlier readability and product review — 2026-10-21
 

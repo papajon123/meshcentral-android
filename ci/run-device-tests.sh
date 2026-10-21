@@ -7,7 +7,6 @@ test_status=0
 ./gradlew --no-daemon connectedDebugAndroidTest || test_status=$?
 mkdir -p app/build/reports/webview
 adb shell dumpsys webviewupdate > app/build/reports/webview/provider.txt || true
-adb exec-out run-as io.github.papajon123.meshcentral.debug sh -c \
-  "'cd cache && tar cf - terminal-webview-*.json'" \
-  > app/build/reports/webview/renderer-decisions.tar || true
+# AGP uninstalls the test application after execution. Provider metadata stays available through
+# the system service; renderer decisions and skips are retained in the JUnit/device reports.
 exit "$test_status"
