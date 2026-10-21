@@ -72,7 +72,9 @@ jobs:
           target: google_apis
           disk-size: 2048M
           emulator-boot-timeout: 300
-          enable-hw-keyboard: false
+          # Exercise system key events and software IME in the same deterministic device profile.
+          # run-device-tests.sh explicitly enables the software IME alongside this keyboard.
+          enable-hw-keyboard: true
           disable-animations: true
           script: bash ci/run-device-tests.sh
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

@@ -1,6 +1,6 @@
 # Known Limitations
 
-This page describes the prepared 0.5.0 release. It is not a stable-release claim, and publication is handled separately by the maintainer. Limitations below are deliberate, unverified, or outside the native client.
+This page describes the prepared 0.5.1 release. It is not a stable-release claim, and publication is handled separately by the maintainer. Limitations below are deliberate, unverified, or outside the native client.
 
 ## Validation status
 
@@ -64,7 +64,7 @@ This page describes the prepared 0.5.0 release. It is not a stable-release claim
 
 ## Interface, language and accessibility
 
-- The 0.5.0 interface has 22 languages in 23 locale variants, with 529 translated strings per variant and a shared application name. English is the default and fallback.
+- The 0.5.1 interface has 22 languages in 23 locale variants, with 529 translated strings per variant and a shared application name. English is the default and fallback.
 - Android 8–12 follows the system language; Android 13+ also exposes the standard per-app language setting. There is no in-app language picker.
 - Arabic, Persian and Urdu use right-to-left layout. Server messages, device names, terminal output and physical key captions are not translated.
 - Translations were produced with DeepSeek and have not been proofread by native speakers of every language.
@@ -79,7 +79,7 @@ This page describes the prepared 0.5.0 release. It is not a stable-release claim
 
 ## Updates and distribution
 
-- GitHub Releases and a personal F-Droid repository are planned for 0.5.0; neither 0.5.0 channel is published at documentation time. Official F-Droid inclusion is not promised.
+- GitHub Releases and a personal F-Droid repository are planned for 0.5.1; neither 0.5.1 channel is published at documentation time. Official F-Droid inclusion is not promised.
 - There is no in-app updater or store. Android accepts an update only with the same package name and signing key and a higher `versionCode`.
 - The public package/signing identity is unchanged; earlier private builds use a distinct package and remain separate applications.
 - The repo uses GitHub Actions. No GitLab workflow is implemented.

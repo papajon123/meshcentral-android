@@ -2,7 +2,7 @@
 
 This is a technical privacy note for the app, not legal advice. The app is a client: the person or organisation running the MeshCentral server decides what the server logs and who can access it.
 
-This note describes the prepared 0.5.0 release (`versionCode` 9), which is not published at documentation time.
+This note describes the prepared 0.5.1 release (`versionCode` 10), which is not published at documentation time.
 
 ## Summary
 

@@ -2,7 +2,7 @@
 
 The app is a control tool used while looking at someone else's computer, so the interface is dark, quiet, and dense: the remote screen or terminal is the focus and the controls are a thin layer around it.
 
-This document describes the Compose interface prepared for 0.5.0. The default interface language is English; the release ships 22 languages in 23 locale variants and follows the system language.
+This document describes the Compose interface prepared for 0.5.1. The default interface language is English; the release ships 22 languages in 23 locale variants and follows the system language.
 
 ## Design tokens
 
@@ -81,7 +81,7 @@ The switch happens on the agent, so the phone receives one display at a time and
 
 ## Language
 
-The default interface language is English. The 0.5.0 interface ships 22 languages in 23 locale variants: English, Russian, Simplified Chinese, Traditional Chinese, Spanish, French, Portuguese, German, Arabic, Hindi, Bengali, Urdu, Japanese, Korean, Indonesian, Turkish, Vietnamese, Thai, Italian, Persian, Tamil, Telugu, and Marathi. Simplified and Traditional Chinese are counted as one language and two locale variants. Each locale catalog contains the same 529 translated strings; the shared application name is not translated.
+The default interface language is English. The 0.5.1 interface ships 22 languages in 23 locale variants: English, Russian, Simplified Chinese, Traditional Chinese, Spanish, French, Portuguese, German, Arabic, Hindi, Bengali, Urdu, Japanese, Korean, Indonesian, Turkish, Vietnamese, Thai, Italian, Persian, Tamil, Telugu, and Marathi. Simplified and Traditional Chinese are counted as one language and two locale variants. Each locale catalog contains the same 529 translated strings; the shared application name is not translated.
 
 - Android 8–12 follows the system language. Android 13+ also exposes the app in the system per-app language settings; there is no separate in-app language picker.
 - When no supported locale matches, Android falls back to the default catalog, which is English.
@@ -123,7 +123,7 @@ Shared components live in `ui/components/Common.kt` (`MeshCard`, `SectionHeader`
 
 Three destinations — **PC**, **Session**, **Settings** — in a floating pill bar. Signing in and choosing a server are flows inside those destinations rather than separate tabs: the sign-in screen appears when the session is not authenticated and can be dismissed, onboarding runs once on first launch, and the session hides the tab bar so the canvas owns the window.
 
-The adaptive-layout work included in 0.5.0 keeps the active label visible: on narrow windows with a
+The adaptive-layout work included in 0.5.1 keeps the active label visible: on narrow windows with a
 font scale of at least 1.3, it occupies a full-width caption below the three touch targets. Normal
 text sizes retain the inline active pill. The introduction and server form share one scroll area;
 2FA delivery actions wrap to additional rows. URL values use LTR text direction within RTL screens.

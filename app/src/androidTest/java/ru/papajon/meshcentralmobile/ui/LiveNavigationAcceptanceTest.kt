@@ -519,7 +519,10 @@ class LiveNavigationAcceptanceTest {
             if (systemPickerOpen) runCatching { recordPickerFailure() }
             if (error is AssertionError || error !is Exception) throw error
             // Never attach a network exception cause: its message can contain a credentialed URL.
-            throw AssertionError("Live navigation failed at $stage (${error.javaClass.simpleName})")
+            val origin = error.stackTrace.take(4).joinToString(" <- ") {
+                "${it.className}.${it.methodName}:${it.lineNumber}"
+            }
+            throw AssertionError("Live navigation failed at $stage (${error.javaClass.simpleName}; origin=$origin)")
         }
     }
 

@@ -2,3 +2,14 @@ html,body,#terminal { width:100%; height:100%; margin:0; padding:0; overflow:hid
 #terminal { box-sizing:border-box; padding:4px; }
 .xterm { height:100%; }
 .xterm-viewport { overscroll-behavior:contain; }
+/* Android WebView 124 drops native key events for an opacity:0 focused textarea, even while
+   commitText/composition works. Keep xterm's geometry and caret/IME positioning, but hide the
+   helper's paint rather than its opacity. It must not intercept terminal touch/selection. */
+.xterm .xterm-helper-textarea {
+  opacity:1;
+  background:transparent;
+  color:transparent;
+  caret-color:transparent;
+  outline:none;
+  pointer-events:none;
+}

@@ -3,9 +3,9 @@
 <p align="center"><strong>An independent Android client for your own MeshCentral server: control a Mesh Agent desktop, open an Agent terminal or file browser, and reach server-side SSH and SFTP from a phone or tablet.</strong></p>
 
 <p align="center">
-  <a href="https://github.com/papajon123/meshcentral-android/releases/tag/v0.5.0"><strong>v0.5.0 release page</strong></a>
+  <a href="https://github.com/papajon123/meshcentral-android/releases/tag/v0.5.1"><strong>v0.5.1 release page</strong></a>
   ·
-  <a href="https://github.com/papajon123/meshcentral-android/releases/download/v0.5.0/meshcentral-android-0.5.0.apk">APK asset (future tag)</a>
+  <a href="https://github.com/papajon123/meshcentral-android/releases/download/v0.5.1/meshcentral-android-0.5.1.apk">APK asset (future tag)</a>
   ·
   <a href="README.ru.md">Russian guide</a>
 </p>
@@ -17,13 +17,13 @@
   <a href="https://github.com/papajon123/meshcentral-android/actions/workflows/android.yml"><img src="https://github.com/papajon123/meshcentral-android/actions/workflows/android.yml/badge.svg?branch=main" alt="Android checks CI status"></a>
 </p>
 
-> **Prepared release: 0.5.0 (versionCode 9).** This page documents the build being prepared for publication. At the time of writing, 0.5.0 is **not yet published** on GitHub Releases or F-Droid. The v0.5.0 links target the future tag and become valid only after the maintainer uploads the signed APK. A personal F-Droid repository is planned; official F-Droid inclusion is not promised.
+> **Prepared release: 0.5.1 (versionCode 10).** This page documents the build being prepared for publication. At the time of writing, 0.5.1 is **not yet published** on GitHub Releases or F-Droid. The v0.5.1 links target the future tag and become valid only after the maintainer uploads the signed APK. A personal F-Droid repository is planned; official F-Droid inclusion is not promised.
 
 > **Validation status:** feature checks used a real isolated Linux Mesh Agent and SSH/SFTP host through npm MeshCentral 1.2.5. The build has **not** been run on a physical phone or with a Windows Agent, and live restrictive-rights/consent flows were not exercised. Exact results are kept in [Validation](docs/VALIDATION.md); this page does not copy test counts.
 
 ## Quick start
 
-1. **Get the signed APK after publication.** The release target is `0.5.0` (`versionCode` 9). Use the [future v0.5.0 release page](https://github.com/papajon123/meshcentral-android/releases/tag/v0.5.0) or the personal F-Droid repository once the maintainer announces them. Android 8.0 (API 26) or newer is required.
+1. **Get the signed APK after publication.** The release target is `0.5.1` (`versionCode` 10). Use the [future v0.5.1 release page](https://github.com/papajon123/meshcentral-android/releases/tag/v0.5.1) or the personal F-Droid repository once the maintainer announces them. Android 8.0 (API 26) or newer is required.
 2. **Install it.** Android will ask you to allow installs from the browser or file manager you used. Updates require the same package name and signing key, and a higher `versionCode`.
 3. **Connect your server.** Enter the full HTTPS URL of your own MeshCentral server, for example `https://meshcentral.example.com/`, then sign in. No server or account is preconfigured.
 
@@ -34,7 +34,7 @@
 
 <p align="center"><sub>Existing setup and sign-in captures. The gallery will be refreshed separately; this page does not add screenshots.</sub></p>
 
-## What 0.5.0 provides
+## What 0.5.1 provides
 
 - **Device details and tabs.** Open a computer from the list to see its group, operating system, address and Agent version, then choose Details, Desktop, Terminal, Files, SSH or SFTP.
 - **Mesh Agent desktop.** Native KVM control remains available with touch, trackpad, keyboard, clipboard text, display switching and reconnect.
@@ -45,7 +45,7 @@
 - **One tool at a time.** Selecting another terminal/file tab, or opening the desktop, closes the previous tool session. Tool relays close on actual control/server/account loss; ordinary Activity recreation keeps the ViewModel and live session. Terminal/files do not reconnect or replay input or file mutations automatically.
 - **22 languages.** 529 translated strings per locale variant in 23 variants, following the Android system language.
 
-Not included in 0.5.0: native Intel AMT KVM, RDP, VNC or WebRTC clients; device events, wake/power controls, chat, registry/software management, or server administration. Those remain web-panel or later work. The **Open web panel** action opens your MeshCentral URL in a browser with a separate sign-in.
+Not included in 0.5.1: native Intel AMT KVM, RDP, VNC or WebRTC clients; device events, wake/power controls, chat, registry/software management, or server administration. Those remain web-panel or later work. The **Open web panel** action opens your MeshCentral URL in a browser with a separate sign-in.
 
 ## The device screen
 
@@ -118,11 +118,11 @@ See [Privacy](PRIVACY.md) and [Security policy](SECURITY.md).
 - Protocol review also inspected MeshCentral package **1.2.6**, commit [`60cea8731f88b91a09704ff9a00dab4992a98ef1`](https://github.com/Ylianst/MeshCentral/tree/60cea8731f88b91a09704ff9a00dab4992a98ef1). npm 1.2.6 was unavailable, so **no MeshCentral 1.2.6 server was tested** and compatibility with it is not claimed.
 - Still unverified: a physical phone, a Windows Mesh Agent, live restrictive-right accounts, live consent/refusal, SSH host-key policy, and some cancellation/partial-transfer paths.
 - The release does not claim full parity with the MeshCentral web panel. AMT, RDP, VNC, WebRTC, events, power, chat and administration remain outside the native client.
-- Exact check results and the remaining release gates are recorded in [Validation](docs/VALIDATION.md) and [Known limitations](docs/KNOWN_LIMITATIONS.md). The validation document also contains historical 0.4.0 results; this page does not restate them as 0.5.0 evidence.
+- Exact check results and the remaining release gates are recorded in [Validation](docs/VALIDATION.md) and [Known limitations](docs/KNOWN_LIMITATIONS.md). The validation document also contains historical 0.4.0 results; this page does not restate them as 0.5.1 evidence.
 
 ## Distribution, package and updates
 
-- **GitHub Releases and a personal F-Droid repository are planned for 0.5.0; neither 0.5.0 channel is live at documentation time.** Official F-Droid inclusion is not promised. The maintainer will finish the public distribution text after a successful upload.
+- **GitHub Releases and a personal F-Droid repository are planned for 0.5.1; neither 0.5.1 channel is live at documentation time.** Official F-Droid inclusion is not promised. The maintainer will finish the public distribution text after a successful upload.
 - The application ID remains `io.github.papajon123.meshcentral`. Debug builds add a `.debug` suffix. The package name and signing key preserve the public identity; earlier private builds use a different package and remain separate applications.
 - Android accepts an update only with the same package name and signing key and a higher `versionCode`. There is no in-app updater or store in this build.
 - The repository uses GitHub Actions for checks. No GitLab CI/workflow has been implemented, and none is claimed.
@@ -133,7 +133,7 @@ The full SHA-256 fingerprint of the public signing certificate is:
 
 ## Languages and translation status
 
-The 0.5.0 interface is available in 22 languages in 23 Android locale variants, with English as the default:
+The 0.5.1 interface is available in 22 languages in 23 Android locale variants, with English as the default:
 
 English, русский, 简体中文, 繁體中文, español, français, português, Deutsch, العربية, हिन्दी, বাংলা, اردو, 日本語, 한국어, Bahasa Indonesia, Türkçe, Tiếng Việt, ไทย, italiano, فارسی, தமிழ், తెలుగు, मराठी.
 

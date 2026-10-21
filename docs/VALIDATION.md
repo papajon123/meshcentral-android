@@ -3,24 +3,33 @@
 ## Current status
 
 This is a preliminary release. Physical phones, Windows Agent tools, third-party servers and live
-restrictive-right/consent flows have not been accepted for 0.5.0.
+restrictive-right/consent flows have not been accepted for 0.5.1.
 
-## 0.5.0 local acceptance — 2026-10-21
+## 0.5.1 local acceptance — 2026-10-21
 
-Source: the 0.5.0 / versionCode 9 changes after `3c5086d`; the final revision and APK metadata are
+Source: the 0.5.1 / versionCode 10 changes after `3c5086d`; the final revision and APK metadata are
 recorded by the release tag and `release-info.json`. These results are not evidence for the older
 published 0.4.0 APK.
 
 - **170 JVM tests passed**, no failures or errors.
-- **71 Android tests passed** on the dedicated Android 16 / API 36.1 emulator, with the isolated
-  live fixture enabled. This includes four real Agent/SSH/files/SFTP controller tests and two real
-  Activity/navigation/SAF tests, rather than counting opt-in skips as passes.
+- On the final dedicated Android 15 / API 35 emulator with WebView 124.0.6367.219,
+  **66 regular Android tests passed**, with seven expected skips (six opt-in live cases and the
+  legacy-WebView-only case), no failures. All **six live cases** were then functionally confirmed:
+  four real Agent/SSH/files/SFTP controller tests and two real Activity/navigation/SAF tests.
+  One live navigation case initially failed in the local HTTP fixture bootstrap, before opening
+  the Activity; the other five passed. After checking the fixture's status, body length and schema,
+  the isolated navigation case passed. This is evidence across two live runs, not a claim that the
+  first six-case run was entirely green; the one bootstrap `ProtocolException` remains unexplained.
 - The live UI test verifies the same session and previous output after Activity recreation, no
   command replay, actual visible header/terminal pixels and a real `ACTION_CREATE_DOCUMENT` save
   followed by a byte/hash check. A reproduced blank-rendering defect was fixed with an independently
   clipped native host and parent-specific release of the retained WebView.
-- Four renderer tests cover ANSI/split UTF-8, OSC clipboard isolation, direct/composing CJK input,
-  hardware keys, selection/copy, disconnect rejection and detach/reattach.
+- Five renderer tests cover ANSI/split UTF-8, OSC clipboard isolation, direct/composing CJK input,
+  both native IME-key and system-key delivery, selection/copy, disconnect rejection and detach/reattach.
+  The focused xterm helper's `opacity:0` was reproduced as the cause of dropped native key events on
+  WebView 124. Keeping its original geometry at opacity 1 with transparent paint fixed both paths;
+  the helper remains invisible and does not intercept touches. Vendor assets are unmodified.
+  Synthetic system keys are not evidence for a physical or Bluetooth keyboard.
 - Both file adapters have checks for failed/cancelled transfers and unconfirmed remote mutations;
   the real fixture exercised Linux Agent and server-mediated SFTP. Mock tests are not live server
   acceptance of every failure mode.
@@ -32,20 +41,22 @@ Live server: **npm MeshCentral 1.2.5** in owned isolated containers, with no hos
 The source audit at `60cea8731f88b91a09704ff9a00dab4992a98ef1` has package version 1.2.6; npm 1.2.6 was
 unavailable, so no live 1.2.6 compatibility is claimed. No production account or computer was used.
 
-The additional WebView compatibility test records the actual provider version. The four successful
+The additional WebView compatibility test records the actual provider version. The five successful
 renderer scenarios may be skipped only on Android below API 35 with a known Chromium major below 80;
 then a separate real-provider test must show the localized update instruction within 20 seconds.
 Unknown provider versions do not permit a skip. Chromium 80 is a syntax floor, not a tested minimum.
-CI also ran the same application sources on these real emulator providers:
+Earlier candidate checks, before the final opacity fix, ran on these providers:
 
 | Environment | Passed | Skipped | Provider and scope |
 | --- | ---: | ---: | --- |
 | API 26 / Android 8 | 62 | 10 | Chrome 69.0.3497.100; the old-provider update instruction passed in 3.487 seconds. Four incompatible renderer scenarios and six opt-in live-fixture cases were skipped. |
 | API 35 / Android 15 | 65 | 7 | WebView 124.0.6367.219; all four renderer scenarios passed. The legacy-only case and six opt-in live-fixture cases were skipped. |
 
-These device results contain zero failures or errors. The first CI run's post-test shell-status
-collection failed after Gradle succeeded; `ci/run-device-tests.sh` fixes that independent reporting
-error. The release workflow reruns checks before signing. Signed-APK publication remains pending.
+Those individual device runs had no test failures, but a later v0.5.0 candidate run reproduced the
+terminal-key defect and stopped signing. The v0.5.0 tag remains unchanged and no APK was published
+for it. The earlier API 36.1 run had 71 passing tests; it is not validation of the later CSS change.
+The first CI run also exposed a post-test shell-status collection error, fixed by
+`ci/run-device-tests.sh`. The 0.5.1 release workflow reruns checks before signing; publication is pending.
 
 ## Earlier readability and product review — 2026-10-21
 

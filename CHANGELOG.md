@@ -2,9 +2,9 @@
 
 Notable changes to MeshCentral Mobile. This project is an independent client and does not follow the MeshCentral server's release cycle.
 
-## Unreleased — 0.5.0 (versionCode 9)
+## Unreleased — 0.5.1 (versionCode 10)
 
-Prepared release; not published on GitHub Releases or F-Droid at documentation time. The maintainer sets the final release metadata and completes distribution after the signed APK is uploaded.
+Prepared release; not published on GitHub Releases or F-Droid at documentation time. The v0.5.0 tag was an unpublished candidate whose checks stopped signing; it remains unchanged.
 
 ### Added
 
@@ -17,6 +17,8 @@ Prepared release; not published on GitHub Releases or F-Droid at documentation t
 
 ### Changed
 
+- Fix native terminal key delivery on Android WebView 124 by keeping the hidden input's opacity at 1 with transparent paint; preserve its geometry and prevent touch interception.
+- Wait for Android's actual text-editor readiness in IME tests; verify composition followed by exactly one native key through both input paths.
 - Localization now covers 529 translated strings in each of 23 locale variants (22 languages). Translations remain machine-produced with DeepSeek and are not native-speaker verified.
 - README and user documentation describe the delivered terminal/files/SSH/SFTP scope, privacy traffic paths and remaining validation gates.
 - Keep first-launch setup reachable with large text and short landscape windows by scrolling the introduction and server form together.

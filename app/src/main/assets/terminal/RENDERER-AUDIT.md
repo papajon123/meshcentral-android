@@ -134,3 +134,18 @@ commit, composing CJK commit, hardware input, Ctrl and disconnect rejection.
 All four renderer tests passed on the dedicated API 36.1 emulator after this correction. Runtime
 acceptance on API 26 remains a separate gate. Missing WebView construction, failed local script
 initialization and a 15-second initialization timeout produce a localized update/reopen instruction.
+
+### WebView 124 native-key visibility fix
+
+On API 35 / WebView 124.0.6367.219, a focused helper textarea with `opacity:0` accepted composition
+and `commitText` but could discard native key events before DOM dispatch. A normal visible textarea
+worked. Moving xterm's textarea into positive bounds while retaining opacity 0 still failed; restoring
+its original geometry and z-index with opacity 1 and transparent background/text/caret passed.
+The project `terminal.css` therefore hides paint instead of opacity and disables helper pointer events
+and outline. Vendor files, Activity context, transport and terminal geometry remain unchanged.
+
+The final five renderer checks passed on that provider, including exact CJK followed by a single key
+via both `InputConnection.sendKeyEvent` and the system injection path. Native editor readiness and the
+helper's invisible paint are asserted. Real Bluetooth keyboards and TalkBack remain manual checks.
+The full regular Android suite passed 66 cases with seven expected skips; live-case evidence and its
+fixture-bootstrap exception are recorded in [Validation](../../../../../docs/VALIDATION.md).

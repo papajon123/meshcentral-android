@@ -2,9 +2,9 @@
 
 [Русская версия](ROADMAP.ru.md)
 
-The documentation target is the prepared **0.5.0** release (`versionCode` 9), not a date commitment. The implementation and validation status below is deliberately separated from features that still need a gate. 0.5.0 has not been published at documentation time; GitHub Releases and a personal F-Droid repository are planned.
+The documentation target is the prepared **0.5.1** release (`versionCode` 10), not a date commitment. The implementation and validation status below is deliberately separated from features that still need a gate. 0.5.1 has not been published at documentation time; GitHub Releases and a personal F-Droid repository are planned.
 
-## Delivered in 0.5.0
+## Delivered in 0.5.1
 
 - Device details and the Details / Desktop / Terminal / Files / SSH / SFTP tab model.
 - Mesh Agent terminal over the relay, with a local xterm.js renderer and one-shot lifecycle.
@@ -26,7 +26,7 @@ The documentation target is the prepared **0.5.0** release (`versionCode` 9), no
 | SSH terminal | Implemented; bench-validated | Isolated SSH host through npm MeshCentral 1.2.5; host-key policy and restrictive live accounts remain open. |
 | SFTP | Implemented; bench-validated | Isolated SFTP host; empty and exact-block downloads and upload readback; directory permissions/cancellation remain open. |
 | Local terminal renderer | Implemented | Bundled xterm 5.5.0 / addon-fit 0.10.0; synthetic parser tests and API 36.1 emulator checks. Physical IME, Android 8 WebView and TalkBack remain open. |
-| Privacy/documentation | Updated for 0.5.0 | Endpoint and local-renderer boundaries documented; no native-speaker review yet. |
+| Privacy/documentation | Updated for 0.5.1 | Endpoint and local-renderer boundaries documented; no native-speaker review yet. |
 | Distribution | Pending | GitHub upload and personal F-Droid repository are not live at documentation time; official F-Droid inclusion is not promised. |
 | GitLab workflow | Not implemented | Repository checks use GitHub Actions; no GitLab pipeline is claimed. |
 

@@ -166,7 +166,7 @@ Notes:
   `getclip` reply when the remote clipboard is not empty, so a client must apply its own timeout.
 - Remote control (8) or remote view (256) rights are required to route the command (`meshuser.js:287`).
 
-## 4. Terminal and file tools (0.5.0)
+## 4. Terminal and file tools (0.5.1)
 
 These paths were additionally reviewed against upstream commit
 `60cea8731f88b91a09704ff9a00dab4992a98ef1` (package 1.2.6). Live acceptance used npm
