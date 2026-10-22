@@ -1,84 +1,114 @@
-# Development roadmap
+# Roadmap — 0.7.0
 
-[Русская версия](ROADMAP.ru.md)
-
-The functional baseline is the published **0.5.1** release (`versionCode` 10). **0.5.3** adds international presentation, the GitLab release workflow and an Android IME input correction. Implementation and validation are separated below from work that still needs acceptance.
-
-## Delivered in 0.5.1
-
-- Device details and the Details / Desktop / Terminal / Files / SSH / SFTP tab model.
-- Mesh Agent terminal over the relay, with a local xterm.js renderer and one-shot lifecycle.
-- Mesh Agent files: browse, SAF download, upload, mkdir, rename and delete.
-- SSH terminal and SFTP through MeshCentral's `/sshterminalrelay.ashx` and `/sshfilesrelay.ashx`, using the same server authentication cookie as the native control/relay path.
-- Explicit handling of known denial versus unknown metadata; unknown permits an explicit attempt and the server remains authoritative.
-- Readback SHA-256 plus listing verification for Agent/SFTP uploads; expected-size download checks and SFTP empty/exact-block handling.
-- One selected tool at a time. Activity recreation retains the ViewModel and live session; tools do not automatically reconnect or replay input or mutations.
-- 529 translated strings in 23 locale variants (22 languages), automatic system-language selection, and updated English/Russian documentation.
+Items 1–8 are implemented. Local public build, JVM and API 35 checks passed; see [implementation evidence and limits](ROADMAP_IMPLEMENTATION.md). WebRTC remains a separate measured decision, and the optional plugin avoids a permanent core fork.
 
 ## Status at a glance
 
-| Scope | Status | Evidence or still-open gate |
-|---|---|---|
-| Desktop, input, displays, clipboard | Implemented in earlier releases; preserved | Existing tests and documentation; physical-device desktop acceptance remains open. |
-| Device details and tab availability | Implemented | JVM availability tests, Compose navigation checks and an opt-in real-Activity sequence. |
-| Agent terminal | Implemented; bench-validated | Real isolated Linux Agent through npm MeshCentral 1.2.5; Windows Agent and physical phone not tested. |
-| Agent files | Implemented; bench-validated | Browse/upload/download with readback checks on the isolated Linux Agent; cancellation and large-file edge cases remain open. |
-| SSH terminal | Implemented; bench-validated | Isolated SSH host through npm MeshCentral 1.2.5; host-key policy and restrictive live accounts remain open. |
-| SFTP | Implemented; bench-validated | Isolated SFTP host; empty and exact-block downloads and upload readback; directory permissions/cancellation remain open. |
-| Local terminal renderer | Implemented | Bundled xterm 5.5.0 / addon-fit 0.10.0; synthetic parser tests and final API 35/WebView 124 checks; API 26 checks verify the old-provider update instruction. Physical IME, current Android 8 WebView and TalkBack remain open. |
-| Privacy/documentation | Updated for 0.5.1 | Endpoint and local-renderer boundaries documented; no native-speaker review yet. |
-| Distribution | Published | Signed 0.5.1 APK on GitHub; signature, hash and published-artifact checks recorded. Official F-Droid inclusion is not promised. |
-| GitLab workflow | Implemented for 0.5.2 | Private development; protected release tags export source snapshots to GitHub, where device checks and signing run. See [delivery](GITLAB_RELEASES.md). |
+| # | Scope | Status in the 0.7.0 candidate | Still open |
+|---|---|---|---|
+| 1 | Search and recent devices | Implemented: Unicode-normalised, case-insensitive AND search over name/group/host/IP/OS; 20 recents per profile and account | TalkBack, large fonts and long real lists on a phone |
+| 2 | Server profiles | Implemented: up to 20 profiles, migrated default profile, scoped credentials/favourites/recents, global PIN | Signed in-place upgrade and migration on a phone |
+| 3 | Two sessions | Implemented: one desktop plus one tool, or two tools; explicit close; saved selection | Rotation, background, lock, network loss and process death on a phone |
+| 4 | Share to a computer | Implemented: up to 20 content URIs, visible queue, foreground data-sync, cancel, retry from the beginning, SHA-256 readback | Network loss, SAF edge cases, disk space, large files, phone run |
+| 5 | System, services and power | Implemented: cached system/network data; optional plugin for services/processes; power ACK is not execution | Windows Agent, systemd, real restart/shutdown |
+| 6 | Templates, jobs and history | Implemented with the optional plugin: fixed allowlist, 7-day history, 40 jobs, 64 KiB output, dedupe, no replay, no cancel of a running job | Windows services, systemd, operator installation |
+| 7 | Notifications and events | Implemented optionally: WorkManager 15-minute poll, quiet hours, filters, read-only same-origin TLS token, no FCM, tap routing | Real background delivery, Doze/OEM limits, battery |
+| 8 | Quick Help | Implemented with the optional plugin: diagnostics, explanation, confirmed action, recheck, redacted report | Full phone and Windows scenario |
+| 9 | WebRTC | Researched, **not implemented**; the WSS relay remains | Phone/NAT/TURN, CPU, battery, frame and recovery tests |
+| 10 | Extensions and fork | Decision: no permanent fork; optional plugin works without a core patch | Operator deployment, Windows/systemd acceptance, multi-server |
 
-## Remaining release gates
+## What the candidate adds
 
-1. **Physical-phone acceptance** on a dedicated device: install/update, sign-in/2FA, device tabs, desktop, Agent terminal, Agent files, SSH/SFTP, WebView failure path, app lock, backup exclusion and uninstall behavior.
-2. **Android 8 and vendor WebView coverage:** current System WebView, an outdated provider, large fonts, short landscape, hardware/software IMEs and TalkBack.
-3. **Windows Agent:** terminal, file listing, upload, download and cancellation against a real Windows Mesh Agent, not only Linux.
-4. **Live restrictive rights and consent:** `NOTERMINAL`/`NOFILES`, view-only/limited input, unknown/missing metadata, no-permission, Agent consent/refusal and online/offline transitions.
-5. **SSH/SFTP policy:** real server host-key behavior, wrong host key, wrong password/key/passphrase, disabled SSH/SFTP features, restrictive file permissions and directory-delete semantics.
-6. **Transfer failure matrix:** pending mkdir/rename/delete cancellation, upload cancellation, network loss during download, partial SAF documents, large files and 1 MiB/20,000-entry limits.
-7. **Language review:** native-speaker review of priority languages; current translations are DeepSeek-produced and not native-verified.
-8. **Distribution:** repeat version/certificate/checksum, update and anonymous-download checks for every release; preserve the established signing identity.
+### Devices and profiles
 
-## Next work after the release gates
+Search runs entirely over the loaded device list; typing does not issue a server request. The recent
+list stores only node ids and timestamps, capped at 20 per profile and account. Server profiles keep
+separate addresses, credentials, favourites and recents; the app PIN and privacy switches stay global.
+Switching or deleting a profile closes its sessions.
 
-- Preserve the desktop path while adding broader acceptance evidence, not more parallel tool surfaces.
-- Improve file-transfer resilience only with verified resume or cancellation semantics; do not claim either before live proof.
-- Expand the device screen toward events and operations only where per-action rights, confirmation and visible results are available.
-- Keep AMT, RDP, VNC, WebRTC, registry/software, chat and server administration as separate product decisions. The web-panel handoff remains the default for unsupported or risky operations.
-- Maintain the GitLab-to-GitHub release boundary and exercise failure/retry behavior without moving published tags.
+### Sessions
 
-## Capability and lifecycle rules
+Two live sessions are admitted at a time. A third one is not created by evicting another; the user
+must close one explicitly. Activity recreation keeps the selected device and tab. After process death
+the app restores the selection, not a live transport, and does not replay input, commands or file
+changes.
 
-- Known denial, unsupported capability, offline state and unknown metadata are separate states. Missing rights or capability fields must not silently become a grant or a known denial. The server makes the final decision.
-- Agent terminal, Agent files, SSH and SFTP are distinct protocol adapters. The shared relay transport does not erase their different authentication, permission and framing rules.
-- A disconnected terminal/file session is final. Opening it again is an explicit user action; no previous input, command or mutation is resent automatically.
-- No speculative "resume from offset" UI until the server and protocol are demonstrated to support it.
-- The terminal uses a bundled local renderer because it provides the remote I/O seam directly. Its isolation and provenance are audited in `app/src/main/assets/terminal/RENDERER-AUDIT.md`; this is not a claim that every native-terminal alternative was rejected on size or accessibility grounds.
-- SAF is the only file picker. Keep credentials, session tokens, terminal content and sensitive paths out of logs and saved state.
+### Share and transfers
 
-## Protocol evidence
+`ACTION_SEND` and `ACTION_SEND_MULTIPLE` are accepted only for `content://` documents, up to 20 per
+batch. The queue is visible and cancels cleanly. Uploads are verified by readback SHA-256. Retry starts
+from the beginning; there is no resume or offset claim. A failed or cancelled transfer is never shown
+as success, and the source URI is runtime-only.
 
-The protocol review inspected MeshCentral package **1.2.6**, commit [`60cea8731f88b91a09704ff9a00dab4992a98ef1`](https://github.com/Ylianst/MeshCentral/tree/60cea8731f88b91a09704ff9a00dab4992a98ef1). This is source inspection, not a live 1.2.6 server test.
+### System information and power
 
-- [Relay protocol numbers](https://github.com/Ylianst/MeshCentral/blob/60cea8731f88b91a09704ff9a00dab4992a98ef1/meshrelay.js#L17-L80): Agent terminal 1, desktop 2, files 5; SSH terminal/files use separate server relays.
-- [Browser capability code](https://github.com/Ylianst/MeshCentral/blob/60cea8731f88b91a09704ff9a00dab4992a98ef1/views/default.handlebars#L8253-L8268): desktop 1, terminal 2, files 4, console 8.
-- [SSH endpoints](https://github.com/Ylianst/MeshCentral/blob/60cea8731f88b91a09704ff9a00dab4992a98ef1/webserver.js#L7665-L7683) and [server-side SSH authentication](https://github.com/Ylianst/MeshCentral/blob/60cea8731f88b91a09704ff9a00dab4992a98ef1/apprelays.js#L1665-L1804).
-- [Agent terminal permissions](https://github.com/Ylianst/MeshCentral/blob/60cea8731f88b91a09704ff9a00dab4992a98ef1/agents/meshcore.js#L3514-L3527) and [Agent files](https://github.com/Ylianst/MeshCentral/blob/60cea8731f88b91a09704ff9a00dab4992a98ef1/agents/meshcore.js#L4006-L4290).
-- [Termux licence](https://github.com/termux/termux-app/blob/master/LICENSE.md), [xterm.js licence](https://github.com/xtermjs/xterm.js/blob/master/LICENSE), and [Android local-content loading](https://developer.android.com/develop/ui/views/layout/webapps/load-local-content) informed the renderer audit. Termux code is not bundled.
+System, disk, memory and network values come from data MeshCentral already stores for the device.
+Missing values stay unknown. Services and processes need the optional plugin. Restart, shutdown and
+Wake-on-LAN are offered only under the reported rights and connectivity, and the result is verified by
+polling; a server ACK alone is not treated as execution.
 
-The live bench used npm MeshCentral **1.2.5** with a real isolated Linux Agent, SSH terminal and SFTP host. npm 1.2.6 was unavailable. **No MeshCentral 1.2.6 server was tested and compatibility with it is not claimed.**
+### Jobs, history and Quick Help
 
-## UI acceptance matrix
+Only fixed templates are allowed: `diagnostics`, `services`, `processes`, `service-start`,
+`service-stop` and `service-restart`. Jobs have a status, result, exit code and bounded output.
+`operationId` prevents a silent repeat. A running job cannot be cancelled, and the app does not claim
+the remote process was killed. Quick Help produces a short report without device name, IP, user,
+hostname, node/job ids or raw output.
 
-Use representative combinations: widths 320/360/600/840 dp; portrait and short landscape; font scales 1.0/1.3/2.0; English, German, Russian, Arabic, Tamil, Hindi and Traditional Chinese. Cover setup/sign-in/2FA, device list, Details, Desktop, Terminal, Files, SSH/SFTP auth, Settings, lock, loading, offline, denied, unknown, view-only, long names/errors, keyboard and TalkBack. Keep all 23 locale catalogs checked for completeness and placeholders.
+### Optional notifications
 
-The device/terminal/files screens are newer than the earlier readability pass and still need the full matrix on real devices. Resizing a Compose viewport is not proof that Activity recreation, process death, IME or WebView lifecycle behaves correctly.
+Notifications are opt-in and use a read-only bearer token with a 30-day TTL, stored in Android
+Keystore-backed storage. Polling is same-origin HTTPS through WorkManager, at a 15-minute best-effort
+interval. Cookies, redirects, query tokens and self-signed exceptions are rejected on this path. There
+is no FCM or project push backend. Quiet hours, per-kind filters, dedupe, TTL and tap routing are
+implemented.
+
+## Optional server plugin
+
+Jobs, services/processes, confirmed service actions and notifications use the optional
+[`mobilecompanion`](../server/mobile-companion/README.md) 1.1.0 plugin on MeshCentral 1.3.0.
+Standard desktop, terminal, files, SSH and SFTP do **not** need it.
+
+- Jobs require `MESHRIGHT_REMOTECOMMAND (0x20000)`; agent-console right 24 is not sufficient.
+- The plugin accepts fixed templates only, patches no core files and exposes no arbitrary command API.
+- The app does not install, configure, deploy or administer the server or the plugin.
+- Live checks used an isolated MeshCentral 1.3.0 with a Linux Agent. Windows Agent, systemd and
+  systemd service mutations remain untested. Multi-server MeshCentral is not supported by this plugin.
+
+## Acceptance and release record
+
+1. **Public build and API 35 tests passed.** Signed publication is checked separately against the release artifact and certificate.
+2. **Physical-phone acceptance:** install/update over a signed build, sign-in/2FA, two sessions,
+   rotation/background/lock/network loss/process death, share from real apps, notifications, Quick Help,
+   TalkBack, large fonts and battery.
+3. **Windows Agent and systemd:** terminal, files, services/processes, confirmed service actions,
+   restart/shutdown and failure paths.
+4. **Optional plugin:** isolated ACL tests and reviewed reverse-proxy installation/token revoke/rollback checks passed; Windows and systemd acceptance remains.
+5. **Publication checks:** signed artifact, anonymous download, certificate/hash and update from the
+   previous public build.
+6. **Translation review:** native-speaker review of priority languages; current translations are
+   machine-produced.
+
+## What is not in 0.7.0
+
+- No WebRTC. The WSS relay remains; MeshCentral 1.3.0 does not accept the terminal RTC offer. The
+  loopback WSS numbers recorded during research are not mobile or desktop performance evidence.
+- No Intel AMT KVM, RDP, VNC, chat, registry/software management or server administration.
+- No permanent MeshCentral fork.
+- Publication evidence is recorded separately from local testing.
 
 ## Evidence rules
 
 - Do not report a test, server version, platform or device run that was not observed.
-- Do not turn test presence into a pass result or quote counts before the lead records them.
-- Sanitize server names, addresses, account names, terminal output and transferred file names in screenshots and logs.
-- Preserve the public package/certificate identity; do not treat a locally signed build as an update to a public release.
+- Do not turn test presence into a pass result for the public build.
+- Do not copy development-line results into public acceptance; label them as development evidence.
+- Sanitize server names, addresses, account names, terminal output, file names and notification data in
+  screenshots and logs.
+- Preserve the public package and certificate identity; a locally signed build is not a public update.
+
+## Documentation
+
+- [Changelog](../CHANGELOG.md) · [Validation](VALIDATION.md) · [Known limitations](KNOWN_LIMITATIONS.md)
+- [Interface](UI.md) · [Architecture](ARCHITECTURE.md) · [Protocol](PROTOCOL.md)
+- [Optional server plugin](../server/mobile-companion/README.md)
+- [Privacy](../PRIVACY.md) · [Security policy](../SECURITY.md)

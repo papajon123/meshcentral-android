@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">కంప్యూటర్లను వెతకండి</string>
+    <string name="browser_search_hint">పేరు, సమూహం, చిరునామా లేదా OS</string>
+    <string name="browser_search_clear">శోధనను తొలగించండి</string>
+    <string name="browser_filter_recent">ఇటీవలి</string>
+    <string name="browser_recent_clear">ఇటీవలివి తొలగించండి</string>
+    <string name="browser_search_empty_title">సరిపోలే కంప్యూటర్లు లేవు</string>
+    <string name="browser_search_empty_description">వేరే పేరు, సమూహం, చిరునామా లేదా ఆపరేటింగ్ సిస్టమ్ ప్రయత్నించండి.</string>
+    <string name="browser_filter_empty_title">ఈ ఫిల్టర్‌లో కంప్యూటర్లు లేవు</string>
+    <string name="browser_filter_empty_description">వేరే ఫిల్టర్ ఎంచుకోండి లేదా శోధనను తొలగించండి.</string>
+    <string name="browser_recent_empty_title">ఇటీవలి కంప్యూటర్లు లేవు</string>
+    <string name="browser_recent_empty_description">మీరు తెరిచే కంప్యూటర్లు ఇక్కడ కనిపిస్తాయి.</string>
+    <string name="browser_favorites_empty_title">ఇంకా ఇష్టమైనవి లేవు</string>
+    <string name="browser_favorites_empty_description">ఇక్కడ కనుగొనడానికి కంప్యూటర్‌ను ఇష్టమైనవాటికి జోడించండి.</string>
+</resources>

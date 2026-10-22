@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_sheet_title">Hintergrundereignisse</string>
+    <string name="notification_sheet_subtitle">Optionale Prüfungen alle 15 Minuten für dieses Serverprofil.</string>
+    <string name="notification_status_title">Status</string>
+    <string name="notification_status_enabled">An</string>
+    <string name="notification_status_disabled">Aus</string>
+    <string name="notification_last_check">Letzte Prüfung: %1$s</string>
+    <string name="notification_never_checked">Es wurde noch keine Hintergrundprüfung ausgeführt.</string>
+    <string name="notification_token_expires">Token gültig bis %1$s.</string>
+
+    <string name="notification_optin_title">Hintergrundereignisse aktivieren</string>
+    <string name="notification_optin_supporting">Kein Push-Dienst. WorkManager prüft diesen Server etwa alle 15 Minuten und speichert nur einen kleinen lokalen Ereignis-Feed.</string>
+    <string name="notification_enable_action">Benachrichtigungen aktivieren</string>
+    <string name="notification_disable_action">Benachrichtigungen deaktivieren</string>
+    <string name="notification_reenable_action">Erneut aktivieren</string>
+
+    <string name="notification_filters_title">Ereignisfilter</string>
+    <string name="notification_filters_supporting">Wählen Sie, welche Ereignisarten im Feed und als Benachrichtigungen erscheinen dürfen.</string>
+    <string name="notification_kind_device_online">Gerät online</string>
+    <string name="notification_kind_device_offline">Gerät offline</string>
+    <string name="notification_kind_request_help">Hilfe angefordert</string>
+    <string name="notification_kind_job_completed">Auftrag abgeschlossen</string>
+    <string name="notification_kind_job_failed">Auftrag fehlgeschlagen</string>
+    <string name="notification_kind_device_alert">Ressourcenwarnung</string>
+
+    <string name="notification_quiet_title">Ruhezeiten</string>
+    <string name="notification_quiet_supporting">Während dieses Zeitfensters (Ortszeit) werden Ereignisse gespeichert und später angezeigt.</string>
+    <string name="notification_quiet_start">Startstunde</string>
+    <string name="notification_quiet_end">Endstunde</string>
+    <string name="notification_quiet_invalid">Geben Sie eine Stunde von 0 bis 23 ein.</string>
+    <string name="notification_quiet_hint">Gleiche Start- und Endstunde deaktivieren das Zeitfenster.</string>
+
+    <string name="notification_check_now">Jetzt prüfen</string>
+    <string name="notification_checking">Wird geprüft…</string>
+    <string name="notification_permission_denied_supporting">Die Berechtigung für Benachrichtigungen wurde verweigert. Der Ereignis-Feed wird weiterhin aktualisiert, aber es wurde keine Benachrichtigung zugestellt.</string>
+
+    <string name="notification_feed_title">Letzte Ereignisse</string>
+    <string name="notification_feed_supporting">Bis zu 200 zugelassene Ereignisse, aufbewahrt für die vom Server vorgegebene TTL von einer Woche.</string>
+    <string name="notification_feed_empty">Noch keine Ereignisse. Die erste Prüfung läuft kurz nach der Aktivierung.</string>
+    <string name="notification_clear_history">Verlauf löschen</string>
+    <string name="notification_clear_history_confirm">Alle lokal gespeicherten Ereignisse entfernen? Der Serververlauf wird nicht geändert.</string>
+
+    <string name="notification_explanation_title">Wie es funktioniert</string>
+    <string name="notification_explanation_15min">WorkManager führt etwa alle 15 Minuten eine Prüfung nach bestem Bemühen aus. Android kann sie verzögern, wenn das Gerät im Leerlauf, im Doze-Modus oder nach einem erzwungenen Beenden ist.</string>
+    <string name="notification_explanation_os_delays">Es gibt kein sofortiges Push. Die Zustellung kann verspätet sein, und ein erzwungenes Beenden stoppt die Hintergrundarbeit, bis die App wieder geöffnet wird.</string>
+    <string name="notification_explanation_token">Der Nur-Lese-Token ist 30 Tage gültig. Wenn er abläuft, aktivieren Sie erneut, um einen neuen zu erstellen.</string>
+    <string name="notification_explanation_thresholds">Serverwarnungen sind festgelegt: ab 90 Prozent Datenträgerbelegung und ab 95 Prozent Arbeitsspeichernutzung. Die App ändert diese Schwellenwerte nicht.</string>
+    <string name="notification_explanation_force_stop">Akkuoptimierung und Herstellereinschränkungen können weitere Verzögerungen verursachen. Dies ist eine Einschränkung von Android, kein Serverfehler.</string>
+
+    <string name="notification_channel_name">Hintergrundereignisse</string>
+    <string name="notification_channel_description">Geräte-, Hilfeanforderungs- und Auftragsereignisse von MeshCentral.</string>
+    <string name="notification_push_title">MeshCentral</string>
+    <string name="notification_public_text">Neue Aktivität. Öffnen Sie die App, um sie anzuzeigen.</string>
+    <string name="notification_body_device_online">Ein Gerät ist online.</string>
+    <string name="notification_body_device_offline">Ein Gerät ist offline.</string>
+    <string name="notification_body_request_help">Ein Gerät hat Hilfe angefordert.</string>
+    <string name="notification_body_job_completed">Ein entfernter Auftrag wurde abgeschlossen.</string>
+    <string name="notification_body_job_failed">Ein entfernter Auftrag ist fehlgeschlagen.</string>
+    <string name="notification_body_device_alert">Eine Ressourcenwarnung eines Geräts wurde gemeldet.</string>
+
+    <string name="notification_error_not_enabled">Hintergrundereignisse sind aus.</string>
+    <string name="notification_error_not_signed_in">Melden Sie sich beim Server an, bevor Sie Hintergrundereignisse aktivieren.</string>
+    <string name="notification_error_account_mismatch">Der gespeicherte Benachrichtigungstoken gehört zu einem anderen Konto. Aktivieren Sie erneut.</string>
+    <string name="notification_error_profile_missing">Dieses Serverprofil existiert nicht mehr.</string>
+    <string name="notification_error_network">Keine Verbindung. Der Cursor bleibt erhalten, und die nächste Prüfung versucht es erneut.</string>
+    <string name="notification_error_tls">Android vertraut dem Serverzertifikat nicht. Hintergrundereignisse bleiben aus.</string>
+    <string name="notification_error_server">Der Server hat die Hintergrundanfrage abgelehnt.</string>
+    <string name="notification_error_rate_limited">Das Ratenlimit des Servers wurde erreicht. Die nächste Prüfung versucht es erneut.</string>
+    <string name="notification_error_protocol">Die Serverantwort wurde vom strikten Parser abgelehnt.</string>
+    <string name="notification_error_endpoint">Der Server hat einen ungültigen Benachrichtigungsendpunkt zurückgegeben.</string>
+    <string name="notification_error_unknown">Hintergrundereignisse konnten nicht aktualisiert werden.</string>
+    <string name="notification_self_signed_unavailable">Dieses Profil vertraut einem selbstsignierten Zertifikat. Hintergrundbenachrichtigungen erfordern systemvertrauenswürdiges HTTPS; Vordergrundsitzungen sind nicht betroffen.</string>
+    <string name="notification_https_required">Hintergrundbenachrichtigungen erfordern HTTPS.</string>
+    <string name="notification_token_expired">Der Benachrichtigungstoken ist abgelaufen oder wurde widerrufen.</string>
+    <string name="notification_token_expired_supporting">Der Token ist nicht mehr gültig. Aktivieren Sie erneut, um einen neuen zu registrieren. Der Ereignis-Feed bleibt verfügbar.</string>
+</resources>

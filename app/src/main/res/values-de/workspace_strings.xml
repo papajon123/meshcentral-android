@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workspace_profile_limit">Sie können bis zu %1$d Serverprofile speichern.</string>
+    <string name="workspace_profile_error">Das Profil konnte nicht geändert werden. Prüfen Sie den Namen und versuchen Sie es erneut.</string>
+    <string name="workspace_profiles_action">Serverprofile</string>
+    <string name="workspace_capacity">Es sind bereits zwei Sitzungen geöffnet. Schließen Sie eine, bevor Sie eine weitere öffnen.</string>
+    <string name="workspace_desktop_limit">Ein Desktop ist bereits geöffnet. Schließen Sie ihn, bevor Sie einen weiteren Desktop öffnen.</string>
+    <string name="workspace_sessions">Offene Sitzungen</string>
+    <string name="workspace_sessions_count">Sitzungen · %1$d</string>
+    <string name="workspace_session_hint">Halten Sie bis zu zwei Werkzeuge offen. Eine Shell endet, wenn ihre Verbindung verloren geht.</string>
+    <string name="workspace_empty">Keine offenen Sitzungen</string>
+    <string name="workspace_switch">Wechseln zu</string>
+    <string name="workspace_close_explanation">Sitzung auf %1$s schließen? Eine aktive Übertragung wird beendet.</string>
+    <string name="workspace_ended">Die vorherige Sitzung wurde beendet. Ihre Auswahl wurde wiederhergestellt, die Verbindung und die Shell nicht.</string>
+    <string name="workspace_reopen">Neue Sitzung öffnen</string>
+    <string name="workspace_minimize">Sitzung behalten und zu Geräten zurückkehren</string>
+    <string name="workspace_system">System</string>
+    <string name="workspace_help">Hilfe &amp; Aufträge</string>
+    <string name="workspace_cached_info">Systeminformationen wurden zuletzt vom Agenten gemeldet. Dienste und Prozesse erfordern Mobile Companion auf dem Server.</string>
+    <string name="workspace_management_failed">Das Ergebnis konnte nicht verifiziert werden. Prüfen Sie den Zugriff und den Serverauftragsverlauf, bevor Sie es erneut versuchen.</string>
+    <string name="workspace_service_verified">Der Dienststatus wurde nach der Aktion erneut gelesen.</string>
+    <string name="workspace_power_pending">Anfrage gesendet. Warten auf eine Änderung der Agentenkonnektivität; die Annahme bestätigt nicht die Ausführung.</string>
+    <string name="workspace_power_reconnected">Der Agent hat die Verbindung getrennt und wiederhergestellt. Das bestätigt die Wiederherstellung der Konnektivität, nicht die Ursache des Neustarts.</string>
+    <string name="workspace_power_offline">Der Agent ist offline. Eine Netzwerkunterbrechung kann nicht vom Herunterfahren unterschieden werden.</string>
+    <string name="workspace_power_unknown">Es wurde keine Änderung der Konnektivität beobachtet. Die Aktion ist nicht bestätigt.</string>
+    <string name="workspace_share_unreadable">Keine lesbaren geteilten Dateien. Teilen Sie bis zu 20 Dateien mit Lesezugriff.</string>
+    <string name="workspace_queue_rejected">Das Ziel wurde geändert oder die Warteschlange ist voll. Prüfen Sie den Ordner und versuchen Sie es erneut.</string>
+    <string name="workspace_transfer_channel">Dateiübertragungen</string>
+    <string name="workspace_transfers_finished">Dateiübertragungen beendet</string>
+    <string name="workspace_transfers_active">Dateien werden übertragen</string>
+    <string name="workspace_transfer_open_details">Öffnen Sie die App, um abgeschlossene, fehlgeschlagene und abgebrochene Übertragungen zu prüfen.</string>
+    <string name="workspace_choose_folder">Wählen Sie einen Ordner für %1$d geteilte Dateien.</string>
+    <string name="workspace_send_here">In diesen Ordner senden</string>
+    <string name="workspace_confirm_share">Dateiübertragung bestätigen</string>
+    <string name="workspace_share_overwrite">Dateien mit gleichen Namen werden überschrieben. Eine fehlgeschlagene Übertragung kann eine unvollständige Datei hinterlassen. Ein erneuter Versuch beginnt von vorn. Wenn Android die App beendet, teilen Sie die Dateien erneut.</string>
+    <string name="workspace_background_unavailable">Android hat den Start des Übertragungsdienstes nicht erlaubt. Öffnen Sie die App erneut und versuchen Sie es noch einmal.</string>
+    <string name="workspace_transfers_count">Übertragungen · %1$d</string>
+    <string name="workspace_share_destination">%1$d Dateien bereit. Wählen Sie einen Computer und öffnen Sie dann „Dateien“ oder SFTP.</string>
+    <string name="workspace_signing_out">Sie werden abgemeldet und Hintergrundereignisse werden deaktiviert…</string>
+    <string name="workspace_tools">Werkzeuge</string>
+</resources>

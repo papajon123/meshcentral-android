@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">सर्वर प्रोफ़ाइल</string>
+    <string name="profile_sheet_subtitle">वह MeshCentral सर्वर चुनें जो यह ऐप उपयोग करता है।</string>
+    <string name="profile_close">सर्वर प्रोफ़ाइल बंद करें</string>
+    <string name="profile_add">प्रोफ़ाइल जोड़ें</string>
+    <string name="profile_add_title">प्रोफ़ाइल जोड़ें</string>
+    <string name="profile_add_subtitle">किसी दूसरे MeshCentral सर्वर में साइन इन करें। यह प्रोफ़ाइल अपने क्रेडेंशियल और पसंदीदा रखती है।</string>
+    <string name="profile_back">प्रोफ़ाइल पर वापस</string>
+    <string name="profile_name_label">प्रोफ़ाइल नाम</string>
+    <string name="profile_name_placeholder">उदाहरण के लिए, घर का सर्वर</string>
+    <string name="profile_url_label">सर्वर पता</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">प्रोफ़ाइल नाम दर्ज करें।</string>
+    <string name="profile_url_required">सर्वर पता दर्ज करें।</string>
+    <string name="profile_submit">प्रोफ़ाइल जोड़ें</string>
+    <string name="profile_active">सक्रिय</string>
+    <string name="profile_select">उपयोग करें</string>
+    <string name="profile_active_description">सक्रिय प्रोफ़ाइल: %1$s</string>
+    <string name="profile_select_description">प्रोफ़ाइल %1$s उपयोग करें</string>
+    <string name="profile_actions_description">प्रोफ़ाइल %1$s के लिए कार्रवाइयाँ</string>
+    <string name="profile_rename">नाम बदलें</string>
+    <string name="profile_delete">हटाएँ</string>
+    <string name="profile_rename_title">प्रोफ़ाइल नाम बदलें</string>
+    <string name="profile_rename_save">सहेजें</string>
+    <string name="profile_cancel">रद्द करें</string>
+    <string name="profile_delete_title">“%1$s” हटाएँ?</string>
+    <string name="profile_delete_message">इस प्रोफ़ाइल के सहेजे गए साइन-इन क्रेडेंशियल और पसंदीदा इस डिवाइस से हटा दिए जाएँगे। अन्य प्रोफ़ाइल नहीं बदलेंगी।</string>
+    <string name="profile_delete_confirm">हटाएँ</string>
+    <string name="profile_last_cannot_delete">अंतिम प्रोफ़ाइल हटाई नहीं जा सकती।</string>
+    <string name="profile_empty_title">कोई सर्वर प्रोफ़ाइल नहीं</string>
+    <string name="profile_empty_description">MeshCentral से जुड़ने के लिए सर्वर जोड़ें।</string>
+    <string name="profile_unnamed">बिना नाम की प्रोफ़ाइल</string>
+</resources>

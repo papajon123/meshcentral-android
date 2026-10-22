@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">外观</string>
+    <string name="settings_appearance_subtitle">主题和系统颜色</string>
+    <string name="settings_theme_system">系统</string>
+    <string name="settings_theme_light">浅色</string>
+    <string name="settings_theme_dark">深色</string>
+    <string name="settings_dynamic_colors">系统颜色</string>
+    <string name="settings_dynamic_colors_supporting">使用壁纸颜色作为界面底色。连接和安全状态的颜色保持不变。</string>
+</resources>

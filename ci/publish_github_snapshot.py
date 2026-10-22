@@ -8,6 +8,7 @@ import contextlib
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import json
+import hashlib
 import os
 from pathlib import Path
 import re
@@ -21,7 +22,7 @@ GITHUB_REPOSITORY = "papajon123/meshcentral-android"
 APPLICATION_ID = "io.github.papajon123.meshcentral"
 GITLAB_PROJECT_ID = "124"
 GITLAB_NAMESPACE_ID = "154"
-GITLAB_HOST = "gitlab.papajon1234.ru"
+GITLAB_HOST_SHA256 = "c815879c28dccdfa6f463463fcff26c41e9c59279ed25a02aa1afa112f66eab1"
 GITLAB_PROJECT_PATH = "meshcentral_android/meshcentral-android"
 AUTHOR_NAME = "MeshCentral release automation"
 AUTHOR_EMAIL = "release-automation@users.noreply.github.com"
@@ -209,12 +210,13 @@ def parse_version(data: bytes) -> Version:
 
 
 def validate_publish_context(tag: str, commit: str, env: Mapping[str, str]) -> None:
-    expected = {"CI_SERVER_HOST": GITLAB_HOST, "CI_PROJECT_ID": GITLAB_PROJECT_ID,
+    expected = {"CI_PROJECT_ID": GITLAB_PROJECT_ID,
                 "CI_PROJECT_NAMESPACE_ID": GITLAB_NAMESPACE_ID, "CI_PROJECT_PATH": GITLAB_PROJECT_PATH,
                 "CI_PROJECT_VISIBILITY": "private", "CI_COMMIT_REF_PROTECTED": "true",
                 "CI_COMMIT_TAG": tag, "CI_COMMIT_SHA": commit, "CI_RUNNER_ID": "15",
                 "CI_ENVIRONMENT_NAME": "github-release"}
-    if any(env.get(name) != value for name, value in expected.items()):
+    host_matches = hashlib.sha256(env.get("CI_SERVER_HOST", "").encode("utf-8")).hexdigest() == GITLAB_HOST_SHA256
+    if not host_matches or any(env.get(name) != value for name, value in expected.items()):
         raise BridgeError("Publish requires the expected private project, protected tag and dedicated runner")
     if env.get("CI_DEBUG_TRACE", "false") != "false" or env.get("CI_DEBUG_SERVICES", "false") != "false":
         raise BridgeError("Debug tracing must be disabled for the deployment-key job")

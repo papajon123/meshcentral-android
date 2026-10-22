@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">Upload-Warteschlange</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">Die Upload-Warteschlange ist nicht an einen Ordner gebunden.</string>
+    <string name="transfer_queue_empty">Es sind keine Uploads in der Warteschlange.</string>
+    <string name="transfer_queue_root">Stammverzeichnis des Computers</string>
+
+    <string name="transfer_status_queued">In der Warteschlange</string>
+    <string name="transfer_status_active">Wird hochgeladen</string>
+    <string name="transfer_status_succeeded">Verifiziert</string>
+    <string name="transfer_status_failed">Fehlgeschlagen</string>
+    <string name="transfer_status_cancelled">Abgebrochen</string>
+
+    <string name="transfer_progress">%1$d Bytes</string>
+    <string name="transfer_progress_size">%1$d von %2$d Bytes</string>
+    <string name="transfer_cancel">Abbrechen</string>
+    <string name="transfer_cancel_all">Alle abbrechen</string>
+    <string name="transfer_retry">Wiederholen</string>
+    <string name="transfer_clear_finished">Beendete entfernen</string>
+    <string name="transfer_close">Schließen</string>
+    <string name="transfer_retry_title">Upload wiederholen?</string>
+    <string name="transfer_retry_warning">Der Upload beginnt von vorn. Eine vorhandene entfernte Datei mit diesem Namen wird ersetzt und kann unvollständig bleiben, wenn dieser Versuch unterbrochen wird. Bestätigen Sie, bevor Sie fortfahren.</string>
+    <string name="transfer_partial_remote">Eine unvollständige oder ersetzte entfernte Datei kann zurückbleiben. Prüfen Sie sie, bevor Sie es erneut versuchen.</string>
+    <string name="transfer_upload_failed">Der Upload wurde mit einem unerwarteten Fehler beendet. Die Sitzung ist beendet; prüfen Sie die entfernte Datei, bevor Sie es erneut versuchen.</string>
+
+    <string name="transfer_shared_file_fallback">Geteilte Datei %1$d</string>
+    <string name="transfer_error_closed">Die Dateisitzung ist geschlossen. Öffnen Sie „Dateien“ erneut.</string>
+    <string name="transfer_error_content_uri">Nur Content-URIs aus der Android-Freigabe oder dem Öffnen-Dialog können in die Warteschlange gestellt werden.</string>
+    <string name="transfer_error_path_changed">Der Ordner wurde geändert, bevor dieser Upload begann. Für diese Datei wurde nichts gesendet; navigieren Sie zurück und stellen Sie sie erneut in die Warteschlange.</string>
+    <string name="transfer_error_busy">Eine andere Dateioperation läuft. Warten Sie, bis sie beendet ist, bevor Sie weitere Dateien einreihen.</string>
+    <string name="transfer_error_stream">Der ausgewählte Inhalt konnte nicht geöffnet werden. Die Freigabeberechtigung ist möglicherweise abgelaufen.</string>
+</resources>

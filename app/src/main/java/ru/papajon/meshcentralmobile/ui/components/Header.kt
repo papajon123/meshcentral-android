@@ -1,53 +1,45 @@
 package ru.papajon.meshcentralmobile.ui.components
 
-import androidx.compose.animation.animateColorAsState
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.ui.semantics.Role
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DesktopWindows
 import androidx.compose.material.icons.outlined.Monitor
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.model.AppDestination
-import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
-import ru.papajon.meshcentralmobile.ui.theme.PillShape
 
-/** Screen title block: large emphasised title, optional status line and trailing actions. */
+/** Quiet title hierarchy; the actual status and actions belong to the screen's state. */
 @Composable
 fun MeshScreenHeader(
     title: String,
@@ -56,132 +48,68 @@ fun MeshScreenHeader(
     actions: @Composable (() -> Unit)? = null,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, end = 8.dp, top = 8.dp, bottom = 4.dp),
+        modifier.fillMaxWidth().padding(start = 24.dp, end = 12.dp, top = 16.dp, bottom = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Column(modifier = Modifier.weight(1f)) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            if (subtitle != null) {
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(title, style = MaterialTheme.typography.headlineMedium)
+            subtitle?.let { Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
         }
         actions?.invoke()
     }
 }
 
-/**
- * Floating pill navigation: the selected item grows into a labelled tonal pill while the others stay
- * as icons, which keeps the bar compact and makes the current place obvious.
- */
+/** All destinations keep visible labels; Material owns selection, ripple and accessibility. */
 @Composable
-fun MeshNavigationBar(
-    current: AppDestination,
-    onSelect: (AppDestination) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Surface(
-        modifier = modifier
-            .fillMaxWidth()
-            .navigationBarsPadding()
-            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal))
-            .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = PillShape,
-        color = MaterialTheme.colorScheme.surfaceContainerLow,
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)),
-        tonalElevation = 3.dp,
+fun MeshNavigationBar(current: AppDestination, onSelect: (AppDestination) -> Unit, modifier: Modifier = Modifier) {
+    val fontScale = LocalDensity.current.fontScale
+    NavigationBar(
+        modifier = modifier.fillMaxWidth().heightIn(min = if (fontScale > 1.2f) (80 * fontScale).dp else 80.dp),
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
+        tonalElevation = 0.dp,
     ) {
-        BoxWithConstraints {
-            // At large text sizes a full-width caption keeps words intact while all three
-            // navigation targets retain their touch area. The active label is never hidden.
-            val separateCaption = maxWidth < 600.dp && LocalDensity.current.fontScale >= 1.3f
-            Column {
-                Row(
-                    modifier = Modifier.selectableGroup().padding(6.dp),
-                    horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    AppDestination.entries.forEach { destination ->
-                        NavigationPill(
-                            destination = destination,
-                            selected = destination == current,
-                            onClick = { onSelect(destination) },
-                            modifier = Modifier.weight(if (!separateCaption && destination == current) 2.2f else 1f),
-                            showLabel = !separateCaption,
-                        )
-                    }
-                }
-                if (separateCaption) Text(
-                    text = appDestinationLabel(current),
-                    style = MaterialTheme.typography.labelLarge,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth().padding(start = 12.dp, end = 12.dp, bottom = 10.dp),
-                )
-            }
+        AppDestination.entries.forEach { destination ->
+            val label = appDestinationLabel(destination)
+            NavigationBarItem(
+                modifier = Modifier.semantics { contentDescription = label },
+                selected = destination == current,
+                onClick = { onSelect(destination) },
+                icon = { Icon(destination.icon(), contentDescription = null, modifier = Modifier.size(24.dp)) },
+                label = { Text(appDestinationLabel(destination), softWrap = true) },
+                alwaysShowLabel = true,
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                ),
+            )
         }
     }
 }
 
+/** Same identity/order as the compact bar; width changes never create a second navigation state. */
 @Composable
-private fun NavigationPill(
-    destination: AppDestination,
-    selected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    showLabel: Boolean = true,
-) {
-    val interaction = remember { MutableInteractionSource() }
-    val pressed by interaction.collectIsPressedAsState()
-    val scale by animateFloatAsState(
-        targetValue = if (pressed) 0.95f else 1f,
-        animationSpec = MeshTheme.motion.effectFast,
-        label = "nav-press",
-    )
-    val container by animateColorAsState(
-        targetValue = if (selected) MaterialTheme.colorScheme.secondaryContainer else MaterialTheme.colorScheme.surfaceContainerLow,
-        animationSpec = MeshTheme.motion.effectColor,
-        label = "nav-container",
-    )
-    val content by animateColorAsState(
-        targetValue = if (selected) MaterialTheme.colorScheme.onSecondaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
-        animationSpec = MeshTheme.motion.effectColor,
-        label = "nav-content",
-    )
-    Row(
-        modifier = modifier
-            .scale(scale)
-            .clip(PillShape)
-            .background(container)
-            .heightIn(min = 48.dp)
-            .selectable(selected = selected, role = Role.Tab, interactionSource = interaction, indication = null, onClick = onClick)
-            .padding(horizontal = 12.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
+fun MeshNavigationRail(current: AppDestination, onSelect: (AppDestination) -> Unit, modifier: Modifier = Modifier) {
+    NavigationRail(
+        modifier = modifier.widthIn(min = 104.dp, max = 168.dp).fillMaxHeight().windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Start)),
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        header = { Spacer(Modifier.height(12.dp)); Icon(Icons.Outlined.DesktopWindows, null, Modifier.size(28.dp), tint = MaterialTheme.colorScheme.primary); Spacer(Modifier.height(20.dp)) },
     ) {
-        Icon(
-            imageVector = destination.icon(),
-            contentDescription = appDestinationLabel(destination),
-            tint = content,
-            modifier = Modifier.size(22.dp),
-        )
-        if (selected && showLabel) {
-            Box(modifier = Modifier.size(width = 8.dp, height = 1.dp))
-            Text(
-                text = appDestinationLabel(destination),
-                style = MaterialTheme.typography.labelLarge,
-                color = content,
-                // Keep the selected destination readable at large font scales and in long locales.
-                // The pill grows vertically instead of clipping or shrinking the user's text.
-                softWrap = true,
+        AppDestination.entries.forEach { destination ->
+            val label = appDestinationLabel(destination)
+            NavigationRailItem(
+                selected = destination == current,
+                onClick = { onSelect(destination) },
+                icon = { Icon(destination.icon(), contentDescription = null, modifier = Modifier.size(24.dp)) },
+                label = { Text(appDestinationLabel(destination), softWrap = true) },
+                alwaysShowLabel = true,
+                colors = NavigationRailItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+                ),
+                modifier = Modifier.padding(vertical = 4.dp).semantics { contentDescription = label },
             )
         }
     }

@@ -1,0 +1,30 @@
+appId: io.github.papajon123.meshcentral.debug
+---
+- assertVisible: "Appearance"
+- tapOn: "Dark"
+- takeScreenshot: main-dark-settings
+- back
+- assertVisible: "Sign in to MeshCentral"
+- tapOn: "Session"
+- assertVisible: "No active session"
+- takeScreenshot: main-dark-session
+- back
+- assertVisible: "Sign in to MeshCentral"
+- tapOn: "Settings"
+- assertVisible: "Appearance"
+- tapOn: "Light"
+- takeScreenshot: main-light-settings
+- tapOn: "System"
+- tapOn: "Dark"
+- pressKey: Home
+- launchApp:
+    stopApp: false
+- assertVisible: "Appearance"
+- takeScreenshot: main-resumed-settings
+- stopApp
+- launchApp
+- assertVisible: "Continue without signing in"
+- tapOn: "Continue without signing in"
+- tapOn: "Settings"
+- assertVisible: "Appearance"
+- takeScreenshot: main-restarted-settings

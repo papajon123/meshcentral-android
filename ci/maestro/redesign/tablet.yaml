@@ -1,0 +1,12 @@
+appId: io.github.papajon123.meshcentral.debug
+---
+- assertVisible: "Appearance"
+- takeScreenshot: main-tablet-settings
+- back
+- assertVisible: "Sign in to MeshCentral"
+- tapOn: "Session"
+- assertVisible: "No active session"
+- back
+- assertVisible: "Sign in to MeshCentral"
+- tapOn: "Settings"
+- assertVisible: "Appearance"

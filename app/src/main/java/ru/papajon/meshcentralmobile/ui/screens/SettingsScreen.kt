@@ -13,6 +13,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -75,6 +78,7 @@ import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.BuildConfig
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.model.AppSettings
+import ru.papajon.meshcentralmobile.ui.components.AppearanceSection
 import ru.papajon.meshcentralmobile.ui.components.IconBadge
 import ru.papajon.meshcentralmobile.ui.components.MeshCard
 import ru.papajon.meshcentralmobile.ui.components.SectionHeader
@@ -115,6 +119,10 @@ fun SettingsScreen(
     onMeshSessionCleared: () -> Unit,
     onWebViewSessionCleared: () -> Unit,
     modifier: Modifier = Modifier,
+    activeProfileName: String? = null,
+    onManageProfiles: (() -> Unit)? = null,
+    onEditServer: (() -> Unit)? = null,
+    onNotifications: (() -> Unit)? = null,
 ) {
     var newPin by rememberSaveable { mutableStateOf("") }
     var message by remember {
@@ -124,6 +132,8 @@ fun SettingsScreen(
     }
     var showDebugWebView by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
+
+    BackHandler(enabled = showDebugWebView) { showDebugWebView = false }
 
     if (showDebugWebView) {
         DebugWebViewOverlay(
@@ -136,8 +146,10 @@ fun SettingsScreen(
 
     val spacing = MeshTheme.spacing
 
+    Box(modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter) {
     Column(
-        modifier = modifier
+        modifier = Modifier
+            .widthIn(max = 760.dp)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(horizontal = spacing.lg)
@@ -150,7 +162,7 @@ fun SettingsScreen(
         ) {
             Text(
                 text = stringResource(R.string.settings_title),
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.onSurface,
             )
             Text(
@@ -160,68 +172,8 @@ fun SettingsScreen(
             )
         }
 
+        AppearanceSection()
         SettingsStatusStrip(message = message.asString())
-
-        SettingsSection(
-            title = stringResource(R.string.settings_section_updates),
-            subtitle = stringResource(R.string.settings_section_updates_subtitle),
-        ) {
-            MeshCard(shape = MaterialTheme.shapes.large) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = spacing.lg, vertical = spacing.md),
-                    verticalArrangement = Arrangement.spacedBy(spacing.sm),
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(spacing.md),
-                    ) {
-                        IconBadge(
-                            icon = Icons.Outlined.SystemUpdateAlt,
-                            container = MaterialTheme.colorScheme.primaryContainer,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.settings_update_title),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                            Text(
-                                text = stringResource(R.string.settings_update_supporting),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                    TextButton(
-                        onClick = {
-                            val releases = Intent(Intent.ACTION_VIEW, Uri.parse(RELEASES_URL))
-                                .addCategory(Intent.CATEGORY_BROWSABLE)
-                            val opened = try {
-                                context.startActivity(releases)
-                                true
-                            } catch (_: ActivityNotFoundException) {
-                                false
-                            }
-                            if (!opened) {
-                                message = UiText.resource(R.string.settings_update_unavailable)
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = 48.dp),
-                        shape = PillShape,
-                    ) {
-                        Text(
-                            text = stringResource(R.string.settings_update_action),
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-                    }
-                }
-            }
-        }
 
         SettingsSection(
             title = stringResource(R.string.settings_section_server),
@@ -242,7 +194,7 @@ fun SettingsScreen(
                     )
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = stringResource(R.string.settings_server_name),
+                            text = activeProfileName ?: stringResource(R.string.settings_server_name),
                             style = MaterialTheme.typography.titleMedium,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
@@ -255,6 +207,14 @@ fun SettingsScreen(
                         )
                     }
                 }
+            }
+        }
+
+        if (onManageProfiles != null || onEditServer != null) {
+            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+                onManageProfiles?.let { TextButton(onClick = it) { Text(stringResource(R.string.profile_sheet_title)) } }
+                onEditServer?.let { TextButton(onClick = it) { Text(stringResource(R.string.login_edit_server)) } }
+                onNotifications?.let { TextButton(onClick = it) { Text(stringResource(R.string.notification_sheet_title)) } }
             }
         }
 
@@ -430,6 +390,67 @@ fun SettingsScreen(
         }
 
         SettingsSection(
+            title = stringResource(R.string.settings_section_updates),
+            subtitle = stringResource(R.string.settings_section_updates_subtitle),
+        ) {
+            MeshCard(shape = MaterialTheme.shapes.large) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = spacing.lg, vertical = spacing.md),
+                    verticalArrangement = Arrangement.spacedBy(spacing.sm),
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(spacing.md),
+                    ) {
+                        IconBadge(
+                            icon = Icons.Outlined.SystemUpdateAlt,
+                            container = MaterialTheme.colorScheme.primaryContainer,
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        )
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.settings_update_title),
+                                style = MaterialTheme.typography.titleMedium,
+                                color = MaterialTheme.colorScheme.onSurface,
+                            )
+                            Text(
+                                text = stringResource(R.string.settings_update_supporting),
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                    TextButton(
+                        onClick = {
+                            val releases = Intent(Intent.ACTION_VIEW, Uri.parse(RELEASES_URL))
+                                .addCategory(Intent.CATEGORY_BROWSABLE)
+                            val opened = try {
+                                context.startActivity(releases)
+                                true
+                            } catch (_: ActivityNotFoundException) {
+                                false
+                            }
+                            if (!opened) {
+                                message = UiText.resource(R.string.settings_update_unavailable)
+                            }
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 48.dp),
+                        shape = PillShape,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_update_action),
+                            style = MaterialTheme.typography.labelLarge,
+                        )
+                    }
+                }
+            }
+        }
+
+        SettingsSection(
             title = stringResource(R.string.settings_section_about),
             subtitle = stringResource(R.string.settings_section_about_subtitle),
         ) {
@@ -478,6 +499,7 @@ fun SettingsScreen(
                 }
             }
         }
+    }
     }
 }
 

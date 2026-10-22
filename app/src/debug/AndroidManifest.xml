@@ -5,9 +5,22 @@
   Plain HTTP stays impossible in release builds; the debug build additionally allows cleartext
   traffic so that the "Allow plain HTTP in this debug build" switch and a local MeshCentral test
   server (for example http://10.0.2.2:8080) can actually be used.
+
+  The FileProvider below exists only for instrumentation tests that hand a cache file to the
+  share/transfer flow. Release builds have no installer permission and no updater provider.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <application android:usesCleartextTraffic="true" />
+    <application android:usesCleartextTraffic="true">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.updates"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/shared_file_paths" />
+        </provider>
+    </application>
 
 </manifest>

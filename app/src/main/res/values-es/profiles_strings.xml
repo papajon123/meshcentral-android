@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">Perfiles de servidor</string>
+    <string name="profile_sheet_subtitle">Elige el servidor MeshCentral que usa esta aplicación.</string>
+    <string name="profile_close">Cerrar perfiles de servidor</string>
+    <string name="profile_add">Añadir perfil</string>
+    <string name="profile_add_title">Añadir perfil</string>
+    <string name="profile_add_subtitle">Inicia sesión en otro servidor MeshCentral. Este perfil mantiene sus propias credenciales y favoritos.</string>
+    <string name="profile_back">Volver a los perfiles</string>
+    <string name="profile_name_label">Nombre del perfil</string>
+    <string name="profile_name_placeholder">Por ejemplo, servidor de casa</string>
+    <string name="profile_url_label">Dirección del servidor</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">Introduce un nombre de perfil.</string>
+    <string name="profile_url_required">Introduce una dirección de servidor.</string>
+    <string name="profile_submit">Añadir perfil</string>
+    <string name="profile_active">Activo</string>
+    <string name="profile_select">Usar</string>
+    <string name="profile_active_description">Perfil activo: %1$s</string>
+    <string name="profile_select_description">Usar el perfil %1$s</string>
+    <string name="profile_actions_description">Acciones del perfil %1$s</string>
+    <string name="profile_rename">Cambiar nombre</string>
+    <string name="profile_delete">Eliminar</string>
+    <string name="profile_rename_title">Cambiar el nombre del perfil</string>
+    <string name="profile_rename_save">Guardar</string>
+    <string name="profile_cancel">Cancelar</string>
+    <string name="profile_delete_title">¿Eliminar «%1$s»?</string>
+    <string name="profile_delete_message">Las credenciales y los favoritos guardados de este perfil se eliminarán de este dispositivo. Los demás perfiles no cambiarán.</string>
+    <string name="profile_delete_confirm">Eliminar</string>
+    <string name="profile_last_cannot_delete">No se puede eliminar el último perfil.</string>
+    <string name="profile_empty_title">No hay perfiles de servidor</string>
+    <string name="profile_empty_description">Añade un servidor para conectarte a MeshCentral.</string>
+    <string name="profile_unnamed">Perfil sin nombre</string>
+</resources>

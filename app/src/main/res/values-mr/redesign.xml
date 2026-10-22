@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">स्वरूप</string>
+    <string name="settings_appearance_subtitle">थीम आणि सिस्टम रंग</string>
+    <string name="settings_theme_system">सिस्टम</string>
+    <string name="settings_theme_light">फिकट</string>
+    <string name="settings_theme_dark">गडद</string>
+    <string name="settings_dynamic_colors">सिस्टम रंग</string>
+    <string name="settings_dynamic_colors_supporting">पृष्ठभागांसाठी वॉलपेपरचे रंग वापरा. कनेक्शन आणि सुरक्षिततेचे रंग बदलत नाहीत.</string>
+</resources>

@@ -2,6 +2,57 @@
 
 Notable changes to MeshCentral Mobile. This project is an independent client and does not follow the MeshCentral server's release cycle.
 
+## 0.7.0 — prepared 2026-10-22, not published
+
+`versionCode` 15. This is a prepared candidate. A public build, a public test run and publication to
+GitHub Releases have **not** been performed. The download page remains the source for the latest
+published build.
+
+### Added
+
+- Device search over the loaded list: Unicode-normalised, case-insensitive, every word must match
+  (AND), across device name, group, host/IP and OS. No server request per keystroke.
+- Up to 20 recently opened computers per profile and account, with a hashed scope key.
+- Server profiles: up to 20 profiles with separate addresses, credentials, favourites and recents.
+  The existing settings migrate to the first profile; credentials are scoped to their server; the PIN
+  and privacy switches stay global. Switching or deleting a profile closes its sessions.
+- Two live sessions: one desktop plus one tool, or two tools. Explicit close; saved device/tab; no
+  automatic reconnect, input replay or command replay after transport or process death.
+- Share to a computer: `ACTION_SEND` / `ACTION_SEND_MULTIPLE` for up to 20 `content://` documents, a
+  visible queue, a foreground data-sync service, cancel, explicit retry from the beginning, and
+  upload verification by readback SHA-256.
+- System, disk, memory and network data from MeshCentral; optional service/process lists and confirmed
+  service start/stop/restart; restart, shutdown and Wake-on-LAN under reported rights, with result
+  polling instead of trusting the server ACK.
+- Optional `mobilecompanion` 1.1.0 server plugin for fixed jobs, history and Quick Help: `diagnostics`,
+  `services`, `processes` and confirmed service actions. The server retains 7 days of history, at most
+  40 jobs and 64 KiB of output per job. `operationId` deduplicates; commands are never replayed; a
+  running job cannot be cancelled.
+- Quick Help flow (diagnostics, explanation, confirmed action, recheck, short report) with a report
+  that omits device name, IP, user, hostname, node/job ids and raw output.
+- Optional background notifications: WorkManager 15-minute best-effort polling, quiet hours, per-kind
+  filters, dedupe/TTL, tap routing, and a read-only same-origin HTTPS token stored in Android Keystore.
+  No FCM and no project push backend.
+
+### Changed
+
+- `versionName` 0.7.0 / `versionCode` 15. The public application id and signing identity are unchanged.
+- The standard desktop, terminal, files, SSH and SFTP tools still work without any server plugin.
+- Jobs, service/process views, confirmed service actions and notifications need MeshCentral 1.3.0 and
+  the optional plugin. Jobs require `MESHRIGHT_REMOTECOMMAND (0x20000)`; agent-console right 24 is not
+  sufficient. The app does not administer or deploy the server or plugin.
+- No WebRTC. Research is recorded in the roadmap; MeshCentral 1.3.0 does not accept the terminal RTC
+  offer, so the WSS relay remains.
+
+### Validation and limits
+
+- Development-line checks covered search, profiles, two sessions, share queue/retry/SHA-256, system
+  data, jobs/ACL/tokens and notification policy. They are not a public-build acceptance.
+- No public build, public test run or publication has been recorded for 0.7.0.
+- Not verified on a physical phone, a real Windows Mesh Agent, systemd services, TalkBack, large fonts
+  on a device, battery use or Doze/OEM background restrictions.
+- No production deployment, plugin installation or public acceptance is claimed.
+
 ## 0.5.4 — 2026-10-21
 
 Preview release; `versionCode` 13.
@@ -20,7 +71,7 @@ Preview release; `versionCode` 12.
 ## 0.5.2 source candidate — 2026-10-21
 
 Unpublished APK candidate; `versionCode` 11. The immutable source tag remains available.
-The GitLab-to-GitHub snapshot transfer succeeded, but an API 35 release check exposed an IME input
+The source-snapshot transfer to GitHub succeeded, but an API 35 release check exposed an IME input
 race and stopped signing. No 0.5.2 APK was published to GitHub Releases.
 Application runtime was unchanged from 0.5.1.
 
@@ -28,7 +79,7 @@ Application runtime was unchanged from 0.5.1.
 
 - English, Simplified Chinese and Russian guides with a shared visual header, live GitHub badges and genuine localized screenshots.
 - A repeatable opt-in screenshot gallery using production screens with fictional data; setup screenshots come from the signed release APK.
-- A private GitLab development pipeline and a release-snapshot bridge to GitHub. Only the selected source tree is exported; private development commits are not published.
+- A private development pipeline and a release-snapshot bridge to GitHub. Only the selected source tree is exported; private development commits are not published.
 - Snapshot checks for version/tag agreement, immutable tags, clean public ancestry and an atomic fast-forward publication. Android signing remains in the GitHub release environment.
 
 ## 0.5.1 — 2026-10-21 (`versionCode` 10)

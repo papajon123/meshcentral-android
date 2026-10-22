@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">يمكنك الاحتفاظ بما يصل إلى %1$d من ملفات تعريف الخوادم.</string>
+    <string name="workspace_profile_error">تعذّر تغيير ملف التعريف هذا. افحص الاسم وحاول مجددًا.</string>
+    <string name="workspace_profiles_action">ملفات تعريف الخوادم</string>
+    <string name="workspace_capacity">هناك جلسات مفتوحتان بالفعل. أغلق واحدة قبل فتح أخرى.</string>
+    <string name="workspace_desktop_limit">سطح مكتب مفتوح بالفعل. أغلقه قبل فتح سطح مكتب آخر.</string>
+    <string name="workspace_sessions">الجلسات المفتوحة</string>
+    <string name="workspace_sessions_count">الجلسات · %1$d</string>
+    <string name="workspace_session_hint">أبقِ ما يصل إلى أداتين مفتوحتين. تنتهي الطرفية إذا فُقد اتصالها.</string>
+    <string name="workspace_empty">لا توجد جلسات مفتوحة</string>
+    <string name="workspace_switch">التبديل إلى</string>
+    <string name="workspace_close_explanation">إغلاق الجلسة على %1$s؟ سيتوقف أي نقل نشط.</string>
+    <string name="workspace_ended">انتهت الجلسة السابقة. استُعيد تحديدك؛ لكن الاتصال والطرفية لم يُستعادا.</string>
+    <string name="workspace_reopen">فتح جلسة جديدة</string>
+    <string name="workspace_minimize">إبقاء الجلسة والعودة إلى الأجهزة</string>
+    <string name="workspace_system">النظام</string>
+    <string name="workspace_help">المساعدة والمهام</string>
+    <string name="workspace_cached_info">أبلغ الوكيل عن معلومات النظام آخر مرة. تتطلب الخدمات والعمليات وجود Mobile Companion على الخادم.</string>
+    <string name="workspace_management_failed">تعذّر التحقق من النتيجة. افحص الوصول وسجل مهام الخادم قبل المحاولة مجددًا.</string>
+    <string name="workspace_service_verified">أُعيدت قراءة حالة الخدمة بعد الإجراء.</string>
+    <string name="workspace_power_pending">أُرسل الطلب. بانتظار تغيّر في اتصال الوكيل؛ القبول لا يؤكد التنفيذ.</string>
+    <string name="workspace_power_reconnected">انقطع الوكيل ثم اتصل مجددًا. هذا يؤكد استعادة الاتصال لا سبب إعادة التشغيل.</string>
+    <string name="workspace_power_offline">الوكيل غير متصل. لا يمكن التمييز بين انقطاع الشبكة وإيقاف التشغيل.</string>
+    <string name="workspace_power_unknown">لم يُلاحظ أي تغيّر في الاتصال. الإجراء غير مؤكد.</string>
+    <string name="workspace_share_unreadable">لا توجد ملفات مشتركة قابلة للقراءة. شارك حتى 20 ملفًا بصلاحية قراءة.</string>
+    <string name="workspace_queue_rejected">تغيّرت الوجهة أو امتلأت قائمة الانتظار. افحص المجلد وحاول مجددًا.</string>
+    <string name="workspace_transfer_channel">نقل الملفات</string>
+    <string name="workspace_transfers_finished">توقفت عمليات نقل الملفات</string>
+    <string name="workspace_transfers_active">جارٍ نقل الملفات</string>
+    <string name="workspace_transfer_open_details">افتح التطبيق لفحص عمليات النقل المكتملة والفاشلة والملغاة.</string>
+    <string name="workspace_choose_folder">اختر مجلدًا لـ %1$d ملفات مشتركة.</string>
+    <string name="workspace_send_here">الإرسال إلى هذا المجلد</string>
+    <string name="workspace_confirm_share">تأكيد نقل الملف</string>
+    <string name="workspace_share_overwrite">ستُستبدل الملفات ذات الأسماء نفسها. قد يترك النقل الفاشل ملفًا جزئيًا. تبدأ إعادة المحاولة من البداية. إذا أوقف Android التطبيق، فشارك الملفات مجددًا.</string>
+    <string name="workspace_background_unavailable">لم يسمح Android لخدمة النقل بالبدء. أعد فتح التطبيق وحاول مجددًا.</string>
+    <string name="workspace_transfers_count">عمليات النقل · %1$d</string>
+    <string name="workspace_share_destination">%1$d ملفات جاهزة. اختر جهاز كمبيوتر، ثم افتح «الملفات» أو SFTP.</string>
+    <string name="workspace_tools">الأدوات</string>
+    <string name="workspace_signing_out">جارٍ تسجيل الخروج وتعطيل أحداث الخلفية…</string>
+</resources>

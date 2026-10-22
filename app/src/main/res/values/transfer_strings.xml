@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">Upload queue</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">Upload queue is not bound to a folder.</string>
+    <string name="transfer_queue_empty">No uploads are queued.</string>
+    <string name="transfer_queue_root">Computer root</string>
+
+    <string name="transfer_status_queued">Queued</string>
+    <string name="transfer_status_active">Uploading</string>
+    <string name="transfer_status_succeeded">Verified</string>
+    <string name="transfer_status_failed">Failed</string>
+    <string name="transfer_status_cancelled">Cancelled</string>
+
+    <string name="transfer_progress">%1$d bytes</string>
+    <string name="transfer_progress_size">%1$d of %2$d bytes</string>
+    <string name="transfer_cancel">Cancel</string>
+    <string name="transfer_cancel_all">Cancel all</string>
+    <string name="transfer_retry">Retry</string>
+    <string name="transfer_clear_finished">Clear finished</string>
+    <string name="transfer_close">Close</string>
+    <string name="transfer_retry_title">Retry upload?</string>
+    <string name="transfer_retry_warning">The upload starts again from the beginning. An existing remote file with this name will be replaced and may remain partial if this attempt is interrupted. Confirm before continuing.</string>
+    <string name="transfer_partial_remote">A partial or replaced remote file may remain. Inspect it before retrying.</string>
+    <string name="transfer_upload_failed">The upload stopped with an unexpected error. The session ended; check the remote file before retrying.</string>
+
+    <string name="transfer_shared_file_fallback">Shared file %1$d</string>
+    <string name="transfer_error_closed">The file session is closed. Open Files again.</string>
+    <string name="transfer_error_content_uri">Only content URIs from the Android share or open picker can be queued.</string>
+    <string name="transfer_error_path_changed">The folder changed before this upload started. Nothing was sent for this file; navigate back and queue it again.</string>
+    <string name="transfer_error_busy">Another file operation is in progress. Wait for it to finish before queuing more.</string>
+    <string name="transfer_error_stream">The selected content could not be opened. The share grant may have expired.</string>
+</resources>

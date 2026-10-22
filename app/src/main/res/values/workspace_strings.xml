@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">You can keep up to %1$d server profiles.</string>
+    <string name="workspace_profile_error">Could not change this profile. Check the name and try again.</string>
+    <string name="workspace_profiles_action">Server profiles</string>
+    <string name="workspace_capacity">Two sessions are already open. Close one before opening another.</string>
+    <string name="workspace_desktop_limit">A desktop is already open. Close it before opening another desktop.</string>
+    <string name="workspace_sessions">Open sessions</string>
+    <string name="workspace_sessions_count">Sessions · %1$d</string>
+    <string name="workspace_session_hint">Keep up to two tools open. A shell ends if its connection is lost.</string>
+    <string name="workspace_empty">No open sessions</string>
+    <string name="workspace_switch">Switch to</string>
+    <string name="workspace_close_explanation">Close the session on %1$s? Any active transfer will stop.</string>
+    <string name="workspace_ended">The previous session has ended. Your selection was restored; the connection and shell were not.</string>
+    <string name="workspace_reopen">Open a new session</string>
+    <string name="workspace_minimize">Keep session and return to devices</string>
+    <string name="workspace_system">System</string>
+    <string name="workspace_help">Help &amp; jobs</string>
+    <string name="workspace_cached_info">System information was last reported by the agent. Services and processes require Mobile Companion on the server.</string>
+    <string name="workspace_management_failed">Could not verify the result. Check access and the server job history before trying again.</string>
+    <string name="workspace_service_verified">The service state was read again after the action.</string>
+    <string name="workspace_power_pending">Request sent. Waiting for a change in agent connectivity; acceptance does not confirm execution.</string>
+    <string name="workspace_power_reconnected">The agent disconnected and connected again. This confirms connectivity recovery, not the cause of the restart.</string>
+    <string name="workspace_power_offline">The agent is offline. A network interruption cannot be distinguished from shutdown.</string>
+    <string name="workspace_power_unknown">No connectivity change was observed. The action is not confirmed.</string>
+    <string name="workspace_share_unreadable">No readable shared files. Share up to 20 files with read access.</string>
+    <string name="workspace_queue_rejected">The destination changed or the queue is full. Check the folder and try again.</string>
+    <string name="workspace_transfer_channel">File transfers</string>
+    <string name="workspace_transfers_finished">File transfers stopped</string>
+    <string name="workspace_transfers_active">Transferring files</string>
+    <string name="workspace_transfer_open_details">Open the app to check completed, failed and cancelled transfers.</string>
+    <string name="workspace_choose_folder">Choose a folder for %1$d shared files.</string>
+    <string name="workspace_send_here">Send to this folder</string>
+    <string name="workspace_confirm_share">Confirm file transfer</string>
+    <string name="workspace_share_overwrite">Files with the same names will be overwritten. A failed transfer may leave a partial file. Retry starts from the beginning. If Android stops the app, share the files again.</string>
+    <string name="workspace_background_unavailable">Android did not allow the transfer service to start. Reopen the app and try again.</string>
+    <string name="workspace_transfers_count">Transfers · %1$d</string>
+    <string name="workspace_share_destination">%1$d files ready. Choose a computer, then open Files or SFTP.</string>
+    <string name="workspace_signing_out">Signing out and disabling background events…</string>
+    <string name="workspace_tools">Tools</string>
+</resources>

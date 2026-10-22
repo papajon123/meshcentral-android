@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">外観</string>
+    <string name="settings_appearance_subtitle">テーマとシステムの色</string>
+    <string name="settings_theme_system">システム</string>
+    <string name="settings_theme_light">ライト</string>
+    <string name="settings_theme_dark">ダーク</string>
+    <string name="settings_dynamic_colors">システムの色</string>
+    <string name="settings_dynamic_colors_supporting">壁紙の色を画面の背景に使用します。接続と安全の色は変わりません。</string>
+</resources>

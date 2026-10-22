@@ -96,6 +96,19 @@ class MeshCentralClient(
     @Volatile private var relayCookie: String? = null
     private val sessionGeneration = AtomicLong()
     private val additionalRelays = ConcurrentHashMap.newKeySet<ManagedRelayConnection>()
+    private val controlRequests = ru.papajon.meshcentralmobile.mesh.control.ControlRequestBroker(::sendControlJson)
+
+    suspend fun requestControl(
+        command: JSONObject,
+        responseAction: String,
+        nodeId: String? = null,
+        timeoutMillis: Long = 15_000,
+    ): JSONObject {
+        if (!controlConnected || _clientState.value.userId == null) {
+            throw ru.papajon.meshcentralmobile.mesh.control.ControlRequestException("not_authenticated")
+        }
+        return controlRequests.request(command, responseAction, nodeId, timeoutMillis)
+    }
 
     private var clipboardRequest: ClipboardRequest? = null
     private var clipboardTimeoutJob: Job? = null
@@ -600,6 +613,7 @@ class MeshCentralClient(
     }
 
     private fun disconnectControl(manual: Boolean) {
+        controlRequests.disconnected()
         closeAdditionalRelays()
         if (manual) manualClose = true
         controlConnected = false
@@ -796,6 +810,9 @@ class MeshCentralClient(
 
         override fun onMessage(webSocket: WebSocket, text: String) {
             if (controlSocket !== webSocket) return
+            if (controlRequests.pendingCount() > 0) {
+                runCatching { controlRequests.accept(JSONObject(text)) }
+            }
             when (val event = MeshControlParser.parse(text)) {
                 is ServerInfo -> _clientState.update {
                     it.copy(serverName = event.name ?: it.serverName, serverCapabilities = event.capabilities)
@@ -881,6 +898,7 @@ class MeshCentralClient(
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
             if (controlSocket !== webSocket) return
+            controlRequests.disconnected()
             closeAdditionalRelays()
             if (relay.hasActiveSession()) pendingDesktopResume = true
             controlConnected = false
@@ -906,6 +924,7 @@ class MeshCentralClient(
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
             if (controlSocket !== webSocket) return
+            controlRequests.disconnected()
             closeAdditionalRelays()
             if (relay.hasActiveSession()) pendingDesktopResume = true
             controlConnected = false

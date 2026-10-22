@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">Cari komputer</string>
+    <string name="browser_search_hint">Nama, grup, alamat, atau OS</string>
+    <string name="browser_search_clear">Hapus pencarian</string>
+    <string name="browser_filter_recent">Terbaru</string>
+    <string name="browser_recent_clear">Hapus riwayat terbaru</string>
+    <string name="browser_search_empty_title">Tidak ada komputer yang cocok</string>
+    <string name="browser_search_empty_description">Coba nama, grup, alamat, atau sistem operasi lain.</string>
+    <string name="browser_filter_empty_title">Tidak ada komputer dalam filter ini</string>
+    <string name="browser_filter_empty_description">Pilih filter lain atau hapus pencarian.</string>
+    <string name="browser_recent_empty_title">Tidak ada komputer terbaru</string>
+    <string name="browser_recent_empty_description">Komputer yang Anda buka akan muncul di sini.</string>
+    <string name="browser_favorites_empty_title">Belum ada favorit</string>
+    <string name="browser_favorites_empty_description">Tambahkan komputer ke favorit untuk menemukannya di sini.</string>
+</resources>

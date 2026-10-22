@@ -1,7 +1,6 @@
 # Private development and public release snapshots
 
-Development is canonical in the private GitLab project **124**, namespace **154**:
-`https://gitlab.papajon1234.ru/meshcentral_android/meshcentral-android`.
+Development is canonical in a private GitLab project. Its deployment host is pinned by a SHA-256 comparison in the release bridge; no private server address is needed in public documentation.
 The old project **107** is not a publication source and is not modified by this bridge.
 GitHub `papajon123/meshcentral-android` receives reviewed release trees, not private Git history.
 
@@ -21,8 +20,8 @@ GitHub `papajon123/meshcentral-android` receives reviewed release trees, not pri
    are pushed in one `git push --atomic` transaction, using ordinary fast-forward rules.
    There is no force, mirror, automatic rebase, tag replacement, deletion or non-atomic fallback.
 5. GitHub's existing `Signed APK release` workflow runs its independent checks, signs with GitHub's
-   existing release credentials and prepares a draft prerelease. This bridge does not transfer APKs
-   or signing keys, publish the draft, or update F-Droid. Those delivery steps remain separate.
+   existing release credentials and publishes a downloadable prerelease after the signed APK verification succeeds.
+   The bridge does not transfer APKs or signing keys. F-Droid delivery is managed separately.
 
 The public and private tags have the **same name and tree, but different commit SHA values**.
 Keep the canonical checkout's GitLab `origin/main` for development; `github/main` is snapshot history.
@@ -50,7 +49,7 @@ jobs cannot read the deployment credential:
 | `GITHUB_REPOSITORY` | `papajon123/meshcentral-android`; this is also the script's fixed allowlisted destination. |
 
 The publish job must declare `environment: {name: github-release}`. The script additionally requires
-the exact GitLab host, project 124, namespace 154, private visibility, protected tag, matching
+the pinned GitLab host, project 124, namespace 154, private visibility, protected tag, matching
 `CI_COMMIT_SHA`, runner 15 and environment name. CI debug tracing/services logging must be disabled.
 No additional manual approval is required by this script after the protected tag's checks pass.
 Protected-tag maintainers remain responsible for reviewing the tree and CI/script changes before

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">المظهر</string>
+    <string name="settings_appearance_subtitle">السمة وألوان النظام</string>
+    <string name="settings_theme_system">النظام</string>
+    <string name="settings_theme_light">فاتح</string>
+    <string name="settings_theme_dark">داكن</string>
+    <string name="settings_dynamic_colors">ألوان النظام</string>
+    <string name="settings_dynamic_colors_supporting">استخدم ألوان خلفية الشاشة للأسطح. تبقى ألوان الاتصال والسلامة كما هي.</string>
+</resources>

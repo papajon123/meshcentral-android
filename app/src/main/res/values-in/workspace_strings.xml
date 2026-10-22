@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">Anda dapat menyimpan hingga %1$d profil server.</string>
+    <string name="workspace_profile_error">Tidak dapat mengubah profil ini. Periksa nama dan coba lagi.</string>
+    <string name="workspace_profiles_action">Profil server</string>
+    <string name="workspace_capacity">Dua sesi sudah terbuka. Tutup salah satu sebelum membuka yang lain.</string>
+    <string name="workspace_desktop_limit">Desktop sudah terbuka. Tutup sebelum membuka desktop lain.</string>
+    <string name="workspace_sessions">Sesi terbuka</string>
+    <string name="workspace_sessions_count">Sesi · %1$d</string>
+    <string name="workspace_session_hint">Pertahankan hingga dua alat terbuka. Shell berakhir jika koneksinya terputus.</string>
+    <string name="workspace_empty">Tidak ada sesi terbuka</string>
+    <string name="workspace_switch">Beralih ke</string>
+    <string name="workspace_close_explanation">Tutup sesi di %1$s? Transfer yang sedang aktif akan berhenti.</string>
+    <string name="workspace_ended">Sesi sebelumnya telah berakhir. Pilihan Anda dipulihkan; koneksi dan shell tidak.</string>
+    <string name="workspace_reopen">Buka sesi baru</string>
+    <string name="workspace_minimize">Pertahankan sesi dan kembali ke perangkat</string>
+    <string name="workspace_system">Sistem</string>
+    <string name="workspace_help">Bantuan &amp; tugas</string>
+    <string name="workspace_cached_info">Informasi sistem terakhir dilaporkan oleh agen. Layanan dan proses memerlukan Mobile Companion di server.</string>
+    <string name="workspace_management_failed">Tidak dapat memverifikasi hasil. Periksa akses dan riwayat tugas server sebelum mencoba lagi.</string>
+    <string name="workspace_service_verified">Status layanan dibaca lagi setelah tindakan.</string>
+    <string name="workspace_power_pending">Permintaan terkirim. Menunggu perubahan konektivitas agen; penerimaan tidak mengonfirmasi eksekusi.</string>
+    <string name="workspace_power_reconnected">Agen terputus dan terhubung lagi. Ini mengonfirmasi pemulihan konektivitas, bukan penyebab mulai ulang.</string>
+    <string name="workspace_power_offline">Agen offline. Gangguan jaringan tidak dapat dibedakan dari matinya perangkat.</string>
+    <string name="workspace_power_unknown">Tidak ada perubahan konektivitas yang teramati. Tindakan tidak dikonfirmasi.</string>
+    <string name="workspace_share_unreadable">Tidak ada file bersama yang dapat dibaca. Bagikan hingga 20 file dengan akses baca.</string>
+    <string name="workspace_queue_rejected">Tujuan berubah atau antrean penuh. Periksa folder dan coba lagi.</string>
+    <string name="workspace_transfer_channel">Transfer file</string>
+    <string name="workspace_transfers_finished">Transfer file berhenti</string>
+    <string name="workspace_transfers_active">Mentransfer file</string>
+    <string name="workspace_transfer_open_details">Buka aplikasi untuk memeriksa transfer yang selesai, gagal, dan dibatalkan.</string>
+    <string name="workspace_choose_folder">Pilih folder untuk %1$d file bersama.</string>
+    <string name="workspace_send_here">Kirim ke folder ini</string>
+    <string name="workspace_confirm_share">Konfirmasi transfer file</string>
+    <string name="workspace_share_overwrite">File dengan nama yang sama akan ditimpa. Transfer yang gagal dapat meninggalkan file tidak lengkap. Coba lagi dimulai dari awal. Jika Android menghentikan aplikasi, bagikan file lagi.</string>
+    <string name="workspace_background_unavailable">Android tidak mengizinkan layanan transfer dimulai. Buka kembali aplikasi dan coba lagi.</string>
+    <string name="workspace_transfers_count">Transfer · %1$d</string>
+    <string name="workspace_share_destination">%1$d file siap. Pilih komputer, lalu buka File atau SFTP.</string>
+    <string name="workspace_signing_out">Keluar dan menonaktifkan peristiwa latar belakang…</string>
+    <string name="workspace_tools">Alat</string>
+</resources>

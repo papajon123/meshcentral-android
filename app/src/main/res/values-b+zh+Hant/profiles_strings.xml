@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">伺服器設定檔</string>
+    <string name="profile_sheet_subtitle">選擇此應用程式使用的 MeshCentral 伺服器。</string>
+    <string name="profile_close">關閉伺服器設定檔</string>
+    <string name="profile_add">新增設定檔</string>
+    <string name="profile_add_title">新增設定檔</string>
+    <string name="profile_add_subtitle">登入另一台 MeshCentral 伺服器。此設定檔會保有自己的憑證與我的最愛。</string>
+    <string name="profile_back">返回設定檔</string>
+    <string name="profile_name_label">設定檔名稱</string>
+    <string name="profile_name_placeholder">例如：家用伺服器</string>
+    <string name="profile_url_label">伺服器位址</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">請輸入設定檔名稱。</string>
+    <string name="profile_url_required">請輸入伺服器位址。</string>
+    <string name="profile_submit">新增設定檔</string>
+    <string name="profile_active">使用中</string>
+    <string name="profile_select">使用</string>
+    <string name="profile_active_description">使用中的設定檔：%1$s</string>
+    <string name="profile_select_description">使用設定檔 %1$s</string>
+    <string name="profile_actions_description">設定檔 %1$s 的操作</string>
+    <string name="profile_rename">重新命名</string>
+    <string name="profile_delete">刪除</string>
+    <string name="profile_rename_title">重新命名設定檔</string>
+    <string name="profile_rename_save">儲存</string>
+    <string name="profile_cancel">取消</string>
+    <string name="profile_delete_title">要刪除「%1$s」嗎？</string>
+    <string name="profile_delete_message">此設定檔儲存的登入憑證與我的最愛將從此裝置移除。其他設定檔不會變更。</string>
+    <string name="profile_delete_confirm">刪除</string>
+    <string name="profile_last_cannot_delete">無法刪除最後一個設定檔。</string>
+    <string name="profile_empty_title">沒有伺服器設定檔</string>
+    <string name="profile_empty_description">新增伺服器以連線至 MeshCentral。</string>
+    <string name="profile_unnamed">未命名設定檔</string>
+</resources>

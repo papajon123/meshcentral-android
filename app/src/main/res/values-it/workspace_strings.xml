@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workspace_profile_limit">Puoi mantenere fino a %1$d profili server.</string>
+    <string name="workspace_profile_error">Impossibile modificare questo profilo. Controlla il nome e riprova.</string>
+    <string name="workspace_profiles_action">Profili server</string>
+    <string name="workspace_capacity">Ci sono già due sessioni aperte. Chiudine una prima di aprirne un’altra.</string>
+    <string name="workspace_desktop_limit">È già aperto un desktop. Chiudilo prima di aprire un altro desktop.</string>
+    <string name="workspace_sessions">Sessioni aperte</string>
+    <string name="workspace_sessions_count">Sessioni · %1$d</string>
+    <string name="workspace_session_hint">Puoi tenere aperti fino a due strumenti. Una shell termina se la connessione viene persa.</string>
+    <string name="workspace_empty">Nessuna sessione aperta</string>
+    <string name="workspace_switch">Passa a</string>
+    <string name="workspace_close_explanation">Chiudere la sessione su %1$s? Eventuali trasferimenti attivi si fermeranno.</string>
+    <string name="workspace_ended">La sessione precedente è terminata. La selezione è stata ripristinata, ma la connessione e la shell no.</string>
+    <string name="workspace_reopen">Apri una nuova sessione</string>
+    <string name="workspace_minimize">Mantieni la sessione e torna ai dispositivi</string>
+    <string name="workspace_system">Sistema</string>
+    <string name="workspace_help">Assistenza e attività</string>
+    <string name="workspace_cached_info">Le informazioni di sistema sono state segnalate l’ultima volta dall’agente. Servizi e processi richiedono Mobile Companion sul server.</string>
+    <string name="workspace_management_failed">Non è stato possibile verificare il risultato. Controlla l’accesso e la cronologia delle attività del server prima di riprovare.</string>
+    <string name="workspace_service_verified">Lo stato del servizio è stato letto di nuovo dopo l’azione.</string>
+    <string name="workspace_power_pending">Richiesta inviata. In attesa di una variazione della connettività dell’agente; l’accettazione non conferma l’esecuzione.</string>
+    <string name="workspace_power_reconnected">L’agente si è disconnesso e riconnesso. Questo conferma il ripristino della connettività, non la causa del riavvio.</string>
+    <string name="workspace_power_offline">L’agente è offline. Non è possibile distinguere un’interruzione di rete da uno spegnimento.</string>
+    <string name="workspace_power_unknown">Non è stata osservata alcuna variazione di connettività. L’azione non è confermata.</string>
+    <string name="workspace_share_unreadable">Nessun file condiviso leggibile. Condividi fino a 20 file con accesso in lettura.</string>
+    <string name="workspace_queue_rejected">La destinazione è cambiata o la coda è piena. Controlla la cartella e riprova.</string>
+    <string name="workspace_transfer_channel">Trasferimenti di file</string>
+    <string name="workspace_transfers_finished">Trasferimenti di file interrotti</string>
+    <string name="workspace_transfers_active">Trasferimento di file</string>
+    <string name="workspace_transfer_open_details">Apri l’app per controllare i trasferimenti completati, non riusciti e annullati.</string>
+    <string name="workspace_choose_folder">Scegli una cartella per %1$d file condivisi.</string>
+    <string name="workspace_send_here">Invia a questa cartella</string>
+    <string name="workspace_confirm_share">Conferma trasferimento di file</string>
+    <string name="workspace_share_overwrite">I file con gli stessi nomi verranno sovrascritti. Un trasferimento non riuscito può lasciare un file parziale. Un nuovo tentativo riparte dall’inizio. Se Android arresta l’app, condividi di nuovo i file.</string>
+    <string name="workspace_background_unavailable">Android non ha consentito l’avvio del servizio di trasferimento. Riapri l’app e riprova.</string>
+    <string name="workspace_transfers_count">Trasferimenti · %1$d</string>
+    <string name="workspace_share_destination">%1$d file pronti. Scegli un computer, poi apri File o SFTP.</string>
+    <string name="workspace_signing_out">Disconnessione e disattivazione degli eventi in background…</string>
+    <string name="workspace_tools">Strumenti</string>
+</resources>

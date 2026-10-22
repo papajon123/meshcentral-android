@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">आप अधिकतम %1$d सर्वर प्रोफ़ाइल रख सकते हैं।</string>
+    <string name="workspace_profile_error">यह प्रोफ़ाइल नहीं बदली। नाम जाँचें और फिर प्रयास करें।</string>
+    <string name="workspace_profiles_action">सर्वर प्रोफ़ाइल</string>
+    <string name="workspace_capacity">पहले से दो सेशन खुले हैं। एक और खोलने से पहले एक बंद करें।</string>
+    <string name="workspace_desktop_limit">डेस्कटॉप पहले से खुला है। दूसरा खोलने से पहले उसे बंद करें।</string>
+    <string name="workspace_sessions">खुले सेशन</string>
+    <string name="workspace_sessions_count">सेशन · %1$d</string>
+    <string name="workspace_session_hint">अधिकतम दो टूल खुले रखें। कनेक्शन टूटने पर शेल समाप्त हो जाता है।</string>
+    <string name="workspace_empty">कोई खुला सेशन नहीं</string>
+    <string name="workspace_switch">इस पर जाएँ</string>
+    <string name="workspace_close_explanation">%1$s पर सेशन बंद करें? कोई सक्रिय स्थानांतरण रुक जाएगा।</string>
+    <string name="workspace_ended">पिछला सेशन समाप्त हुआ। आपका चयन बहाल हुआ; कनेक्शन और शेल बहाल नहीं हुए।</string>
+    <string name="workspace_reopen">नया सेशन खोलें</string>
+    <string name="workspace_minimize">सेशन रखें और डिवाइस पर वापस जाएँ</string>
+    <string name="workspace_system">सिस्टम</string>
+    <string name="workspace_help">सहायता और कार्य</string>
+    <string name="workspace_cached_info">सिस्टम जानकारी अंतिम बार एजेंट ने रिपोर्ट की। सेवाओं और प्रक्रियाओं के लिए सर्वर पर Mobile Companion आवश्यक है।</string>
+    <string name="workspace_management_failed">परिणाम सत्यापित नहीं हो सका। फिर प्रयास से पहले पहुँच और सर्वर कार्य इतिहास देखें।</string>
+    <string name="workspace_service_verified">कार्रवाई के बाद सेवा स्थिति फिर पढ़ी गई।</string>
+    <string name="workspace_power_pending">अनुरोध भेजा गया। एजेंट कनेक्टिविटी में बदलाव की प्रतीक्षा; स्वीकृति निष्पादन की पुष्टि नहीं करती।</string>
+    <string name="workspace_power_reconnected">एजेंट डिस्कनेक्ट और फिर कनेक्ट हुआ। यह कनेक्टिविटी बहाली की पुष्टि करता है, पुनः आरंभ के कारण की नहीं।</string>
+    <string name="workspace_power_offline">एजेंट ऑफ़लाइन है। नेटवर्क रुकावट और बंद होने में अंतर नहीं किया जा सकता।</string>
+    <string name="workspace_power_unknown">कनेक्शन में कोई बदलाव नहीं देखा गया। कार्रवाई पुष्ट नहीं है।</string>
+    <string name="workspace_share_unreadable">कोई पठनीय साझा फ़ाइल नहीं। पढ़ने की पहुँच के साथ अधिकतम 20 फ़ाइलें साझा करें।</string>
+    <string name="workspace_queue_rejected">गंतव्य बदल गया या कतार भरी है। फ़ोल्डर जाँचें और फिर प्रयास करें।</string>
+    <string name="workspace_transfer_channel">फ़ाइल स्थानांतरण</string>
+    <string name="workspace_transfers_finished">फ़ाइल स्थानांतरण रुके</string>
+    <string name="workspace_transfers_active">फ़ाइलें स्थानांतरित हो रही हैं</string>
+    <string name="workspace_transfer_open_details">पूर्ण, विफल और रद्द स्थानांतरण देखने के लिए ऐप खोलें।</string>
+    <string name="workspace_choose_folder">%1$d साझा फ़ाइलों के लिए फ़ोल्डर चुनें।</string>
+    <string name="workspace_send_here">इस फ़ोल्डर में भेजें</string>
+    <string name="workspace_confirm_share">फ़ाइल स्थानांतरण की पुष्टि करें</string>
+    <string name="workspace_share_overwrite">एक ही नाम की फ़ाइलें बदल दी जाएँगी। विफल स्थानांतरण आंशिक फ़ाइल छोड़ सकता है। फिर प्रयास शुरुआत से होता है। यदि Android ऐप रोक दे, तो फ़ाइलें फिर साझा करें।</string>
+    <string name="workspace_background_unavailable">Android ने स्थानांतरण सेवा शुरू करने की अनुमति नहीं दी। ऐप फिर खोलें और प्रयास करें।</string>
+    <string name="workspace_transfers_count">स्थानांतरण · %1$d</string>
+    <string name="workspace_share_destination">%1$d फ़ाइलें तैयार हैं। कंप्यूटर चुनें, फिर “फ़ाइलें” या SFTP खोलें।</string>
+    <string name="workspace_tools">टूल</string>
+    <string name="workspace_signing_out">साइन आउट हो रहा है और पृष्ठभूमि घटनाएँ बंद की जा रही हैं…</string>
+</resources>

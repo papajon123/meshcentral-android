@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">আপলোড সারি</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">আপলোড সারি কোনো ফোল্ডারের সাথে বাঁধা নয়।</string>
+    <string name="transfer_queue_empty">কোনো আপলোড সারিতে নেই।</string>
+    <string name="transfer_queue_root">কম্পিউটার রুট</string>
+
+    <string name="transfer_status_queued">সারিতে</string>
+    <string name="transfer_status_active">আপলোড হচ্ছে</string>
+    <string name="transfer_status_succeeded">যাচাইকৃত</string>
+    <string name="transfer_status_failed">ব্যর্থ</string>
+    <string name="transfer_status_cancelled">বাতিল</string>
+
+    <string name="transfer_progress">%1$d বাইট</string>
+    <string name="transfer_progress_size">%2$d এর মধ্যে %1$d বাইট</string>
+    <string name="transfer_cancel">বাতিল</string>
+    <string name="transfer_cancel_all">সব বাতিল</string>
+    <string name="transfer_retry">আবার চেষ্টা</string>
+    <string name="transfer_clear_finished">সম্পন্ন সাফ করুন</string>
+    <string name="transfer_close">বন্ধ করুন</string>
+    <string name="transfer_retry_title">আপলোড আবার চেষ্টা করবেন?</string>
+    <string name="transfer_retry_warning">আপলোড শুরু থেকে আবার চলবে। এই নামের বিদ্যমান রিমোট ফাইল প্রতিস্থাপিত হবে এবং এই চেষ্টা বাধাগ্রস্ত হলে আংশিক থাকতে পারে। চালিয়ে যাওয়ার আগে নিশ্চিত করুন।</string>
+    <string name="transfer_partial_remote">আংশিক বা প্রতিস্থাপিত রিমোট ফাইল থাকতে পারে। আবার চেষ্টার আগে তা দেখুন।</string>
+    <string name="transfer_upload_failed">আপলোড অপ্রত্যাশিত ত্রুটিতে থেমেছে। সেশন শেষ হয়েছে; আবার চেষ্টার আগে রিমোট ফাইল দেখুন।</string>
+
+    <string name="transfer_shared_file_fallback">শেয়ার করা ফাইল %1$d</string>
+    <string name="transfer_error_closed">ফাইল সেশন বন্ধ। “ফাইল” আবার খুলুন।</string>
+    <string name="transfer_error_content_uri">কেবল Android শেয়ার বা ওপেন পিকার থেকে content URI সারিতে দেওয়া যায়।</string>
+    <string name="transfer_error_path_changed">এই আপলোড শুরুর আগে ফোল্ডার বদলেছে। এই ফাইলের জন্য কিছু পাঠানো হয়নি; ফিরে গিয়ে আবার সারিতে দিন।</string>
+    <string name="transfer_error_busy">আরেকটি ফাইল কাজ চলছে। আরও সারিতে দেওয়ার আগে তা শেষ হওয়ার অপেক্ষা করুন।</string>
+    <string name="transfer_error_stream">নির্বাচিত বিষয়বস্তু খোলা যায়নি। শেয়ার অনুমতি মেয়াদোত্তীর্ণ হতে পারে।</string>
+</resources>

@@ -1,0 +1,105 @@
+{
+  "phase": "after",
+  "theme": "dark",
+  "locale": "en",
+  "fontScale": 1,
+  "screenWidthDp": 411,
+  "directory": "\/data\/user\/0\/io.github.papajon123.meshcentral.debug\/cache",
+  "screenshots": [
+    {
+      "screen": "onboarding",
+      "file": "redesign-after-onboarding.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 157708
+    },
+    {
+      "screen": "server-settings-invalid",
+      "file": "redesign-after-server-settings-invalid.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 143168
+    },
+    {
+      "screen": "server-settings-valid",
+      "file": "redesign-after-server-settings-valid.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 159870
+    },
+    {
+      "screen": "login",
+      "file": "redesign-after-login.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 89479
+    },
+    {
+      "screen": "lock-empty",
+      "file": "redesign-after-lock-empty.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 68369
+    },
+    {
+      "screen": "lock-error",
+      "file": "redesign-after-lock-error.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 68287
+    },
+    {
+      "screen": "settings-has-pin",
+      "file": "redesign-after-settings-has-pin.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 150832
+    },
+    {
+      "screen": "device-overview-available",
+      "file": "redesign-after-device-overview-available.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 102525
+    },
+    {
+      "screen": "device-overview-no-permission",
+      "file": "redesign-after-device-overview-no-permission.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 127615
+    },
+    {
+      "screen": "devices-empty",
+      "file": "redesign-after-devices-empty.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 65208
+    },
+    {
+      "screen": "devices-loaded",
+      "file": "redesign-after-devices-loaded.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 65257
+    },
+    {
+      "screen": "remote-desktop-disconnected",
+      "file": "redesign-after-remote-desktop-disconnected.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 53756
+    },
+    {
+      "screen": "session-options-sheet",
+      "file": "redesign-after-session-options-sheet.png",
+      "width": 1080,
+      "height": 1920,
+      "bytes": 108067
+    }
+  ],
+  "gaps": [
+    "RemoteDesktopScreen accepts only a live MeshCentralClient. The connected\/reconnect overlay needs an injected RemoteDesktopState, which has no public seam, so the gallery captures the real 'No active session' state instead of inventing a test API.",
+    "Settings exposes no public dialog or menu composable. Its debug WebView overlay needs a network-backed WebView and is excluded; SessionOptionsSheet is captured as the public sheet seam instead."
+  ]
+}

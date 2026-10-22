@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">Rechercher des ordinateurs</string>
+    <string name="browser_search_hint">Nom, groupe, adresse ou système d’exploitation</string>
+    <string name="browser_search_clear">Effacer la recherche</string>
+    <string name="browser_filter_recent">Récents</string>
+    <string name="browser_recent_clear">Effacer les récents</string>
+    <string name="browser_search_empty_title">Aucun ordinateur correspondant</string>
+    <string name="browser_search_empty_description">Essayez un autre nom, groupe, adresse ou système d’exploitation.</string>
+    <string name="browser_filter_empty_title">Aucun ordinateur pour ce filtre</string>
+    <string name="browser_filter_empty_description">Choisissez un autre filtre ou effacez la recherche.</string>
+    <string name="browser_recent_empty_title">Aucun ordinateur récent</string>
+    <string name="browser_recent_empty_description">Les ordinateurs que vous ouvrez apparaîtront ici.</string>
+    <string name="browser_favorites_empty_title">Aucun favori pour le moment</string>
+    <string name="browser_favorites_empty_description">Ajoutez un ordinateur aux favoris pour le retrouver ici.</string>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">最多可保留 %1$d 個伺服器設定檔。</string>
+    <string name="workspace_profile_error">無法變更此設定檔。請檢查名稱後再試一次。</string>
+    <string name="workspace_profiles_action">伺服器設定檔</string>
+    <string name="workspace_capacity">已開啟兩個工作階段。請先關閉一個，再開啟另一個。</string>
+    <string name="workspace_desktop_limit">已有桌面開啟。請先關閉它，再開啟另一個桌面。</string>
+    <string name="workspace_sessions">開啟的工作階段</string>
+    <string name="workspace_sessions_count">工作階段 · %1$d</string>
+    <string name="workspace_session_hint">最多可同時開啟兩個工具。連線中斷時，命令列會結束。</string>
+    <string name="workspace_empty">沒有開啟的工作階段</string>
+    <string name="workspace_switch">切換至</string>
+    <string name="workspace_close_explanation">要關閉 %1$s 上的工作階段嗎？任何進行中的傳輸都會停止。</string>
+    <string name="workspace_ended">上一個工作階段已結束。已還原您的選取項目，但未還原連線與命令列。</string>
+    <string name="workspace_reopen">開啟新的工作階段</string>
+    <string name="workspace_minimize">保留工作階段並返回裝置</string>
+    <string name="workspace_system">系統</string>
+    <string name="workspace_help">說明與工作</string>
+    <string name="workspace_cached_info">系統資訊是代理程式上次回報的內容。服務與處理程序需要伺服器上的 Mobile Companion。</string>
+    <string name="workspace_management_failed">無法驗證結果。請先檢查存取權與伺服器工作記錄，再試一次。</string>
+    <string name="workspace_service_verified">操作後已重新讀取服務狀態。</string>
+    <string name="workspace_power_pending">要求已送出。正在等待代理程式連線狀態改變；接受要求不代表確認執行。</string>
+    <string name="workspace_power_reconnected">代理程式已中斷並重新連線。這確認連線已恢復，不代表確認重新啟動的原因。</string>
+    <string name="workspace_power_offline">代理程式離線。無法區分網路中斷與關機。</string>
+    <string name="workspace_power_unknown">未觀察到連線狀態改變。無法確認操作。</string>
+    <string name="workspace_share_unreadable">沒有可讀取的共用檔案。請分享最多 20 個具有讀取權限的檔案。</string>
+    <string name="workspace_queue_rejected">目的地已變更或佇列已滿。請檢查資料夾後再試一次。</string>
+    <string name="workspace_transfer_channel">檔案傳輸</string>
+    <string name="workspace_transfers_finished">檔案傳輸已停止</string>
+    <string name="workspace_transfers_active">正在傳輸檔案</string>
+    <string name="workspace_transfer_open_details">開啟應用程式，以檢查已完成、失敗與已取消的傳輸。</string>
+    <string name="workspace_choose_folder">請為 %1$d 個共用檔案選擇資料夾。</string>
+    <string name="workspace_send_here">傳送至此資料夾</string>
+    <string name="workspace_confirm_share">確認檔案傳輸</string>
+    <string name="workspace_share_overwrite">同名檔案將被覆寫。傳輸失敗可能留下不完整檔案。重試會從頭開始。如果 Android 停止應用程式，請重新分享檔案。</string>
+    <string name="workspace_background_unavailable">Android 不允許啟動傳輸服務。請重新開啟應用程式再試一次。</string>
+    <string name="workspace_transfers_count">傳輸 · %1$d</string>
+    <string name="workspace_share_destination">%1$d 個檔案已就緒。請選擇電腦，然後開啟「檔案」或 SFTP。</string>
+    <string name="workspace_signing_out">正在登出並停用背景事件…</string>
+    <string name="workspace_tools">工具</string>
+</resources>

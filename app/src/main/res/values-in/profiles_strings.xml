@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">Profil server</string>
+    <string name="profile_sheet_subtitle">Pilih server MeshCentral yang digunakan aplikasi ini.</string>
+    <string name="profile_close">Tutup profil server</string>
+    <string name="profile_add">Tambah profil</string>
+    <string name="profile_add_title">Tambah profil</string>
+    <string name="profile_add_subtitle">Masuk ke server MeshCentral lain. Profil ini menyimpan kredensial dan favoritnya sendiri.</string>
+    <string name="profile_back">Kembali ke profil</string>
+    <string name="profile_name_label">Nama profil</string>
+    <string name="profile_name_placeholder">Misalnya, server rumah</string>
+    <string name="profile_url_label">Alamat server</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">Masukkan nama profil.</string>
+    <string name="profile_url_required">Masukkan alamat server.</string>
+    <string name="profile_submit">Tambah profil</string>
+    <string name="profile_active">Aktif</string>
+    <string name="profile_select">Gunakan</string>
+    <string name="profile_active_description">Profil aktif: %1$s</string>
+    <string name="profile_select_description">Gunakan profil %1$s</string>
+    <string name="profile_actions_description">Tindakan profil untuk %1$s</string>
+    <string name="profile_rename">Ganti nama</string>
+    <string name="profile_delete">Hapus</string>
+    <string name="profile_rename_title">Ganti nama profil</string>
+    <string name="profile_rename_save">Simpan</string>
+    <string name="profile_cancel">Batal</string>
+    <string name="profile_delete_title">Hapus “%1$s”?</string>
+    <string name="profile_delete_message">Kredensial masuk dan favorit yang disimpan untuk profil ini akan dihapus dari perangkat ini. Profil lain tidak berubah.</string>
+    <string name="profile_delete_confirm">Hapus</string>
+    <string name="profile_last_cannot_delete">Profil terakhir tidak dapat dihapus.</string>
+    <string name="profile_empty_title">Tidak ada profil server</string>
+    <string name="profile_empty_description">Tambahkan server untuk terhubung ke MeshCentral.</string>
+    <string name="profile_unnamed">Profil tanpa nama</string>
+</resources>

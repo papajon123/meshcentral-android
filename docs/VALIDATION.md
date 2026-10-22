@@ -1,5 +1,10 @@
 # Validation
 
+## 0.7.0
+
+Current feature, test and platform limits: [ROADMAP_IMPLEMENTATION.md](ROADMAP_IMPLEMENTATION.md). The records below are historical and retain their original versions.
+
+
 ## Current status
 
 This is a preliminary release. Physical phones, Windows Agent tools, third-party servers and live

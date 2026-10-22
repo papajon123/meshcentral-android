@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">अपलोड रांग</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">अपलोड रांग कोणत्याही फोल्डरशी जोडलेली नाही.</string>
+    <string name="transfer_queue_empty">रांगेत कोणतेही अपलोड नाही.</string>
+    <string name="transfer_queue_root">संगणक रूट</string>
+
+    <string name="transfer_status_queued">रांगेत</string>
+    <string name="transfer_status_active">अपलोड होत आहे</string>
+    <string name="transfer_status_succeeded">पडताळलेले</string>
+    <string name="transfer_status_failed">अयशस्वी</string>
+    <string name="transfer_status_cancelled">रद्द</string>
+
+    <string name="transfer_progress">%1$d बाइट</string>
+    <string name="transfer_progress_size">%2$d पैकी %1$d बाइट</string>
+    <string name="transfer_cancel">रद्द करा</string>
+    <string name="transfer_cancel_all">सर्व रद्द करा</string>
+    <string name="transfer_retry">पुन्हा प्रयत्न</string>
+    <string name="transfer_clear_finished">पूर्ण साफ करा</string>
+    <string name="transfer_close">बंद करा</string>
+    <string name="transfer_retry_title">अपलोड पुन्हा प्रयत्न करायचा?</string>
+    <string name="transfer_retry_warning">अपलोड सुरुवातीपासून पुन्हा चालेल. याच नावाची विद्यमान रिमोट फाइल बदलली जाईल आणि हा प्रयत्न व्यत्ययित झाल्यास ती अपूर्ण राहू शकते. सुरू ठेवण्यापूर्वी पुष्टी करा.</string>
+    <string name="transfer_partial_remote">अपूर्ण किंवा बदललेली रिमोट फाइल राहू शकते. पुन्हा प्रयत्न करण्यापूर्वी ती पहा.</string>
+    <string name="transfer_upload_failed">अपलोड अनपेक्षित त्रुटीने थांबले. सत्र संपले; पुन्हा प्रयत्न करण्यापूर्वी रिमोट फाइल पहा.</string>
+
+    <string name="transfer_shared_file_fallback">सामायिक फाइल %1$d</string>
+    <string name="transfer_error_closed">फाइल सत्र बंद आहे. “फाइली” पुन्हा उघडा.</string>
+    <string name="transfer_error_content_uri">फक्त Android शेअर किंवा ओपन पिकरमधील content URI रांगेत ठेवता येतात.</string>
+    <string name="transfer_error_path_changed">हे अपलोड सुरू होण्यापूर्वी फोल्डर बदलला. या फाइलसाठी काहीही पाठवले नाही; मागे जा आणि ती पुन्हा रांगेत ठेवा.</string>
+    <string name="transfer_error_busy">दुसरे फाइल कार्य सुरू आहे. अधिक रांगेत ठेवण्यापूर्वी ते संपण्याची प्रतीक्षा करा.</string>
+    <string name="transfer_error_stream">निवडलेला मजकूर उघडता आला नाही. शेअर परवानगी कालबाह्य झाली असू शकते.</string>
+</resources>

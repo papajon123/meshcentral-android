@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">Профили серверов</string>
+    <string name="profile_sheet_subtitle">Выберите сервер MeshCentral для этого приложения.</string>
+    <string name="profile_close">Закрыть профили серверов</string>
+    <string name="profile_add">Добавить профиль</string>
+    <string name="profile_add_title">Добавить профиль</string>
+    <string name="profile_add_subtitle">Подключитесь к другому серверу MeshCentral. У профиля свои учётные данные и избранное.</string>
+    <string name="profile_back">Назад к профилям</string>
+    <string name="profile_name_label">Название профиля</string>
+    <string name="profile_name_placeholder">Например, домашний сервер</string>
+    <string name="profile_url_label">Адрес сервера</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">Введите название профиля.</string>
+    <string name="profile_url_required">Введите адрес сервера.</string>
+    <string name="profile_submit">Добавить профиль</string>
+    <string name="profile_active">Активен</string>
+    <string name="profile_select">Выбрать</string>
+    <string name="profile_active_description">Активный профиль: %1$s</string>
+    <string name="profile_select_description">Выбрать профиль %1$s</string>
+    <string name="profile_actions_description">Действия с профилем %1$s</string>
+    <string name="profile_rename">Переименовать</string>
+    <string name="profile_delete">Удалить</string>
+    <string name="profile_rename_title">Переименовать профиль</string>
+    <string name="profile_rename_save">Сохранить</string>
+    <string name="profile_cancel">Отмена</string>
+    <string name="profile_delete_title">Удалить «%1$s»?</string>
+    <string name="profile_delete_message">Сохранённые учётные данные и избранное этого профиля будут удалены с устройства. Другие профили не изменятся.</string>
+    <string name="profile_delete_confirm">Удалить</string>
+    <string name="profile_last_cannot_delete">Последний профиль нельзя удалить.</string>
+    <string name="profile_empty_title">Нет профилей серверов</string>
+    <string name="profile_empty_description">Добавьте сервер, чтобы подключиться к MeshCentral.</string>
+    <string name="profile_unnamed">Профиль без названия</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">上传队列</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">上传队列尚未绑定到文件夹。</string>
+    <string name="transfer_queue_empty">队列中没有上传任务。</string>
+    <string name="transfer_queue_root">计算机根目录</string>
+
+    <string name="transfer_status_queued">已排队</string>
+    <string name="transfer_status_active">正在上传</string>
+    <string name="transfer_status_succeeded">已验证</string>
+    <string name="transfer_status_failed">失败</string>
+    <string name="transfer_status_cancelled">已取消</string>
+
+    <string name="transfer_progress">已传输 %1$d 字节</string>
+    <string name="transfer_progress_size">已传输 %1$d / %2$d 字节</string>
+    <string name="transfer_cancel">取消</string>
+    <string name="transfer_cancel_all">全部取消</string>
+    <string name="transfer_retry">重试</string>
+    <string name="transfer_clear_finished">清除已完成</string>
+    <string name="transfer_close">关闭</string>
+    <string name="transfer_retry_title">重试上传？</string>
+    <string name="transfer_retry_warning">上传将从头开始。具有此名称的远程文件将被替换；如果本次尝试中断，可能留下不完整文件。请确认后继续。</string>
+    <string name="transfer_partial_remote">远程可能留下不完整或已被替换的文件。重试前请检查。</string>
+    <string name="transfer_upload_failed">上传因意外错误停止。会话已结束；重试前请检查远程文件。</string>
+
+    <string name="transfer_shared_file_fallback">共享文件 %1$d</string>
+    <string name="transfer_error_closed">文件会话已关闭。请重新打开“文件”。</string>
+    <string name="transfer_error_content_uri">只能将 Android 分享或打开选择器提供的内容 URI 加入队列。</string>
+    <string name="transfer_error_path_changed">上传开始前文件夹已更改。此文件未发送；请返回并重新加入队列。</string>
+    <string name="transfer_error_busy">另一项文件操作正在进行。请等待其完成后再加入队列。</string>
+    <string name="transfer_error_stream">无法打开所选内容。分享授权可能已过期。</string>
+</resources>

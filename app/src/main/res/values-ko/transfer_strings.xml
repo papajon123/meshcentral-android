@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">업로드 대기열</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">업로드 대기열이 폴더에 연결되어 있지 않습니다.</string>
+    <string name="transfer_queue_empty">대기열에 업로드가 없습니다.</string>
+    <string name="transfer_queue_root">컴퓨터 루트</string>
+
+    <string name="transfer_status_queued">대기열에 있음</string>
+    <string name="transfer_status_active">업로드 중</string>
+    <string name="transfer_status_succeeded">확인됨</string>
+    <string name="transfer_status_failed">실패</string>
+    <string name="transfer_status_cancelled">취소됨</string>
+
+    <string name="transfer_progress">%1$d바이트</string>
+    <string name="transfer_progress_size">전체 %2$d바이트 중 %1$d바이트</string>
+    <string name="transfer_cancel">취소</string>
+    <string name="transfer_cancel_all">모두 취소</string>
+    <string name="transfer_retry">다시 시도</string>
+    <string name="transfer_clear_finished">완료된 항목 지우기</string>
+    <string name="transfer_close">닫기</string>
+    <string name="transfer_retry_title">업로드를 다시 시도할까요?</string>
+    <string name="transfer_retry_warning">업로드가 처음부터 다시 시작됩니다. 같은 이름의 기존 원격 파일이 교체되며, 이번 시도가 중단되면 파일이 일부만 남을 수 있습니다. 계속하기 전에 확인하세요.</string>
+    <string name="transfer_partial_remote">원격에 일부만 전송되었거나 교체된 파일이 남아 있을 수 있습니다. 다시 시도하기 전에 확인하세요.</string>
+    <string name="transfer_upload_failed">예기치 않은 오류로 업로드가 중지되었습니다. 세션이 종료되었습니다. 다시 시도하기 전에 원격 파일을 확인하세요.</string>
+
+    <string name="transfer_shared_file_fallback">공유 파일 %1$d</string>
+    <string name="transfer_error_closed">파일 세션이 닫혔습니다. 파일을 다시 여세요.</string>
+    <string name="transfer_error_content_uri">Android 공유 또는 열기 선택기에서 제공한 콘텐츠 URI만 대기열에 추가할 수 있습니다.</string>
+    <string name="transfer_error_path_changed">이 업로드가 시작되기 전에 폴더가 변경되었습니다. 이 파일은 전송되지 않았습니다. 돌아가서 다시 대기열에 추가하세요.</string>
+    <string name="transfer_error_busy">다른 파일 작업이 진행 중입니다. 완료될 때까지 기다린 후 더 추가하세요.</string>
+    <string name="transfer_error_stream">선택한 콘텐츠를 열지 못했습니다. 공유 권한이 만료되었을 수 있습니다.</string>
+</resources>

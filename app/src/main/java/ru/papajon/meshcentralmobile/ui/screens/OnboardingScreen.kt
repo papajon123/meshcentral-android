@@ -1,11 +1,13 @@
 package ru.papajon.meshcentralmobile.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
@@ -26,11 +28,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.model.AppSettings
-import ru.papajon.meshcentralmobile.ui.components.IconBadge
+import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 
 /**
- * First-launch flow: what the app does, then the server address. Kept to one screen so a new user
- * reaches the computer list in two taps.
+ * First-launch flow: a short, confident introduction followed by the real server form. Both live in
+ * the single scroll container owned by [ServerSettingsScreen], so a large font, the IME or a short
+ * landscape window never strands the Save action.
  */
 @Composable
 fun OnboardingScreen(
@@ -39,8 +42,6 @@ fun OnboardingScreen(
     onAllowHttpInDebugChanged: (Boolean) -> Unit,
     onTrustSelfSignedChanged: (Boolean) -> Unit,
 ) {
-    // Introduction and form share one scroll container. A large font or a short landscape window
-    // must never leave the form with zero height below a fixed introduction.
     ServerSettingsScreen(
         settings = settings,
         onServerUrlSaved = onServerUrlSaved,
@@ -55,74 +56,21 @@ fun OnboardingScreen(
 
 @Composable
 private fun OnboardingIntroduction() {
-    Column(
-        modifier = Modifier
-            .padding(top = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(14.dp),
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = MeshTheme.spacing.sm),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(MeshTheme.spacing.md),
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-            Box(
-                modifier = Modifier
-                    .size(56.dp)
-                    .clip(MaterialTheme.shapes.large)
-                    .background(MaterialTheme.colorScheme.primaryContainer),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Monitor,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier.size(28.dp),
-                )
-            }
-            Column(Modifier.weight(1f)) {
-                Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineSmall)
-                Text(
-                    text = stringResource(R.string.onboarding_subtitle),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-
-        FeatureRow(
-            icon = Icons.Outlined.Monitor,
-            title = stringResource(R.string.onboarding_feature_desktop_title),
-            description = stringResource(R.string.onboarding_feature_desktop_description),
+        Icon(
+            imageVector = Icons.Outlined.Monitor,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(28.dp),
         )
-        FeatureRow(
-            icon = Icons.Outlined.ContentPaste,
-            title = stringResource(R.string.onboarding_feature_clipboard_title),
-            description = stringResource(R.string.onboarding_feature_clipboard_description),
-        )
-        FeatureRow(
-            icon = Icons.Outlined.Shield,
-            title = stringResource(R.string.onboarding_feature_credentials_title),
-            description = stringResource(R.string.onboarding_feature_credentials_description),
-        )
-
-        Text(
-            text = stringResource(R.string.onboarding_hint),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = 4.dp),
-        )
-    }
-}
-
-@Composable
-private fun FeatureRow(icon: ImageVector, title: String, description: String) {
-    Row(horizontalArrangement = Arrangement.spacedBy(14.dp)) {
-        IconBadge(
-            icon = icon,
-            tint = MaterialTheme.colorScheme.onSecondaryContainer,
-            container = MaterialTheme.colorScheme.secondaryContainer,
-            size = 40.dp,
-        )
-        Column(Modifier.weight(1f)) {
-            Text(title, style = MaterialTheme.typography.titleSmall)
+        Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text(stringResource(R.string.app_name), style = MaterialTheme.typography.titleMedium)
             Text(
-                text = description,
+                stringResource(R.string.onboarding_subtitle),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )

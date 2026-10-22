@@ -13,8 +13,8 @@ android {
         applicationId = "io.github.papajon123.meshcentral"
         minSdk = 26
         targetSdk = 35
-        versionCode = 13
-        versionName = "0.5.4"
+        versionCode = 15
+        versionName = "0.7.0"
         // Keep dependency-only locales from taking precedence over a supported system fallback.
         resourceConfigurations.addAll(listOf(
             "en", "ru", "zh", "b+zh+Hans", "b+zh+Hant", "es", "fr", "pt", "de", "ar", "hi", "bn", "ur",
@@ -79,6 +79,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+    implementation("androidx.work:work-runtime-ktx:2.10.1")
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 

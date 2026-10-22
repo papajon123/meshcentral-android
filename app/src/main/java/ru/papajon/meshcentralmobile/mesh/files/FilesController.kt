@@ -8,9 +8,11 @@ import java.io.OutputStream
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicReference
 import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
@@ -20,6 +22,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import org.json.JSONArray
 import org.json.JSONObject
 import ru.papajon.meshcentralmobile.R
@@ -28,6 +32,7 @@ import ru.papajon.meshcentralmobile.mesh.session.RelayConnection
 import ru.papajon.meshcentralmobile.mesh.session.RelayFrame
 import ru.papajon.meshcentralmobile.mesh.session.RelayPhase
 import ru.papajon.meshcentralmobile.mesh.session.RelayProtocol
+import ru.papajon.meshcentralmobile.transfer.TransferOutcome
 
 enum class FileChange { CreateDirectory, Rename, Delete, Upload }
 
@@ -74,12 +79,16 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
     private var listingHandler: ((List<RemoteFile>) -> Unit)? = null
     private var timeout: Job? = null
     private var transfer: Transfer? = null
+    private var pendingCancel: PendingCancel? = null
     private val selectedDownload = AtomicReference<Pair<String, RemoteFile>?>(null)
     private val lateDocumentWarning = AtomicBoolean(false)
 
     init {
         worker.coroutineContext[Job]?.invokeOnCompletion {
-            // Also release streams if the owning ViewModel scope is cancelled during a transfer.
+            // Also release streams and an awaiting queued caller if the owning scope is cancelled.
+            completeQueued(TransferOutcome.Cancelled(partialRemote = transferTouchedRemote()))
+            pendingCancel?.completion?.complete(TransferOutcome.Cancelled(partialRemote = true))
+            pendingCancel = null
             connection.close()
             runCatching { transfer?.input?.close() }
             runCatching { transfer?.output?.close() }
@@ -102,7 +111,12 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
         var expectedSize: Long? = null,
         val digest: java.security.MessageDigest = SftpFilesAdapter.digest(),
         var expectedDigest: ByteArray? = null,
+        val queued: CompletableDeferred<TransferOutcome>? = null,
+        val progress: ((Long) -> Unit)? = null,
+        var remoteTouched: Boolean = false,
+        var cancelRequested: Boolean = false,
     )
+    private class PendingCancel(val completion: CompletableDeferred<TransferOutcome>)
     private enum class Stage { DownloadPreflight, DownloadStart, DownloadData, DownloadPostflight, UploadStart, UploadAck, UploadDone, UploadCancel }
 
     fun connect() {
@@ -208,6 +222,95 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
         download(AgentFilesProtocol.join(selected.first, selected.second.name), selected.second.name, destination)
     }
 
+    /**
+     * Explicitly confirmed batch upload with no dependency on [FilesState.confirmation].
+     *
+     * The call is serialized with every other controller operation. [directory] must be the exact
+     * current controller path; it is rechecked before any bytes are sent, so a late target cannot be
+     * silently used. The stream is always opened from the start: a retry never resumes an offset.
+     * Success is returned only by the audited uploaddone -> read-back SHA-256/size -> postflight
+     * path; a status message is never interpreted as success.
+     */
+    suspend fun uploadQueued(
+        uri: Uri,
+        name: String,
+        directory: String,
+        onProgress: (Long) -> Unit = {},
+    ): TransferOutcome {
+        if (closed.get()) return TransferOutcome.Failed(text(R.string.transfer_error_closed))
+        if (uri.scheme != android.content.ContentResolver.SCHEME_CONTENT) {
+            return TransferOutcome.Failed(text(R.string.transfer_error_content_uri))
+        }
+        if (!AgentFilesProtocol.validName(name)) {
+            return TransferOutcome.Failed(text(R.string.files_invalid_name))
+        }
+
+        val completion = CompletableDeferred<TransferOutcome>()
+        var started = false
+        mutex.withLock {
+            if (closed.get()) {
+                completion.complete(TransferOutcome.Failed(text(R.string.transfer_error_closed)))
+                return@withLock
+            }
+            if (directory != mutable.value.path) {
+                completion.complete(TransferOutcome.Failed(text(R.string.transfer_error_path_changed)))
+                return@withLock
+            }
+            if (!mutable.value.connected) {
+                completion.complete(TransferOutcome.Failed(text(R.string.files_disconnected)))
+                return@withLock
+            }
+            if (mutable.value.busy || transfer != null || listingId != null || verification != null ||
+                listingHandler != null || mutable.value.confirmation != null) {
+                completion.complete(TransferOutcome.Failed(text(R.string.transfer_error_busy)))
+                return@withLock
+            }
+            val stream = try {
+                resolver.openInputStream(uri)
+            } catch (_: Exception) {
+                null
+            }
+            if (stream == null) {
+                completion.complete(TransferOutcome.Failed(text(R.string.transfer_error_stream)))
+                return@withLock
+            }
+            val id = ++sequence
+            val current = Transfer(
+                id = id,
+                name = name,
+                input = stream,
+                stage = Stage.UploadStart,
+                remotePath = AgentFilesProtocol.join(directory, name),
+                remoteParent = directory,
+                queued = completion,
+                progress = onProgress,
+            )
+            transfer = current
+            mutable.value = mutable.value.copy(busy = true, transferred = 0L, transferName = name, message = null)
+            reportProgress(current, 0L)
+            current.remoteTouched = true
+            val sent = try { connection.sendText(
+                JSONObject().put("action", "upload").put("path", directory).put("name", name)
+                    .put("reqid", id).put("append", false).toString(),
+            ) } catch (_: Exception) { false }
+            if (!sent) {
+                fail(R.string.files_operation_failed)
+                return@withLock
+            }
+            armTimeout()
+            started = true
+        }
+
+        if (!started || completion.isCompleted) return completion.await()
+        return try {
+            completion.await()
+        } catch (cancelled: CancellationException) {
+            // The queue can cancel its child job. Finish the protocol operation without leaving a
+            // stream, timer or deferred behind; never turn this path into a success.
+            withContext(NonCancellable) { abortQueuedUpload(completion) }
+        }
+    }
+
     fun propose(change: FileChange, entry: RemoteFile? = null) = action {
         if (!available() || (change == FileChange.Upload)) return@action
         if ((change == FileChange.Rename || change == FileChange.Delete) &&
@@ -296,21 +399,27 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
 
     fun cancel() = action {
         val current = transfer
-        if (current?.input != null) {
-            current.input?.close()
-            current.input = null
-            current.stage = Stage.UploadCancel
-            send(JSONObject().put("action", "uploadcancel").put("reqid", current.id))
-            armTimeout()
-        } else {
-            // Closing the relay releases an Agent download handle, including its incomplete stop path.
-            fail(if (verification != null) R.string.files_change_unverified
-                else if (current != null) R.string.files_local_partial else R.string.files_cancelled)
+        when {
+            current?.input != null -> beginUploadCancel(current)
+            current != null && current.stage == Stage.UploadCancel -> Unit
+            current != null -> {
+                // The upload itself is already complete and is being read back. There is no safe
+                // remote cancel for that phase; report an honest partial result and end the session.
+                completeQueued(TransferOutcome.Cancelled(partialRemote = true))
+                fail(if (verification != null) R.string.files_change_unverified
+                    else if (sftp) R.string.files_sftp_unverified else R.string.files_local_partial)
+            }
+            pendingCancel != null -> Unit
+            else -> fail(if (verification != null) R.string.files_change_unverified
+                else R.string.files_cancelled)
         }
     }
 
     fun close() {
         if (!closed.compareAndSet(false, true)) return
+        completeQueued(TransferOutcome.Cancelled(partialRemote = transferTouchedRemote()))
+        pendingCancel?.completion?.complete(TransferOutcome.Cancelled(partialRemote = true))
+        pendingCancel = null
         connection.close()
         worker.launch {
             mutex.withLock {
@@ -391,6 +500,8 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
                 listingId = null
                 val changed = verification != null
                 verification = null
+                pendingCancel?.completion?.complete(TransferOutcome.Cancelled(partialRemote = true))
+                pendingCancel = null
                 mutable.value = mutable.value.copy(busy = false,
                     message = text(if (changed) R.string.files_change_unverified else R.string.files_directory_failed))
                 return
@@ -406,6 +517,8 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
             }
             val result = verification?.invoke(entries)
             verification = null
+            pendingCancel?.completion?.complete(TransferOutcome.Cancelled(partialRemote = result != true))
+            pendingCancel = null
             mutable.value = mutable.value.copy(busy = false, path = message.optString("path", listingPath), entries = entries,
                 message = result?.let { text(if (it) R.string.files_change_verified else R.string.files_change_unverified) })
             return
@@ -438,6 +551,7 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
                 check(current.stage == if (start) Stage.UploadStart else Stage.UploadAck)
                 if (!start) current.bytes += current.outstanding
                 mutable.value = mutable.value.copy(transferred = current.bytes)
+                reportProgress(current, current.bytes)
                 uploadNext(current)
             }
             "uploaddone" -> {
@@ -445,6 +559,7 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
                 check(current.stage == Stage.UploadDone)
                 // Both protocols must prove content, never merely an existing file of the same size.
                 // SFTP additionally emits uploaddone on write errors; the stage check rejects that.
+                reportProgress(current, current.bytes)
                 current.expectedDigest = current.digest.digest()
                 current.expectedSize = current.bytes
                 current.bytes = 0
@@ -455,10 +570,11 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
             }
             "uploadcancel" -> {
                 if (message.optInt("reqid", -1) != current.id || current.stage != Stage.UploadCancel) return
+                current.queued?.let { pendingCancel = PendingCancel(it) }
                 cleanupTransfer()
                 mutable.value = mutable.value.copy(busy = false, message = text(R.string.files_cancelled))
                 verification = { entries -> entries.none { it.name == current.name } }
-                list(mutable.value.path)
+                list(current.remoteParent)
             }
         }
     }
@@ -470,6 +586,7 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
             current.input?.close()
             current.input = null
             current.stage = Stage.UploadDone
+            reportProgress(current, current.bytes)
             send(JSONObject().put("action", "uploaddone").put("reqid", current.id))
         } else {
             check(count > 0)
@@ -543,7 +660,10 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
             if (!unchangedSize) fail(if (sftp) R.string.files_sftp_unverified else R.string.files_change_unverified)
             else {
                 val verifiedUpload = current.expectedDigest != null
+                val bytes = current.expectedSize ?: current.bytes
+                reportProgress(current, bytes)
                 cleanupTransfer()
+                current.queued?.complete(TransferOutcome.Success(bytes))
                 mutable.value = mutable.value.copy(busy = false, message = text(
                     if (verifiedUpload) R.string.files_sftp_upload_verified else R.string.files_download_complete))
             }
@@ -569,13 +689,92 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
         val partial = transfer != null
         val changed = verification != null || transfer?.expectedDigest != null
         val unverifiedSftp = sftp && transfer != null
+        val message = text(if (lateDocumentWarning.get()) R.string.files_local_partial else if (preferReason) reason
+            else if (unverifiedSftp) R.string.files_sftp_unverified else if (changed) R.string.files_change_unverified else if (partial) R.string.files_partial else reason)
+        if (transfer?.cancelRequested == true) {
+            completeQueued(TransferOutcome.Cancelled(partialRemote = true))
+        } else {
+            completeQueued(TransferOutcome.Failed(message))
+        }
+        pendingCancel?.completion?.complete(TransferOutcome.Cancelled(partialRemote = true))
+        pendingCancel = null
         cleanup()
         connection.close()
         closed.set(true)
         mutable.value = mutable.value.copy(connected = false, busy = false, confirmation = null, authRequired = false,
-            message = text(if (lateDocumentWarning.get()) R.string.files_local_partial else if (preferReason) reason
-                else if (unverifiedSftp) R.string.files_sftp_unverified else if (changed) R.string.files_change_unverified else if (partial) R.string.files_partial else reason))
+            message = message)
         worker.cancel()
     }
+
+    /** Returns true when an uploadcancel request is now awaiting its acknowledgement. */
+    private fun beginUploadCancel(current: Transfer): Boolean {
+        if (current.stage == Stage.UploadCancel) return true
+        val input = current.input ?: return false
+        current.cancelRequested = true
+        runCatching { input.close() }
+        current.input = null
+        current.stage = Stage.UploadCancel
+        if (!connection.sendText(JSONObject().put("action", "uploadcancel").put("reqid", current.id).toString())) {
+            fail(R.string.files_operation_failed)
+            return false
+        }
+        armTimeout()
+        return true
+    }
+
+    /**
+     * Cancellation of the caller's coroutine must still terminate the protocol operation. We send
+     * the normal uploadcancel, wait for its verified absence, and close everything if the protocol
+     * cannot answer in the same 30-second bound. The returned value is never a fake success.
+     */
+    private suspend fun abortQueuedUpload(completion: CompletableDeferred<TransferOutcome>): TransferOutcome {
+        var awaitingAck = false
+        mutex.withLock {
+            if (!completion.isCompleted) {
+                val current = transfer?.takeIf { it.queued === completion }
+                when {
+                    current == null -> {
+                        if (pendingCancel?.completion === completion) awaitingAck = true
+                        else completion.complete(TransferOutcome.Cancelled(partialRemote = false))
+                    }
+                    current.stage == Stage.UploadCancel -> awaitingAck = true
+                    current.input != null -> awaitingAck = beginUploadCancel(current)
+                    else -> {
+                        // The upload body already ended and its read-back is in flight: there is no
+                        // safe remote cancel, so end the session and report a possible replacement.
+                        completion.complete(TransferOutcome.Cancelled(partialRemote = true))
+                        fail(R.string.files_partial)
+                    }
+                }
+            }
+        }
+        if (awaitingAck) {
+            val outcome = withTimeoutOrNull(31_000) { completion.await() }
+            if (outcome != null) return outcome
+            mutex.withLock {
+                if (!completion.isCompleted) {
+                    completion.complete(TransferOutcome.Cancelled(partialRemote = true))
+                    cleanup()
+                    connection.close()
+                    closed.set(true)
+                    mutable.value = mutable.value.copy(connected = false, busy = false, confirmation = null,
+                        authRequired = false, message = text(R.string.files_partial))
+                    worker.cancel()
+                }
+            }
+        }
+        return completion.await()
+    }
+
+    private fun completeQueued(outcome: TransferOutcome) {
+        transfer?.queued?.complete(outcome)
+    }
+
+    private fun transferTouchedRemote(): Boolean = transfer?.let { it.remoteTouched || it.expectedDigest != null } == true
+
+    private fun reportProgress(current: Transfer, bytes: Long) {
+        runCatching { current.progress?.invoke(bytes) }
+    }
+
     private fun text(id: Int): UiText = UiText.resource(id)
 }

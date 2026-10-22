@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">คุณเก็บโปรไฟล์เซิร์ฟเวอร์ได้สูงสุด %1$d โปรไฟล์</string>
+    <string name="workspace_profile_error">ไม่สามารถเปลี่ยนโปรไฟล์นี้ได้ ตรวจสอบชื่อและลองอีกครั้ง</string>
+    <string name="workspace_profiles_action">โปรไฟล์เซิร์ฟเวอร์</string>
+    <string name="workspace_capacity">มีสองเซสชันเปิดอยู่แล้ว ปิดหนึ่งเซสชันก่อนเปิดเซสชันอื่น</string>
+    <string name="workspace_desktop_limit">มีเดสก์ท็อปเปิดอยู่แล้ว ปิดก่อนเปิดเดสก์ท็อปอื่น</string>
+    <string name="workspace_sessions">เซสชันที่เปิดอยู่</string>
+    <string name="workspace_sessions_count">เซสชัน · %1$d</string>
+    <string name="workspace_session_hint">เปิดเครื่องมือได้สูงสุดสองรายการ Shell จะสิ้นสุดหากการเชื่อมต่อขาด</string>
+    <string name="workspace_empty">ไม่มีเซสชันที่เปิดอยู่</string>
+    <string name="workspace_switch">สลับไปที่</string>
+    <string name="workspace_close_explanation">ปิดเซสชันบน %1$s หรือไม่ การถ่ายโอนที่กำลังทำงานจะหยุด</string>
+    <string name="workspace_ended">เซสชันก่อนหน้าสิ้นสุดแล้ว ระบบกู้คืนสิ่งที่คุณเลือก แต่ไม่ได้กู้คืนการเชื่อมต่อและ Shell</string>
+    <string name="workspace_reopen">เปิดเซสชันใหม่</string>
+    <string name="workspace_minimize">เก็บเซสชันและกลับไปที่อุปกรณ์</string>
+    <string name="workspace_system">ระบบ</string>
+    <string name="workspace_help">ช่วยเหลือและงาน</string>
+    <string name="workspace_cached_info">ข้อมูลระบบเป็นข้อมูลที่เอเจนต์รายงานล่าสุด บริการและโพรเซสต้องใช้ Mobile Companion บนเซิร์ฟเวอร์</string>
+    <string name="workspace_management_failed">ไม่สามารถตรวจสอบผลลัพธ์ได้ ตรวจสอบสิทธิ์การเข้าถึงและประวัติงานของเซิร์ฟเวอร์ก่อนลองอีกครั้ง</string>
+    <string name="workspace_service_verified">อ่านสถานะบริการอีกครั้งหลังการดำเนินการแล้ว</string>
+    <string name="workspace_power_pending">ส่งคำขอแล้ว กำลังรอการเปลี่ยนแปลงการเชื่อมต่อของเอเจนต์ การยอมรับไม่ได้ยืนยันว่าดำเนินการแล้ว</string>
+    <string name="workspace_power_reconnected">เอเจนต์ขาดการเชื่อมต่อและเชื่อมต่อใหม่ สิ่งนี้ยืนยันว่าการเชื่อมต่อกลับมา ไม่ได้ยืนยันสาเหตุของการเริ่มใหม่</string>
+    <string name="workspace_power_offline">เอเจนต์ออฟไลน์ ไม่สามารถแยกความแตกต่างระหว่างเครือข่ายขัดข้องกับการปิดเครื่อง</string>
+    <string name="workspace_power_unknown">ไม่พบการเปลี่ยนแปลงการเชื่อมต่อ ไม่ได้รับการยืนยันการดำเนินการ</string>
+    <string name="workspace_share_unreadable">ไม่มีไฟล์ที่แชร์ซึ่งอ่านได้ แชร์ไฟล์สูงสุด 20 ไฟล์ด้วยสิทธิ์อ่าน</string>
+    <string name="workspace_queue_rejected">ปลายทางเปลี่ยนหรือคิวเต็ม ตรวจสอบโฟลเดอร์และลองอีกครั้ง</string>
+    <string name="workspace_transfer_channel">การถ่ายโอนไฟล์</string>
+    <string name="workspace_transfers_finished">การถ่ายโอนไฟล์หยุดแล้ว</string>
+    <string name="workspace_transfers_active">กำลังถ่ายโอนไฟล์</string>
+    <string name="workspace_transfer_open_details">เปิดแอปเพื่อตรวจสอบการถ่ายโอนที่เสร็จสิ้น ล้มเหลว และยกเลิกแล้ว</string>
+    <string name="workspace_choose_folder">เลือกโฟลเดอร์สำหรับไฟล์ที่แชร์ %1$d ไฟล์</string>
+    <string name="workspace_send_here">ส่งไปยังโฟลเดอร์นี้</string>
+    <string name="workspace_confirm_share">ยืนยันการถ่ายโอนไฟล์</string>
+    <string name="workspace_share_overwrite">ไฟล์ชื่อเดียวกันจะถูกเขียนทับ การถ่ายโอนที่ล้มเหลวอาจเหลือไฟล์ที่ไม่สมบูรณ์ การลองใหม่จะเริ่มจากต้น หาก Android หยุดแอป ให้แชร์ไฟล์อีกครั้ง</string>
+    <string name="workspace_background_unavailable">Android ไม่อนุญาตให้เริ่มบริการถ่ายโอน เปิดแอปอีกครั้งและลองใหม่</string>
+    <string name="workspace_transfers_count">การถ่ายโอน · %1$d</string>
+    <string name="workspace_share_destination">ไฟล์ %1$d ไฟล์พร้อมแล้ว เลือกคอมพิวเตอร์ จากนั้นเปิดไฟล์หรือ SFTP</string>
+    <string name="workspace_signing_out">กำลังออกจากระบบและปิดใช้งานเหตุการณ์เบื้องหลัง…</string>
+    <string name="workspace_tools">เครื่องมือ</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">ظاہری شکل</string>
+    <string name="settings_appearance_subtitle">تھیم اور سسٹم کے رنگ</string>
+    <string name="settings_theme_system">سسٹم</string>
+    <string name="settings_theme_light">روشن</string>
+    <string name="settings_theme_dark">گہرا</string>
+    <string name="settings_dynamic_colors">سسٹم کے رنگ</string>
+    <string name="settings_dynamic_colors_supporting">سطحوں کے لیے وال پیپر کے رنگ استعمال کریں۔ رابطے اور سیکیورٹی کے رنگ مستقل رہتے ہیں۔</string>
+</resources>

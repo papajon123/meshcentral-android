@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">サーバープロファイルは最大 %1$d 個まで保持できます。</string>
+    <string name="workspace_profile_error">このプロファイルを変更できませんでした。名前を確認して再試行してください。</string>
+    <string name="workspace_profiles_action">サーバープロファイル</string>
+    <string name="workspace_capacity">2 つのセッションがすでに開いています。1 つ閉じてからもう 1 つを開いてください。</string>
+    <string name="workspace_desktop_limit">デスクトップがすでに開いています。別のデスクトップを開く前に閉じてください。</string>
+    <string name="workspace_sessions">開いているセッション</string>
+    <string name="workspace_sessions_count">セッション · %1$d</string>
+    <string name="workspace_session_hint">最大 2 つのツールを開いたままにできます。接続が失われるとシェルは終了します。</string>
+    <string name="workspace_empty">開いているセッションはありません</string>
+    <string name="workspace_switch">切り替え先</string>
+    <string name="workspace_close_explanation">%1$s のセッションを閉じますか？進行中の転送は停止します。</string>
+    <string name="workspace_ended">前のセッションは終了しました。選択内容は復元されましたが、接続とシェルは復元されていません。</string>
+    <string name="workspace_reopen">新しいセッションを開く</string>
+    <string name="workspace_minimize">セッションを保持してデバイスに戻る</string>
+    <string name="workspace_system">システム</string>
+    <string name="workspace_help">ヘルプとジョブ</string>
+    <string name="workspace_cached_info">システム情報はエージェントが最後に報告したものです。サービスとプロセスにはサーバー上の Mobile Companion が必要です。</string>
+    <string name="workspace_management_failed">結果を検証できませんでした。再試行する前に、アクセス権とサーバーのジョブ履歴を確認してください。</string>
+    <string name="workspace_service_verified">操作後にサービスの状態を再度読み取りました。</string>
+    <string name="workspace_power_pending">要求を送信しました。エージェントの接続状態の変化を待っています。要求が受け入れられても実行が確認されたわけではありません。</string>
+    <string name="workspace_power_reconnected">エージェントが切断され、再接続しました。これは接続の回復を確認するもので、再起動の原因を確認するものではありません。</string>
+    <string name="workspace_power_offline">エージェントはオフラインです。ネットワーク中断とシャットダウンを区別できません。</string>
+    <string name="workspace_power_unknown">接続状態の変化は確認されませんでした。操作は確認されていません。</string>
+    <string name="workspace_share_unreadable">読み取り可能な共有ファイルがありません。読み取りアクセスを持つファイルを最大 20 個共有してください。</string>
+    <string name="workspace_queue_rejected">保存先が変更されたか、キューがいっぱいです。フォルダーを確認して再試行してください。</string>
+    <string name="workspace_transfer_channel">ファイル転送</string>
+    <string name="workspace_transfers_finished">ファイル転送が停止しました</string>
+    <string name="workspace_transfers_active">ファイルを転送中</string>
+    <string name="workspace_transfer_open_details">アプリを開いて、完了、失敗、キャンセルされた転送を確認してください。</string>
+    <string name="workspace_choose_folder">%1$d 個の共有ファイルの保存先フォルダーを選択してください。</string>
+    <string name="workspace_send_here">このフォルダーに送信</string>
+    <string name="workspace_confirm_share">ファイル転送を確認</string>
+    <string name="workspace_share_overwrite">同名のファイルは上書きされます。転送に失敗すると不完全なファイルが残る可能性があります。再試行は最初からやり直されます。Android がアプリを停止した場合は、ファイルを再度共有してください。</string>
+    <string name="workspace_background_unavailable">Android が転送サービスの開始を許可しませんでした。アプリを開き直して再試行してください。</string>
+    <string name="workspace_transfers_count">転送 · %1$d</string>
+    <string name="workspace_share_destination">%1$d 個のファイルの準備ができました。コンピューターを選択してから、「ファイル」または SFTP を開いてください。</string>
+    <string name="workspace_signing_out">ログアウトしてバックグラウンドイベントを無効にしています…</string>
+    <string name="workspace_tools">ツール</string>
+</resources>

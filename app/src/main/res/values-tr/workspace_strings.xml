@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workspace_profile_limit">En fazla %1$d sunucu profili tutabilirsiniz.</string>
+    <string name="workspace_profile_error">Bu profil değiştirilemedi. Adı kontrol edip yeniden deneyin.</string>
+    <string name="workspace_profiles_action">Sunucu profilleri</string>
+    <string name="workspace_capacity">Zaten iki oturum açık. Başka bir oturum açmadan önce birini kapatın.</string>
+    <string name="workspace_desktop_limit">Zaten bir masaüstü açık. Başka bir masaüstü açmadan önce onu kapatın.</string>
+    <string name="workspace_sessions">Açık oturumlar</string>
+    <string name="workspace_sessions_count">Oturumlar · %1$d</string>
+    <string name="workspace_session_hint">En fazla iki aracı açık tutun. Bağlantı kaybolursa kabuk sona erer.</string>
+    <string name="workspace_empty">Açık oturum yok</string>
+    <string name="workspace_switch">Şuna geç</string>
+    <string name="workspace_close_explanation">%1$s üzerindeki oturum kapatılsın mı? Etkin herhangi bir aktarım duracak.</string>
+    <string name="workspace_ended">Önceki oturum sona erdi. Seçiminiz geri yüklendi, ancak bağlantı ve kabuk geri yüklenmedi.</string>
+    <string name="workspace_reopen">Yeni oturum aç</string>
+    <string name="workspace_minimize">Oturumu koru ve cihazlara dön</string>
+    <string name="workspace_system">Sistem</string>
+    <string name="workspace_help">Yardım ve işler</string>
+    <string name="workspace_cached_info">Sistem bilgileri en son aracı tarafından bildirildi. Hizmetler ve süreçler sunucuda Mobile Companion gerektirir.</string>
+    <string name="workspace_management_failed">Sonuç doğrulanamadı. Yeniden denemeden önce erişimi ve sunucu iş geçmişini kontrol edin.</string>
+    <string name="workspace_service_verified">Hizmet durumu işlemden sonra yeniden okundu.</string>
+    <string name="workspace_power_pending">İstek gönderildi. Aracı bağlantısında bir değişiklik bekleniyor; kabul, yürütmeyi doğrulamaz.</string>
+    <string name="workspace_power_reconnected">Aracı bağlantısı kesildi ve yeniden kuruldu. Bu, bağlantının geri geldiğini doğrular, yeniden başlatmanın nedenini değil.</string>
+    <string name="workspace_power_offline">Aracı çevrimdışı. Ağ kesintisi ile kapatma ayırt edilemez.</string>
+    <string name="workspace_power_unknown">Bağlantı değişikliği gözlenmedi. İşlem doğrulanmadı.</string>
+    <string name="workspace_share_unreadable">Okunabilir paylaşılan dosya yok. Okuma erişimiyle en fazla 20 dosya paylaşın.</string>
+    <string name="workspace_queue_rejected">Hedef değişti veya kuyruk dolu. Klasörü kontrol edip yeniden deneyin.</string>
+    <string name="workspace_transfer_channel">Dosya aktarımları</string>
+    <string name="workspace_transfers_finished">Dosya aktarımları durdu</string>
+    <string name="workspace_transfers_active">Dosyalar aktarılıyor</string>
+    <string name="workspace_transfer_open_details">Tamamlanan, başarısız ve iptal edilen aktarımları kontrol etmek için uygulamayı açın.</string>
+    <string name="workspace_choose_folder">%1$d paylaşılan dosya için bir klasör seçin.</string>
+    <string name="workspace_send_here">Bu klasöre gönder</string>
+    <string name="workspace_confirm_share">Dosya aktarımını onayla</string>
+    <string name="workspace_share_overwrite">Aynı ada sahip dosyaların üzerine yazılacak. Başarısız bir aktarım kısmi bir dosya bırakabilir. Yeniden deneme baştan başlar. Android uygulamayı durdurursa dosyaları yeniden paylaşın.</string>
+    <string name="workspace_background_unavailable">Android aktarım hizmetinin başlatılmasına izin vermedi. Uygulamayı yeniden açıp tekrar deneyin.</string>
+    <string name="workspace_transfers_count">Aktarımlar · %1$d</string>
+    <string name="workspace_share_destination">%1$d dosya hazır. Bir bilgisayar seçin, ardından Dosyalar veya SFTP’yi açın.</string>
+    <string name="workspace_signing_out">Çıkış yapılıyor ve arka plan olayları devre dışı bırakılıyor…</string>
+    <string name="workspace_tools">Araçlar</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">సర్వర్ ప్రొఫైల్‌లు</string>
+    <string name="profile_sheet_subtitle">ఈ యాప్ ఉపయోగించే MeshCentral సర్వర్‌ను ఎంచుకోండి.</string>
+    <string name="profile_close">సర్వర్ ప్రొఫైల్‌లను మూసివేయండి</string>
+    <string name="profile_add">ప్రొఫైల్ జోడించండి</string>
+    <string name="profile_add_title">ప్రొఫైల్ జోడించండి</string>
+    <string name="profile_add_subtitle">మరో MeshCentral సర్వర్‌లో సైన్ ఇన్ చేయండి. ఈ ప్రొఫైల్ దాని స్వంత ఆధారాలు మరియు ఇష్టమైనవి ఉంచుతుంది.</string>
+    <string name="profile_back">ప్రొఫైల్‌లకు తిరిగి</string>
+    <string name="profile_name_label">ప్రొఫైల్ పేరు</string>
+    <string name="profile_name_placeholder">ఉదాహరణకు, ఇంటి సర్వర్</string>
+    <string name="profile_url_label">సర్వర్ చిరునామా</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">ప్రొఫైల్ పేరును నమోదు చేయండి.</string>
+    <string name="profile_url_required">సర్వర్ చిరునామాను నమోదు చేయండి.</string>
+    <string name="profile_submit">ప్రొఫైల్ జోడించండి</string>
+    <string name="profile_active">యాక్టివ్</string>
+    <string name="profile_select">ఉపయోగించండి</string>
+    <string name="profile_active_description">యాక్టివ్ ప్రొఫైల్: %1$s</string>
+    <string name="profile_select_description">ప్రొఫైల్ %1$s ఉపయోగించండి</string>
+    <string name="profile_actions_description">ప్రొఫైల్ %1$s కోసం చర్యలు</string>
+    <string name="profile_rename">పేరు మార్చండి</string>
+    <string name="profile_delete">తొలగించండి</string>
+    <string name="profile_rename_title">ప్రొఫైల్ పేరు మార్చండి</string>
+    <string name="profile_rename_save">సేవ్ చేయండి</string>
+    <string name="profile_cancel">రద్దు</string>
+    <string name="profile_delete_title">“%1$s” తొలగించాలా?</string>
+    <string name="profile_delete_message">ఈ ప్రొఫైల్ యొక్క నిల్వ చేసిన సైన్-ఇన్ ఆధారాలు మరియు ఇష్టమైనవి ఈ పరికరం నుండి తీసివేయబడతాయి. ఇతర ప్రొఫైల్‌లు మారవు.</string>
+    <string name="profile_delete_confirm">తొలగించండి</string>
+    <string name="profile_last_cannot_delete">చివరి ప్రొఫైల్‌ను తొలగించలేరు.</string>
+    <string name="profile_empty_title">సర్వర్ ప్రొఫైల్‌లు లేవు</string>
+    <string name="profile_empty_description">MeshCentralకు కనెక్ట్ కావడానికి సర్వర్ జోడించండి.</string>
+    <string name="profile_unnamed">పేరులేని ప్రొఫైల్</string>
+</resources>

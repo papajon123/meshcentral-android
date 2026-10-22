@@ -4,6 +4,8 @@ import android.hardware.biometrics.BiometricPrompt
 import android.os.Build
 import android.os.Bundle
 import android.os.CancellationSignal
+import android.content.Intent
+import ru.papajon.meshcentralmobile.workspace.ConnectionWorkspace
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
@@ -25,16 +27,14 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
-            navigationBarStyle = SystemBarStyle.dark(android.graphics.Color.TRANSPARENT),
-        )
+        enableEdgeToEdge()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) window.isNavigationBarContrastEnforced = false
 
         settingsRepository = SettingsRepository(applicationContext)
         secureVault = SecureVault(applicationContext)
         appLockController = AppLockController(settingsRepository, secureVault)
         applyScreenshotBlocking(settingsRepository.getSettings().blockScreenshots)
+        if (savedInstanceState == null) intent?.let { ConnectionWorkspace.get(application).acceptShare(it) }
 
         setContent {
             MeshCentralMobileTheme {
@@ -55,6 +55,12 @@ class MainActivity : ComponentActivity() {
         if (::appLockController.isInitialized) {
             appLockController.onAppForegrounded()
         }
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        ConnectionWorkspace.get(application).acceptShare(intent)
     }
 
     override fun onStop() {

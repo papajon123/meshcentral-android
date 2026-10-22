@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">صف بارگذاری</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">صف بارگذاری به پوشه‌ای متصل نیست.</string>
+    <string name="transfer_queue_empty">هیچ بارگذاری‌ای در صف نیست.</string>
+    <string name="transfer_queue_root">ریشه رایانه</string>
+
+    <string name="transfer_status_queued">در صف</string>
+    <string name="transfer_status_active">در حال بارگذاری</string>
+    <string name="transfer_status_succeeded">تأییدشده</string>
+    <string name="transfer_status_failed">ناموفق</string>
+    <string name="transfer_status_cancelled">لغوشده</string>
+
+    <string name="transfer_progress">%1$d بایت</string>
+    <string name="transfer_progress_size">%1$d از %2$d بایت</string>
+    <string name="transfer_cancel">لغو</string>
+    <string name="transfer_cancel_all">لغو همه</string>
+    <string name="transfer_retry">تلاش دوباره</string>
+    <string name="transfer_clear_finished">پاک کردن پایان‌یافته‌ها</string>
+    <string name="transfer_close">بستن</string>
+    <string name="transfer_retry_title">بارگذاری دوباره؟</string>
+    <string name="transfer_retry_warning">بارگذاری از ابتدا دوباره آغاز می‌شود. فایل راه دور موجود با این نام جایگزین می‌شود و اگر این تلاش قطع شود ممکن است ناقص بماند. پیش از ادامه تأیید کنید.</string>
+    <string name="transfer_partial_remote">ممکن است فایل راه دور ناقص یا جایگزین‌شده باقی بماند. پیش از تلاش دوباره آن را بررسی کنید.</string>
+    <string name="transfer_upload_failed">بارگذاری با خطای غیرمنتظره متوقف شد. نشست پایان یافت؛ پیش از تلاش دوباره فایل راه دور را بررسی کنید.</string>
+
+    <string name="transfer_shared_file_fallback">فایل اشتراکی %1$d</string>
+    <string name="transfer_error_closed">نشست فایل بسته است. «فایل‌ها» را دوباره باز کنید.</string>
+    <string name="transfer_error_content_uri">فقط URIs محتوایی از اشتراک یا انتخاب‌گر باز کردن Android را می‌توان در صف گذاشت.</string>
+    <string name="transfer_error_path_changed">پوشه پیش از آغاز این بارگذاری تغییر کرد. چیزی برای این فایل ارسال نشد؛ بازگردید و آن را دوباره در صف بگذارید.</string>
+    <string name="transfer_error_busy">عملیات فایل دیگری در جریان است. پیش از افزودن موارد بیشتر به صف، منتظر پایان آن بمانید.</string>
+    <string name="transfer_error_stream">محتوای انتخاب‌شده باز نشد. ممکن است مجوز اشتراک منقضی شده باشد.</string>
+</resources>

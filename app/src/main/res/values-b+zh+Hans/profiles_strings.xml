@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">服务器配置</string>
+    <string name="profile_sheet_subtitle">选择此应用使用的 MeshCentral 服务器。</string>
+    <string name="profile_close">关闭服务器配置</string>
+    <string name="profile_add">添加配置</string>
+    <string name="profile_add_title">添加配置</string>
+    <string name="profile_add_subtitle">登录另一台 MeshCentral 服务器。此配置会保留自己的凭据和收藏。</string>
+    <string name="profile_back">返回配置列表</string>
+    <string name="profile_name_label">配置名称</string>
+    <string name="profile_name_placeholder">例如：家庭服务器</string>
+    <string name="profile_url_label">服务器地址</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">请输入配置名称。</string>
+    <string name="profile_url_required">请输入服务器地址。</string>
+    <string name="profile_submit">添加配置</string>
+    <string name="profile_active">当前</string>
+    <string name="profile_select">使用</string>
+    <string name="profile_active_description">当前配置：%1$s</string>
+    <string name="profile_select_description">使用配置 %1$s</string>
+    <string name="profile_actions_description">%1$s 的配置操作</string>
+    <string name="profile_rename">重命名</string>
+    <string name="profile_delete">删除</string>
+    <string name="profile_rename_title">重命名配置</string>
+    <string name="profile_rename_save">保存</string>
+    <string name="profile_cancel">取消</string>
+    <string name="profile_delete_title">删除“%1$s”？</string>
+    <string name="profile_delete_message">此配置保存的登录凭据和收藏将从此设备移除。其他配置不受影响。</string>
+    <string name="profile_delete_confirm">删除</string>
+    <string name="profile_last_cannot_delete">最后一个配置无法删除。</string>
+    <string name="profile_empty_title">没有服务器配置</string>
+    <string name="profile_empty_description">添加服务器以连接 MeshCentral。</string>
+    <string name="profile_unnamed">未命名配置</string>
+</resources>

@@ -21,7 +21,7 @@ def resource_directory(tag):
 
 
 def read_catalog(directory):
-    result, shared = {}, set()
+    result, shared, literal = {}, set(), set()
     for path in sorted(directory.glob('*.xml')):
         for element in ET.parse(path).getroot():
             if element.tag != 'string':
@@ -32,7 +32,9 @@ def read_catalog(directory):
             result[name] = ''.join(element.itertext())
             if element.attrib.get('translatable') == 'false':
                 shared.add(name)
-    return result, shared
+            if element.attrib.get('formatted') == 'false':
+                literal.add(name)
+    return result, shared, literal
 
 
 def tokens(value):
@@ -47,19 +49,30 @@ def tokens(value):
     return Counter(found)
 
 
+def check_format(base, translated, base_literal, translated_literal):
+    # Android explicitly disables Formatter for formatted="false" strings. A literal 90% is
+    # correct there; forcing %% would change what getString(id) displays to the user.
+    if base_literal != translated_literal:
+        return 'formatted attribute differs'
+    if not base_literal and tokens(base) != tokens(translated):
+        return 'format placeholders differ'
+    return None
+
+
 def main():
     tags = [entry.attrib[ANDROID + 'name'] for entry in ET.parse(RES / 'xml/locales_config.xml').getroot()]
     if len(tags) != len(set(tags)) or set(tags) != EXPECTED_LOCALES:
         raise ValueError('Locale configuration differs from the declared 22-language / 23-locale contract')
-    base, shared = read_catalog(RES / 'values')
+    base, shared, literal = read_catalog(RES / 'values')
     expected = set(base) - shared
     errors = []
     for tag in tags:
         if tag == 'en':
             continue
-        localized, localized_shared = read_catalog(RES / resource_directory(tag))
-        if set(localized) != expected:
-            errors.append(f'{tag}: missing={sorted(expected - set(localized))}, extra={sorted(set(localized) - expected)}')
+        localized, localized_shared, localized_literal = read_catalog(RES / resource_directory(tag))
+        required = expected
+        if not required <= set(localized) or set(localized) - expected:
+            errors.append(f'{tag}: missing={sorted(required - set(localized))}, extra={sorted(set(localized) - expected)}')
         if localized_shared:
             errors.append(f'{tag}: non-translatable strings must be inherited from the default')
         for key in expected & set(localized):
@@ -67,8 +80,9 @@ def main():
             if not text.strip():
                 errors.append(f'{tag}/{key}: empty translation')
             try:
-                if tokens(base[key]) != tokens(text):
-                    errors.append(f'{tag}/{key}: format placeholders differ')
+                problem = check_format(base[key], text, key in literal, key in localized_literal)
+                if problem:
+                    errors.append(f'{tag}/{key}: {problem}')
             except ValueError as error:
                 errors.append(f'{tag}/{key}: {error}')
             if tag != 'ru' and re.search('[А-Яа-яЁё]', text):

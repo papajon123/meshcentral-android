@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">می‌توانید حداکثر %1$d نمایه سرور نگه دارید.</string>
+    <string name="workspace_profile_error">این نمایه تغییر نکرد. نام را بررسی و دوباره تلاش کنید.</string>
+    <string name="workspace_profiles_action">نمایه‌های سرور</string>
+    <string name="workspace_capacity">دو نشست از قبل باز است. پیش از باز کردن یکی دیگر، یکی را ببندید.</string>
+    <string name="workspace_desktop_limit">یک میزکار از قبل باز است. پیش از باز کردن میزکار دیگر آن را ببندید.</string>
+    <string name="workspace_sessions">نشست‌های باز</string>
+    <string name="workspace_sessions_count">نشست‌ها · %1$d</string>
+    <string name="workspace_session_hint">حداکثر دو ابزار را باز نگه دارید. اگر اتصال یک پوسته قطع شود، آن پوسته پایان می‌یابد.</string>
+    <string name="workspace_empty">هیچ نشست بازی نیست</string>
+    <string name="workspace_switch">تغییر به</string>
+    <string name="workspace_close_explanation">نشست روی %1$s بسته شود؟ هر انتقال فعالی متوقف می‌شود.</string>
+    <string name="workspace_ended">نشست قبلی پایان یافت. انتخاب شما بازیابی شد؛ اتصال و پوسته بازیابی نشدند.</string>
+    <string name="workspace_reopen">باز کردن نشست تازه</string>
+    <string name="workspace_minimize">نگه داشتن نشست و بازگشت به دستگاه‌ها</string>
+    <string name="workspace_system">سیستم</string>
+    <string name="workspace_help">راهنما و کارها</string>
+    <string name="workspace_cached_info">اطلاعات سیستم آخرین بار توسط عامل گزارش شد. سرویس‌ها و فرایندها به Mobile Companion روی سرور نیاز دارند.</string>
+    <string name="workspace_management_failed">نتیجه تأیید نشد. پیش از تلاش دوباره دسترسی و تاریخچه کارهای سرور را بررسی کنید.</string>
+    <string name="workspace_service_verified">وضعیت سرویس پس از اقدام دوباره خوانده شد.</string>
+    <string name="workspace_power_pending">درخواست فرستاده شد. در انتظار تغییری در اتصال عامل؛ پذیرش اجرا را تأیید نمی‌کند.</string>
+    <string name="workspace_power_reconnected">عامل قطع و دوباره متصل شد. این بازیابی اتصال را تأیید می‌کند نه علت راه‌اندازی مجدد را.</string>
+    <string name="workspace_power_offline">عامل آفلاین است. نمی‌توان قطعی شبکه را از خاموش شدن تشخیص داد.</string>
+    <string name="workspace_power_unknown">هیچ تغییری در اتصال مشاهده نشد. اقدام تأیید نشده است.</string>
+    <string name="workspace_share_unreadable">هیچ فایل اشتراکی خواندنی‌ای نیست. حداکثر 20 فایل را با دسترسی خواندن به اشتراک بگذارید.</string>
+    <string name="workspace_queue_rejected">مقصد تغییر کرد یا صف پر است. پوشه را بررسی و دوباره تلاش کنید.</string>
+    <string name="workspace_transfer_channel">انتقال فایل‌ها</string>
+    <string name="workspace_transfers_finished">انتقال فایل‌ها متوقف شد</string>
+    <string name="workspace_transfers_active">در حال انتقال فایل‌ها</string>
+    <string name="workspace_transfer_open_details">برای بررسی انتقال‌های تکمیل‌شده، ناموفق و لغوشده برنامه را باز کنید.</string>
+    <string name="workspace_choose_folder">برای %1$d فایل اشتراکی یک پوشه انتخاب کنید.</string>
+    <string name="workspace_send_here">ارسال به این پوشه</string>
+    <string name="workspace_confirm_share">تأیید انتقال فایل</string>
+    <string name="workspace_share_overwrite">فایل‌های هم‌نام جایگزین می‌شوند. انتقال ناموفق ممکن است فایل ناقصی باقی بگذارد. تلاش دوباره از ابتدا آغاز می‌شود. اگر Android برنامه را متوقف کند، فایل‌ها را دوباره به اشتراک بگذارید.</string>
+    <string name="workspace_background_unavailable">Android اجازه نداد سرویس انتقال آغاز شود. برنامه را دوباره باز کنید و تلاش کنید.</string>
+    <string name="workspace_transfers_count">انتقال‌ها · %1$d</string>
+    <string name="workspace_share_destination">%1$d فایل آماده است. یک رایانه انتخاب کنید، سپس «فایل‌ها» یا SFTP را باز کنید.</string>
+    <string name="workspace_tools">ابزارها</string>
+    <string name="workspace_signing_out">در حال خروج و غیرفعال‌کردن رویدادهای پس‌زمینه…</string>
+</resources>

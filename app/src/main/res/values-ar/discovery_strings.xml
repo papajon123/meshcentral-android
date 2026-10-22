@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">البحث في أجهزة الكمبيوتر</string>
+    <string name="browser_search_hint">الاسم أو المجموعة أو العنوان أو نظام التشغيل</string>
+    <string name="browser_search_clear">مسح البحث</string>
+    <string name="browser_filter_recent">الأخيرة</string>
+    <string name="browser_recent_clear">مسح الأخيرة</string>
+    <string name="browser_search_empty_title">لا توجد أجهزة كمبيوتر مطابقة</string>
+    <string name="browser_search_empty_description">جرّب اسمًا أو مجموعة أو عنوانًا أو نظام تشغيل مختلفًا.</string>
+    <string name="browser_filter_empty_title">لا توجد أجهزة كمبيوتر في هذا المرشح</string>
+    <string name="browser_filter_empty_description">اختر مرشحًا آخر أو امسح البحث.</string>
+    <string name="browser_recent_empty_title">لا توجد أجهزة كمبيوتر أخيرة</string>
+    <string name="browser_recent_empty_description">ستظهر هنا أجهزة الكمبيوتر التي تفتحها.</string>
+    <string name="browser_favorites_empty_title">لا توجد مفضلة بعد</string>
+    <string name="browser_favorites_empty_description">أضف جهاز كمبيوتر إلى المفضلة للعثور عليه هنا.</string>
+</resources>

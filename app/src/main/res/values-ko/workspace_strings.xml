@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">서버 프로필을 최대 %1$d개까지 보관할 수 있습니다.</string>
+    <string name="workspace_profile_error">이 프로필을 변경하지 못했습니다. 이름을 확인하고 다시 시도하세요.</string>
+    <string name="workspace_profiles_action">서버 프로필</string>
+    <string name="workspace_capacity">세션이 이미 두 개 열려 있습니다. 하나를 닫은 후 다른 세션을 여세요.</string>
+    <string name="workspace_desktop_limit">데스크톱이 이미 열려 있습니다. 다른 데스크톱을 열기 전에 닫으세요.</string>
+    <string name="workspace_sessions">열린 세션</string>
+    <string name="workspace_sessions_count">세션 · %1$d</string>
+    <string name="workspace_session_hint">도구를 최대 두 개까지 열어 둘 수 있습니다. 연결이 끊어지면 셸이 종료됩니다.</string>
+    <string name="workspace_empty">열린 세션이 없습니다</string>
+    <string name="workspace_switch">전환 대상</string>
+    <string name="workspace_close_explanation">%1$s의 세션을 닫을까요? 진행 중인 전송이 중지됩니다.</string>
+    <string name="workspace_ended">이전 세션이 종료되었습니다. 선택 항목은 복원되었지만 연결과 셸은 복원되지 않았습니다.</string>
+    <string name="workspace_reopen">새 세션 열기</string>
+    <string name="workspace_minimize">세션을 유지하고 기기로 돌아가기</string>
+    <string name="workspace_system">시스템</string>
+    <string name="workspace_help">도움말 및 작업</string>
+    <string name="workspace_cached_info">시스템 정보는 에이전트가 마지막으로 보고한 내용입니다. 서비스와 프로세스에는 서버의 Mobile Companion이 필요합니다.</string>
+    <string name="workspace_management_failed">결과를 확인하지 못했습니다. 다시 시도하기 전에 액세스 권한과 서버 작업 기록을 확인하세요.</string>
+    <string name="workspace_service_verified">작업 후 서비스 상태를 다시 읽었습니다.</string>
+    <string name="workspace_power_pending">요청을 보냈습니다. 에이전트 연결 상태 변화를 기다리는 중입니다. 요청이 수락되었다고 해서 실행이 확인된 것은 아닙니다.</string>
+    <string name="workspace_power_reconnected">에이전트 연결이 끊겼다가 다시 연결되었습니다. 이는 연결 복구를 확인하며 다시 시작한 원인을 확인하는 것은 아닙니다.</string>
+    <string name="workspace_power_offline">에이전트가 오프라인입니다. 네트워크 중단과 종료를 구분할 수 없습니다.</string>
+    <string name="workspace_power_unknown">연결 상태 변화가 관찰되지 않았습니다. 작업이 확인되지 않았습니다.</string>
+    <string name="workspace_share_unreadable">읽을 수 있는 공유 파일이 없습니다. 읽기 액세스 권한이 있는 파일을 최대 20개까지 공유하세요.</string>
+    <string name="workspace_queue_rejected">대상이 변경되었거나 대기열이 가득 찼습니다. 폴더를 확인하고 다시 시도하세요.</string>
+    <string name="workspace_transfer_channel">파일 전송</string>
+    <string name="workspace_transfers_finished">파일 전송 중지됨</string>
+    <string name="workspace_transfers_active">파일 전송 중</string>
+    <string name="workspace_transfer_open_details">앱을 열어 완료, 실패, 취소된 전송을 확인하세요.</string>
+    <string name="workspace_choose_folder">공유 파일 %1$d개에 사용할 폴더를 선택하세요.</string>
+    <string name="workspace_send_here">이 폴더로 보내기</string>
+    <string name="workspace_confirm_share">파일 전송 확인</string>
+    <string name="workspace_share_overwrite">같은 이름의 파일은 덮어쓰여집니다. 전송에 실패하면 파일이 일부만 남을 수 있습니다. 다시 시도하면 처음부터 시작됩니다. Android가 앱을 중지하면 파일을 다시 공유하세요.</string>
+    <string name="workspace_background_unavailable">Android에서 전송 서비스 시작을 허용하지 않았습니다. 앱을 다시 열고 시도하세요.</string>
+    <string name="workspace_transfers_count">전송 · %1$d</string>
+    <string name="workspace_share_destination">%1$d개 파일이 준비되었습니다. 컴퓨터를 선택한 다음 파일 또는 SFTP를 여세요.</string>
+    <string name="workspace_signing_out">로그아웃하고 백그라운드 이벤트를 비활성화하는 중…</string>
+    <string name="workspace_tools">도구</string>
+</resources>

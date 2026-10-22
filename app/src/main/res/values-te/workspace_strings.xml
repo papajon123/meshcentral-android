@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">మీరు గరిష్ఠంగా %1$d సర్వర్ ప్రొఫైల్‌లు ఉంచవచ్చు.</string>
+    <string name="workspace_profile_error">ఈ ప్రొఫైల్‌ను మార్చలేకపోయాం. పేరును తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="workspace_profiles_action">సర్వర్ ప్రొఫైల్‌లు</string>
+    <string name="workspace_capacity">ఇప్పటికే రెండు సెషన్లు తెరిచి ఉన్నాయి. మరొకటి తెరిచే ముందు ఒకటి మూసివేయండి.</string>
+    <string name="workspace_desktop_limit">ఒక డెస్క్‌టాప్ ఇప్పటికే తెరిచి ఉంది. మరొకటి తెరిచే ముందు దాన్ని మూసివేయండి.</string>
+    <string name="workspace_sessions">తెరిచిన సెషన్లు</string>
+    <string name="workspace_sessions_count">సెషన్లు · %1$d</string>
+    <string name="workspace_session_hint">గరిష్ఠంగా రెండు సాధనాలు తెరిచి ఉంచండి. కనెక్షన్ పోతే షెల్ ముగుస్తుంది.</string>
+    <string name="workspace_empty">తెరిచిన సెషన్లు లేవు</string>
+    <string name="workspace_switch">దీనికి మారండి</string>
+    <string name="workspace_close_explanation">%1$sలో సెషన్‌ను మూసివేయాలా? ఏదైనా యాక్టివ్ బదిలీ ఆగిపోతుంది.</string>
+    <string name="workspace_ended">మునుపటి సెషన్ ముగిసింది. మీ ఎంపిక పునరుద్ధరించబడింది; కనెక్షన్ మరియు షెల్ పునరుద్ధరించబడలేదు.</string>
+    <string name="workspace_reopen">కొత్త సెషన్ తెరవండి</string>
+    <string name="workspace_minimize">సెషన్ ఉంచి పరికరాలకు తిరిగి వెళ్లండి</string>
+    <string name="workspace_system">సిస్టమ్</string>
+    <string name="workspace_help">సహాయం మరియు పనులు</string>
+    <string name="workspace_cached_info">సిస్టమ్ సమాచారాన్ని చివరిగా ఏజెంట్ నివేదించింది. సేవలు మరియు ప్రక్రియలకు సర్వర్‌లో Mobile Companion అవసరం.</string>
+    <string name="workspace_management_failed">ఫలితాన్ని ధృవీకరించలేకపోయాం. మళ్లీ ప్రయత్నించే ముందు యాక్సెస్ మరియు సర్వర్ పని చరిత్రను తనిఖీ చేయండి.</string>
+    <string name="workspace_service_verified">చర్య తర్వాత సేవ స్థితి మళ్లీ చదవబడింది.</string>
+    <string name="workspace_power_pending">అభ్యర్థన పంపబడింది. ఏజెంట్ కనెక్టివిటీలో మార్పు కోసం వేచి ఉంది; ఆమోదం అమలును నిర్ధారించదు.</string>
+    <string name="workspace_power_reconnected">ఏజెంట్ డిస్‌కనెక్ట్ అయి మళ్లీ కనెక్ట్ అయింది. ఇది కనెక్టివిటీ పునరుద్ధరణను నిర్ధారిస్తుంది, పునఃప్రారంభ కారణాన్ని కాదు.</string>
+    <string name="workspace_power_offline">ఏజెంట్ ఆఫ్‌లైన్‌లో ఉంది. నెట్‌వర్క్ అంతరాయాన్ని ఆఫ్ అవ్వడం నుండి వేరు చేయలేము.</string>
+    <string name="workspace_power_unknown">కనెక్షన్‌లో ఎలాంటి మార్పు కనిపించలేదు. చర్య నిర్ధారించబడలేదు.</string>
+    <string name="workspace_share_unreadable">చదవగలిగే పంచుకున్న ఫైల్‌లు లేవు. చదివే యాక్సెస్‌తో గరిష్ఠంగా 20 ఫైల్‌లు పంచుకోండి.</string>
+    <string name="workspace_queue_rejected">గమ్యం మారింది లేదా క్యూ నిండింది. ఫోల్డర్‌ను తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="workspace_transfer_channel">ఫైల్ బదిలీలు</string>
+    <string name="workspace_transfers_finished">ఫైల్ బదిలీలు ఆగాయి</string>
+    <string name="workspace_transfers_active">ఫైల్‌లు బదిలీ అవుతున్నాయి</string>
+    <string name="workspace_transfer_open_details">పూర్తయిన, విఫలమైన మరియు రద్దు చేసిన బదిలీలను చూడటానికి యాప్ తెరవండి.</string>
+    <string name="workspace_choose_folder">%1$d పంచుకున్న ఫైల్‌ల కోసం ఫోల్డర్ ఎంచుకోండి.</string>
+    <string name="workspace_send_here">ఈ ఫోల్డర్‌కు పంపండి</string>
+    <string name="workspace_confirm_share">ఫైల్ బదిలీని నిర్ధారించండి</string>
+    <string name="workspace_share_overwrite">అదే పేర్ల ఫైల్‌లు భర్తీ చేయబడతాయి. విఫలమైన బదిలీ పాక్షిక ఫైల్‌ను వదిలి ఉండవచ్చు. మళ్లీ ప్రయత్నం ప్రారంభం నుండి జరుగుతుంది. Android యాప్‌ను ఆపితే ఫైల్‌లను మళ్లీ పంచుకోండి.</string>
+    <string name="workspace_background_unavailable">Android బదిలీ సేవను ప్రారంభించడానికి అనుమతించలేదు. యాప్‌ను మళ్లీ తెరిచి ప్రయత్నించండి.</string>
+    <string name="workspace_transfers_count">బదిలీలు · %1$d</string>
+    <string name="workspace_share_destination">%1$d ఫైల్‌లు సిద్ధంగా ఉన్నాయి. కంప్యూటర్‌ను ఎంచుకుని, తర్వాత “ఫైల్‌లు” లేదా SFTP తెరవండి.</string>
+    <string name="workspace_tools">సాధనాలు</string>
+    <string name="workspace_signing_out">సైన్ అవుట్ అవుతోంది మరియు నేపథ్య ఈవెంట్‌లు నిలిపివేయబడుతున్నాయి…</string>
+</resources>

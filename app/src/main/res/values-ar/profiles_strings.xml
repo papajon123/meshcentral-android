@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">ملفات تعريف الخوادم</string>
+    <string name="profile_sheet_subtitle">اختر خادم MeshCentral الذي يستخدمه هذا التطبيق.</string>
+    <string name="profile_close">إغلاق ملفات تعريف الخوادم</string>
+    <string name="profile_add">إضافة ملف تعريف</string>
+    <string name="profile_add_title">إضافة ملف تعريف</string>
+    <string name="profile_add_subtitle">سجّل الدخول إلى خادم MeshCentral آخر. يحتفظ هذا الملف ببيانات اعتماده ومفضلته الخاصة.</string>
+    <string name="profile_back">العودة إلى ملفات التعريف</string>
+    <string name="profile_name_label">اسم ملف التعريف</string>
+    <string name="profile_name_placeholder">مثلًا، خادم المنزل</string>
+    <string name="profile_url_label">عنوان الخادم</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">أدخل اسم ملف تعريف.</string>
+    <string name="profile_url_required">أدخل عنوان خادم.</string>
+    <string name="profile_submit">إضافة ملف تعريف</string>
+    <string name="profile_active">نشط</string>
+    <string name="profile_select">استخدام</string>
+    <string name="profile_active_description">ملف التعريف النشط: %1$s</string>
+    <string name="profile_select_description">استخدام ملف التعريف %1$s</string>
+    <string name="profile_actions_description">إجراءات ملف التعريف %1$s</string>
+    <string name="profile_rename">إعادة تسمية</string>
+    <string name="profile_delete">حذف</string>
+    <string name="profile_rename_title">إعادة تسمية ملف التعريف</string>
+    <string name="profile_rename_save">حفظ</string>
+    <string name="profile_cancel">إلغاء</string>
+    <string name="profile_delete_title">حذف «%1$s»؟</string>
+    <string name="profile_delete_message">ستُزال بيانات اعتماد تسجيل الدخول والمفضلة المحفوظة لملف التعريف هذا من هذا الجهاز. لن تتغير ملفات التعريف الأخرى.</string>
+    <string name="profile_delete_confirm">حذف</string>
+    <string name="profile_last_cannot_delete">لا يمكن حذف آخر ملف تعريف.</string>
+    <string name="profile_empty_title">لا توجد ملفات تعريف خوادم</string>
+    <string name="profile_empty_description">أضف خادمًا للاتصال بـ MeshCentral.</string>
+    <string name="profile_unnamed">ملف تعريف بلا اسم</string>
+</resources>

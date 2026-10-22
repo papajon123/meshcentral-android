@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">Antrean unggah</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">Antrean unggah tidak terikat ke folder.</string>
+    <string name="transfer_queue_empty">Tidak ada unggahan dalam antrean.</string>
+    <string name="transfer_queue_root">Akar komputer</string>
+
+    <string name="transfer_status_queued">Dalam antrean</string>
+    <string name="transfer_status_active">Mengunggah</string>
+    <string name="transfer_status_succeeded">Terverifikasi</string>
+    <string name="transfer_status_failed">Gagal</string>
+    <string name="transfer_status_cancelled">Dibatalkan</string>
+
+    <string name="transfer_progress">%1$d bita</string>
+    <string name="transfer_progress_size">%1$d dari %2$d bita</string>
+    <string name="transfer_cancel">Batal</string>
+    <string name="transfer_cancel_all">Batalkan semua</string>
+    <string name="transfer_retry">Coba lagi</string>
+    <string name="transfer_clear_finished">Hapus yang selesai</string>
+    <string name="transfer_close">Tutup</string>
+    <string name="transfer_retry_title">Coba lagi unggah?</string>
+    <string name="transfer_retry_warning">Unggahan dimulai lagi dari awal. File jarak jauh yang ada dengan nama ini akan diganti dan dapat tetap tidak lengkap jika percobaan ini terputus. Konfirmasikan sebelum melanjutkan.</string>
+    <string name="transfer_partial_remote">File jarak jauh yang tidak lengkap atau sudah diganti mungkin tetap ada. Periksa sebelum mencoba lagi.</string>
+    <string name="transfer_upload_failed">Unggahan berhenti karena error tak terduga. Sesi berakhir; periksa file jarak jauh sebelum mencoba lagi.</string>
+
+    <string name="transfer_shared_file_fallback">File bersama %1$d</string>
+    <string name="transfer_error_closed">Sesi file ditutup. Buka File lagi.</string>
+    <string name="transfer_error_content_uri">Hanya URI konten dari fitur berbagi atau pemilih buka Android yang dapat dimasukkan ke antrean.</string>
+    <string name="transfer_error_path_changed">Folder berubah sebelum unggahan ini dimulai. Tidak ada yang dikirim untuk file ini; kembali dan masukkan lagi ke antrean.</string>
+    <string name="transfer_error_busy">Operasi file lain sedang berlangsung. Tunggu hingga selesai sebelum memasukkan lebih banyak.</string>
+    <string name="transfer_error_stream">Konten yang dipilih tidak dapat dibuka. Izin berbagi mungkin sudah kedaluwarsa.</string>
+</resources>

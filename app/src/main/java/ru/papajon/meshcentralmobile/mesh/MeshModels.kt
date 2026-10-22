@@ -29,6 +29,7 @@ object MeshRights {
     const val NO_FILES = 1024
     const val DESKTOP_LIMITED_INPUT = 4096
     const val NO_DESKTOP = 65536
+    const val REMOTE_COMMAND = 0x20000
 
     /** Site administrators receive this value in `meshes[].links[userid].rights`. */
     const val FULL = -1

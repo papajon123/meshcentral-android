@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">서버 프로필</string>
+    <string name="profile_sheet_subtitle">이 앱에서 사용할 MeshCentral 서버를 선택합니다.</string>
+    <string name="profile_close">서버 프로필 닫기</string>
+    <string name="profile_add">프로필 추가</string>
+    <string name="profile_add_title">프로필 추가</string>
+    <string name="profile_add_subtitle">다른 MeshCentral 서버에 로그인합니다. 이 프로필은 자체 자격 증명과 즐겨찾기를 유지합니다.</string>
+    <string name="profile_back">프로필로 돌아가기</string>
+    <string name="profile_name_label">프로필 이름</string>
+    <string name="profile_name_placeholder">예: 집 서버</string>
+    <string name="profile_url_label">서버 주소</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">프로필 이름을 입력하세요.</string>
+    <string name="profile_url_required">서버 주소를 입력하세요.</string>
+    <string name="profile_submit">프로필 추가</string>
+    <string name="profile_active">활성</string>
+    <string name="profile_select">사용</string>
+    <string name="profile_active_description">활성 프로필: %1$s</string>
+    <string name="profile_select_description">프로필 %1$s 사용</string>
+    <string name="profile_actions_description">프로필 %1$s 작업</string>
+    <string name="profile_rename">이름 변경</string>
+    <string name="profile_delete">삭제</string>
+    <string name="profile_rename_title">프로필 이름 변경</string>
+    <string name="profile_rename_save">저장</string>
+    <string name="profile_cancel">취소</string>
+    <string name="profile_delete_title">“%1$s” 삭제할까요?</string>
+    <string name="profile_delete_message">이 프로필에 저장된 로그인 자격 증명과 즐겨찾기가 이 기기에서 제거됩니다. 다른 프로필은 변경되지 않습니다.</string>
+    <string name="profile_delete_confirm">삭제</string>
+    <string name="profile_last_cannot_delete">마지막 프로필은 삭제할 수 없습니다.</string>
+    <string name="profile_empty_title">서버 프로필이 없습니다</string>
+    <string name="profile_empty_description">MeshCentral에 연결할 서버를 추가하세요.</string>
+    <string name="profile_unnamed">이름 없는 프로필</string>
+</resources>

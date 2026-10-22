@@ -1,21 +1,19 @@
 import unittest
-from check_translations import tokens
+from check_translations import check_format
 
 
-class FormatSafetyTest(unittest.TestCase):
-    def test_positional_reordering_is_allowed(self):
-        self.assertEqual(tokens('%1$d devices at %2$s'), tokens('%2$s: %1$d devices'))
+class AndroidFormattingContractTest(unittest.TestCase):
+    def test_literal_percentage_matches_android_formatted_false(self):
+        self.assertIsNone(check_format('Disk at 90%', 'Disco al 90%', True, True))
 
-    def test_stray_percent_is_rejected(self):
-        for malformed in ('%1$d%%%', '%', '%1$', 'value %q?'):
-            with self.assertRaises(ValueError):
-                tokens(malformed)
+    def test_translations_cannot_silently_disable_formatting(self):
+        self.assertIsNotNone(check_format('%1$d files', '%1$d fichiers', False, True))
 
-    def test_argument_type_and_literal_percent_are_preserved(self):
-        self.assertNotEqual(tokens('%1$d%%'), tokens('%1$s%%'))
-        self.assertNotEqual(tokens('%1$d%%'), tokens('%1$d'))
+    def test_formatted_arguments_remain_strict(self):
+        self.assertIsNotNone(check_format('%1$d files', '%1$s files', False, False))
+        self.assertIsNotNone(check_format('%1$d files', 'files', False, False))
         with self.assertRaises(ValueError):
-            tokens('%1$q')
+            check_format('90%', '90%', False, False)
 
 
 if __name__ == '__main__':

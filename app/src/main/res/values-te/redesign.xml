@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">రూపం</string>
+    <string name="settings_appearance_subtitle">థీమ్ మరియు సిస్టమ్ రంగులు</string>
+    <string name="settings_theme_system">సిస్టమ్</string>
+    <string name="settings_theme_light">వెలుగు</string>
+    <string name="settings_theme_dark">చీకటి</string>
+    <string name="settings_dynamic_colors">సిస్టమ్ రంగులు</string>
+    <string name="settings_dynamic_colors_supporting">ఉపరితలాలకు వాల్పేపర్ రంగులను ఉపయోగించండి. కనెక్షన్ మరియు భద్రత రంగులు మారవు.</string>
+</resources>

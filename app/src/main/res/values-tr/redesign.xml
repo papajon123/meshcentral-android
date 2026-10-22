@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">Görünüm</string>
+    <string name="settings_appearance_subtitle">Tema ve sistem renkleri</string>
+    <string name="settings_theme_system">Sistem</string>
+    <string name="settings_theme_light">Açık</string>
+    <string name="settings_theme_dark">Koyu</string>
+    <string name="settings_dynamic_colors">Sistem renkleri</string>
+    <string name="settings_dynamic_colors_supporting">Yüzeyler için duvar kağıdı renklerini kullanın. Bağlantı ve güvenlik renkleri tutarlı kalır.</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">上傳佇列</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">上傳佇列尚未綁定資料夾。</string>
+    <string name="transfer_queue_empty">佇列中沒有上傳項目。</string>
+    <string name="transfer_queue_root">電腦根目錄</string>
+
+    <string name="transfer_status_queued">佇列中</string>
+    <string name="transfer_status_active">上傳中</string>
+    <string name="transfer_status_succeeded">已驗證</string>
+    <string name="transfer_status_failed">失敗</string>
+    <string name="transfer_status_cancelled">已取消</string>
+
+    <string name="transfer_progress">已傳輸 %1$d 位元組</string>
+    <string name="transfer_progress_size">已傳輸 %1$d，共 %2$d 位元組</string>
+    <string name="transfer_cancel">取消</string>
+    <string name="transfer_cancel_all">全部取消</string>
+    <string name="transfer_retry">重試</string>
+    <string name="transfer_clear_finished">清除已完成</string>
+    <string name="transfer_close">關閉</string>
+    <string name="transfer_retry_title">要重試上傳嗎？</string>
+    <string name="transfer_retry_warning">上傳會從頭開始。具有此名稱的現有遠端檔案將被取代，若本次嘗試中斷，可能留下不完整的檔案。請確認後再繼續。</string>
+    <string name="transfer_partial_remote">遠端可能留下不完整或已被取代的檔案。重試前請先檢查。</string>
+    <string name="transfer_upload_failed">上傳因未預期的錯誤而停止。工作階段已結束；重試前請檢查遠端檔案。</string>
+
+    <string name="transfer_shared_file_fallback">共用檔案 %1$d</string>
+    <string name="transfer_error_closed">檔案工作階段已關閉。請再次開啟「檔案」。</string>
+    <string name="transfer_error_content_uri">只能將 Android 分享或開啟選擇器提供的內容 URI 加入佇列。</string>
+    <string name="transfer_error_path_changed">資料夾在上傳開始前已變更。此檔案未傳送任何內容；請返回並重新加入佇列。</string>
+    <string name="transfer_error_busy">另一個檔案操作正在進行。請等待它完成後再排入更多項目。</string>
+    <string name="transfer_error_stream">無法開啟所選內容。分享授權可能已過期。</string>
+</resources>

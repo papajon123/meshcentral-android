@@ -7,6 +7,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -15,6 +20,7 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.calculateCentroid
 import androidx.compose.foundation.gestures.calculatePan
 import androidx.compose.foundation.gestures.calculateZoom
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -131,6 +137,8 @@ fun RemoteDesktopScreen(
     onFullscreenChanged: (Boolean) -> Unit,
     onBrowseDevices: () -> Unit,
     modifier: Modifier = Modifier,
+    onMinimize: (() -> Unit)? = null,
+    onCloseSession: (() -> Unit)? = null,
 ) {
     val desktopState by meshClient.desktopState.collectAsState()
     var fullscreen by rememberSaveable { mutableStateOf(false) }
@@ -148,6 +156,15 @@ fun RemoteDesktopScreen(
     var canvasSize by remember { mutableStateOf(IntSize.Zero) }
     var lastGesture by remember { mutableStateOf("idle") }
 
+    BackHandler {
+        when {
+            sheet != SessionSheet.None -> sheet = SessionSheet.None
+            keyboardActive -> keyboardActive = false
+            fullscreen -> fullscreen = false
+            else -> if (onMinimize != null) onMinimize() else { meshClient.disconnectDesktop(); onBrowseDevices() }
+        }
+    }
+
     DisposableEffect(fullscreen) {
         onFullscreenChanged(fullscreen)
         onDispose { onFullscreenChanged(false) }
@@ -155,14 +172,14 @@ fun RemoteDesktopScreen(
 
     val device = desktopState.device
     if (device == null) {
-        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(modifier = modifier.fillMaxSize().windowInsetsPadding(WindowInsets.systemBars), contentAlignment = Alignment.Center) {
             EmptyState(
                 icon = Icons.Outlined.DesktopWindows,
                 title = stringResource(R.string.session_empty_title),
                 description = stringResource(R.string.session_empty_description),
                 actionLabel = stringResource(R.string.session_empty_action),
                 onAction = onBrowseDevices,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState()),
             )
         }
         return
@@ -208,8 +225,7 @@ fun RemoteDesktopScreen(
                 state = desktopState,
                 onRetry = meshClient::reconnectDesktop,
                 onCancel = {
-                    meshClient.disconnectDesktop()
-                    onBrowseDevices()
+                    if (onCloseSession != null) onCloseSession() else { meshClient.disconnectDesktop(); onBrowseDevices() }
                 },
                 modifier = Modifier.align(Alignment.Center),
             )
@@ -232,14 +248,16 @@ fun RemoteDesktopScreen(
                     canvasSize = canvasSize,
                     debugVisible = debugVisible,
                     onBack = {
-                        meshClient.disconnectDesktop()
-                        onBrowseDevices()
+                        if (onCloseSession != null) onCloseSession() else { meshClient.disconnectDesktop(); onBrowseDevices() }
                     },
                     onSelectDisplay = meshClient::selectRemoteDisplay,
                     onRefresh = { meshClient.requestRemoteRefresh() },
                     onReconnect = meshClient::reconnectDesktop,
                     onHideChrome = { chromeVisible = false },
                 )
+            }
+            if (chromeVisible && onMinimize != null) TextButton(onClick = onMinimize) {
+                Text(stringResource(R.string.workspace_minimize))
             }
 
             if (!chromeVisible) Row(
@@ -414,9 +432,9 @@ private fun SessionTopBar(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp, vertical = 6.dp),
-        shape = PillShape,
+        shape = MaterialTheme.shapes.large,
         color = MeshTheme.colors.glass,
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+        tonalElevation = 2.dp,
     ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Row(
@@ -633,9 +651,9 @@ private fun SessionDock(
             .fillMaxWidth()
             .windowInsetsPadding(WindowInsets.systemBars)
             .padding(horizontal = 8.dp, vertical = 6.dp),
-        shape = PillShape,
+        shape = MaterialTheme.shapes.large,
         color = MeshTheme.colors.glass,
-        border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+        tonalElevation = 2.dp,
     ) {
         Row(
             modifier = Modifier
@@ -712,12 +730,13 @@ private fun DockAction(
         animationSpec = MeshTheme.motion.effectDefault,
         label = "dock-alpha",
     )
-    val tint = if (highlighted) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+    val tint = if (highlighted) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
     Column(
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
-            .background(if (highlighted) MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.35f) else Color.Transparent)
-            .clickable(interactionSource = interaction, indication = null, enabled = enabled, onClick = onClick)
+            .background(if (highlighted) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
+            .heightIn(min = 56.dp)
+            .clickable(role = Role.Button, interactionSource = interaction, indication = LocalIndication.current, enabled = enabled, onClick = onClick)
             .padding(horizontal = 2.dp, vertical = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp),
@@ -731,10 +750,10 @@ private fun DockAction(
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            maxLines = 1,
-            softWrap = false,
+            softWrap = true,
+            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
             color = if (highlighted) {
-                MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.onPrimaryContainer
             } else {
                 MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = alpha)
             },

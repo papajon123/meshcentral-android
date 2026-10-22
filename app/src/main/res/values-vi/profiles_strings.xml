@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">Hồ sơ máy chủ</string>
+    <string name="profile_sheet_subtitle">Chọn máy chủ MeshCentral mà ứng dụng này sử dụng.</string>
+    <string name="profile_close">Đóng hồ sơ máy chủ</string>
+    <string name="profile_add">Thêm hồ sơ</string>
+    <string name="profile_add_title">Thêm hồ sơ</string>
+    <string name="profile_add_subtitle">Đăng nhập vào máy chủ MeshCentral khác. Hồ sơ này giữ thông tin đăng nhập và mục yêu thích riêng.</string>
+    <string name="profile_back">Quay lại hồ sơ</string>
+    <string name="profile_name_label">Tên hồ sơ</string>
+    <string name="profile_name_placeholder">Ví dụ: Máy chủ tại nhà</string>
+    <string name="profile_url_label">Địa chỉ máy chủ</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">Nhập tên hồ sơ.</string>
+    <string name="profile_url_required">Nhập địa chỉ máy chủ.</string>
+    <string name="profile_submit">Thêm hồ sơ</string>
+    <string name="profile_active">Đang hoạt động</string>
+    <string name="profile_select">Dùng</string>
+    <string name="profile_active_description">Hồ sơ đang hoạt động: %1$s</string>
+    <string name="profile_select_description">Dùng hồ sơ %1$s</string>
+    <string name="profile_actions_description">Thao tác hồ sơ cho %1$s</string>
+    <string name="profile_rename">Đổi tên</string>
+    <string name="profile_delete">Xóa</string>
+    <string name="profile_rename_title">Đổi tên hồ sơ</string>
+    <string name="profile_rename_save">Lưu</string>
+    <string name="profile_cancel">Hủy</string>
+    <string name="profile_delete_title">Xóa “%1$s”?</string>
+    <string name="profile_delete_message">Thông tin đăng nhập và mục yêu thích đã lưu của hồ sơ này sẽ bị xóa khỏi thiết bị này. Các hồ sơ khác không thay đổi.</string>
+    <string name="profile_delete_confirm">Xóa</string>
+    <string name="profile_last_cannot_delete">Không thể xóa hồ sơ cuối cùng.</string>
+    <string name="profile_empty_title">Không có hồ sơ máy chủ</string>
+    <string name="profile_empty_description">Thêm máy chủ để kết nối với MeshCentral.</string>
+    <string name="profile_unnamed">Hồ sơ chưa đặt tên</string>
+</resources>

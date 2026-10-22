@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">โปรไฟล์เซิร์ฟเวอร์</string>
+    <string name="profile_sheet_subtitle">เลือกเซิร์ฟเวอร์ MeshCentral ที่แอปนี้ใช้</string>
+    <string name="profile_close">ปิดโปรไฟล์เซิร์ฟเวอร์</string>
+    <string name="profile_add">เพิ่มโปรไฟล์</string>
+    <string name="profile_add_title">เพิ่มโปรไฟล์</string>
+    <string name="profile_add_subtitle">ลงชื่อเข้าใช้เซิร์ฟเวอร์ MeshCentral อื่น โปรไฟล์นี้เก็บข้อมูลรับรองและรายการโปรดของตัวเอง</string>
+    <string name="profile_back">กลับไปที่โปรไฟล์</string>
+    <string name="profile_name_label">ชื่อโปรไฟล์</string>
+    <string name="profile_name_placeholder">ตัวอย่าง: เซิร์ฟเวอร์ที่บ้าน</string>
+    <string name="profile_url_label">ที่อยู่เซิร์ฟเวอร์</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">ป้อนชื่อโปรไฟล์</string>
+    <string name="profile_url_required">ป้อนที่อยู่เซิร์ฟเวอร์</string>
+    <string name="profile_submit">เพิ่มโปรไฟล์</string>
+    <string name="profile_active">ใช้งานอยู่</string>
+    <string name="profile_select">ใช้</string>
+    <string name="profile_active_description">โปรไฟล์ที่ใช้งานอยู่: %1$s</string>
+    <string name="profile_select_description">ใช้โปรไฟล์ %1$s</string>
+    <string name="profile_actions_description">การดำเนินการโปรไฟล์สำหรับ %1$s</string>
+    <string name="profile_rename">เปลี่ยนชื่อ</string>
+    <string name="profile_delete">ลบ</string>
+    <string name="profile_rename_title">เปลี่ยนชื่อโปรไฟล์</string>
+    <string name="profile_rename_save">บันทึก</string>
+    <string name="profile_cancel">ยกเลิก</string>
+    <string name="profile_delete_title">ลบ “%1$s” หรือไม่</string>
+    <string name="profile_delete_message">ข้อมูลรับรองการลงชื่อเข้าใช้และรายการโปรดที่บันทึกไว้สำหรับโปรไฟล์นี้จะถูกลบออกจากอุปกรณ์นี้ โปรไฟล์อื่นจะไม่เปลี่ยนแปลง</string>
+    <string name="profile_delete_confirm">ลบ</string>
+    <string name="profile_last_cannot_delete">ไม่สามารถลบโปรไฟล์สุดท้ายได้</string>
+    <string name="profile_empty_title">ไม่มีโปรไฟล์เซิร์ฟเวอร์</string>
+    <string name="profile_empty_description">เพิ่มเซิร์ฟเวอร์เพื่อเชื่อมต่อกับ MeshCentral</string>
+    <string name="profile_unnamed">โปรไฟล์ไม่มีชื่อ</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">ค้นหาคอมพิวเตอร์</string>
+    <string name="browser_search_hint">ชื่อ กลุ่ม ที่อยู่ หรือระบบปฏิบัติการ</string>
+    <string name="browser_search_clear">ล้างการค้นหา</string>
+    <string name="browser_filter_recent">ล่าสุด</string>
+    <string name="browser_recent_clear">ล้างรายการล่าสุด</string>
+    <string name="browser_search_empty_title">ไม่พบคอมพิวเตอร์ที่ตรงกัน</string>
+    <string name="browser_search_empty_description">ลองใช้ชื่อ กลุ่ม ที่อยู่ หรือระบบปฏิบัติการอื่น</string>
+    <string name="browser_filter_empty_title">ไม่มีคอมพิวเตอร์ในตัวกรองนี้</string>
+    <string name="browser_filter_empty_description">เลือกตัวกรองอื่นหรือล้างการค้นหา</string>
+    <string name="browser_recent_empty_title">ไม่มีคอมพิวเตอร์ล่าสุด</string>
+    <string name="browser_recent_empty_description">คอมพิวเตอร์ที่คุณเปิดจะแสดงที่นี่</string>
+    <string name="browser_favorites_empty_title">ยังไม่มีรายการโปรด</string>
+    <string name="browser_favorites_empty_description">เพิ่มคอมพิวเตอร์ในรายการโปรดเพื่อค้นหาที่นี่</string>
+</resources>

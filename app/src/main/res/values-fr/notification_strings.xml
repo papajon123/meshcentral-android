@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_sheet_title">Événements en arrière-plan</string>
+    <string name="notification_sheet_subtitle">Vérifications facultatives toutes les 15 minutes pour ce profil de serveur.</string>
+    <string name="notification_status_title">État</string>
+    <string name="notification_status_enabled">Activé</string>
+    <string name="notification_status_disabled">Désactivé</string>
+    <string name="notification_last_check">Dernière vérification : %1$s</string>
+    <string name="notification_never_checked">Aucune vérification en arrière-plan n’a encore été exécutée.</string>
+    <string name="notification_token_expires">Le jeton est valide jusqu’au %1$s.</string>
+
+    <string name="notification_optin_title">Activer les événements en arrière-plan</string>
+    <string name="notification_optin_supporting">Aucun service push. WorkManager vérifie ce serveur environ toutes les 15 minutes et ne conserve qu’un petit flux local d’événements.</string>
+    <string name="notification_enable_action">Activer les notifications</string>
+    <string name="notification_disable_action">Désactiver les notifications</string>
+    <string name="notification_reenable_action">Réactiver</string>
+
+    <string name="notification_filters_title">Filtres d’événements</string>
+    <string name="notification_filters_supporting">Choisissez les types d’événements qui peuvent apparaître dans le flux et dans les notifications.</string>
+    <string name="notification_kind_device_online">Appareil en ligne</string>
+    <string name="notification_kind_device_offline">Appareil hors ligne</string>
+    <string name="notification_kind_request_help">Aide demandée</string>
+    <string name="notification_kind_job_completed">Tâche terminée</string>
+    <string name="notification_kind_job_failed">Tâche échouée</string>
+    <string name="notification_kind_device_alert">Alerte de ressources</string>
+
+    <string name="notification_quiet_title">Heures silencieuses</string>
+    <string name="notification_quiet_supporting">Pendant cette plage horaire locale, les événements sont conservés et affichés plus tard.</string>
+    <string name="notification_quiet_start">Heure de début</string>
+    <string name="notification_quiet_end">Heure de fin</string>
+    <string name="notification_quiet_invalid">Saisissez une heure entre 0 et 23.</string>
+    <string name="notification_quiet_hint">Des heures de début et de fin identiques désactivent la plage.</string>
+
+    <string name="notification_check_now">Vérifier maintenant</string>
+    <string name="notification_checking">Vérification…</string>
+    <string name="notification_permission_denied_supporting">L’autorisation de notification est refusée. Le flux d’événements continue de se mettre à jour, mais aucune notification n’a été remise.</string>
+
+    <string name="notification_feed_title">Événements récents</string>
+    <string name="notification_feed_supporting">Jusqu’à 200 événements autorisés, conservés pendant le TTL d’une semaine fourni par le serveur.</string>
+    <string name="notification_feed_empty">Aucun événement pour le moment. La première vérification s’exécute peu après l’activation.</string>
+    <string name="notification_clear_history">Effacer l’historique</string>
+    <string name="notification_clear_history_confirm">Supprimer tous les événements stockés localement ? L’historique du serveur n’est pas modifié.</string>
+
+    <string name="notification_explanation_title">Fonctionnement</string>
+    <string name="notification_explanation_15min">WorkManager exécute une vérification au mieux environ toutes les 15 minutes. Android peut la retarder lorsque l’appareil est inactif, en Doze ou après un arrêt forcé.</string>
+    <string name="notification_explanation_os_delays">Il n’y a pas de push instantané. La remise peut être tardive, et un arrêt forcé interrompt le travail en arrière-plan jusqu’à la prochaine ouverture de l’application.</string>
+    <string name="notification_explanation_token">Le jeton en lecture seule dure 30 jours. À son expiration, réactivez pour en créer un nouveau.</string>
+    <string name="notification_explanation_thresholds">Les alertes du serveur sont fixes : utilisation du disque à partir de 90 pour cent, utilisation de la mémoire à partir de 95 pour cent. L’application ne modifie pas ces seuils.</string>
+    <string name="notification_explanation_force_stop">L’optimisation de la batterie et les restrictions du fabricant peuvent ajouter du retard. Il s’agit d’une limitation d’Android, pas d’une erreur du serveur.</string>
+
+    <string name="notification_channel_name">Événements en arrière-plan</string>
+    <string name="notification_channel_description">Événements d’appareil, demandes d’aide et tâches de MeshCentral.</string>
+    <string name="notification_push_title">MeshCentral</string>
+    <string name="notification_public_text">Nouvelle activité. Ouvrez l’application pour l’afficher.</string>
+    <string name="notification_body_device_online">Un appareil est en ligne.</string>
+    <string name="notification_body_device_offline">Un appareil est hors ligne.</string>
+    <string name="notification_body_request_help">Un appareil a demandé de l’aide.</string>
+    <string name="notification_body_job_completed">Une tâche distante est terminée.</string>
+    <string name="notification_body_job_failed">Une tâche distante a échoué.</string>
+    <string name="notification_body_device_alert">Une alerte de ressources d’un appareil a été signalée.</string>
+
+    <string name="notification_error_not_enabled">Les événements en arrière-plan sont désactivés.</string>
+    <string name="notification_error_not_signed_in">Connectez-vous au serveur avant d’activer les événements en arrière-plan.</string>
+    <string name="notification_error_account_mismatch">Le jeton de notification enregistré appartient à un autre compte. Réactivez.</string>
+    <string name="notification_error_profile_missing">Ce profil de serveur n’existe plus.</string>
+    <string name="notification_error_network">Pas de connexion. Le curseur est conservé et la prochaine vérification réessaiera.</string>
+    <string name="notification_error_tls">Android ne fait pas confiance au certificat du serveur. Les événements en arrière-plan restent désactivés.</string>
+    <string name="notification_error_server">Le serveur a refusé la demande en arrière-plan.</string>
+    <string name="notification_error_rate_limited">La limite de débit du serveur a été atteinte. La prochaine vérification réessaiera.</string>
+    <string name="notification_error_protocol">L’analyseur strict a refusé la réponse du serveur.</string>
+    <string name="notification_error_endpoint">Le serveur a renvoyé un point de terminaison de notification non valide.</string>
+    <string name="notification_error_unknown">Impossible de mettre à jour les événements en arrière-plan.</string>
+    <string name="notification_self_signed_unavailable">Ce profil fait confiance à un certificat auto-signé. Les notifications en arrière-plan nécessitent HTTPS approuvé par le système ; les sessions au premier plan ne sont pas concernées.</string>
+    <string name="notification_https_required">Les notifications en arrière-plan nécessitent HTTPS.</string>
+    <string name="notification_token_expired">Le jeton de notification a expiré ou a été révoqué.</string>
+    <string name="notification_token_expired_supporting">Le jeton n’est plus valide. Réactivez pour en enregistrer un nouveau. Le flux d’événements reste disponible.</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">தோற்றம்</string>
+    <string name="settings_appearance_subtitle">தீம் மற்றும் சிஸ்டம் நிறங்கள்</string>
+    <string name="settings_theme_system">சிஸ்டம்</string>
+    <string name="settings_theme_light">ஒளி</string>
+    <string name="settings_theme_dark">இருள்</string>
+    <string name="settings_dynamic_colors">சிஸ்டம் நிறங்கள்</string>
+    <string name="settings_dynamic_colors_supporting">பரப்புகளுக்கு வால்பேப்பர் நிறங்களைப் பயன்படுத்தவும். இணைப்பு மற்றும் பாதுகாப்பு நிறங்கள் மாறாமல் இருக்கும்.</string>
+</resources>

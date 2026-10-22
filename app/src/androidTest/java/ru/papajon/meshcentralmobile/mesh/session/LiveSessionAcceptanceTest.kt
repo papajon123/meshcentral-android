@@ -34,11 +34,13 @@ import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
 import ru.papajon.meshcentralmobile.mesh.MeshDevice
 import ru.papajon.meshcentralmobile.mesh.files.FilesController
+import ru.papajon.meshcentralmobile.model.ProfileCatalog
 import ru.papajon.meshcentralmobile.security.SecureVault
 
 /**
- * Explicit opt-in only: -e liveFixture http://10.0.2.2:19847/fixture.
+ * Explicit opt-in only: -e liveFixture http://10.0.2.2:19857/fixture.
  * Uses the isolated local Linux fixture, never an app-configured or production server.
+ * Credentials live in the same profile-scoped vault namespace as the application.
  * file:// is only a ContentResolver stream fixture here; this does not test the SAF picker UI.
  */
 class LiveSessionAcceptanceTest {
@@ -93,7 +95,7 @@ class LiveSessionAcceptanceTest {
                 override fun getApplicationContext(): Context = this
                 override fun getSharedPreferences(name: String, mode: Int) = super.getSharedPreferences("live-fixture-$name", mode)
             }
-            vault = SecureVault(isolatedContext)
+            vault = SecureVault(isolatedContext, ProfileCatalog.DEFAULT_ID)
             scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
             client = MeshCentralClient(vault, scope)
             client.setAllowSelfSignedCertificates(true)
@@ -311,8 +313,8 @@ class LiveSessionAcceptanceTest {
     }
 
     companion object {
-        private const val FIXTURE_URL = "http://10.0.2.2:19847/fixture"
-        private const val FIXTURE_SERVER = "https://10.0.2.2:19846"
+        private const val FIXTURE_URL = "http://10.0.2.2:19857/fixture"
+        private const val FIXTURE_SERVER = "https://10.0.2.2:19856"
         private const val TEST_DIRECTORY = "/tmp/mesh-fixture"
     }
 }

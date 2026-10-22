@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">컴퓨터 검색</string>
+    <string name="browser_search_hint">이름, 그룹, 주소 또는 OS</string>
+    <string name="browser_search_clear">검색 지우기</string>
+    <string name="browser_filter_recent">최근</string>
+    <string name="browser_recent_clear">최근 기록 지우기</string>
+    <string name="browser_search_empty_title">일치하는 컴퓨터가 없습니다</string>
+    <string name="browser_search_empty_description">다른 이름, 그룹, 주소 또는 운영 체제를 사용해 보세요.</string>
+    <string name="browser_filter_empty_title">이 필터에 컴퓨터가 없습니다</string>
+    <string name="browser_filter_empty_description">다른 필터를 선택하거나 검색을 지우세요.</string>
+    <string name="browser_recent_empty_title">최근 컴퓨터가 없습니다</string>
+    <string name="browser_recent_empty_description">연 컴퓨터가 여기에 표시됩니다.</string>
+    <string name="browser_favorites_empty_title">즐겨찾기가 없습니다</string>
+    <string name="browser_favorites_empty_description">즐겨찾기에 컴퓨터를 추가하면 여기에서 찾을 수 있습니다.</string>
+</resources>

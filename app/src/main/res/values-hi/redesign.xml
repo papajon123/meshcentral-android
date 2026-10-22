@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">रूप-रंग</string>
+    <string name="settings_appearance_subtitle">थीम और सिस्टम रंग</string>
+    <string name="settings_theme_system">सिस्टम</string>
+    <string name="settings_theme_light">हल्का</string>
+    <string name="settings_theme_dark">गहरा</string>
+    <string name="settings_dynamic_colors">सिस्टम रंग</string>
+    <string name="settings_dynamic_colors_supporting">सतहों के लिए वॉलपेपर के रंग इस्तेमाल करें। कनेक्शन और सुरक्षा के रंग स्थिर रहते हैं।</string>
+</resources>

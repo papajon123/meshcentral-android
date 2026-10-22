@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">Можно сохранить до %1$d профилей серверов.</string>
+    <string name="workspace_profile_error">Не удалось изменить профиль. Проверьте имя и попробуйте снова.</string>
+    <string name="workspace_profiles_action">Профили серверов</string>
+    <string name="workspace_capacity">Уже открыто два сеанса. Закройте один, чтобы открыть новый.</string>
+    <string name="workspace_desktop_limit">Рабочий стол уже открыт. Закройте его перед подключением к другому.</string>
+    <string name="workspace_sessions">Открытые сеансы</string>
+    <string name="workspace_sessions_count">Сеансы · %1$d</string>
+    <string name="workspace_session_hint">Можно держать открытыми два инструмента. При потере соединения оболочка завершается.</string>
+    <string name="workspace_empty">Открытых сеансов нет</string>
+    <string name="workspace_switch">Перейти</string>
+    <string name="workspace_close_explanation">Закрыть сеанс на %1$s? Текущая передача будет прервана.</string>
+    <string name="workspace_ended">Предыдущий сеанс завершён. Выбор инструмента восстановлен, соединение и оболочка — нет.</string>
+    <string name="workspace_reopen">Открыть новый сеанс</string>
+    <string name="workspace_minimize">Сохранить сеанс и вернуться к устройствам</string>
+    <string name="workspace_system">Система</string>
+    <string name="workspace_help">Помощь и задания</string>
+    <string name="workspace_cached_info">Системные сведения сохранены сервером при последнем отчёте агента. Для служб и процессов нужен Mobile Companion на сервере.</string>
+    <string name="workspace_management_failed">Не удалось подтвердить результат. Перед повтором проверьте права и историю заданий на сервере.</string>
+    <string name="workspace_service_verified">Состояние службы повторно прочитано после действия.</string>
+    <string name="workspace_power_pending">Запрос отправлен. Ожидаем изменения связи с агентом; принятие запроса не подтверждает выполнение.</string>
+    <string name="workspace_power_reconnected">Агент отключился и подключился снова. Связь восстановлена; причина перезапуска не подтверждена.</string>
+    <string name="workspace_power_offline">Агент не в сети. Нельзя отличить выключение от обрыва сети.</string>
+    <string name="workspace_power_unknown">Изменение связи не обнаружено. Выполнение действия не подтверждено.</string>
+    <string name="workspace_share_unreadable">Нет доступных файлов. Передайте не более 20 файлов с разрешением на чтение.</string>
+    <string name="workspace_queue_rejected">Каталог изменился или очередь заполнена. Проверьте назначение и повторите.</string>
+    <string name="workspace_transfer_channel">Передачи файлов</string>
+    <string name="workspace_transfers_finished">Передачи файлов завершены</string>
+    <string name="workspace_transfers_active">Передача файлов</string>
+    <string name="workspace_transfer_open_details">Откройте приложение, чтобы проверить успешные, прерванные и отменённые передачи.</string>
+    <string name="workspace_choose_folder">Выберите каталог для файлов: %1$d.</string>
+    <string name="workspace_send_here">Отправить в этот каталог</string>
+    <string name="workspace_confirm_share">Подтвердите передачу</string>
+    <string name="workspace_share_overwrite">Файлы с такими же именами будут перезаписаны. При сбое может остаться неполный файл. Повтор начинается с начала. Если Android завершит приложение, отправьте файлы через «Поделиться» снова.</string>
+    <string name="workspace_background_unavailable">Android не разрешил запустить службу передачи. Откройте приложение и повторите.</string>
+    <string name="workspace_transfers_count">Передачи · %1$d</string>
+    <string name="workspace_share_destination">Файлов для отправки: %1$d. Выберите компьютер и откройте «Файлы» или SFTP.</string>
+    <string name="workspace_signing_out">Завершаем сеанс и отключаем фоновые события…</string>
+    <string name="workspace_tools">Инструменты</string>
+</resources>

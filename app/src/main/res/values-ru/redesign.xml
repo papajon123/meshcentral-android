@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">Оформление</string>
+    <string name="settings_appearance_subtitle">Тема и системные цвета</string>
+    <string name="settings_theme_system">Системная</string>
+    <string name="settings_theme_light">Светлая</string>
+    <string name="settings_theme_dark">Тёмная</string>
+    <string name="settings_dynamic_colors">Системные цвета</string>
+    <string name="settings_dynamic_colors_supporting">Использовать цвета обоев для поверхностей. Цвета подключения и безопасности не меняются.</string>
+</resources>

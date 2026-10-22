@@ -1,0 +1,14 @@
+{
+  "name": "meshcentral-mobilecompanion",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Optional MeshCentral plugin for mobile jobs, events, notification tokens and read-only HTTP events",
+  "main": "mobilecompanion.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test --test-isolation=none test/all.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

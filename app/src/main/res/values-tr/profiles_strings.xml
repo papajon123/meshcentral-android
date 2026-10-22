@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">Sunucu profilleri</string>
+    <string name="profile_sheet_subtitle">Bu uygulamanın kullandığı MeshCentral sunucusunu seçin.</string>
+    <string name="profile_close">Sunucu profillerini kapat</string>
+    <string name="profile_add">Profil ekle</string>
+    <string name="profile_add_title">Profil ekle</string>
+    <string name="profile_add_subtitle">Başka bir MeshCentral sunucusunda oturum açın. Bu profil kendi kimlik bilgilerini ve favorilerini tutar.</string>
+    <string name="profile_back">Profillere dön</string>
+    <string name="profile_name_label">Profil adı</string>
+    <string name="profile_name_placeholder">Örneğin, ev sunucusu</string>
+    <string name="profile_url_label">Sunucu adresi</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">Bir profil adı girin.</string>
+    <string name="profile_url_required">Bir sunucu adresi girin.</string>
+    <string name="profile_submit">Profil ekle</string>
+    <string name="profile_active">Etkin</string>
+    <string name="profile_select">Kullan</string>
+    <string name="profile_active_description">Etkin profil: %1$s</string>
+    <string name="profile_select_description">%1$s profilini kullan</string>
+    <string name="profile_actions_description">%1$s için profil işlemleri</string>
+    <string name="profile_rename">Yeniden adlandır</string>
+    <string name="profile_delete">Sil</string>
+    <string name="profile_rename_title">Profili yeniden adlandır</string>
+    <string name="profile_rename_save">Kaydet</string>
+    <string name="profile_cancel">İptal</string>
+    <string name="profile_delete_title">“%1$s” silinsin mi?</string>
+    <string name="profile_delete_message">Bu profile kaydedilmiş oturum açma bilgileri ve favoriler bu cihazdan kaldırılacak. Diğer profiller değişmeyecek.</string>
+    <string name="profile_delete_confirm">Sil</string>
+    <string name="profile_last_cannot_delete">Son profil silinemez.</string>
+    <string name="profile_empty_title">Sunucu profili yok</string>
+    <string name="profile_empty_description">MeshCentral’a bağlanmak için bir sunucu ekleyin.</string>
+    <string name="profile_unnamed">Adsız profil</string>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">最多可保存 %1$d 个服务器配置。</string>
+    <string name="workspace_profile_error">无法更改此配置。请检查名称后重试。</string>
+    <string name="workspace_profiles_action">服务器配置</string>
+    <string name="workspace_capacity">已打开两个会话。请先关闭一个再打开新会话。</string>
+    <string name="workspace_desktop_limit">已有一个远程桌面。请先关闭它再连接其他桌面。</string>
+    <string name="workspace_sessions">打开的会话</string>
+    <string name="workspace_sessions_count">会话 · %1$d</string>
+    <string name="workspace_session_hint">最多保留两个工具。连接中断后，终端会话将结束。</string>
+    <string name="workspace_empty">没有打开的会话</string>
+    <string name="workspace_switch">切换</string>
+    <string name="workspace_close_explanation">关闭 %1$s 上的会话？正在进行的传输将停止。</string>
+    <string name="workspace_ended">上次会话已结束。已恢复工具选择，但未恢复连接或终端。</string>
+    <string name="workspace_reopen">打开新会话</string>
+    <string name="workspace_minimize">保留会话并返回设备</string>
+    <string name="workspace_system">系统</string>
+    <string name="workspace_help">帮助与任务</string>
+    <string name="workspace_cached_info">系统信息来自代理上次报告。服务和进程需要服务器安装 Mobile Companion。</string>
+    <string name="workspace_management_failed">无法确认结果。请先检查权限及服务器任务历史，再决定是否重试。</string>
+    <string name="workspace_service_verified">操作后已重新读取服务状态。</string>
+    <string name="workspace_power_pending">请求已发送。正在等待代理连接状态变化；接受请求不代表执行完成。</string>
+    <string name="workspace_power_reconnected">代理断开后已重新连接。这仅确认连接恢复，不能确认重启原因。</string>
+    <string name="workspace_power_offline">代理已离线。无法区分关机与网络中断。</string>
+    <string name="workspace_power_unknown">未观察到连接变化。无法确认操作是否执行。</string>
+    <string name="workspace_share_unreadable">没有可读取的共享文件。请提供读取权限，最多分享20个文件。</string>
+    <string name="workspace_queue_rejected">目标已更改或队列已满。请检查文件夹后重试。</string>
+    <string name="workspace_transfer_channel">文件传输</string>
+    <string name="workspace_transfers_finished">文件传输已结束</string>
+    <string name="workspace_transfers_active">正在传输文件</string>
+    <string name="workspace_transfer_open_details">打开应用查看成功、失败或取消的传输。</string>
+    <string name="workspace_choose_folder">请为%1$d个共享文件选择文件夹。</string>
+    <string name="workspace_send_here">发送到此文件夹</string>
+    <string name="workspace_confirm_share">确认文件传输</string>
+    <string name="workspace_share_overwrite">同名文件将被覆盖。传输失败可能留下不完整文件。重试将从头开始。如果Android终止应用，请重新分享文件。</string>
+    <string name="workspace_background_unavailable">Android不允许启动传输服务。请重新打开应用后重试。</string>
+    <string name="workspace_transfers_count">传输 · %1$d</string>
+    <string name="workspace_share_destination">%1$d个文件已就绪。请选择电脑，然后打开“文件”或SFTP。</string>
+    <string name="workspace_signing_out">正在退出并停用后台事件…</string>
+    <string name="workspace_tools">工具</string>
+</resources>

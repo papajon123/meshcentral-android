@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">Поиск компьютеров</string>
+    <string name="browser_search_hint">Имя, группа, адрес или ОС</string>
+    <string name="browser_search_clear">Очистить поиск</string>
+    <string name="browser_filter_recent">Недавние</string>
+    <string name="browser_recent_clear">Очистить недавние</string>
+    <string name="browser_search_empty_title">Подходящих компьютеров нет</string>
+    <string name="browser_search_empty_description">Измените имя, группу, адрес или операционную систему.</string>
+    <string name="browser_filter_empty_title">В этом фильтре нет компьютеров</string>
+    <string name="browser_filter_empty_description">Выберите другой фильтр или очистите поиск.</string>
+    <string name="browser_recent_empty_title">Недавних компьютеров нет</string>
+    <string name="browser_recent_empty_description">Открытые компьютеры появятся здесь.</string>
+    <string name="browser_favorites_empty_title">В избранном пока пусто</string>
+    <string name="browser_favorites_empty_description">Добавьте компьютер в избранное, чтобы находить его здесь.</string>
+</resources>

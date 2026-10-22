@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">کمپیوٹرز تلاش کریں</string>
+    <string name="browser_search_hint">نام، گروپ، پتہ یا آپریٹنگ سسٹم</string>
+    <string name="browser_search_clear">تلاش صاف کریں</string>
+    <string name="browser_filter_recent">حالیہ</string>
+    <string name="browser_recent_clear">حالیہ صاف کریں</string>
+    <string name="browser_search_empty_title">کوئی مماثل کمپیوٹر نہیں</string>
+    <string name="browser_search_empty_description">مختلف نام، گروپ، پتہ یا آپریٹنگ سسٹم آزمائیں۔</string>
+    <string name="browser_filter_empty_title">اس فلٹر میں کوئی کمپیوٹر نہیں</string>
+    <string name="browser_filter_empty_description">دوسرا فلٹر چنیں یا تلاش صاف کریں۔</string>
+    <string name="browser_recent_empty_title">کوئی حالیہ کمپیوٹر نہیں</string>
+    <string name="browser_recent_empty_description">آپ جو کمپیوٹر کھولیں گے وہ یہاں دکھائی دیں گے۔</string>
+    <string name="browser_favorites_empty_title">ابھی کوئی پسندیدہ نہیں</string>
+    <string name="browser_favorites_empty_description">یہاں تلاش کرنے کے لیے کمپیوٹر کو پسندیدہ میں شامل کریں۔</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">Computer suchen</string>
+    <string name="browser_search_hint">Name, Gruppe, Adresse oder Betriebssystem</string>
+    <string name="browser_search_clear">Suche löschen</string>
+    <string name="browser_filter_recent">Zuletzt verwendet</string>
+    <string name="browser_recent_clear">Zuletzt verwendete löschen</string>
+    <string name="browser_search_empty_title">Keine passenden Computer</string>
+    <string name="browser_search_empty_description">Versuchen Sie einen anderen Namen, eine andere Gruppe, Adresse oder ein anderes Betriebssystem.</string>
+    <string name="browser_filter_empty_title">Keine Computer in diesem Filter</string>
+    <string name="browser_filter_empty_description">Wählen Sie einen anderen Filter oder löschen Sie die Suche.</string>
+    <string name="browser_recent_empty_title">Keine zuletzt verwendeten Computer</string>
+    <string name="browser_recent_empty_description">Von Ihnen geöffnete Computer werden hier angezeigt.</string>
+    <string name="browser_favorites_empty_title">Noch keine Favoriten</string>
+    <string name="browser_favorites_empty_description">Fügen Sie einen Computer zu den Favoriten hinzu, um ihn hier zu finden.</string>
+</resources>

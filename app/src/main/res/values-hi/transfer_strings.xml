@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">अपलोड कतार</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">अपलोड कतार किसी फ़ोल्डर से बँधी नहीं है।</string>
+    <string name="transfer_queue_empty">कोई अपलोड कतार में नहीं है।</string>
+    <string name="transfer_queue_root">कंप्यूटर रूट</string>
+
+    <string name="transfer_status_queued">कतार में</string>
+    <string name="transfer_status_active">अपलोड हो रहा है</string>
+    <string name="transfer_status_succeeded">सत्यापित</string>
+    <string name="transfer_status_failed">विफल</string>
+    <string name="transfer_status_cancelled">रद्द</string>
+
+    <string name="transfer_progress">%1$d बाइट</string>
+    <string name="transfer_progress_size">%2$d में से %1$d बाइट</string>
+    <string name="transfer_cancel">रद्द करें</string>
+    <string name="transfer_cancel_all">सभी रद्द करें</string>
+    <string name="transfer_retry">फिर प्रयास करें</string>
+    <string name="transfer_clear_finished">समाप्त साफ़ करें</string>
+    <string name="transfer_close">बंद करें</string>
+    <string name="transfer_retry_title">अपलोड फिर प्रयास करें?</string>
+    <string name="transfer_retry_warning">अपलोड शुरुआत से फिर चलेगा। इस नाम की मौजूदा रिमोट फ़ाइल बदल दी जाएगी और यह प्रयास बाधित होने पर आंशिक रह सकती है। जारी रखने से पहले पुष्टि करें।</string>
+    <string name="transfer_partial_remote">आंशिक या बदली हुई रिमोट फ़ाइल रह सकती है। फिर प्रयास से पहले उसे देखें।</string>
+    <string name="transfer_upload_failed">अपलोड अप्रत्याशित त्रुटि से रुका। सेशन समाप्त हुआ; फिर प्रयास से पहले रिमोट फ़ाइल देखें।</string>
+
+    <string name="transfer_shared_file_fallback">साझा फ़ाइल %1$d</string>
+    <string name="transfer_error_closed">फ़ाइल सेशन बंद है। “फ़ाइलें” फिर खोलें।</string>
+    <string name="transfer_error_content_uri">केवल Android शेयर या ओपन पिकर के content URI कतार में डाले जा सकते हैं।</string>
+    <string name="transfer_error_path_changed">यह अपलोड शुरू होने से पहले फ़ोल्डर बदल गया। इस फ़ाइल के लिए कुछ नहीं भेजा गया; वापस जाएँ और इसे फिर कतार में डालें।</string>
+    <string name="transfer_error_busy">एक और फ़ाइल कार्रवाई जारी है। और कतार में डालने से पहले उसके समाप्त होने की प्रतीक्षा करें।</string>
+    <string name="transfer_error_stream">चुनी गई सामग्री खोली नहीं जा सकी। शेयर अनुमति समाप्त हो सकती है।</string>
+</resources>

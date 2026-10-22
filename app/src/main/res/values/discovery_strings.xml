@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">Search computers</string>
+    <string name="browser_search_hint">Name, group, address or OS</string>
+    <string name="browser_search_clear">Clear search</string>
+    <string name="browser_filter_recent">Recent</string>
+    <string name="browser_recent_clear">Clear recent</string>
+    <string name="browser_search_empty_title">No matching computers</string>
+    <string name="browser_search_empty_description">Try a different name, group, address or operating system.</string>
+    <string name="browser_filter_empty_title">No computers in this filter</string>
+    <string name="browser_filter_empty_description">Choose another filter or clear the search.</string>
+    <string name="browser_recent_empty_title">No recent computers</string>
+    <string name="browser_recent_empty_description">Computers you open will appear here.</string>
+    <string name="browser_favorites_empty_title">No favorites yet</string>
+    <string name="browser_favorites_empty_description">Add a computer to favorites to find it here.</string>
+</resources>

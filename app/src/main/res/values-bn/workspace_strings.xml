@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">আপনি সর্বোচ্চ %1$d সার্ভার প্রোফাইল রাখতে পারেন।</string>
+    <string name="workspace_profile_error">এই প্রোফাইল বদলানো যায়নি। নাম দেখে আবার চেষ্টা করুন।</string>
+    <string name="workspace_profiles_action">সার্ভার প্রোফাইল</string>
+    <string name="workspace_capacity">আগে থেকেই দুটি সেশন খোলা। আরেকটি খোলার আগে একটি বন্ধ করুন।</string>
+    <string name="workspace_desktop_limit">একটি ডেস্কটপ আগে থেকেই খোলা। আরেকটি খোলার আগে তা বন্ধ করুন।</string>
+    <string name="workspace_sessions">খোলা সেশন</string>
+    <string name="workspace_sessions_count">সেশন · %1$d</string>
+    <string name="workspace_session_hint">সর্বোচ্চ দুটি টুল খোলা রাখুন। সংযোগ হারালে শেল শেষ হয়।</string>
+    <string name="workspace_empty">কোনো খোলা সেশন নেই</string>
+    <string name="workspace_switch">এতে যান</string>
+    <string name="workspace_close_explanation">%1$s-এ সেশন বন্ধ করবেন? কোনো সক্রিয় স্থানান্তর থেমে যাবে।</string>
+    <string name="workspace_ended">আগের সেশন শেষ হয়েছে। আপনার নির্বাচন পুনরুদ্ধার হয়েছে; সংযোগ ও শেল পুনরুদ্ধার হয়নি।</string>
+    <string name="workspace_reopen">নতুন সেশন খুলুন</string>
+    <string name="workspace_minimize">সেশন রাখুন এবং ডিভাইসে ফিরুন</string>
+    <string name="workspace_system">সিস্টেম</string>
+    <string name="workspace_help">সহায়তা ও কাজ</string>
+    <string name="workspace_cached_info">সিস্টেম তথ্য শেষবার এজেন্ট রিপোর্ট করেছে। পরিষেবা ও প্রক্রিয়ার জন্য সার্ভারে Mobile Companion প্রয়োজন।</string>
+    <string name="workspace_management_failed">ফলাফল যাচাই করা যায়নি। আবার চেষ্টার আগে প্রবেশাধিকার ও সার্ভার কাজের ইতিহাস দেখুন।</string>
+    <string name="workspace_service_verified">পদক্ষেপের পরে পরিষেবার অবস্থা আবার পড়া হয়েছে।</string>
+    <string name="workspace_power_pending">অনুরোধ পাঠানো হয়েছে। এজেন্ট সংযোগে পরিবর্তনের অপেক্ষা; গ্রহণ সম্পাদন নিশ্চিত করে না।</string>
+    <string name="workspace_power_reconnected">এজেন্ট বিচ্ছিন্ন হয়ে আবার সংযুক্ত হয়েছে। এটি সংযোগ পুনরুদ্ধার নিশ্চিত করে, পুনরায় চালুর কারণ নয়।</string>
+    <string name="workspace_power_offline">এজেন্ট অফলাইন। নেটওয়ার্ক বাধা ও বন্ধ হওয়ার মধ্যে পার্থক্য করা যায় না।</string>
+    <string name="workspace_power_unknown">সংযোগে কোনো পরিবর্তন দেখা যায়নি। পদক্ষেপ নিশ্চিত নয়।</string>
+    <string name="workspace_share_unreadable">কোনো পাঠযোগ্য শেয়ার করা ফাইল নেই। পড়ার অনুমতিসহ সর্বোচ্চ 20 ফাইল শেয়ার করুন।</string>
+    <string name="workspace_queue_rejected">গন্তব্য বদলেছে বা সারি পূর্ণ। ফোল্ডার দেখে আবার চেষ্টা করুন।</string>
+    <string name="workspace_transfer_channel">ফাইল স্থানান্তর</string>
+    <string name="workspace_transfers_finished">ফাইল স্থানান্তর থেমেছে</string>
+    <string name="workspace_transfers_active">ফাইল স্থানান্তর হচ্ছে</string>
+    <string name="workspace_transfer_open_details">সম্পন্ন, ব্যর্থ ও বাতিল স্থানান্তর দেখতে অ্যাপ খুলুন।</string>
+    <string name="workspace_choose_folder">%1$d শেয়ার করা ফাইলের জন্য ফোল্ডার বেছে নিন।</string>
+    <string name="workspace_send_here">এই ফোল্ডারে পাঠান</string>
+    <string name="workspace_confirm_share">ফাইল স্থানান্তর নিশ্চিত করুন</string>
+    <string name="workspace_share_overwrite">একই নামের ফাইল প্রতিস্থাপিত হবে। ব্যর্থ স্থানান্তর আংশিক ফাইল রেখে যেতে পারে। আবার চেষ্টা শুরু থেকে হয়। Android অ্যাপ থামালে ফাইল আবার শেয়ার করুন।</string>
+    <string name="workspace_background_unavailable">Android স্থানান্তর পরিষেবা শুরু করার অনুমতি দেয়নি। অ্যাপ আবার খুলে চেষ্টা করুন।</string>
+    <string name="workspace_transfers_count">স্থানান্তর · %1$d</string>
+    <string name="workspace_share_destination">%1$d ফাইল প্রস্তুত। একটি কম্পিউটার বেছে নিন, তারপর “ফাইল” বা SFTP খুলুন।</string>
+    <string name="workspace_tools">টুল</string>
+    <string name="workspace_signing_out">সাইন আউট হচ্ছে এবং পটভূমির ইভেন্ট বন্ধ করা হচ্ছে…</string>
+</resources>

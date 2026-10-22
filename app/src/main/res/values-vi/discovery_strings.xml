@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">Tìm máy tính</string>
+    <string name="browser_search_hint">Tên, nhóm, địa chỉ hoặc hệ điều hành</string>
+    <string name="browser_search_clear">Xóa tìm kiếm</string>
+    <string name="browser_filter_recent">Gần đây</string>
+    <string name="browser_recent_clear">Xóa lịch sử gần đây</string>
+    <string name="browser_search_empty_title">Không có máy tính phù hợp</string>
+    <string name="browser_search_empty_description">Hãy thử tên, nhóm, địa chỉ hoặc hệ điều hành khác.</string>
+    <string name="browser_filter_empty_title">Không có máy tính trong bộ lọc này</string>
+    <string name="browser_filter_empty_description">Chọn bộ lọc khác hoặc xóa tìm kiếm.</string>
+    <string name="browser_recent_empty_title">Không có máy tính gần đây</string>
+    <string name="browser_recent_empty_description">Các máy tính bạn mở sẽ xuất hiện ở đây.</string>
+    <string name="browser_favorites_empty_title">Chưa có mục yêu thích</string>
+    <string name="browser_favorites_empty_description">Thêm máy tính vào mục yêu thích để tìm thấy ở đây.</string>
+</resources>

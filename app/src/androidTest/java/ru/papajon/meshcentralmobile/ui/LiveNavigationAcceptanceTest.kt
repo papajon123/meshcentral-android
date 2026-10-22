@@ -1,6 +1,7 @@
 package ru.papajon.meshcentralmobile.ui
 
 import android.accessibilityservice.AccessibilityService
+import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -8,6 +9,8 @@ import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.os.ParcelFileDescriptor
+import android.os.SystemClock
+import android.view.MotionEvent
 import android.view.accessibility.AccessibilityNodeInfo
 import android.webkit.WebView
 import androidx.compose.ui.graphics.asAndroidBitmap
@@ -47,6 +50,8 @@ import okhttp3.Request
 import org.json.JSONObject
 import org.json.JSONArray
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Assume.assumeTrue
 import org.junit.Before
@@ -56,10 +61,13 @@ import ru.papajon.meshcentralmobile.BuildConfig
 import ru.papajon.meshcentralmobile.MainActivity
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
+import ru.papajon.meshcentralmobile.mesh.session.RelayPhase
 import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.security.SecureVault
 import ru.papajon.meshcentralmobile.settings.SettingsRepository
+import ru.papajon.meshcentralmobile.terminal.TerminalController
 import ru.papajon.meshcentralmobile.terminal.TerminalWebRenderer
+import ru.papajon.meshcentralmobile.workspace.ConnectionWorkspace
 
 /** Real activity and real isolated server. No Activity or network before explicit fixture opt-in. */
 @OptIn(ExperimentalTestApi::class)
@@ -68,11 +76,17 @@ class LiveNavigationAcceptanceTest {
     private lateinit var context: Context
     private lateinit var settingsPrefs: SharedPreferences
     private lateinit var securePrefs: SharedPreferences
+    private lateinit var recentPrefs: SharedPreferences
+    private lateinit var updatePrefs: SharedPreferences
     private var previousSettings: Map<String, *>? = null
     private var previousSecure: Map<String, *>? = null
+    private var previousRecent: Map<String, *>? = null
+    private var previousUpdate: Map<String, *>? = null
     private var scenario: ActivityScenario<MainActivity>? = null
     private lateinit var activity: MainActivity
     private lateinit var model: MeshSessionViewModel
+    private lateinit var workspace: ConnectionWorkspace
+    private lateinit var initialProfileId: String
     private lateinit var agentNodeId: String
     private lateinit var agentName: String
     private lateinit var renderer: TerminalWebRenderer
@@ -105,12 +119,19 @@ class LiveNavigationAcceptanceTest {
             // Preserve existing settings and encrypted vault values in memory, never in an artifact.
             settingsPrefs = context.getSharedPreferences("app_settings", Context.MODE_PRIVATE)
             securePrefs = context.getSharedPreferences("secure_vault", Context.MODE_PRIVATE)
+            recentPrefs = context.getSharedPreferences("mesh_recent_devices", Context.MODE_PRIVATE)
+            updatePrefs = context.getSharedPreferences("app_update_preferences", Context.MODE_PRIVATE)
             previousSettings = settingsPrefs.all.toMap()
             previousSecure = securePrefs.all.toMap()
+            previousRecent = recentPrefs.all.toMap()
+            previousUpdate = updatePrefs.all.toMap()
             val settings = SettingsRepository(context)
-            val vault = SecureVault(context)
+            initialProfileId = settings.activeProfile.id
+            // Credentials belong to the active profile; MainActivity resolves the same vault.
+            val vault = SecureVault(context, initialProfileId)
             vault.clearPin()
             vault.clearCredentials()
+            settings.renameProfile(initialProfileId, "Lab")
             settings.updateServerUrl(FIXTURE_SERVER)
             settings.updateTrustSelfSignedCertificates(true)
             settings.updateBlockScreenshots(false)
@@ -133,6 +154,17 @@ class LiveNavigationAcceptanceTest {
                 setupClient.close()
                 scope.cancel()
             }
+            // The Application runtime outlives Activities and individual tests. Create/reset it on
+            // the main Looper (its network callback needs one); the singleton itself stays alive.
+            InstrumentationRegistry.getInstrumentation().runOnMainSync {
+                workspace = ConnectionWorkspace.get(context.applicationContext as Application)
+                workspace.closeAll()
+                workspace.message = null
+                runCatching { workspace.client.logout(clearStoredCredentials = false) }
+                runCatching { workspace.bindIdentity(FIXTURE_SERVER, null) }
+                if (workspace.profileId != initialProfileId) workspace.switchProfile(initialProfileId)
+                workspace.client.setAllowSelfSignedCertificates(true)
+            }
             // Remove plaintext JSON references as early as possible; no password enters a UI action.
             fixture.remove("password")
             fixture.remove("sshPassword")
@@ -151,10 +183,35 @@ class LiveNavigationAcceptanceTest {
         }
         scenario?.close()
         scenario = null
+        if (::workspace.isInitialized) {
+            runCatching {
+                InstrumentationRegistry.getInstrumentation().runOnMainSync {
+                    workspace.closeAll()
+                    workspace.message = null
+                    runCatching { workspace.client.logout(clearStoredCredentials = false) }
+                    runCatching { workspace.bindIdentity(FIXTURE_SERVER, null) }
+                }
+            }
+        }
+        if (::workspace.isInitialized && ::initialProfileId.isInitialized &&
+            workspace.profileId != initialProfileId
+        ) {
+            // Switch before restoring preferences so any legacy-vault migration is overwritten too.
+            runCatching {
+                InstrumentationRegistry.getInstrumentation().runOnMainSync {
+                    runCatching { workspace.switchProfile(initialProfileId) }
+                    runCatching { workspace.client.logout(clearStoredCredentials = false) }
+                }
+            }
+        }
         if (::settingsPrefs.isInitialized) previousSettings?.let { restore(settingsPrefs, it) }
         if (::securePrefs.isInitialized) previousSecure?.let { restore(securePrefs, it) }
+        if (::recentPrefs.isInitialized) previousRecent?.let { restore(recentPrefs, it) }
+        if (::updatePrefs.isInitialized) previousUpdate?.let { restore(updatePrefs, it) }
         previousSettings = null
         previousSecure = null
+        previousRecent = null
+        previousUpdate = null
         // Keep requested screenshots and the synthetic SAF artifact name in app cache.
     }
 
@@ -168,6 +225,79 @@ class LiveNavigationAcceptanceTest {
         }
         screenshot("live-device.png")
 
+        val originalModel = model
+        val legacyWebView = knownLegacyWebView()
+        val terminal = if (legacyWebView) {
+            verifyLegacyTerminalUnavailableAndNavigation()
+        } else {
+            verifyModernTerminalNavigation(originalModel)
+        }
+        verifyFilesNavigationAndRecreation(originalModel, terminal, legacyWebView)
+    }
+
+    /** Chromium below 80 cannot parse the bundled renderer's optional chaining. */
+    private fun knownLegacyWebView(): Boolean {
+        val version = runCatching { WebView.getCurrentWebViewPackage() }.getOrNull()?.versionName ?: return false
+        val major = Regex("^(\\d+)(?:\\.|$)").find(version)?.groupValues?.get(1)?.toIntOrNull() ?: return false
+        return major < 80
+    }
+
+    private fun awaitLegacyTerminalUnavailable(): TerminalController {
+        compose.waitUntil(25_000) {
+            val state = model.terminalController?.state?.value
+            state?.phase == RelayPhase.Failed &&
+                state.message == UiText.resource(R.string.terminal_webview_update_required)
+        }
+        return requireNotNull(model.terminalController)
+    }
+
+    private fun assertExpectedLegacyTerminal(controller: TerminalController) {
+        assertEquals("Old WebView terminal did not report the required update message",
+            UiText.resource(R.string.terminal_webview_update_required), controller.state.value.message)
+        assertEquals("Old WebView terminal did not enter the expected failed phase",
+            RelayPhase.Failed, controller.state.value.phase)
+        assertFalse("Old WebView terminal unexpectedly became ready", controller.state.value.ready)
+    }
+
+    /** No renderer JavaScript is attempted here: the exact old-WebView failure is the acceptance. */
+    private fun verifyLegacyTerminalUnavailableAndNavigation(): TerminalController {
+        stage = "select Terminal tab expecting legacy WebView unavailability"
+        tab(R.string.device_terminal)
+        val unavailable = awaitLegacyTerminalUnavailable()
+        stage = "verify the old WebView reports the exact terminal update requirement"
+        compose.runOnIdle { assertExpectedLegacyTerminal(unavailable) }
+        compose.onNodeWithText(context.getString(R.string.terminal_webview_update_required)).assertIsDisplayed()
+        screenshot("live-terminal.png")
+
+        stage = "leave the unavailable terminal without closing its workspace slot"
+        compose.onNodeWithText(context.getString(R.string.terminal_back)).performClick()
+        compose.waitUntil(5_000) { model.deviceTab == DeviceTab.Overview && model.terminalController == null && model.selectedDeviceId == agentNodeId }
+        compose.runOnIdle {
+            assertTrue("Compose Back replaced the unavailable terminal session",
+                workspace.sessions.any { it.tab == DeviceTab.Terminal && it.terminal === unavailable })
+        }
+        stage = "reopen the unavailable terminal after Back"
+        tab(R.string.device_terminal)
+        compose.waitUntil(10_000) { model.terminalController === unavailable && unavailable.state.value.phase == RelayPhase.Failed }
+
+        stage = "recreate the real Activity while the legacy terminal is unavailable"
+        val recreatedModel = model
+        recreate()
+        compose.waitUntil(10_000) { model.deviceTab == DeviceTab.Terminal && model.terminalController === unavailable }
+        compose.runOnIdle {
+            assertTrue("Activity recreation replaced its ViewModel", model === recreatedModel)
+            assertExpectedLegacyTerminal(unavailable)
+        }
+        compose.onNodeWithText(context.getString(R.string.terminal_webview_update_required)).assertIsDisplayed()
+
+        stage = "return to the device overview from the unavailable terminal"
+        compose.onNodeWithText(context.getString(R.string.terminal_back)).performClick()
+        compose.waitUntil(5_000) { model.deviceTab == DeviceTab.Overview && model.terminalController == null }
+        return unavailable
+    }
+
+    /** The unchanged modern path for API 35 providers. */
+    private fun verifyModernTerminalNavigation(originalModel: MeshSessionViewModel): TerminalController {
         stage = "select Terminal tab using Compose"
         tab(R.string.device_terminal)
         compose.waitUntil(35_000) { model.terminalController?.state?.value?.ready == true }
@@ -187,7 +317,6 @@ class LiveNavigationAcceptanceTest {
         compose.waitUntil(30_000) { evaluateBoolean(containsMarker) }
 
         stage = "recreate the real Activity with a connected terminal"
-        val originalModel = model
         val originalTerminal = requireNotNull(model.terminalController)
         val originalRenderer = renderer
         recreate()
@@ -210,9 +339,28 @@ class LiveNavigationAcceptanceTest {
         terminalWindowScreenshot()
         screenshot("live-terminal.png")
 
-        stage = "return from terminal using its Compose Back button"
+        stage = "leave terminal for the device overview without closing its live session"
         compose.onNodeWithText(context.getString(R.string.terminal_back)).performClick()
         compose.waitUntil(5_000) { model.deviceTab == DeviceTab.Overview && model.terminalController == null && model.selectedDeviceId == agentNodeId }
+        compose.runOnIdle {
+            val live = workspace.sessions.single { it.tab == DeviceTab.Terminal }
+            assertTrue("Compose Back replaced the live terminal session", live.terminal === originalTerminal)
+            assertTrue("Compose Back closed the live terminal transport", originalTerminal.state.value.ready)
+        }
+        stage = "reopen the preserved terminal session after Back"
+        tab(R.string.device_terminal)
+        compose.waitUntil(10_000) { model.terminalController === originalTerminal && originalTerminal.state.value.ready }
+        stage = "return to the device overview again"
+        compose.onNodeWithText(context.getString(R.string.terminal_back)).performClick()
+        compose.waitUntil(5_000) { model.deviceTab == DeviceTab.Overview && model.selectedDeviceId == agentNodeId }
+        return originalTerminal
+    }
+
+    private fun verifyFilesNavigationAndRecreation(
+        originalModel: MeshSessionViewModel,
+        terminal: TerminalController,
+        legacyWebView: Boolean,
+    ) {
         stage = "select Files tab using Compose"
         tab(R.string.device_files)
         compose.waitUntil(35_000) { model.filesController?.state?.value?.let { it.connected && !it.busy && it.entries.isNotEmpty() } == true }
@@ -220,6 +368,10 @@ class LiveNavigationAcceptanceTest {
         openFolder("tmp", "/tmp")
         openFolder("mesh-fixture", FIXTURE_DIRECTORY)
         compose.waitUntil(10_000) { model.filesController?.state?.value?.entries?.any { it.name == "fixture-юникод.txt" } == true }
+        compose.runOnIdle {
+            assertTrue("Opening Files replaced the first workspace slot", workspace.sessions.size == 2)
+            assertTrue("Terminal slot disappeared when Files opened", workspace.sessions.any { it.tab == DeviceTab.Terminal && it.terminal === terminal })
+        }
 
         stage = "prepare a pending download before Activity recreation"
         val originalFiles = requireNotNull(model.filesController)
@@ -245,6 +397,23 @@ class LiveNavigationAcceptanceTest {
         } finally { destination.delete() }
         compose.onNode(hasScrollToIndexAction()).performScrollToIndex(0)
         screenshot("live-files.png")
+
+        stage = "explicitly close only the Files session through the ViewModel"
+        val filesSession = requireNotNull(workspace.sessions.firstOrNull { it.tab == DeviceTab.Files && it.files === originalFiles })
+        compose.runOnIdle { model.closeSession(filesSession.id) }
+        compose.waitUntil(10_000) { model.filesController == null && workspace.sessions.none { it.tab == DeviceTab.Files } }
+        compose.waitUntil(10_000) { !originalFiles.state.value.connected }
+        compose.runOnIdle {
+            if (legacyWebView) {
+                val preserved = workspace.sessions.singleOrNull { it.tab == DeviceTab.Terminal }
+                assertTrue("Explicit Files close also removed the terminal session", preserved != null)
+                assertTrue("Explicit Files close replaced the unavailable terminal", preserved?.terminal === terminal)
+                assertExpectedLegacyTerminal(requireNotNull(preserved?.terminal))
+            } else {
+                assertTrue("Explicit Files close also removed the terminal session",
+                    workspace.sessions.any { it.tab == DeviceTab.Terminal && it.terminal?.state?.value?.ready == true })
+            }
+        }
     }
 
     /** Separate from recreation: this launches the platform picker and never stubs its result. */
@@ -360,14 +529,48 @@ class LiveNavigationAcceptanceTest {
     }
 
     private fun isDownloadsLabel(node: AccessibilityNodeInfo): Boolean =
-        node.text?.toString()?.trim()?.lowercase(Locale.ROOT) in setOf("downloads", "download", "загрузки", "скачанные файлы")
+        node.text?.toString()?.trim()?.lowercase(Locale.ROOT) in DOWNLOADS_LABELS
+
+    /**
+     * API 26 uses a DropdownBreadcrumb Spinner; newer pickers expose breadcrumb_text items.
+     * Read the selected item's own label rather than assuming one toolbar implementation.
+     */
+    private fun currentLocationLabel(): String? {
+        val location = findAccessibility {
+            val id = it.viewIdResourceName.orEmpty()
+            id.endsWith(":id/breadcrumb_text") || id.endsWith(":id/dropdown_breadcrumb")
+        } ?: findAccessibility {
+            // API 26 exposes the DropdownBreadcrumb spinner's selected title under the toolbar.
+            // API 26's selected toolbar title is an id-less TextView (observed accessibility tree).
+            it.className?.toString() == "android.widget.TextView" && !it.isEditable &&
+                !it.text.isNullOrBlank() && hasAncestorId(it, ":id/toolbar") &&
+                !hasAncestorId(it, ":id/roots_list")
+        } ?: return null
+        return visibleTextLabel(location)
+    }
+
+    private fun visibleTextLabel(root: AccessibilityNodeInfo): String? {
+        root.text?.toString()?.trim()?.takeIf { it.isNotEmpty() }?.let { return it }
+        val pending = ArrayDeque<AccessibilityNodeInfo>()
+        for (index in 0 until root.childCount) root.getChild(index)?.let { pending.add(it) }
+        while (pending.isNotEmpty()) {
+            val node = pending.removeFirst()
+            node.text?.toString()?.trim()?.takeIf { it.isNotEmpty() }?.let { return it }
+            for (index in 0 until node.childCount) node.getChild(index)?.let { pending.add(it) }
+        }
+        return root.contentDescription?.toString()?.trim()?.takeIf { it.isNotEmpty() }
+    }
+
+    private fun atDownloadsLocation(): Boolean {
+        val label = currentLocationLabel()?.lowercase(Locale.ROOT) ?: return false
+        return label in DOWNLOADS_LABELS
+    }
 
     private fun chooseSystemDownloads() {
         // Observed on emulator-5556: breadcrumb_text and toolbar both say Downloads but are NOT
         // clickable. The actual drawer root is android:id/title under documentsui:id/roots_list.
         val drawerOpen = findAccessibility { it.viewIdResourceName?.endsWith(":id/roots_list") == true } != null
-        val alreadyDownloads = findAccessibility { it.viewIdResourceName?.endsWith(":id/breadcrumb_text") == true && isDownloadsLabel(it) } != null
-        if (alreadyDownloads && !drawerOpen) return
+        if (atDownloadsLocation() && !drawerOpen) return
         if (!drawerOpen) {
             val roots = awaitAccessibility {
                 val description = it.contentDescription?.toString()?.lowercase(Locale.ROOT).orEmpty()
@@ -376,18 +579,53 @@ class LiveNavigationAcceptanceTest {
             }
             assertTrue("Could not open the system document locations", clickAccessibility(roots))
         }
+        // API 26 and modern DocumentsUI both use android:id/title inside roots_list for a root row.
         val downloads = awaitAccessibility {
-            it.viewIdResourceName == "android:id/title" && isDownloadsLabel(it) && hasAncestorId(it, ":id/roots_list")
+            it.viewIdResourceName?.endsWith(":id/title") == true &&
+                it.className?.toString()?.endsWith("TextView") == true &&
+                isDownloadsLabel(it) && hasAncestorId(it, ":id/roots_list")
         }
         assertTrue("Could not choose the actual Downloads drawer item", clickAccessibility(downloads))
-        val until = System.nanoTime() + TimeUnit.SECONDS.toNanos(10)
+        if (!awaitDownloadsLocation(2_000)) {
+            // DocumentsUI 8 uses a ListView; the row's click action is not its item click.
+            // Tap only the visible, semantically identified Downloads row, never a blind coordinate.
+            val row = findAccessibility {
+                it.viewIdResourceName?.endsWith(":id/title") == true &&
+                    it.className?.toString()?.endsWith("TextView") == true &&
+                    isDownloadsLabel(it) && hasAncestorId(it, ":id/roots_list")
+            }
+            if (row != null) assertTrue("Could not tap the actual Downloads drawer item", tapAccessibility(row))
+        }
+        if (!awaitDownloadsLocation(10_000)) {
+            throw AssertionError("Downloads was not confirmed after selecting its actual drawer item")
+        }
+    }
+
+    private fun awaitDownloadsLocation(timeoutMillis: Long): Boolean {
+        val until = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(timeoutMillis)
         while (System.nanoTime() < until) {
-            val current = findAccessibility { it.viewIdResourceName?.endsWith(":id/breadcrumb_text") == true && isDownloadsLabel(it) }
             val roots = findAccessibility { it.viewIdResourceName?.endsWith(":id/roots_list") == true }
-            if (current != null && roots == null) return
+            if (atDownloadsLocation() && roots == null) return true
             Thread.sleep(100)
         }
-        throw AssertionError("Downloads was not confirmed after selecting its actual drawer item")
+        return false
+    }
+
+    /** Semantic fallback for ListView rows, using the identified row's own on-screen bounds. */
+    private fun tapAccessibility(node: AccessibilityNodeInfo): Boolean {
+        val bounds = Rect()
+        node.getBoundsInScreen(bounds)
+        if (bounds.width() <= 0 || bounds.height() <= 0) return false
+        val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
+        val downTime = SystemClock.uptimeMillis()
+        val down = MotionEvent.obtain(downTime, downTime, MotionEvent.ACTION_DOWN, bounds.exactCenterX(), bounds.exactCenterY(), 0)
+        val up = MotionEvent.obtain(downTime, downTime + 50, MotionEvent.ACTION_UP, bounds.exactCenterX(), bounds.exactCenterY(), 0)
+        return try {
+            automation.injectInputEvent(down, true) && automation.injectInputEvent(up, true)
+        } finally {
+            down.recycle()
+            up.recycle()
+        }
     }
 
     private fun clickAccessibility(node: AccessibilityNodeInfo): Boolean {
@@ -553,8 +791,9 @@ class LiveNavigationAcceptanceTest {
     }
 
     companion object {
-        private const val FIXTURE_URL = "http://10.0.2.2:19847/fixture"
-        private const val FIXTURE_SERVER = "https://10.0.2.2:19846"
+        private const val FIXTURE_URL = "http://10.0.2.2:19857/fixture"
+        private const val FIXTURE_SERVER = "https://10.0.2.2:19856"
         private const val FIXTURE_DIRECTORY = "/tmp/mesh-fixture"
+        private val DOWNLOADS_LABELS = setOf("downloads", "download", "загрузки", "скачанные файлы")
     }
 }

@@ -1,21 +1,19 @@
 # Known Limitations
 
-This page describes the prepared 0.5.1 release. It is not a stable-release claim, and publication is handled separately by the maintainer. Limitations below are deliberate, unverified, or outside the native client.
+This page describes 0.7.0. Limits below are deliberate, unverified or outside this client.
 
 ## Validation status
 
-- Feature checks used a real isolated Linux Mesh Agent and SSH/SFTP host through npm MeshCentral 1.2.5.
-- Protocol review used MeshCentral package 1.2.6 at commit `60cea8731f88b91a09704ff9a00dab4992a98ef1`. npm 1.2.6 was unavailable, so no MeshCentral 1.2.6 server was tested and compatibility with that version is not claimed.
-- The build has not been validated on a physical phone, with a Windows Mesh Agent, with live restrictive-right accounts, or with live consent/refusal flows.
-- SSH host-key policy, pending mutation cancellation, and some partial/interrupted transfer paths remain unverified.
-- Exact test counts are not claimed here. Results and the release record are maintained in [VALIDATION.md](VALIDATION.md); that file also contains historical 0.4.0 evidence.
+Local public build/JVM and API 35 instrumentation passed. Compatibility work uses an isolated real MeshCentral 1.3.0/Linux Agent and SSH/SFTP fixture. See [current evidence](ROADMAP_IMPLEMENTATION.md) and [historical checks](VALIDATION.md).
+
+Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM background delivery and battery measurements remain. Restrictive remote-command ACL and notification-token revocation were exercised; consent/refusal coverage is not exhaustive.
 
 ## Device screen and capabilities
 
-- Details uses information already present in the device list: group, operating system, address and Agent version. Events, network details, power and wake actions are not native.
+- System/network details depend on the data reported by MeshCentral. Missing fields stay unknown. Services/processes and events require the optional plugin; power/wake availability depends on rights, agent state and the network.
 - Desktop, Terminal, Files, SSH and SFTP tabs are shown but disabled for a known denial, a known offline/unsupported state, or a missing required right. Unknown optional metadata enables an explicit attempt; the server decides the result.
 - The app does not infer a grant from a missing field, nor does it bypass a server denial. A failed attempt reports the server's reason.
-- Selecting another tool closes the current one. There is no parallel terminal + files workspace.
+- At most two sessions can remain open, including at most one desktop. Closing is explicit; process death restores the selection, not a live connection.
 - The **Open web panel** action opens the configured MeshCentral URL in a browser with a separate sign-in. No app credential or session is passed to the browser.
 
 ## Terminal

@@ -1,0 +1,37 @@
+appId: io.github.papajon123.meshcentral.debug
+---
+- launchApp:
+    clearState: true
+- takeScreenshot: after-onboarding
+- scrollUntilVisible:
+    element:
+      text: "Server address"
+    direction: DOWN
+- tapOn: "Server address"
+- inputText: "https://mesh.example/"
+- hideKeyboard
+- scrollUntilVisible:
+    element:
+      text: "Save address"
+    direction: DOWN
+- assertVisible: "Save address"
+- tapOn: "Save address"
+- assertVisible: "Continue without signing in"
+- takeScreenshot: after-login
+- tapOn: "Continue without signing in"
+- assertVisible: "Computers"
+- takeScreenshot: after-computers-empty
+- tapOn: "Settings"
+- assertVisible: "Settings"
+- takeScreenshot: after-settings
+- repeat:
+    times: 3
+    commands:
+      - swipe:
+          direction: UP
+- repeat:
+    times: 3
+    commands:
+      - swipe:
+          direction: DOWN
+

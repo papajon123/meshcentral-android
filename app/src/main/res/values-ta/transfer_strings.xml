@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">பதிவேற்ற வரிசை</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">பதிவேற்ற வரிசை எந்தக் கோப்புறையுடனும் இணைக்கப்படவில்லை.</string>
+    <string name="transfer_queue_empty">வரிசையில் பதிவேற்றங்கள் இல்லை.</string>
+    <string name="transfer_queue_root">கணினி வேர்</string>
+
+    <string name="transfer_status_queued">வரிசையில்</string>
+    <string name="transfer_status_active">பதிவேற்றப்படுகிறது</string>
+    <string name="transfer_status_succeeded">சரிபார்க்கப்பட்டது</string>
+    <string name="transfer_status_failed">தோல்வி</string>
+    <string name="transfer_status_cancelled">ரத்து</string>
+
+    <string name="transfer_progress">%1$d பைட்டுகள்</string>
+    <string name="transfer_progress_size">%2$d இல் %1$d பைட்டுகள்</string>
+    <string name="transfer_cancel">ரத்து</string>
+    <string name="transfer_cancel_all">அனைத்தையும் ரத்து</string>
+    <string name="transfer_retry">மீண்டும் முயற்சி</string>
+    <string name="transfer_clear_finished">முடிந்ததை அழி</string>
+    <string name="transfer_close">மூடு</string>
+    <string name="transfer_retry_title">பதிவேற்றத்தை மீண்டும் முயற்சிக்கவா?</string>
+    <string name="transfer_retry_warning">பதிவேற்றம் தொடக்கத்திலிருந்து மீண்டும் இயங்கும். இந்தப் பெயரில் உள்ள தொலைக் கோப்பு மாற்றப்படும், இந்த முயற்சி இடையூறானால் பகுதியாக இருக்கலாம். தொடர்வதற்கு முன் உறுதிப்படுத்தவும்.</string>
+    <string name="transfer_partial_remote">பகுதி அல்லது மாற்றப்பட்ட தொலைக் கோப்பு இருக்கலாம். மீண்டும் முயல்வதற்கு முன் அதைப் பார்க்கவும்.</string>
+    <string name="transfer_upload_failed">பதிவேற்றம் எதிர்பாராத பிழையுடன் நின்றது. அமர்வு முடிந்தது; மீண்டும் முயல்வதற்கு முன் தொலைக் கோப்பைப் பார்க்கவும்.</string>
+
+    <string name="transfer_shared_file_fallback">பகிரப்பட்ட கோப்பு %1$d</string>
+    <string name="transfer_error_closed">கோப்பு அமர்வு மூடப்பட்டுள்ளது. “கோப்புகள்” ஐ மீண்டும் திறக்கவும்.</string>
+    <string name="transfer_error_content_uri">Android பகிர்வு அல்லது திறப்புத் தேர்வியிலிருந்து content URI களை மட்டுமே வரிசையில் சேர்க்க முடியும்.</string>
+    <string name="transfer_error_path_changed">இந்தப் பதிவேற்றம் தொடங்குவதற்கு முன் கோப்புறை மாறியது. இந்தக் கோப்பிற்கு எதுவும் அனுப்பப்படவில்லை; திரும்பிச் சென்று மீண்டும் வரிசையில் சேர்க்கவும்.</string>
+    <string name="transfer_error_busy">மற்றொரு கோப்புச் செயல்பாடு நடைபெறுகிறது. மேலும் வரிசையில் சேர்ப்பதற்கு முன் அது முடியும் வரை காத்திருக்கவும்.</string>
+    <string name="transfer_error_stream">தேர்ந்தெடுத்த உள்ளடக்கத்தைத் திறக்க முடியவில்லை. பகிர்வு அனுமதி காலாவதியாகியிருக்கலாம்.</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">Aparência</string>
+    <string name="settings_appearance_subtitle">Tema e cores do sistema</string>
+    <string name="settings_theme_system">Sistema</string>
+    <string name="settings_theme_light">Claro</string>
+    <string name="settings_theme_dark">Escuro</string>
+    <string name="settings_dynamic_colors">Cores do sistema</string>
+    <string name="settings_dynamic_colors_supporting">Use as cores do papel de parede nas superfícies. As cores de conexão e segurança permanecem iguais.</string>
+</resources>

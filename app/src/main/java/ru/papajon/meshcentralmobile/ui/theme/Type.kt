@@ -21,8 +21,8 @@ fun TextStyle.emphasized(): TextStyle = copy(fontWeight = FontWeight.ExtraBold)
 fun TextStyle.tabular(): TextStyle = copy(fontFeatureSettings = "tnum")
 
 internal val MeshTypography = Typography(
-    displaySmall = Default.displaySmall.copy(fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp),
-    headlineLarge = Default.headlineLarge.copy(fontWeight = FontWeight.Bold, letterSpacing = (-0.5).sp),
+    displaySmall = Default.displaySmall.copy(fontFamily = FontFamily.SansSerif, fontWeight = FontWeight.Bold, letterSpacing = (-0.3).sp),
+    headlineLarge = Default.headlineLarge.copy(fontWeight = FontWeight.Bold, letterSpacing = (-0.3).sp),
     headlineMedium = Default.headlineMedium.copy(fontWeight = FontWeight.Bold, letterSpacing = (-0.25).sp),
     headlineSmall = Default.headlineSmall.copy(fontWeight = FontWeight.SemiBold, letterSpacing = (-0.1).sp),
     titleLarge = Default.titleLarge.copy(fontWeight = FontWeight.SemiBold),
@@ -31,7 +31,7 @@ internal val MeshTypography = Typography(
     bodyLarge = Default.bodyLarge.copy(lineHeight = 24.sp),
     bodyMedium = Default.bodyMedium.copy(lineHeight = 20.sp),
     bodySmall = Default.bodySmall.copy(lineHeight = 16.sp),
-    labelLarge = Default.labelLarge.copy(fontWeight = FontWeight.SemiBold, letterSpacing = 0.2.sp),
+    labelLarge = Default.labelLarge.copy(fontWeight = FontWeight.SemiBold, letterSpacing = 0.sp),
     labelMedium = Default.labelMedium.copy(fontWeight = FontWeight.Medium, letterSpacing = 0.4.sp),
     labelSmall = Default.labelSmall.copy(fontWeight = FontWeight.Medium, letterSpacing = 0.5.sp),
 ).withCroppedLineHeights()

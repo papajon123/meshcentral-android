@@ -21,9 +21,9 @@ import ru.papajon.meshcentralmobile.R
 
 @Composable
 internal fun ConnectionNotice(message: String, modifier: Modifier = Modifier, onRetry: (() -> Unit)? = null) {
-    MeshCard(modifier = modifier.fillMaxWidth(), container = MaterialTheme.colorScheme.surfaceContainerHigh) {
+    MeshCard(modifier = modifier.fillMaxWidth(), container = MaterialTheme.colorScheme.errorContainer) {
         Row(Modifier.padding(14.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            Icon(Icons.Outlined.CloudOff, null, tint = MaterialTheme.colorScheme.tertiary, modifier = Modifier.size(24.dp))
+            Icon(Icons.Outlined.CloudOff, null, tint = MaterialTheme.colorScheme.onErrorContainer, modifier = Modifier.size(24.dp))
             Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 Text(message, style = MaterialTheme.typography.bodyMedium)
                 if (onRetry != null) {

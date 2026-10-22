@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">Bạn có thể giữ tối đa %1$d hồ sơ máy chủ.</string>
+    <string name="workspace_profile_error">Không thể thay đổi hồ sơ này. Kiểm tra tên và thử lại.</string>
+    <string name="workspace_profiles_action">Hồ sơ máy chủ</string>
+    <string name="workspace_capacity">Hai phiên đã mở. Đóng một phiên trước khi mở phiên khác.</string>
+    <string name="workspace_desktop_limit">Một màn hình máy tính đã mở. Đóng trước khi mở màn hình khác.</string>
+    <string name="workspace_sessions">Phiên đang mở</string>
+    <string name="workspace_sessions_count">Phiên · %1$d</string>
+    <string name="workspace_session_hint">Giữ tối đa hai công cụ mở. Shell kết thúc nếu mất kết nối.</string>
+    <string name="workspace_empty">Không có phiên đang mở</string>
+    <string name="workspace_switch">Chuyển sang</string>
+    <string name="workspace_close_explanation">Đóng phiên trên %1$s? Mọi quá trình truyền đang hoạt động sẽ dừng.</string>
+    <string name="workspace_ended">Phiên trước đã kết thúc. Lựa chọn của bạn đã được khôi phục; kết nối và shell thì không.</string>
+    <string name="workspace_reopen">Mở phiên mới</string>
+    <string name="workspace_minimize">Giữ phiên và quay lại thiết bị</string>
+    <string name="workspace_system">Hệ thống</string>
+    <string name="workspace_help">Trợ giúp &amp; tác vụ</string>
+    <string name="workspace_cached_info">Thông tin hệ thống được agent báo cáo lần cuối. Dịch vụ và tiến trình yêu cầu Mobile Companion trên máy chủ.</string>
+    <string name="workspace_management_failed">Không thể xác minh kết quả. Kiểm tra quyền truy cập và lịch sử tác vụ máy chủ trước khi thử lại.</string>
+    <string name="workspace_service_verified">Trạng thái dịch vụ đã được đọc lại sau thao tác.</string>
+    <string name="workspace_power_pending">Yêu cầu đã gửi. Đang chờ thay đổi kết nối của agent; việc chấp nhận không xác nhận đã thực thi.</string>
+    <string name="workspace_power_reconnected">Agent đã ngắt kết nối và kết nối lại. Điều này xác nhận kết nối đã phục hồi, không xác nhận nguyên nhân khởi động lại.</string>
+    <string name="workspace_power_offline">Agent ngoại tuyến. Không thể phân biệt gián đoạn mạng với việc tắt máy.</string>
+    <string name="workspace_power_unknown">Không quan sát thấy thay đổi kết nối. Thao tác chưa được xác nhận.</string>
+    <string name="workspace_share_unreadable">Không có tệp chia sẻ nào đọc được. Chia sẻ tối đa 20 tệp có quyền đọc.</string>
+    <string name="workspace_queue_rejected">Đích đã thay đổi hoặc hàng đợi đã đầy. Kiểm tra thư mục và thử lại.</string>
+    <string name="workspace_transfer_channel">Truyền tệp</string>
+    <string name="workspace_transfers_finished">Truyền tệp đã dừng</string>
+    <string name="workspace_transfers_active">Đang truyền tệp</string>
+    <string name="workspace_transfer_open_details">Mở ứng dụng để kiểm tra các lượt truyền đã hoàn tất, thất bại và đã hủy.</string>
+    <string name="workspace_choose_folder">Chọn thư mục cho %1$d tệp được chia sẻ.</string>
+    <string name="workspace_send_here">Gửi đến thư mục này</string>
+    <string name="workspace_confirm_share">Xác nhận truyền tệp</string>
+    <string name="workspace_share_overwrite">Các tệp cùng tên sẽ bị ghi đè. Truyền thất bại có thể để lại tệp dở dang. Thử lại sẽ bắt đầu từ đầu. Nếu Android dừng ứng dụng, hãy chia sẻ tệp lại.</string>
+    <string name="workspace_background_unavailable">Android không cho phép khởi động dịch vụ truyền. Mở lại ứng dụng và thử lại.</string>
+    <string name="workspace_transfers_count">Truyền · %1$d</string>
+    <string name="workspace_share_destination">%1$d tệp đã sẵn sàng. Chọn máy tính, sau đó mở Tệp hoặc SFTP.</string>
+    <string name="workspace_signing_out">Đang đăng xuất và tắt sự kiện chạy nền…</string>
+    <string name="workspace_tools">Công cụ</string>
+</resources>

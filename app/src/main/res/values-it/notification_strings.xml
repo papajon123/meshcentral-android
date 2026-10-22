@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_sheet_title">Eventi in background</string>
+    <string name="notification_sheet_subtitle">Controlli opzionali ogni 15 minuti per questo profilo server.</string>
+    <string name="notification_status_title">Stato</string>
+    <string name="notification_status_enabled">Attivo</string>
+    <string name="notification_status_disabled">Disattivo</string>
+    <string name="notification_last_check">Ultimo controllo: %1$s</string>
+    <string name="notification_never_checked">Nessun controllo in background è ancora stato eseguito.</string>
+    <string name="notification_token_expires">Il token è valido fino al %1$s.</string>
+
+    <string name="notification_optin_title">Attiva eventi in background</string>
+    <string name="notification_optin_supporting">Nessun servizio push. WorkManager controlla questo server ogni 15 minuti circa e mantiene solo un piccolo feed locale di eventi.</string>
+    <string name="notification_enable_action">Attiva notifiche</string>
+    <string name="notification_disable_action">Disattiva notifiche</string>
+    <string name="notification_reenable_action">Riattiva</string>
+
+    <string name="notification_filters_title">Filtri eventi</string>
+    <string name="notification_filters_supporting">Scegli quali tipi di evento possono apparire nel feed e nelle notifiche.</string>
+    <string name="notification_kind_device_online">Dispositivo online</string>
+    <string name="notification_kind_device_offline">Dispositivo offline</string>
+    <string name="notification_kind_request_help">Assistenza richiesta</string>
+    <string name="notification_kind_job_completed">Attività completata</string>
+    <string name="notification_kind_job_failed">Attività non riuscita</string>
+    <string name="notification_kind_device_alert">Avviso risorse</string>
+
+    <string name="notification_quiet_title">Ore di silenzio</string>
+    <string name="notification_quiet_supporting">Durante questa fascia oraria locale, gli eventi vengono conservati e mostrati più tardi.</string>
+    <string name="notification_quiet_start">Ora di inizio</string>
+    <string name="notification_quiet_end">Ora di fine</string>
+    <string name="notification_quiet_invalid">Inserisci un’ora da 0 a 23.</string>
+    <string name="notification_quiet_hint">Ore di inizio e fine uguali disattivano la fascia.</string>
+
+    <string name="notification_check_now">Controlla ora</string>
+    <string name="notification_checking">Controllo…</string>
+    <string name="notification_permission_denied_supporting">L’autorizzazione alle notifiche è negata. Il feed eventi continua ad aggiornarsi, ma nessuna notifica è stata recapitata.</string>
+
+    <string name="notification_feed_title">Eventi recenti</string>
+    <string name="notification_feed_supporting">Fino a 200 eventi consentiti, conservati per il TTL di una settimana fornito dal server.</string>
+    <string name="notification_feed_empty">Nessun evento. Il primo controllo viene eseguito poco dopo l’attivazione.</string>
+    <string name="notification_clear_history">Cancella cronologia</string>
+    <string name="notification_clear_history_confirm">Rimuovere tutti gli eventi memorizzati localmente? La cronologia del server non viene modificata.</string>
+
+    <string name="notification_explanation_title">Come funziona</string>
+    <string name="notification_explanation_15min">WorkManager esegue un controllo con il massimo impegno ogni 15 minuti circa. Android può ritardarlo quando il dispositivo è inattivo, in Doze o dopo un arresto forzato.</string>
+    <string name="notification_explanation_os_delays">Non c’è un push istantaneo. La consegna può essere in ritardo e un arresto forzato interrompe il lavoro in background finché l’app non viene riaperta.</string>
+    <string name="notification_explanation_token">Il token in sola lettura dura 30 giorni. Quando scade, riattiva per crearne uno nuovo.</string>
+    <string name="notification_explanation_thresholds">Gli avvisi del server sono fissi: utilizzo del disco pari o superiore al 90 per cento e utilizzo della memoria pari o superiore al 95 per cento. L’app non modifica queste soglie.</string>
+    <string name="notification_explanation_force_stop">L’ottimizzazione della batteria e le restrizioni del produttore possono aggiungere ritardo. È un limite di Android, non un errore del server.</string>
+
+    <string name="notification_channel_name">Eventi in background</string>
+    <string name="notification_channel_description">Eventi di dispositivo, richieste di assistenza e attività di MeshCentral.</string>
+    <string name="notification_push_title">MeshCentral</string>
+    <string name="notification_public_text">Nuova attività. Apri l’app per visualizzarla.</string>
+    <string name="notification_body_device_online">Un dispositivo è online.</string>
+    <string name="notification_body_device_offline">Un dispositivo è offline.</string>
+    <string name="notification_body_request_help">Un dispositivo ha richiesto assistenza.</string>
+    <string name="notification_body_job_completed">Un’attività remota è stata completata.</string>
+    <string name="notification_body_job_failed">Un’attività remota non è riuscita.</string>
+    <string name="notification_body_device_alert">È stato segnalato un avviso risorse di un dispositivo.</string>
+
+    <string name="notification_error_not_enabled">Gli eventi in background sono disattivati.</string>
+    <string name="notification_error_not_signed_in">Accedi al server prima di attivare gli eventi in background.</string>
+    <string name="notification_error_account_mismatch">Il token di notifica memorizzato appartiene a un altro account. Riattiva.</string>
+    <string name="notification_error_profile_missing">Questo profilo server non esiste più.</string>
+    <string name="notification_error_network">Nessuna connessione. Il cursore viene mantenuto e il prossimo controllo riproverà.</string>
+    <string name="notification_error_tls">Android non considera attendibile il certificato del server. Gli eventi in background restano disattivati.</string>
+    <string name="notification_error_server">Il server ha rifiutato la richiesta in background.</string>
+    <string name="notification_error_rate_limited">È stato raggiunto il limite di frequenza del server. Il prossimo controllo riproverà.</string>
+    <string name="notification_error_protocol">Il parser rigoroso ha rifiutato la risposta del server.</string>
+    <string name="notification_error_endpoint">Il server ha restituito un endpoint di notifica non valido.</string>
+    <string name="notification_error_unknown">Impossibile aggiornare gli eventi in background.</string>
+    <string name="notification_self_signed_unavailable">Questo profilo considera attendibile un certificato autofirmato. Le notifiche in background richiedono HTTPS attendibile a livello di sistema; le sessioni in primo piano non sono interessate.</string>
+    <string name="notification_https_required">Le notifiche in background richiedono HTTPS.</string>
+    <string name="notification_token_expired">Il token di notifica è scaduto o è stato revocato.</string>
+    <string name="notification_token_expired_supporting">Il token non è più valido. Riattiva per registrarne uno nuovo. Il feed eventi resta disponibile.</string>
+</resources>

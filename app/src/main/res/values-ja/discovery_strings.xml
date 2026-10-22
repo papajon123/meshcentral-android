@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">コンピューターを検索</string>
+    <string name="browser_search_hint">名前、グループ、アドレス、OS</string>
+    <string name="browser_search_clear">検索をクリア</string>
+    <string name="browser_filter_recent">最近</string>
+    <string name="browser_recent_clear">最近の項目をクリア</string>
+    <string name="browser_search_empty_title">該当するコンピューターはありません</string>
+    <string name="browser_search_empty_description">別の名前、グループ、アドレス、オペレーティングシステムを試してください。</string>
+    <string name="browser_filter_empty_title">このフィルターにコンピューターはありません</string>
+    <string name="browser_filter_empty_description">別のフィルターを選択するか、検索をクリアしてください。</string>
+    <string name="browser_recent_empty_title">最近のコンピューターはありません</string>
+    <string name="browser_recent_empty_description">開いたコンピューターがここに表示されます。</string>
+    <string name="browser_favorites_empty_title">お気に入りはまだありません</string>
+    <string name="browser_favorites_empty_description">コンピューターをお気に入りに追加すると、ここで見つけられます。</string>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">搜尋電腦</string>
+    <string name="browser_search_hint">名稱、群組、位址或作業系統</string>
+    <string name="browser_search_clear">清除搜尋</string>
+    <string name="browser_filter_recent">最近</string>
+    <string name="browser_recent_clear">清除最近記錄</string>
+    <string name="browser_search_empty_title">沒有符合的電腦</string>
+    <string name="browser_search_empty_description">請嘗試其他名稱、群組、位址或作業系統。</string>
+    <string name="browser_filter_empty_title">此篩選條件中沒有電腦</string>
+    <string name="browser_filter_empty_description">請選擇其他篩選條件或清除搜尋。</string>
+    <string name="browser_recent_empty_title">沒有最近的電腦</string>
+    <string name="browser_recent_empty_description">您開啟的電腦會顯示在這裡。</string>
+    <string name="browser_favorites_empty_title">尚無我的最愛</string>
+    <string name="browser_favorites_empty_description">將電腦加入我的最愛，即可在這裡找到。</string>
+</resources>

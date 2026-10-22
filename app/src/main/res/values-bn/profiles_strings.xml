@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">সার্ভার প্রোফাইল</string>
+    <string name="profile_sheet_subtitle">এই অ্যাপ যে MeshCentral সার্ভার ব্যবহার করে তা বেছে নিন।</string>
+    <string name="profile_close">সার্ভার প্রোফাইল বন্ধ করুন</string>
+    <string name="profile_add">প্রোফাইল যোগ করুন</string>
+    <string name="profile_add_title">প্রোফাইল যোগ করুন</string>
+    <string name="profile_add_subtitle">অন্য MeshCentral সার্ভারে সাইন ইন করুন। এই প্রোফাইল নিজের শংসাপত্র ও প্রিয় রাখে।</string>
+    <string name="profile_back">প্রোফাইলে ফিরুন</string>
+    <string name="profile_name_label">প্রোফাইলের নাম</string>
+    <string name="profile_name_placeholder">যেমন, বাড়ির সার্ভার</string>
+    <string name="profile_url_label">সার্ভার ঠিকানা</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">প্রোফাইলের নাম লিখুন।</string>
+    <string name="profile_url_required">সার্ভার ঠিকানা লিখুন।</string>
+    <string name="profile_submit">প্রোফাইল যোগ করুন</string>
+    <string name="profile_active">সক্রিয়</string>
+    <string name="profile_select">ব্যবহার করুন</string>
+    <string name="profile_active_description">সক্রিয় প্রোফাইল: %1$s</string>
+    <string name="profile_select_description">প্রোফাইল %1$s ব্যবহার করুন</string>
+    <string name="profile_actions_description">প্রোফাইল %1$s এর জন্য পদক্ষেপ</string>
+    <string name="profile_rename">নাম বদলান</string>
+    <string name="profile_delete">মুছুন</string>
+    <string name="profile_rename_title">প্রোফাইলের নাম বদলান</string>
+    <string name="profile_rename_save">সংরক্ষণ করুন</string>
+    <string name="profile_cancel">বাতিল</string>
+    <string name="profile_delete_title">“%1$s” মুছবেন?</string>
+    <string name="profile_delete_message">এই প্রোফাইলের সংরক্ষিত সাইন-ইন শংসাপত্র ও প্রিয় এই ডিভাইস থেকে সরানো হবে। অন্য প্রোফাইল বদলাবে না।</string>
+    <string name="profile_delete_confirm">মুছুন</string>
+    <string name="profile_last_cannot_delete">শেষ প্রোফাইল মোছা যায় না।</string>
+    <string name="profile_empty_title">কোনো সার্ভার প্রোফাইল নেই</string>
+    <string name="profile_empty_description">MeshCentral-এ সংযোগ করতে একটি সার্ভার যোগ করুন।</string>
+    <string name="profile_unnamed">নামহীন প্রোফাইল</string>
+</resources>

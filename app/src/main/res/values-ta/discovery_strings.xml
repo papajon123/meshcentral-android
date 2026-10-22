@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">கணினிகளைத் தேடு</string>
+    <string name="browser_search_hint">பெயர், குழு, முகவரி அல்லது OS</string>
+    <string name="browser_search_clear">தேடலை அழி</string>
+    <string name="browser_filter_recent">சமீபத்திய</string>
+    <string name="browser_recent_clear">சமீபத்தியதை அழி</string>
+    <string name="browser_search_empty_title">பொருந்தும் கணினிகள் இல்லை</string>
+    <string name="browser_search_empty_description">வேறு பெயர், குழு, முகவரி அல்லது இயக்க முறைமையை முயற்சிக்கவும்.</string>
+    <string name="browser_filter_empty_title">இந்த வடிகட்டியில் கணினிகள் இல்லை</string>
+    <string name="browser_filter_empty_description">வேறு வடிகட்டியைத் தேர்ந்தெடுக்கவும் அல்லது தேடலை அழிக்கவும்.</string>
+    <string name="browser_recent_empty_title">சமீபத்திய கணினிகள் இல்லை</string>
+    <string name="browser_recent_empty_description">நீங்கள் திறக்கும் கணினிகள் இங்கே தோன்றும்.</string>
+    <string name="browser_favorites_empty_title">இன்னும் பிடித்தவை இல்லை</string>
+    <string name="browser_favorites_empty_description">இங்கே கண்டுபிடிக்க ஒரு கணினியைப் பிடித்தவையில் சேர்க்கவும்.</string>
+</resources>

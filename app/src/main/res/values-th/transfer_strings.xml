@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">คิวอัปโหลด</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">คิวอัปโหลดไม่ได้ผูกกับโฟลเดอร์</string>
+    <string name="transfer_queue_empty">ไม่มีรายการอัปโหลดในคิว</string>
+    <string name="transfer_queue_root">รากของคอมพิวเตอร์</string>
+
+    <string name="transfer_status_queued">อยู่ในคิว</string>
+    <string name="transfer_status_active">กำลังอัปโหลด</string>
+    <string name="transfer_status_succeeded">ตรวจสอบแล้ว</string>
+    <string name="transfer_status_failed">ล้มเหลว</string>
+    <string name="transfer_status_cancelled">ยกเลิกแล้ว</string>
+
+    <string name="transfer_progress">%1$d ไบต์</string>
+    <string name="transfer_progress_size">%1$d จาก %2$d ไบต์</string>
+    <string name="transfer_cancel">ยกเลิก</string>
+    <string name="transfer_cancel_all">ยกเลิกทั้งหมด</string>
+    <string name="transfer_retry">ลองอีกครั้ง</string>
+    <string name="transfer_clear_finished">ล้างรายการที่เสร็จแล้ว</string>
+    <string name="transfer_close">ปิด</string>
+    <string name="transfer_retry_title">ลองอัปโหลดอีกครั้งหรือไม่</string>
+    <string name="transfer_retry_warning">การอัปโหลดจะเริ่มใหม่ตั้งแต่ต้น ไฟล์ระยะไกลที่มีชื่อเดียวกันจะถูกแทนที่และอาจเหลือไฟล์ที่ไม่สมบูรณ์หากการพยายามครั้งนี้ถูกขัดจังหวะ ยืนยันก่อนดำเนินการต่อ</string>
+    <string name="transfer_partial_remote">อาจมีไฟล์ระยะไกลที่ไม่สมบูรณ์หรือถูกแทนที่เหลืออยู่ ตรวจสอบก่อนลองอีกครั้ง</string>
+    <string name="transfer_upload_failed">การอัปโหลดหยุดลงเนื่องจากข้อผิดพลาดที่ไม่คาดคิด เซสชันสิ้นสุดแล้ว ตรวจสอบไฟล์ระยะไกลก่อนลองอีกครั้ง</string>
+
+    <string name="transfer_shared_file_fallback">ไฟล์ที่แชร์ %1$d</string>
+    <string name="transfer_error_closed">เซสชันไฟล์ปิดแล้ว เปิดไฟล์อีกครั้ง</string>
+    <string name="transfer_error_content_uri">สามารถเพิ่มเฉพาะ URI เนื้อหาจากการแชร์หรือตัวเลือกเปิดของ Android เข้าคิวได้</string>
+    <string name="transfer_error_path_changed">โฟลเดอร์เปลี่ยนก่อนเริ่มการอัปโหลดนี้ ไม่มีข้อมูลถูกส่งสำหรับไฟล์นี้ ย้อนกลับและเพิ่มเข้าคิวอีกครั้ง</string>
+    <string name="transfer_error_busy">กำลังดำเนินการไฟล์อื่นอยู่ รอให้เสร็จก่อนเพิ่มรายการ</string>
+    <string name="transfer_error_stream">ไม่สามารถเปิดเนื้อหาที่เลือกได้ สิทธิ์การแชร์อาจหมดอายุแล้ว</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">Coda di caricamenti</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">La coda di caricamenti non è associata a una cartella.</string>
+    <string name="transfer_queue_empty">Nessun caricamento in coda.</string>
+    <string name="transfer_queue_root">Radice del computer</string>
+
+    <string name="transfer_status_queued">In coda</string>
+    <string name="transfer_status_active">Caricamento</string>
+    <string name="transfer_status_succeeded">Verificato</string>
+    <string name="transfer_status_failed">Non riuscito</string>
+    <string name="transfer_status_cancelled">Annullato</string>
+
+    <string name="transfer_progress">%1$d byte</string>
+    <string name="transfer_progress_size">%1$d di %2$d byte</string>
+    <string name="transfer_cancel">Annulla</string>
+    <string name="transfer_cancel_all">Annulla tutto</string>
+    <string name="transfer_retry">Riprova</string>
+    <string name="transfer_clear_finished">Cancella completati</string>
+    <string name="transfer_close">Chiudi</string>
+    <string name="transfer_retry_title">Riprovare il caricamento?</string>
+    <string name="transfer_retry_warning">Il caricamento riparte dall’inizio. Un file remoto esistente con questo nome verrà sostituito e potrebbe restare parziale se questo tentativo viene interrotto. Conferma prima di continuare.</string>
+    <string name="transfer_partial_remote">Un file remoto parziale o sostituito potrebbe rimanere. Controllalo prima di riprovare.</string>
+    <string name="transfer_upload_failed">Il caricamento si è fermato con un errore imprevisto. La sessione è terminata; controlla il file remoto prima di riprovare.</string>
+
+    <string name="transfer_shared_file_fallback">File condiviso %1$d</string>
+    <string name="transfer_error_closed">La sessione file è chiusa. Riapri File.</string>
+    <string name="transfer_error_content_uri">È possibile accodare solo URI di contenuto dal selettore di Android o dal menu Condividi.</string>
+    <string name="transfer_error_path_changed">La cartella è cambiata prima dell’inizio di questo caricamento. Nulla è stato inviato per questo file; torna indietro e accodalo di nuovo.</string>
+    <string name="transfer_error_busy">È in corso un’altra operazione sui file. Attendi che termini prima di accodarne altre.</string>
+    <string name="transfer_error_stream">Non è stato possibile aprire il contenuto selezionato. L’autorizzazione di condivisione potrebbe essere scaduta.</string>
+</resources>

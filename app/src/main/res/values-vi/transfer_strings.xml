@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">Hàng đợi tải lên</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">Hàng đợi tải lên chưa được gắn với thư mục.</string>
+    <string name="transfer_queue_empty">Không có mục tải lên trong hàng đợi.</string>
+    <string name="transfer_queue_root">Gốc máy tính</string>
+
+    <string name="transfer_status_queued">Đang chờ</string>
+    <string name="transfer_status_active">Đang tải lên</string>
+    <string name="transfer_status_succeeded">Đã xác minh</string>
+    <string name="transfer_status_failed">Thất bại</string>
+    <string name="transfer_status_cancelled">Đã hủy</string>
+
+    <string name="transfer_progress">%1$d byte</string>
+    <string name="transfer_progress_size">%1$d trong %2$d byte</string>
+    <string name="transfer_cancel">Hủy</string>
+    <string name="transfer_cancel_all">Hủy tất cả</string>
+    <string name="transfer_retry">Thử lại</string>
+    <string name="transfer_clear_finished">Xóa mục đã xong</string>
+    <string name="transfer_close">Đóng</string>
+    <string name="transfer_retry_title">Thử lại tải lên?</string>
+    <string name="transfer_retry_warning">Tải lên sẽ bắt đầu lại từ đầu. Tệp từ xa hiện có cùng tên sẽ bị thay thế và có thể còn dở dang nếu lần thử này bị gián đoạn. Xác nhận trước khi tiếp tục.</string>
+    <string name="transfer_partial_remote">Có thể còn tệp từ xa dở dang hoặc đã bị thay thế. Kiểm tra trước khi thử lại.</string>
+    <string name="transfer_upload_failed">Tải lên dừng do lỗi không mong muốn. Phiên đã kết thúc; kiểm tra tệp từ xa trước khi thử lại.</string>
+
+    <string name="transfer_shared_file_fallback">Tệp được chia sẻ %1$d</string>
+    <string name="transfer_error_closed">Phiên tệp đã đóng. Mở lại Tệp.</string>
+    <string name="transfer_error_content_uri">Chỉ có thể đưa vào hàng đợi URI nội dung do Android chia sẻ hoặc trình chọn mở cung cấp.</string>
+    <string name="transfer_error_path_changed">Thư mục đã thay đổi trước khi lần tải lên này bắt đầu. Không có gì được gửi cho tệp này; quay lại và đưa vào hàng đợi lại.</string>
+    <string name="transfer_error_busy">Thao tác tệp khác đang diễn ra. Chờ thao tác đó kết thúc trước khi thêm.</string>
+    <string name="transfer_error_stream">Không thể mở nội dung đã chọn. Quyền chia sẻ có thể đã hết hạn.</string>
+</resources>

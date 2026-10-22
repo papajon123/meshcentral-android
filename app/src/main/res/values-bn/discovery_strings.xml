@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">কম্পিউটার খুঁজুন</string>
+    <string name="browser_search_hint">নাম, গ্রুপ, ঠিকানা বা OS</string>
+    <string name="browser_search_clear">অনুসন্ধান সাফ করুন</string>
+    <string name="browser_filter_recent">সাম্প্রতিক</string>
+    <string name="browser_recent_clear">সাম্প্রতিক সাফ করুন</string>
+    <string name="browser_search_empty_title">কোনো মিলে যাওয়া কম্পিউটার নেই</string>
+    <string name="browser_search_empty_description">ভিন্ন নাম, গ্রুপ, ঠিকানা বা অপারেটিং সিস্টেম চেষ্টা করুন।</string>
+    <string name="browser_filter_empty_title">এই ফিল্টারে কোনো কম্পিউটার নেই</string>
+    <string name="browser_filter_empty_description">অন্য ফিল্টার বেছে নিন বা অনুসন্ধান সাফ করুন।</string>
+    <string name="browser_recent_empty_title">কোনো সাম্প্রতিক কম্পিউটার নেই</string>
+    <string name="browser_recent_empty_description">আপনি যে কম্পিউটার খুলবেন সেগুলি এখানে দেখাবে।</string>
+    <string name="browser_favorites_empty_title">এখনও কোনো প্রিয় নেই</string>
+    <string name="browser_favorites_empty_description">এখানে খুঁজতে কম্পিউটারকে প্রিয়তে যোগ করুন।</string>
+</resources>

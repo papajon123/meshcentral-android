@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">நீங்கள் அதிகபட்சம் %1$d சேவையகச் சுயவிவரங்களை வைத்திருக்கலாம்.</string>
+    <string name="workspace_profile_error">இந்தச் சுயவிவரத்தை மாற்ற முடியவில்லை. பெயரைச் சரிபார்த்து மீண்டும் முயலவும்.</string>
+    <string name="workspace_profiles_action">சேவையகச் சுயவிவரங்கள்</string>
+    <string name="workspace_capacity">ஏற்கனவே இரண்டு அமர்வுகள் திறந்துள்ளன. மற்றொன்றைத் திறப்பதற்கு முன் ஒன்றை மூடவும்.</string>
+    <string name="workspace_desktop_limit">ஒரு டெஸ்க்டாப் ஏற்கனவே திறந்துள்ளது. மற்றொன்றைத் திறப்பதற்கு முன் அதை மூடவும்.</string>
+    <string name="workspace_sessions">திறந்த அமர்வுகள்</string>
+    <string name="workspace_sessions_count">அமர்வுகள் · %1$d</string>
+    <string name="workspace_session_hint">அதிகபட்சம் இரண்டு கருவிகளைத் திறந்து வைக்கவும். இணைப்பு துண்டானால் ஷெல் முடியும்.</string>
+    <string name="workspace_empty">திறந்த அமர்வுகள் இல்லை</string>
+    <string name="workspace_switch">இதற்கு மாறு</string>
+    <string name="workspace_close_explanation">%1$s இல் அமர்வை மூடவா? செயலில் உள்ள பரிமாற்றம் நிற்கும்.</string>
+    <string name="workspace_ended">முந்தைய அமர்வு முடிந்தது. உங்கள் தேர்வு மீட்டெடுக்கப்பட்டது; இணைப்பும் ஷெல்லும் மீட்டெடுக்கப்படவில்லை.</string>
+    <string name="workspace_reopen">புதிய அமர்வைத் திற</string>
+    <string name="workspace_minimize">அமர்வை வைத்து சாதனங்களுக்குத் திரும்பு</string>
+    <string name="workspace_system">அமைப்பு</string>
+    <string name="workspace_help">உதவி மற்றும் பணிகள்</string>
+    <string name="workspace_cached_info">அமைப்புத் தகவலைக் கடைசியாக முகவர் தெரிவித்தது. சேவைகளுக்கும் செயல்முறைகளுக்கும் சேவையகத்தில் Mobile Companion தேவை.</string>
+    <string name="workspace_management_failed">முடிவைச் சரிபார்க்க முடியவில்லை. மீண்டும் முயல்வதற்கு முன் அணுகலையும் சேவையகப் பணி வரலாற்றையும் சரிபார்க்கவும்.</string>
+    <string name="workspace_service_verified">நடவடிக்கைக்குப் பிறகு சேவை நிலை மீண்டும் படிக்கப்பட்டது.</string>
+    <string name="workspace_power_pending">கோரிக்கை அனுப்பப்பட்டது. முகவர் இணைப்பில் மாற்றத்திற்குக் காத்திருக்கிறது; ஏற்றுக்கொள்ளுதல் செயல்படுத்தலை உறுதிப்படுத்தாது.</string>
+    <string name="workspace_power_reconnected">முகவர் துண்டிக்கப்பட்டு மீண்டும் இணைந்தது. இது இணைப்பு மீட்பை உறுதிப்படுத்துகிறது, மீண்டும் தொடங்கியதன் காரணத்தை அல்ல.</string>
+    <string name="workspace_power_offline">முகவர் இணைப்பில் இல்லை. வலையமைப்பு இடையூறையும் அணைந்ததையும் வேறுபடுத்த முடியாது.</string>
+    <string name="workspace_power_unknown">இணைப்பில் மாற்றம் எதுவும் காணப்படவில்லை. நடவடிக்கை உறுதிப்படுத்தப்படவில்லை.</string>
+    <string name="workspace_share_unreadable">படிக்கக்கூடிய பகிரப்பட்ட கோப்புகள் இல்லை. படிக்கும் அணுகலுடன் அதிகபட்சம் 20 கோப்புகளைப் பகிரவும்.</string>
+    <string name="workspace_queue_rejected">இலக்கு மாறியது அல்லது வரிசை நிரம்பியது. கோப்புறையைச் சரிபார்த்து மீண்டும் முயலவும்.</string>
+    <string name="workspace_transfer_channel">கோப்புப் பரிமாற்றங்கள்</string>
+    <string name="workspace_transfers_finished">கோப்புப் பரிமாற்றங்கள் நின்றன</string>
+    <string name="workspace_transfers_active">கோப்புகள் பரிமாற்றப்படுகின்றன</string>
+    <string name="workspace_transfer_open_details">முடிந்த, தோல்வியடைந்த மற்றும் ரத்து செய்யப்பட்ட பரிமாற்றங்களைப் பார்க்க செயலியைத் திறக்கவும்.</string>
+    <string name="workspace_choose_folder">%1$d பகிரப்பட்ட கோப்புகளுக்கு ஒரு கோப்புறையைத் தேர்ந்தெடுக்கவும்.</string>
+    <string name="workspace_send_here">இந்தக் கோப்புறைக்கு அனுப்பு</string>
+    <string name="workspace_confirm_share">கோப்புப் பரிமாற்றத்தை உறுதிப்படுத்து</string>
+    <string name="workspace_share_overwrite">அதே பெயருள்ள கோப்புகள் மேலெழுதப்படும். தோல்வியடைந்த பரிமாற்றம் பகுதிக் கோப்பை விட்டுச் செல்லலாம். மீண்டும் முயற்சி தொடக்கத்திலிருந்து தொடங்கும். Android செயலியை நிறுத்தினால் கோப்புகளை மீண்டும் பகிரவும்.</string>
+    <string name="workspace_background_unavailable">பரிமாற்றச் சேவையைத் தொடங்க Android அனுமதிக்கவில்லை. செயலியை மீண்டும் திறந்து முயலவும்.</string>
+    <string name="workspace_transfers_count">பரிமாற்றங்கள் · %1$d</string>
+    <string name="workspace_share_destination">%1$d கோப்புகள் தயார். ஒரு கணினியைத் தேர்ந்தெடுத்து, பிறகு “கோப்புகள்” அல்லது SFTP ஐத் திறக்கவும்.</string>
+    <string name="workspace_tools">கருவிகள்</string>
+    <string name="workspace_signing_out">வெளியேறுகிறது மற்றும் பின்னணி நிகழ்வுகள் முடக்கப்படுகின்றன…</string>
+</resources>

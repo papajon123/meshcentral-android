@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="workspace_profile_limit">Você pode manter até %1$d perfis de servidor.</string>
+    <string name="workspace_profile_error">Não foi possível alterar este perfil. Verifique o nome e tente novamente.</string>
+    <string name="workspace_profiles_action">Perfis de servidor</string>
+    <string name="workspace_capacity">Duas sessões já estão abertas. Feche uma antes de abrir outra.</string>
+    <string name="workspace_desktop_limit">Uma área de trabalho já está aberta. Feche-a antes de abrir outra.</string>
+    <string name="workspace_sessions">Sessões abertas</string>
+    <string name="workspace_sessions_count">Sessões · %1$d</string>
+    <string name="workspace_session_hint">Mantenha até duas ferramentas abertas. Um shell termina se a conexão for perdida.</string>
+    <string name="workspace_empty">Nenhuma sessão aberta</string>
+    <string name="workspace_switch">Alternar para</string>
+    <string name="workspace_close_explanation">Fechar a sessão em %1$s? Qualquer transferência ativa será interrompida.</string>
+    <string name="workspace_ended">A sessão anterior foi encerrada. Sua seleção foi restaurada, mas a conexão e o shell não.</string>
+    <string name="workspace_reopen">Abrir uma nova sessão</string>
+    <string name="workspace_minimize">Manter a sessão e voltar aos dispositivos</string>
+    <string name="workspace_system">Sistema</string>
+    <string name="workspace_help">Ajuda e tarefas</string>
+    <string name="workspace_cached_info">As informações do sistema foram reportadas pela última vez pelo agente. Serviços e processos exigem o Mobile Companion no servidor.</string>
+    <string name="workspace_management_failed">Não foi possível verificar o resultado. Verifique o acesso e o histórico de tarefas do servidor antes de tentar novamente.</string>
+    <string name="workspace_service_verified">O estado do serviço foi lido novamente após a ação.</string>
+    <string name="workspace_power_pending">Solicitação enviada. Aguardando uma mudança na conectividade do agente; a aceitação não confirma a execução.</string>
+    <string name="workspace_power_reconnected">O agente se desconectou e se conectou novamente. Isso confirma a recuperação da conectividade, não a causa da reinicialização.</string>
+    <string name="workspace_power_offline">O agente está off-line. Não é possível distinguir uma interrupção de rede de um desligamento.</string>
+    <string name="workspace_power_unknown">Nenhuma mudança de conectividade foi observada. A ação não está confirmada.</string>
+    <string name="workspace_share_unreadable">Nenhum arquivo compartilhado legível. Compartilhe até 20 arquivos com acesso de leitura.</string>
+    <string name="workspace_queue_rejected">O destino mudou ou a fila está cheia. Verifique a pasta e tente novamente.</string>
+    <string name="workspace_transfer_channel">Transferências de arquivos</string>
+    <string name="workspace_transfers_finished">Transferências de arquivos interrompidas</string>
+    <string name="workspace_transfers_active">Transferindo arquivos</string>
+    <string name="workspace_transfer_open_details">Abra o app para verificar as transferências concluídas, com falha e canceladas.</string>
+    <string name="workspace_choose_folder">Escolha uma pasta para %1$d arquivos compartilhados.</string>
+    <string name="workspace_send_here">Enviar para esta pasta</string>
+    <string name="workspace_confirm_share">Confirmar transferência de arquivos</string>
+    <string name="workspace_share_overwrite">Arquivos com os mesmos nomes serão substituídos. Uma transferência com falha pode deixar um arquivo parcial. Uma nova tentativa começa do início. Se o Android encerrar o app, compartilhe os arquivos novamente.</string>
+    <string name="workspace_background_unavailable">O Android não permitiu iniciar o serviço de transferência. Abra o app novamente e tente outra vez.</string>
+    <string name="workspace_transfers_count">Transferências · %1$d</string>
+    <string name="workspace_share_destination">%1$d arquivos prontos. Escolha um computador e abra Arquivos ou SFTP.</string>
+    <string name="workspace_signing_out">Saindo e desativando os eventos em segundo plano…</string>
+    <string name="workspace_tools">Ferramentas</string>
+</resources>

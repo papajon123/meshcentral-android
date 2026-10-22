@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">Giao diện</string>
+    <string name="settings_appearance_subtitle">Chủ đề và màu hệ thống</string>
+    <string name="settings_theme_system">Hệ thống</string>
+    <string name="settings_theme_light">Sáng</string>
+    <string name="settings_theme_dark">Tối</string>
+    <string name="settings_dynamic_colors">Màu hệ thống</string>
+    <string name="settings_dynamic_colors_supporting">Dùng màu hình nền cho các bề mặt. Màu kết nối và an toàn giữ nguyên.</string>
+</resources>

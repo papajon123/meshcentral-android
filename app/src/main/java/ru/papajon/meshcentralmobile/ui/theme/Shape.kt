@@ -9,15 +9,15 @@ import androidx.compose.ui.unit.dp
  * buttons, generous sheets, plus a squircle used for the session action button.
  */
 val MeshShapes = Shapes(
-    extraSmall = RoundedCornerShape(10.dp),
-    small = RoundedCornerShape(14.dp),
-    medium = RoundedCornerShape(20.dp),
-    large = RoundedCornerShape(26.dp),
-    extraLarge = RoundedCornerShape(34.dp),
+    extraSmall = RoundedCornerShape(6.dp),
+    small = RoundedCornerShape(10.dp),
+    medium = RoundedCornerShape(16.dp),
+    large = RoundedCornerShape(24.dp),
+    extraLarge = RoundedCornerShape(28.dp),
 )
 
 /** Rounded square anchor for the primary floating action (never a plain circle). */
-val SquircleShape = RoundedCornerShape(22.dp)
+val SquircleShape = RoundedCornerShape(18.dp)
 
 /** Pill used by chips, status badges and segmented controls. */
 val PillShape = RoundedCornerShape(percent = 50)

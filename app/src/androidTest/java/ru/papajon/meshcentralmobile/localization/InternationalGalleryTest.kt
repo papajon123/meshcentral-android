@@ -31,6 +31,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.hasScrollToIndexAction
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -175,7 +178,7 @@ class InternationalGalleryTest {
             checkText(localized.getString(R.string.files_refresh))
             checkText(localized.getString(R.string.files_mkdir))
             checkText(localized.getString(R.string.files_upload))
-            checkText(sampleNoteName(language))
+            checkText(sampleNoteName(language), scroll = true)
             capture(language, Screen.Files, "Build server")
             disposeSession()
         }
@@ -194,7 +197,7 @@ class InternationalGalleryTest {
             LocalOnBackPressedDispatcherOwner provides activity,
             LocalLayoutDirection provides if (configuration.layoutDirection == View.LAYOUT_DIRECTION_RTL) LayoutDirection.Rtl else LayoutDirection.Ltr,
         ) {
-            MeshCentralMobileTheme {
+            MeshCentralMobileTheme(darkTheme = InstrumentationRegistry.getArguments().getString("galleryTheme") != "light") {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     key(current.language, current.screen) {
                         Box(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
@@ -255,8 +258,15 @@ class InternationalGalleryTest {
 
     private fun checkText(text: String, scroll: Boolean = false) {
         val matches = compose.onAllNodesWithText(text, useUnmergedTree = true)
-        assertTrue("Expected gallery label is missing", matches.fetchSemanticsNodes().isNotEmpty())
-        val node = matches[0]
+        if (scroll && matches.fetchSemanticsNodes().isEmpty()) {
+            val lists = compose.onAllNodes(hasScrollToIndexAction())
+            assertTrue("Expected scrollable gallery list is missing", lists.fetchSemanticsNodes().isNotEmpty())
+            lists[0].performScrollToNode(hasText(text))
+            compose.waitForIdle()
+        }
+        val refreshed = compose.onAllNodesWithText(text, useUnmergedTree = true)
+        assertTrue("Expected gallery label is missing: $text (${frame.value.language}/${frame.value.screen.filePart})", refreshed.fetchSemanticsNodes().isNotEmpty())
+        val node = refreshed[0]
         if (scroll) node.performScrollTo()
         node.assertIsDisplayed()
         val layouts = mutableListOf<TextLayoutResult>()

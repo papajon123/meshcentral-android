@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">Cerca computer</string>
+    <string name="browser_search_hint">Nome, gruppo, indirizzo o sistema operativo</string>
+    <string name="browser_search_clear">Cancella ricerca</string>
+    <string name="browser_filter_recent">Recenti</string>
+    <string name="browser_recent_clear">Cancella recenti</string>
+    <string name="browser_search_empty_title">Nessun computer corrispondente</string>
+    <string name="browser_search_empty_description">Prova un altro nome, gruppo, indirizzo o sistema operativo.</string>
+    <string name="browser_filter_empty_title">Nessun computer in questo filtro</string>
+    <string name="browser_filter_empty_description">Scegli un altro filtro o cancella la ricerca.</string>
+    <string name="browser_recent_empty_title">Nessun computer recente</string>
+    <string name="browser_recent_empty_description">I computer che apri appariranno qui.</string>
+    <string name="browser_favorites_empty_title">Nessun preferito</string>
+    <string name="browser_favorites_empty_description">Aggiungi un computer ai preferiti per trovarlo qui.</string>
+</resources>

@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">آپ زیادہ سے زیادہ %1$d سرور پروفائلز رکھ سکتے ہیں۔</string>
+    <string name="workspace_profile_error">یہ پروفائل تبدیل نہیں ہو سکی۔ نام دیکھیں اور دوبارہ کوشش کریں۔</string>
+    <string name="workspace_profiles_action">سرور پروفائلز</string>
+    <string name="workspace_capacity">پہلے ہی دو سیشن کھلے ہیں۔ ایک اور کھولنے سے پہلے ایک بند کریں۔</string>
+    <string name="workspace_desktop_limit">ڈیسک ٹاپ پہلے ہی کھلا ہے۔ دوسرا کھولنے سے پہلے اسے بند کریں۔</string>
+    <string name="workspace_sessions">کھلے سیشن</string>
+    <string name="workspace_sessions_count">سیشن · %1$d</string>
+    <string name="workspace_session_hint">زیادہ سے زیادہ دو ٹولز کھلے رکھیں۔ کنکشن چھوٹنے پر شیل ختم ہو جاتا ہے۔</string>
+    <string name="workspace_empty">کوئی کھلا سیشن نہیں</string>
+    <string name="workspace_switch">اس پر جائیں</string>
+    <string name="workspace_close_explanation">%1$s پر سیشن بند کریں؟ کوئی فعال منتقلی رک جائے گی۔</string>
+    <string name="workspace_ended">پچھلا سیشن ختم ہو گیا۔ آپ کا انتخاب بحال ہوا؛ کنکشن اور شیل بحال نہیں ہوئے۔</string>
+    <string name="workspace_reopen">نیا سیشن کھولیں</string>
+    <string name="workspace_minimize">سیشن رکھیں اور ڈیوائسز پر واپس جائیں</string>
+    <string name="workspace_system">سسٹم</string>
+    <string name="workspace_help">مدد اور جابز</string>
+    <string name="workspace_cached_info">سسٹم کی معلومات آخری بار ایجنٹ نے رپورٹ کیں۔ سروسز اور پروسیسز کے لیے سرور پر Mobile Companion ضروری ہے۔</string>
+    <string name="workspace_management_failed">نتیجہ تصدیق نہیں ہو سکا۔ دوبارہ کوشش سے پہلے رسائی اور سرور جاب تاریخ دیکھیں۔</string>
+    <string name="workspace_service_verified">کارروائی کے بعد سروس کی حالت دوبارہ پڑھی گئی۔</string>
+    <string name="workspace_power_pending">درخواست بھیجی گئی۔ ایجنٹ کنیکٹیویٹی میں تبدیلی کا انتظار؛ قبولیت عمل کی تصدیق نہیں کرتی۔</string>
+    <string name="workspace_power_reconnected">ایجنٹ منقطع اور دوبارہ منسلک ہوا۔ یہ کنیکٹیویٹی کی بحالی کی تصدیق کرتا ہے، دوبارہ شروع ہونے کی وجہ کی نہیں۔</string>
+    <string name="workspace_power_offline">ایجنٹ آف لائن ہے۔ نیٹ ورک رکاوٹ اور بند ہونے میں فرق نہیں کیا جا سکتا۔</string>
+    <string name="workspace_power_unknown">کنکشن میں کوئی تبدیلی نہیں دیکھی گئی۔ عمل کی تصدیق نہیں ہوئی۔</string>
+    <string name="workspace_share_unreadable">کوئی پڑھنے کے قابل مشترکہ فائل نہیں۔ پڑھنے کی رسائی کے ساتھ زیادہ سے زیادہ 20 فائلیں شیئر کریں۔</string>
+    <string name="workspace_queue_rejected">منزل بدل گئی یا قطار بھری ہے۔ فولڈر دیکھیں اور دوبارہ کوشش کریں۔</string>
+    <string name="workspace_transfer_channel">فائل منتقلی</string>
+    <string name="workspace_transfers_finished">فائل منتقلی رک گئی</string>
+    <string name="workspace_transfers_active">فائلیں منتقل ہو رہی ہیں</string>
+    <string name="workspace_transfer_open_details">مکمل، ناکام اور منسوخ شدہ منتقلیاں دیکھنے کے لیے ایپ کھولیں۔</string>
+    <string name="workspace_choose_folder">%1$d مشترکہ فائلوں کے لیے فولڈر چنیں۔</string>
+    <string name="workspace_send_here">اس فولڈر میں بھیجیں</string>
+    <string name="workspace_confirm_share">فائل منتقلی کی تصدیق کریں</string>
+    <string name="workspace_share_overwrite">ایک ہی نام کی فائلیں بدل دی جائیں گی۔ ناکام منتقلی جزوی فائل چھوڑ سکتی ہے۔ دوبارہ کوشش شروع سے ہوتی ہے۔ اگر Android ایپ روک دے تو فائلیں دوبارہ شیئر کریں۔</string>
+    <string name="workspace_background_unavailable">Android نے منتقلی سروس کو شروع ہونے کی اجازت نہیں دی۔ ایپ دوبارہ کھولیں اور کوشش کریں۔</string>
+    <string name="workspace_transfers_count">منتقلیاں · %1$d</string>
+    <string name="workspace_share_destination">%1$d فائلیں تیار ہیں۔ کمپیوٹر چنیں، پھر »فائلیں« یا SFTP کھولیں۔</string>
+    <string name="workspace_tools">ٹولز</string>
+    <string name="workspace_signing_out">سائن آؤٹ ہو رہا ہے اور پس منظر کے واقعات بند کیے جا رہے ہیں…</string>
+</resources>

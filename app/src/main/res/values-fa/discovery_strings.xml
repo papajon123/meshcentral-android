@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">جستجوی رایانه‌ها</string>
+    <string name="browser_search_hint">نام، گروه، نشانی یا سیستم‌عامل</string>
+    <string name="browser_search_clear">پاک کردن جستجو</string>
+    <string name="browser_filter_recent">اخیر</string>
+    <string name="browser_recent_clear">پاک کردن اخیر</string>
+    <string name="browser_search_empty_title">رایانه‌ای مطابقت ندارد</string>
+    <string name="browser_search_empty_description">نام، گروه، نشانی یا سیستم‌عامل دیگری را امتحان کنید.</string>
+    <string name="browser_filter_empty_title">رایانه‌ای در این فیلتر نیست</string>
+    <string name="browser_filter_empty_description">فیلتر دیگری انتخاب کنید یا جستجو را پاک کنید.</string>
+    <string name="browser_recent_empty_title">رایانه اخیری نیست</string>
+    <string name="browser_recent_empty_description">رایانه‌هایی که باز می‌کنید اینجا نمایش داده می‌شوند.</string>
+    <string name="browser_favorites_empty_title">هنوز موردی در علاقه‌مندی‌ها نیست</string>
+    <string name="browser_favorites_empty_description">برای یافتن اینجا، رایانه‌ای را به علاقه‌مندی‌ها بیفزایید.</string>
+</resources>

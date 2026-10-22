@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">サーバープロファイル</string>
+    <string name="profile_sheet_subtitle">このアプリが使用する MeshCentral サーバーを選択します。</string>
+    <string name="profile_close">サーバープロファイルを閉じる</string>
+    <string name="profile_add">プロファイルを追加</string>
+    <string name="profile_add_title">プロファイルを追加</string>
+    <string name="profile_add_subtitle">別の MeshCentral サーバーにログインします。このプロファイルは独自の認証情報とお気に入りを保持します。</string>
+    <string name="profile_back">プロファイルに戻る</string>
+    <string name="profile_name_label">プロファイル名</string>
+    <string name="profile_name_placeholder">例：自宅サーバー</string>
+    <string name="profile_url_label">サーバーアドレス</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">プロファイル名を入力してください。</string>
+    <string name="profile_url_required">サーバーアドレスを入力してください。</string>
+    <string name="profile_submit">プロファイルを追加</string>
+    <string name="profile_active">アクティブ</string>
+    <string name="profile_select">使用</string>
+    <string name="profile_active_description">アクティブなプロファイル：%1$s</string>
+    <string name="profile_select_description">プロファイル %1$s を使用</string>
+    <string name="profile_actions_description">プロファイル %1$s の操作</string>
+    <string name="profile_rename">名前を変更</string>
+    <string name="profile_delete">削除</string>
+    <string name="profile_rename_title">プロファイル名を変更</string>
+    <string name="profile_rename_save">保存</string>
+    <string name="profile_cancel">キャンセル</string>
+    <string name="profile_delete_title">「%1$s」を削除しますか？</string>
+    <string name="profile_delete_message">このプロファイルに保存されたログイン認証情報とお気に入りがこのデバイスから削除されます。他のプロファイルは変更されません。</string>
+    <string name="profile_delete_confirm">削除</string>
+    <string name="profile_last_cannot_delete">最後のプロファイルは削除できません。</string>
+    <string name="profile_empty_title">サーバープロファイルがありません</string>
+    <string name="profile_empty_description">MeshCentral に接続するサーバーを追加してください。</string>
+    <string name="profile_unnamed">名前のないプロファイル</string>
+</resources>

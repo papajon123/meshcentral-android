@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="workspace_profile_limit">तुम्ही जास्तीत जास्त %1$d सर्व्हर प्रोफाइल ठेवू शकता.</string>
+    <string name="workspace_profile_error">हे प्रोफाइल बदलता आले नाही. नाव तपासा आणि पुन्हा प्रयत्न करा.</string>
+    <string name="workspace_profiles_action">सर्व्हर प्रोफाइल</string>
+    <string name="workspace_capacity">आधीच दोन सत्रे उघडी आहेत. आणखी एक उघडण्यापूर्वी एक बंद करा.</string>
+    <string name="workspace_desktop_limit">डेस्कटॉप आधीच उघडा आहे. दुसरा उघडण्यापूर्वी तो बंद करा.</string>
+    <string name="workspace_sessions">उघडी सत्रे</string>
+    <string name="workspace_sessions_count">सत्रे · %1$d</string>
+    <string name="workspace_session_hint">जास्तीत जास्त दोन साधने उघडी ठेवा. कनेक्शन तुटल्यास शेल संपते.</string>
+    <string name="workspace_empty">कोणतेही उघडे सत्र नाही</string>
+    <string name="workspace_switch">यावर जा</string>
+    <string name="workspace_close_explanation">%1$s वरील सत्र बंद करायचे? कोणतेही सक्रिय स्थानांतरण थांबेल.</string>
+    <string name="workspace_ended">मागील सत्र संपले. तुमची निवड पुनर्संचयित झाली; कनेक्शन आणि शेल पुनर्संचयित झाले नाहीत.</string>
+    <string name="workspace_reopen">नवीन सत्र उघडा</string>
+    <string name="workspace_minimize">सत्र ठेवा आणि डिव्हाइसवर परत जा</string>
+    <string name="workspace_system">सिस्टम</string>
+    <string name="workspace_help">मदत आणि कार्ये</string>
+    <string name="workspace_cached_info">सिस्टम माहिती शेवटची एजंटने अहवाल दिली. सेवा आणि प्रक्रियांसाठी सर्व्हरवर Mobile Companion आवश्यक आहे.</string>
+    <string name="workspace_management_failed">निकाल पडताळता आला नाही. पुन्हा प्रयत्न करण्यापूर्वी प्रवेश आणि सर्व्हर कार्य इतिहास पहा.</string>
+    <string name="workspace_service_verified">कृतीनंतर सेवेची स्थिती पुन्हा वाचली.</string>
+    <string name="workspace_power_pending">विनंती पाठवली. एजंट कनेक्टिव्हिटीत बदलाची प्रतीक्षा; स्वीकृती अंमलबजावणीची पुष्टी करत नाही.</string>
+    <string name="workspace_power_reconnected">एजंट डिस्कनेक्ट आणि पुन्हा कनेक्ट झाला. हे कनेक्टिव्हिटी पुनर्प्राप्तीची पुष्टी करते, पुन्हा सुरू होण्याच्या कारणाची नाही.</string>
+    <string name="workspace_power_offline">एजंट ऑफलाइन आहे. नेटवर्क व्यत्यय आणि बंद होणे यात फरक करता येत नाही.</string>
+    <string name="workspace_power_unknown">कनेक्शनमध्ये कोणताही बदल दिसला नाही. कृती पुष्ट नाही.</string>
+    <string name="workspace_share_unreadable">कोणतीही वाचनीय सामायिक फाइल नाही. वाचन परवानगीसह जास्तीत जास्त 20 फाइली सामायिक करा.</string>
+    <string name="workspace_queue_rejected">गंतव्य बदलले किंवा रांग भरली. फोल्डर तपासा आणि पुन्हा प्रयत्न करा.</string>
+    <string name="workspace_transfer_channel">फाइल स्थानांतरण</string>
+    <string name="workspace_transfers_finished">फाइल स्थानांतरण थांबले</string>
+    <string name="workspace_transfers_active">फाइली स्थानांतरित होत आहेत</string>
+    <string name="workspace_transfer_open_details">पूर्ण, अयशस्वी आणि रद्द स्थानांतरणे पाहण्यासाठी अॅप उघडा.</string>
+    <string name="workspace_choose_folder">%1$d सामायिक फाइलींसाठी फोल्डर निवडा.</string>
+    <string name="workspace_send_here">या फोल्डरमध्ये पाठवा</string>
+    <string name="workspace_confirm_share">फाइल स्थानांतरणाची पुष्टी करा</string>
+    <string name="workspace_share_overwrite">एकाच नावाच्या फाइली बदलल्या जातील. अयशस्वी स्थानांतरण अपूर्ण फाइल ठेवू शकते. पुन्हा प्रयत्न सुरुवातीपासून होतो. Android ने अॅप थांबवल्यास फाइली पुन्हा सामायिक करा.</string>
+    <string name="workspace_background_unavailable">Android ने स्थानांतरण सेवा सुरू करण्यास परवानगी दिली नाही. अॅप पुन्हा उघडा आणि प्रयत्न करा.</string>
+    <string name="workspace_transfers_count">स्थानांतरणे · %1$d</string>
+    <string name="workspace_share_destination">%1$d फाइली तयार आहेत. संगणक निवडा, नंतर “फाइली” किंवा SFTP उघडा.</string>
+    <string name="workspace_tools">साधने</string>
+    <string name="workspace_signing_out">साइन आउट होत आहे आणि पार्श्वभूमी घटना बंद केल्या जात आहेत…</string>
+</resources>

@@ -246,7 +246,7 @@ object MeshControlParser {
             } else {
                 grants.reduceOrNull { accumulated, grant -> accumulated or grant }
             }
-            device.copy(rights = rights, relayNodeId = groups.firstOrNull { it.id == device.meshId }?.relayNodeId)
+            device.copy(rights = rights, relayNodeId = group?.relayNodeId, meshName = group?.name ?: device.meshName)
         }
     }
 

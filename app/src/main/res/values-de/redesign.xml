@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">Darstellung</string>
+    <string name="settings_appearance_subtitle">Design und Systemfarben</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Hell</string>
+    <string name="settings_theme_dark">Dunkel</string>
+    <string name="settings_dynamic_colors">Systemfarben</string>
+    <string name="settings_dynamic_colors_supporting">Farben des Hintergrundbilds für Oberflächen verwenden. Die Farben für Verbindung und Sicherheit bleiben unverändert.</string>
+</resources>

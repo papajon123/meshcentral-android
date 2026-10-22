@@ -1,5 +1,6 @@
 """Offline Git fixtures. No external Git service, real credential, Gradle or ADB access."""
 import base64
+import hashlib
 import contextlib
 import io
 import json
@@ -234,13 +235,16 @@ class SnapshotTests(unittest.TestCase):
 
     def test_publish_context_rejects_old_project_unprotected_tag_and_wrong_runner(self):
         commit = self.git(self.source, "rev-parse", "v0.5.2^{commit}").strip().decode()
-        env = {"CI_SERVER_HOST": bridge.GITLAB_HOST, "CI_PROJECT_ID": "124", "CI_PROJECT_NAMESPACE_ID": "154",
+        host_pin = mock.patch.object(bridge, "GITLAB_HOST_SHA256", hashlib.sha256(b"gitlab.example.test").hexdigest())
+        host_pin.start()
+        self.addCleanup(host_pin.stop)
+        env = {"CI_SERVER_HOST": "gitlab.example.test", "CI_PROJECT_ID": "124", "CI_PROJECT_NAMESPACE_ID": "154",
                "CI_PROJECT_PATH": bridge.GITLAB_PROJECT_PATH, "CI_PROJECT_VISIBILITY": "private",
                "CI_COMMIT_REF_PROTECTED": "true", "CI_COMMIT_TAG": "v0.5.2", "CI_COMMIT_SHA": commit, "CI_RUNNER_ID": "15",
                "CI_ENVIRONMENT_NAME": "github-release",
                "PRIVATE_PUBLICATION_TEXT_B64": base64.b64encode(b"private-distribution.example.invalid").decode()}
         bridge.validate_publish_context("v0.5.2", commit, env)
-        for key, value in (("CI_PROJECT_ID", "107"), ("CI_COMMIT_REF_PROTECTED", "false"),
+        for key, value in (("CI_SERVER_HOST", "foreign.example.test"), ("CI_PROJECT_ID", "107"), ("CI_COMMIT_REF_PROTECTED", "false"),
                            ("CI_RUNNER_ID", "1"), ("CI_DEBUG_TRACE", "true"), ("CI_COMMIT_SHA", self.base),
                            ("CI_ENVIRONMENT_NAME", "build"), ("PRIVATE_PUBLICATION_TEXT_B64", "")):
             with self.subTest(key=key), self.assertRaises(bridge.BridgeError):

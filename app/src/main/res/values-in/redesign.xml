@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">Tampilan</string>
+    <string name="settings_appearance_subtitle">Tema dan warna sistem</string>
+    <string name="settings_theme_system">Sistem</string>
+    <string name="settings_theme_light">Terang</string>
+    <string name="settings_theme_dark">Gelap</string>
+    <string name="settings_dynamic_colors">Warna sistem</string>
+    <string name="settings_dynamic_colors_supporting">Gunakan warna wallpaper untuk permukaan. Warna koneksi dan keamanan tetap sama.</string>
+</resources>

@@ -8,6 +8,8 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.LocalIndication
+import androidx.compose.ui.semantics.Role
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -116,10 +118,10 @@ fun MeshCard(
         modifier = modifier
             .scale(scale)
             .clip(shape)
-            .then(if (onClick != null) Modifier.clickable(interactionSource = interaction, indication = null) { onClick() } else Modifier),
+            .then(if (onClick != null) Modifier.clickable(role = Role.Button, interactionSource = interaction, indication = LocalIndication.current) { onClick() } else Modifier),
         color = container,
         shape = shape,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)),
+        tonalElevation = 0.dp,
     ) {
         content()
     }
@@ -140,14 +142,14 @@ fun SectionHeader(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
             )
             if (subtitle != null) {
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -234,42 +236,22 @@ fun MetricChip(
     }
 }
 
-/**
- * Loading indicator made of a rotating rounded square whose corner radius morphs between a square
- * and a circle: the shape-morphing behaviour of newer Material loading indicators, built from the
- * primitives available on this Compose version.
- */
+/** Standard progress indicator; keep it static when system animations are disabled. */
 @Composable
 fun MeshLoadingIndicator(
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.primary,
     size: Dp = 34.dp,
 ) {
-    val transition = rememberInfiniteTransition(label = "loading")
-    val rotation by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 360f,
-        animationSpec = infiniteRepeatable(animation = tween(durationMillis = 1600)),
-        label = "rotation",
-    )
-    val morph by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 900),
-            repeatMode = RepeatMode.Reverse,
-        ),
-        label = "morph",
-    )
-    val corner = size.value * (0.18f + 0.32f * morph)
-    Box(
-        modifier = modifier
-            .size(size)
-            .graphicsLayer { rotationZ = rotation }
-            .clip(RoundedCornerShape(corner.dp))
-            .background(color.copy(alpha = 0.16f))
-            .border(2.dp, color, RoundedCornerShape(corner.dp)),
-    )
+    if (MeshTheme.motion.reducedMotion) {
+        androidx.compose.material3.CircularProgressIndicator(
+            progress = { 0.65f }, modifier = modifier.size(size), color = color, strokeWidth = 3.dp,
+        )
+    } else {
+        androidx.compose.material3.CircularProgressIndicator(
+            modifier = modifier.size(size), color = color, strokeWidth = 3.dp,
+        )
+    }
 }
 
 /** Icon inside a tonal container, used as a list leading element. */
@@ -339,7 +321,7 @@ fun MeshSheet(
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         shape = SheetShape,
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
-        contentColor = LocalContentColor.current,
+        contentColor = MaterialTheme.colorScheme.onSurface,
         dragHandle = {
             Box(
                 modifier = Modifier

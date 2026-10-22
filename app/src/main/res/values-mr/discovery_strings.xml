@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">संगणक शोधा</string>
+    <string name="browser_search_hint">नाव, गट, पत्ता किंवा OS</string>
+    <string name="browser_search_clear">शोध साफ करा</string>
+    <string name="browser_filter_recent">अलीकडील</string>
+    <string name="browser_recent_clear">अलीकडील साफ करा</string>
+    <string name="browser_search_empty_title">जुळणारा संगणक नाही</string>
+    <string name="browser_search_empty_description">वेगळे नाव, गट, पत्ता किंवा ऑपरेटिंग सिस्टम वापरून पहा.</string>
+    <string name="browser_filter_empty_title">या फिल्टरमध्ये संगणक नाही</string>
+    <string name="browser_filter_empty_description">दुसरा फिल्टर निवडा किंवा शोध साफ करा.</string>
+    <string name="browser_recent_empty_title">अलीकडील संगणक नाही</string>
+    <string name="browser_recent_empty_description">तुम्ही उघडलेले संगणक येथे दिसतील.</string>
+    <string name="browser_favorites_empty_title">अजून आवडते नाही</string>
+    <string name="browser_favorites_empty_description">येथे शोधण्यासाठी संगणक आवडत्यांमध्ये जोडा.</string>
+</resources>

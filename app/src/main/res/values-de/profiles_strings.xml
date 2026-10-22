@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">Serverprofile</string>
+    <string name="profile_sheet_subtitle">Wählen Sie den MeshCentral-Server, den diese App verwendet.</string>
+    <string name="profile_close">Serverprofile schließen</string>
+    <string name="profile_add">Profil hinzufügen</string>
+    <string name="profile_add_title">Profil hinzufügen</string>
+    <string name="profile_add_subtitle">Melden Sie sich bei einem anderen MeshCentral-Server an. Dieses Profil behält eigene Anmeldedaten und Favoriten.</string>
+    <string name="profile_back">Zurück zu den Profilen</string>
+    <string name="profile_name_label">Profilname</string>
+    <string name="profile_name_placeholder">Zum Beispiel Heimserver</string>
+    <string name="profile_url_label">Serveradresse</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">Geben Sie einen Profilnamen ein.</string>
+    <string name="profile_url_required">Geben Sie eine Serveradresse ein.</string>
+    <string name="profile_submit">Profil hinzufügen</string>
+    <string name="profile_active">Aktiv</string>
+    <string name="profile_select">Verwenden</string>
+    <string name="profile_active_description">Aktives Profil: %1$s</string>
+    <string name="profile_select_description">Profil %1$s verwenden</string>
+    <string name="profile_actions_description">Profilaktionen für %1$s</string>
+    <string name="profile_rename">Umbenennen</string>
+    <string name="profile_delete">Löschen</string>
+    <string name="profile_rename_title">Profil umbenennen</string>
+    <string name="profile_rename_save">Speichern</string>
+    <string name="profile_cancel">Abbrechen</string>
+    <string name="profile_delete_title">„%1$s“ löschen?</string>
+    <string name="profile_delete_message">Gespeicherte Anmeldedaten und Favoriten dieses Profils werden von diesem Gerät entfernt. Andere Profile werden nicht geändert.</string>
+    <string name="profile_delete_confirm">Löschen</string>
+    <string name="profile_last_cannot_delete">Das letzte Profil kann nicht gelöscht werden.</string>
+    <string name="profile_empty_title">Keine Serverprofile</string>
+    <string name="profile_empty_description">Fügen Sie einen Server hinzu, um eine Verbindung zu MeshCentral herzustellen.</string>
+    <string name="profile_unnamed">Unbenanntes Profil</string>
+</resources>

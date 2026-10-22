@@ -11,4 +11,6 @@ enum class DeviceTab(@StringRes val labelRes: Int, val protocol: RelayProtocol? 
     Files(R.string.device_files, RelayProtocol.AgentFiles),
     Ssh(R.string.device_ssh, RelayProtocol.SshTerminal),
     Sftp(R.string.device_sftp, RelayProtocol.SshFiles),
+    System(R.string.workspace_system),
+    Help(R.string.workspace_help),
 }

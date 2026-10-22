@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">Aspetto</string>
+    <string name="settings_appearance_subtitle">Tema e colori di sistema</string>
+    <string name="settings_theme_system">Sistema</string>
+    <string name="settings_theme_light">Chiaro</string>
+    <string name="settings_theme_dark">Scuro</string>
+    <string name="settings_dynamic_colors">Colori di sistema</string>
+    <string name="settings_dynamic_colors_supporting">Usa i colori dello sfondo per le superfici. I colori di connessione e sicurezza restano invariati.</string>
+</resources>

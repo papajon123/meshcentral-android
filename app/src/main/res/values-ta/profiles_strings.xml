@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="profile_sheet_title">சேவையகச் சுயவிவரங்கள்</string>
+    <string name="profile_sheet_subtitle">இந்தச் செயலி பயன்படுத்தும் MeshCentral சேவையகத்தைத் தேர்ந்தெடுக்கவும்.</string>
+    <string name="profile_close">சேவையகச் சுயவிவரங்களை மூடு</string>
+    <string name="profile_add">சுயவிவரத்தைச் சேர்</string>
+    <string name="profile_add_title">சுயவிவரத்தைச் சேர்</string>
+    <string name="profile_add_subtitle">வேறு MeshCentral சேவையகத்தில் உள்நுழையவும். இந்தச் சுயவிவரம் அதன் சொந்தச் சான்றுகளையும் பிடித்தவையையும் வைத்திருக்கும்.</string>
+    <string name="profile_back">சுயவிவரங்களுக்குத் திரும்பு</string>
+    <string name="profile_name_label">சுயவிவரப் பெயர்</string>
+    <string name="profile_name_placeholder">எடுத்துக்காட்டாக, வீட்டுச் சேவையகம்</string>
+    <string name="profile_url_label">சேவையக முகவரி</string>
+    <string name="profile_url_placeholder">https://meshcentral.example.com/</string>
+    <string name="profile_name_required">சுயவிவரப் பெயரை உள்ளிடவும்.</string>
+    <string name="profile_url_required">சேவையக முகவரியை உள்ளிடவும்.</string>
+    <string name="profile_submit">சுயவிவரத்தைச் சேர்</string>
+    <string name="profile_active">செயலில்</string>
+    <string name="profile_select">பயன்படுத்து</string>
+    <string name="profile_active_description">செயலில் உள்ள சுயவிவரம்: %1$s</string>
+    <string name="profile_select_description">சுயவிவரம் %1$s ஐப் பயன்படுத்து</string>
+    <string name="profile_actions_description">சுயவிவரம் %1$s க்கான நடவடிக்கைகள்</string>
+    <string name="profile_rename">பெயரை மாற்று</string>
+    <string name="profile_delete">நீக்கு</string>
+    <string name="profile_rename_title">சுயவிவரப் பெயரை மாற்று</string>
+    <string name="profile_rename_save">சேமி</string>
+    <string name="profile_cancel">ரத்து</string>
+    <string name="profile_delete_title">“%1$s” ஐ நீக்கவா?</string>
+    <string name="profile_delete_message">இந்தச் சுயவிவரத்திற்கான சேமித்த உள்நுழைவுச் சான்றுகளும் பிடித்தவையும் இந்தச் சாதனத்திலிருந்து அகற்றப்படும். மற்ற சுயவிவரங்கள் மாறாது.</string>
+    <string name="profile_delete_confirm">நீக்கு</string>
+    <string name="profile_last_cannot_delete">கடைசிச் சுயவிவரத்தை நீக்க முடியாது.</string>
+    <string name="profile_empty_title">சேவையகச் சுயவிவரங்கள் இல்லை</string>
+    <string name="profile_empty_description">MeshCentral உடன் இணைக்க ஒரு சேவையகத்தைச் சேர்க்கவும்.</string>
+    <string name="profile_unnamed">பெயரில்லாத சுயவிவரம்</string>
+</resources>

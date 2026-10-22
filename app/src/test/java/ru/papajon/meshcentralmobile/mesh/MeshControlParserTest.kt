@@ -15,6 +15,14 @@ import ru.papajon.meshcentralmobile.localization.UiText
  * `authcookie`, node events, clipboard replies and authentication `close` frames.
  */
 class MeshControlParserTest {
+    @org.junit.Test fun groupNamesAreResolvedForEveryFreshNodesSnapshot() {
+        val device = MeshDevice("node//one", "mesh//team", "Workstation")
+        val group = MeshGroup(id = "mesh//team", name = "Team")
+        val named = MeshControlParser.resolveRights(listOf(device), listOf(group), null, false).single()
+        org.junit.Assert.assertEquals("Team", named.meshName)
+        val refreshed = MeshControlParser.resolveRights(listOf(device), listOf(group.copy(name = "Office")), null, false).single()
+        org.junit.Assert.assertEquals("Office", refreshed.meshName)
+    }
     @Test
     fun parsesServerInfo() {
         val event = MeshControlParser.parse(

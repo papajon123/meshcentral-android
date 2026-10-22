@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">রূপ</string>
+    <string name="settings_appearance_subtitle">থিম ও সিস্টেমের রং</string>
+    <string name="settings_theme_system">সিস্টেম</string>
+    <string name="settings_theme_light">হালকা</string>
+    <string name="settings_theme_dark">গাঢ়</string>
+    <string name="settings_dynamic_colors">সিস্টেমের রং</string>
+    <string name="settings_dynamic_colors_supporting">পৃষ্ঠতলগুলোর জন্য ওয়ালপেপারের রং ব্যবহার করুন। সংযোগ ও নিরাপত্তার রং অপরিবর্তিত থাকে।</string>
+</resources>

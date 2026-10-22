@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">ظاهر</string>
+    <string name="settings_appearance_subtitle">پوسته و رنگ‌های سیستم</string>
+    <string name="settings_theme_system">سیستم</string>
+    <string name="settings_theme_light">روشن</string>
+    <string name="settings_theme_dark">تیره</string>
+    <string name="settings_dynamic_colors">رنگ‌های سیستم</string>
+    <string name="settings_dynamic_colors_supporting">از رنگ‌های تصویر پس‌زمینه برای سطوح استفاده کنید. رنگ‌های اتصال و ایمنی ثابت می‌مانند.</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">అప్‌లోడ్ క్యూ</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">అప్‌లోడ్ క్యూ ఏ ఫోల్డర్‌కూ కట్టబడలేదు.</string>
+    <string name="transfer_queue_empty">క్యూలో అప్‌లోడ్‌లు లేవు.</string>
+    <string name="transfer_queue_root">కంప్యూటర్ రూట్</string>
+
+    <string name="transfer_status_queued">క్యూలో</string>
+    <string name="transfer_status_active">అప్‌లోడ్ అవుతోంది</string>
+    <string name="transfer_status_succeeded">ధృవీకరించబడింది</string>
+    <string name="transfer_status_failed">విఫలమైంది</string>
+    <string name="transfer_status_cancelled">రద్దు</string>
+
+    <string name="transfer_progress">%1$d బైట్లు</string>
+    <string name="transfer_progress_size">%2$dలో %1$d బైట్లు</string>
+    <string name="transfer_cancel">రద్దు</string>
+    <string name="transfer_cancel_all">అన్నీ రద్దు</string>
+    <string name="transfer_retry">మళ్లీ ప్రయత్నించండి</string>
+    <string name="transfer_clear_finished">పూర్తయినవి తొలగించండి</string>
+    <string name="transfer_close">మూసివేయండి</string>
+    <string name="transfer_retry_title">అప్‌లోడ్‌ను మళ్లీ ప్రయత్నించాలా?</string>
+    <string name="transfer_retry_warning">అప్‌లోడ్ ప్రారంభం నుండి మళ్లీ నడుస్తుంది. ఈ పేరుతో ఉన్న రిమోట్ ఫైల్ భర్తీ చేయబడుతుంది మరియు ఈ ప్రయత్నం అంతరాయమైతే పాక్షికంగా ఉండవచ్చు. కొనసాగించే ముందు నిర్ధారించండి.</string>
+    <string name="transfer_partial_remote">పాక్షిక లేదా భర్తీ చేయబడిన రిమోట్ ఫైల్ ఉండవచ్చు. మళ్లీ ప్రయత్నించే ముందు దాన్ని చూడండి.</string>
+    <string name="transfer_upload_failed">అప్‌లోడ్ ఊహించని లోపంతో ఆగింది. సెషన్ ముగిసింది; మళ్లీ ప్రయత్నించే ముందు రిమోట్ ఫైల్‌ను చూడండి.</string>
+
+    <string name="transfer_shared_file_fallback">పంచుకున్న ఫైల్ %1$d</string>
+    <string name="transfer_error_closed">ఫైల్ సెషన్ మూసివేయబడింది. “ఫైల్‌లు” మళ్లీ తెరవండి.</string>
+    <string name="transfer_error_content_uri">Android షేర్ లేదా ఓపెన్ పికర్ నుండి content URIలను మాత్రమే క్యూలో పెట్టవచ్చు.</string>
+    <string name="transfer_error_path_changed">ఈ అప్‌లోడ్ ప్రారంభం కాకముందే ఫోల్డర్ మారింది. ఈ ఫైల్ కోసం ఏదీ పంపబడలేదు; వెనుకకు వెళ్లి మళ్లీ క్యూలో పెట్టండి.</string>
+    <string name="transfer_error_busy">మరో ఫైల్ పని జరుగుతోంది. మరిన్ని క్యూలో పెట్టే ముందు అది పూర్తయ్యే వరకు వేచి ఉండండి.</string>
+    <string name="transfer_error_stream">ఎంచుకున్న కంటెంట్ తెరవలేకపోయాం. షేర్ అనుమతి గడువు ముగిసి ఉండవచ్చు.</string>
+</resources>

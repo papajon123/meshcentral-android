@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">화면 모양</string>
+    <string name="settings_appearance_subtitle">테마 및 시스템 색상</string>
+    <string name="settings_theme_system">시스템</string>
+    <string name="settings_theme_light">라이트</string>
+    <string name="settings_theme_dark">다크</string>
+    <string name="settings_dynamic_colors">시스템 색상</string>
+    <string name="settings_dynamic_colors_supporting">배경 화면 색상을 표면에 사용합니다. 연결 및 안전 상태 색상은 그대로 유지됩니다.</string>
+</resources>

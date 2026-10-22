@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="notification_sheet_title">Arka plan olayları</string>
+    <string name="notification_sheet_subtitle">Bu sunucu profili için isteğe bağlı 15 dakikalık kontroller.</string>
+    <string name="notification_status_title">Durum</string>
+    <string name="notification_status_enabled">Açık</string>
+    <string name="notification_status_disabled">Kapalı</string>
+    <string name="notification_last_check">Son kontrol: %1$s</string>
+    <string name="notification_never_checked">Henüz arka plan kontrolü çalıştırılmadı.</string>
+    <string name="notification_token_expires">Token %1$s tarihine kadar geçerli.</string>
+
+    <string name="notification_optin_title">Arka plan olaylarını etkinleştir</string>
+    <string name="notification_optin_supporting">Push hizmeti yok. WorkManager bu sunucuyu yaklaşık 15 dakikada bir kontrol eder ve yalnızca küçük bir yerel olay akışı tutar.</string>
+    <string name="notification_enable_action">Bildirimleri aç</string>
+    <string name="notification_disable_action">Bildirimleri kapat</string>
+    <string name="notification_reenable_action">Yeniden aç</string>
+
+    <string name="notification_filters_title">Olay filtreleri</string>
+    <string name="notification_filters_supporting">Akışta ve bildirimlerde hangi olay türlerinin görünebileceğini seçin.</string>
+    <string name="notification_kind_device_online">Cihaz çevrimiçi</string>
+    <string name="notification_kind_device_offline">Cihaz çevrimdışı</string>
+    <string name="notification_kind_request_help">Yardım istendi</string>
+    <string name="notification_kind_job_completed">İş tamamlandı</string>
+    <string name="notification_kind_job_failed">İş başarısız</string>
+    <string name="notification_kind_device_alert">Kaynak uyarısı</string>
+
+    <string name="notification_quiet_title">Sessiz saatler</string>
+    <string name="notification_quiet_supporting">Bu yerel saat aralığında olaylar saklanır ve daha sonra gösterilir.</string>
+    <string name="notification_quiet_start">Başlangıç saati</string>
+    <string name="notification_quiet_end">Bitiş saati</string>
+    <string name="notification_quiet_invalid">0 ile 23 arasında bir saat girin.</string>
+    <string name="notification_quiet_hint">Başlangıç ve bitiş aynıysa aralık devre dışı kalır.</string>
+
+    <string name="notification_check_now">Şimdi kontrol et</string>
+    <string name="notification_checking">Kontrol ediliyor…</string>
+    <string name="notification_permission_denied_supporting">Bildirim izni verilmedi. Olay akışı güncellenmeye devam eder, ancak hiçbir bildirim teslim edilmedi.</string>
+
+    <string name="notification_feed_title">Son olaylar</string>
+    <string name="notification_feed_supporting">Sunucunun sağladığı bir haftalık TTL boyunca saklanan en fazla 200 izinli olay.</string>
+    <string name="notification_feed_empty">Henüz olay yok. İlk kontrol etkinleştirmeden kısa süre sonra çalışır.</string>
+    <string name="notification_clear_history">Geçmişi temizle</string>
+    <string name="notification_clear_history_confirm">Yerel olarak saklanan tüm olaylar kaldırılsın mı? Sunucu geçmişi değişmez.</string>
+
+    <string name="notification_explanation_title">Nasıl çalışır</string>
+    <string name="notification_explanation_15min">WorkManager yaklaşık 15 dakikada bir elinden gelenin en iyisiyle kontrol eder. Android, cihaz boştayken, Doze modundayken veya zorla durdurulduktan sonra bunu geciktirebilir.</string>
+    <string name="notification_explanation_os_delays">Anlık push yok. Teslimat gecikebilir ve zorla durdurma, uygulama yeniden açılana kadar arka plan çalışmasını durdurur.</string>
+    <string name="notification_explanation_token">Salt okunur token 30 gün sürer. Süresi dolduğunda yeni bir tane oluşturmak için yeniden etkinleştirin.</string>
+    <string name="notification_explanation_thresholds">Sunucu uyarıları sabittir: disk kullanımı yüzde 90 veya üzeri, bellek kullanımı yüzde 95 veya üzeri. Uygulama bu eşikleri değiştirmez.</string>
+    <string name="notification_explanation_force_stop">Pil optimizasyonu ve üretici kısıtlamaları daha fazla gecikme ekleyebilir. Bu bir Android sınırlamasıdır, sunucu hatası değildir.</string>
+
+    <string name="notification_channel_name">Arka plan olayları</string>
+    <string name="notification_channel_description">MeshCentral cihaz, yardım isteği ve iş olayları.</string>
+    <string name="notification_push_title">MeshCentral</string>
+    <string name="notification_public_text">Yeni etkinlik. Görüntülemek için uygulamayı açın.</string>
+    <string name="notification_body_device_online">Bir cihaz çevrimiçi.</string>
+    <string name="notification_body_device_offline">Bir cihaz çevrimdışı.</string>
+    <string name="notification_body_request_help">Bir cihaz yardım istedi.</string>
+    <string name="notification_body_job_completed">Uzak bir iş tamamlandı.</string>
+    <string name="notification_body_job_failed">Uzak bir iş başarısız oldu.</string>
+    <string name="notification_body_device_alert">Bir cihaz kaynak uyarısı bildirdi.</string>
+
+    <string name="notification_error_not_enabled">Arka plan olayları kapalı.</string>
+    <string name="notification_error_not_signed_in">Arka plan olaylarını etkinleştirmeden önce sunucuda oturum açın.</string>
+    <string name="notification_error_account_mismatch">Saklanan bildirim tokeni başka bir hesaba ait. Yeniden etkinleştirin.</string>
+    <string name="notification_error_profile_missing">Bu sunucu profili artık mevcut değil.</string>
+    <string name="notification_error_network">Bağlantı yok. İmleç korunur ve sonraki kontrol yeniden dener.</string>
+    <string name="notification_error_tls">Android sunucu sertifikasına güvenmiyor. Arka plan olayları kapalı kalır.</string>
+    <string name="notification_error_server">Sunucu arka plan isteğini reddetti.</string>
+    <string name="notification_error_rate_limited">Sunucu hız sınırına ulaşıldı. Sonraki kontrol yeniden dener.</string>
+    <string name="notification_error_protocol">Katı ayrıştırıcı sunucu yanıtını reddetti.</string>
+    <string name="notification_error_endpoint">Sunucu geçersiz bir bildirim uç noktası döndürdü.</string>
+    <string name="notification_error_unknown">Arka plan olayları güncellenemedi.</string>
+    <string name="notification_self_signed_unavailable">Bu profil kendinden imzalı bir sertifikaya güveniyor. Arka plan bildirimleri sistem tarafından güvenilen HTTPS gerektirir; ön plan oturumları etkilenmez.</string>
+    <string name="notification_https_required">Arka plan bildirimleri HTTPS gerektirir.</string>
+    <string name="notification_token_expired">Bildirim tokeninin süresi doldu veya iptal edildi.</string>
+    <string name="notification_token_expired_supporting">Token artık geçerli değil. Yeni bir tane kaydetmek için yeniden etkinleştirin. Olay akışı kullanılabilir kalır.</string>
+</resources>

@@ -38,9 +38,9 @@ internal fun SessionConnectionControls(
 ) {
     Surface(
         modifier = modifier,
-        shape = PillShape,
+        shape = MaterialTheme.shapes.medium,
         color = MeshTheme.colors.glass,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.4f)),
+        tonalElevation = 2.dp,
     ) {
         Row(
             modifier = Modifier.padding(start = 12.dp),

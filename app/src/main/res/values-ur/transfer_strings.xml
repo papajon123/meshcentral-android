@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">اپ لوڈ قطار</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">اپ لوڈ قطار کسی فولڈر سے منسلک نہیں۔</string>
+    <string name="transfer_queue_empty">کوئی اپ لوڈ قطار میں نہیں۔</string>
+    <string name="transfer_queue_root">کمپیوٹر کی جڑ</string>
+
+    <string name="transfer_status_queued">قطار میں</string>
+    <string name="transfer_status_active">اپ لوڈ ہو رہا ہے</string>
+    <string name="transfer_status_succeeded">تصدیق شدہ</string>
+    <string name="transfer_status_failed">ناکام</string>
+    <string name="transfer_status_cancelled">منسوخ</string>
+
+    <string name="transfer_progress">%1$d بائٹس</string>
+    <string name="transfer_progress_size">%2$d میں سے %1$d بائٹس</string>
+    <string name="transfer_cancel">منسوخ</string>
+    <string name="transfer_cancel_all">سب منسوخ کریں</string>
+    <string name="transfer_retry">دوبارہ کوشش</string>
+    <string name="transfer_clear_finished">مکمل شدہ صاف کریں</string>
+    <string name="transfer_close">بند کریں</string>
+    <string name="transfer_retry_title">اپ لوڈ دوبارہ کریں؟</string>
+    <string name="transfer_retry_warning">اپ لوڈ شروع سے دوبارہ چلے گا۔ اسی نام کی موجود ریموٹ فائل بدل دی جائے گی اور اگر یہ کوشش رک جائے تو جزوی رہ سکتی ہے۔ جاری رکھنے سے پہلے تصدیق کریں۔</string>
+    <string name="transfer_partial_remote">جزوی یا تبدیل شدہ ریموٹ فائل رہ سکتی ہے۔ دوبارہ کوشش سے پہلے اسے دیکھیں۔</string>
+    <string name="transfer_upload_failed">اپ لوڈ غیر متوقع خرابی سے رک گئی۔ سیشن ختم ہوا؛ دوبارہ کوشش سے پہلے ریموٹ فائل دیکھیں۔</string>
+
+    <string name="transfer_shared_file_fallback">مشترکہ فائل %1$d</string>
+    <string name="transfer_error_closed">فائل سیشن بند ہے۔ »فائلیں« دوبارہ کھولیں۔</string>
+    <string name="transfer_error_content_uri">صرف Android اشتراک یا اوپن پکر کے content URIs قطار میں ڈالے جا سکتے ہیں۔</string>
+    <string name="transfer_error_path_changed">یہ اپ لوڈ شروع ہونے سے پہلے فولڈر بدل گیا۔ اس فائل کے لیے کچھ نہیں بھیجا گیا؛ واپس جائیں اور اسے دوبارہ قطار میں ڈالیں۔</string>
+    <string name="transfer_error_busy">ایک اور فائل عمل جاری ہے۔ مزید قطار میں ڈالنے سے پہلے اس کے ختم ہونے کا انتظار کریں۔</string>
+    <string name="transfer_error_stream">منتخب مواد کھولا نہیں جا سکا۔ اشتراک کی اجازت میعاد ختم ہو سکتی ہے۔</string>
+</resources>

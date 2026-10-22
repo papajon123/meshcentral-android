@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_appearance_title">外觀</string>
+    <string name="settings_appearance_subtitle">主題與系統顏色</string>
+    <string name="settings_theme_system">系統</string>
+    <string name="settings_theme_light">淺色</string>
+    <string name="settings_theme_dark">深色</string>
+    <string name="settings_dynamic_colors">系統顏色</string>
+    <string name="settings_dynamic_colors_supporting">使用桌布顏色作為介面底色。連線與安全狀態的顏色保持不變。</string>
+</resources>

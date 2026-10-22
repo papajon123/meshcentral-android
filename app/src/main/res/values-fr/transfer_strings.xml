@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="transfer_queue_title">File de téléversements</string>
+    <string name="transfer_queue_target">%1$s · %2$s</string>
+    <string name="transfer_queue_unbound">La file de téléversements n’est liée à aucun dossier.</string>
+    <string name="transfer_queue_empty">Aucun téléversement en file d’attente.</string>
+    <string name="transfer_queue_root">Racine de l’ordinateur</string>
+
+    <string name="transfer_status_queued">En file d’attente</string>
+    <string name="transfer_status_active">Téléversement</string>
+    <string name="transfer_status_succeeded">Vérifié</string>
+    <string name="transfer_status_failed">Échoué</string>
+    <string name="transfer_status_cancelled">Annulé</string>
+
+    <string name="transfer_progress">%1$d octets</string>
+    <string name="transfer_progress_size">%1$d sur %2$d octets</string>
+    <string name="transfer_cancel">Annuler</string>
+    <string name="transfer_cancel_all">Tout annuler</string>
+    <string name="transfer_retry">Réessayer</string>
+    <string name="transfer_clear_finished">Effacer les terminés</string>
+    <string name="transfer_close">Fermer</string>
+    <string name="transfer_retry_title">Réessayer le téléversement ?</string>
+    <string name="transfer_retry_warning">Le téléversement recommence depuis le début. Un fichier distant existant portant ce nom sera remplacé et peut rester partiel si cette tentative est interrompue. Confirmez avant de continuer.</string>
+    <string name="transfer_partial_remote">Un fichier distant partiel ou remplacé peut subsister. Vérifiez-le avant de réessayer.</string>
+    <string name="transfer_upload_failed">Le téléversement s’est arrêté sur une erreur inattendue. La session est terminée ; vérifiez le fichier distant avant de réessayer.</string>
+
+    <string name="transfer_shared_file_fallback">Fichier partagé %1$d</string>
+    <string name="transfer_error_closed">La session de fichiers est fermée. Rouvrez Fichiers.</string>
+    <string name="transfer_error_content_uri">Seuls les URI de contenu provenant du sélecteur Android ou du partage peuvent être mis en file d’attente.</string>
+    <string name="transfer_error_path_changed">Le dossier a changé avant le début de ce téléversement. Rien n’a été envoyé pour ce fichier ; revenez en arrière et remettez-le en file d’attente.</string>
+    <string name="transfer_error_busy">Une autre opération de fichier est en cours. Attendez qu’elle se termine avant d’en mettre d’autres en file d’attente.</string>
+    <string name="transfer_error_stream">Le contenu sélectionné n’a pas pu être ouvert. L’autorisation de partage a peut-être expiré.</string>
+</resources>

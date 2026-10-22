@@ -15,9 +15,29 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.PBEKeySpec
 
-class SecureVault(context: Context) {
-    private val prefs = context.applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+class SecureVault(context: Context, private val credentialNamespace: String? = null, preferencesName: String = PREFS_NAME) {
+    private val prefs = context.applicationContext.getSharedPreferences(preferencesName, Context.MODE_PRIVATE)
     private val random = SecureRandom()
+    private val credentialKey = credentialNamespace?.let {
+        require(it.matches(Regex("[A-Za-z0-9_-]{1,64}"))) { "Invalid credential namespace" }
+        "$KEY_CREDENTIALS.$it"
+    } ?: KEY_CREDENTIALS
+
+    /** Called only for the profile created from pre-profile settings. Migration and marker are atomic. */
+    fun migrateLegacyCredentials(serverUrl: String) {
+        require(credentialNamespace == "default") { "Only the legacy profile can claim legacy credentials" }
+        val marker = "migrated.$credentialKey"
+        if (prefs.getBoolean(marker, false)) return
+        val editor = prefs.edit()
+        if (!prefs.contains(credentialKey)) {
+            val payload = runCatching { getEncrypted(KEY_CREDENTIALS) }.getOrElse { return }
+            val oldScope = payload?.let { JSONObject(it).optString("server").takeIf(String::isNotBlank) }
+            if (payload != null && CredentialScope.matches(oldScope, serverUrl)) {
+                editor.putString(credentialKey, encryptedValue(payload))
+            }
+        }
+        editor.putBoolean(marker, true).apply()
+    }
 
     fun saveCredentials(username: String, password: String, serverUrl: String) {
         val server = requireNotNull(CredentialScope.normalize(serverUrl)) { "Invalid credential server" }
@@ -26,11 +46,11 @@ class SecureVault(context: Context) {
             .put("username", username)
             .put("password", password)
             .toString()
-        putEncrypted(KEY_CREDENTIALS, payload)
+        putEncrypted(credentialKey, payload)
     }
 
     fun getCredentials(serverUrl: String): StoredCredentials? {
-        val payload = getEncrypted(KEY_CREDENTIALS) ?: return null
+        val payload = getEncrypted(credentialKey) ?: return null
         val json = JSONObject(payload)
         // Older, unscoped payloads require an explicit sign-in. Never guess their server.
         if (!CredentialScope.matches(json.optString("server").takeIf { it.isNotBlank() }, serverUrl)) return null
@@ -41,7 +61,26 @@ class SecureVault(context: Context) {
     }
 
     fun clearCredentials() {
-        prefs.edit().remove(KEY_CREDENTIALS).apply()
+        val editor = prefs.edit().remove(credentialKey)
+        if (credentialNamespace != null) editor.putBoolean("migrated.$credentialKey", true)
+        if (credentialNamespace == "default") editor.remove(KEY_CREDENTIALS)
+        editor.apply()
+    }
+
+    /** Small profile- and origin-bound auxiliary secrets, such as a read-only notification token. */
+    fun saveScopedSecret(label: String, serverUrl: String, value: String) {
+        require(label.matches(Regex("[a-z_]{1,40}")) && value.length <= 8192)
+        val server = requireNotNull(CredentialScope.normalize(serverUrl))
+        putEncrypted("secret.$credentialKey.$label", JSONObject().put("server", server).put("value", value).toString())
+    }
+    fun getScopedSecret(label: String, serverUrl: String): String? {
+        require(label.matches(Regex("[a-z_]{1,40}")))
+        val json = getEncrypted("secret.$credentialKey.$label")?.let(::JSONObject) ?: return null
+        return if (CredentialScope.matches(json.optString("server"), serverUrl)) json.optString("value") else null
+    }
+    fun clearScopedSecret(label: String) {
+        require(label.matches(Regex("[a-z_]{1,40}")))
+        prefs.edit().remove("secret.$credentialKey.$label").apply()
     }
 
     fun savePin(pin: String) {
@@ -75,14 +114,17 @@ class SecureVault(context: Context) {
     }
 
     private fun putEncrypted(key: String, plaintext: String) {
+        prefs.edit().putString(key, encryptedValue(plaintext)).apply()
+    }
+
+    private fun encryptedValue(plaintext: String): String {
         val cipher = Cipher.getInstance(TRANSFORMATION)
         cipher.init(Cipher.ENCRYPT_MODE, getOrCreateSecretKey())
         val ciphertext = cipher.doFinal(plaintext.toByteArray(Charsets.UTF_8))
-        val json = JSONObject()
+        return JSONObject()
             .put("iv", cipher.iv.encodeBase64())
             .put("ciphertext", ciphertext.encodeBase64())
             .toString()
-        prefs.edit().putString(key, json).apply()
     }
 
     private fun getEncrypted(key: String): String? {

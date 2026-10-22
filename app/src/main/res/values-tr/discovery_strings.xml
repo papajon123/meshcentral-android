@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">Bilgisayar ara</string>
+    <string name="browser_search_hint">Ad, grup, adres veya işletim sistemi</string>
+    <string name="browser_search_clear">Aramayı temizle</string>
+    <string name="browser_filter_recent">Son kullanılanlar</string>
+    <string name="browser_recent_clear">Son kullanılanları temizle</string>
+    <string name="browser_search_empty_title">Eşleşen bilgisayar yok</string>
+    <string name="browser_search_empty_description">Başka bir ad, grup, adres veya işletim sistemi deneyin.</string>
+    <string name="browser_filter_empty_title">Bu filtrede bilgisayar yok</string>
+    <string name="browser_filter_empty_description">Başka bir filtre seçin veya aramayı temizleyin.</string>
+    <string name="browser_recent_empty_title">Son kullanılan bilgisayar yok</string>
+    <string name="browser_recent_empty_description">Açtığınız bilgisayarlar burada görünür.</string>
+    <string name="browser_favorites_empty_title">Henüz favori yok</string>
+    <string name="browser_favorites_empty_description">Burada bulmak için bir bilgisayarı favorilere ekleyin.</string>
+</resources>

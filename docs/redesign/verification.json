@@ -1,0 +1,136 @@
+{
+  "builds": {
+    "public": {
+      "unit": {
+        "tests": 172,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "lintErrors": 0,
+      "lintWarnings": 45,
+      "lintInformation": 7
+    },
+    "original": {
+      "unit": {
+        "tests": 180,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "lintErrors": 0,
+      "lintWarnings": 51,
+      "lintInformation": 7
+    }
+  },
+  "native": {
+    "full-native-final-api35.log": {
+      "passed": 74,
+      "assumptionSkipped": 9,
+      "failed": 0,
+      "errors": 0,
+      "runnerOk": true
+    },
+    "full-private-native-api35.log": {
+      "passed": 76,
+      "assumptionSkipped": 9,
+      "failed": 0,
+      "errors": 0,
+      "runnerOk": true
+    },
+    "full-native-api26.log": {
+      "passed": 69,
+      "assumptionSkipped": 14,
+      "failed": 0,
+      "errors": 0,
+      "runnerOk": true
+    }
+  },
+  "performance": {
+    "before": {
+      "frames": "496",
+      "jankyPercent": "7.46",
+      "p50ms": "11",
+      "p95ms": "34",
+      "p99ms": "101",
+      "pssKiB": "131857",
+      "rssKiB": "221028"
+    },
+    "after": {
+      "frames": "445",
+      "jankyPercent": "9.89",
+      "p50ms": "10",
+      "p95ms": "36",
+      "p99ms": "150",
+      "pssKiB": "125403",
+      "rssKiB": "217920"
+    },
+    "conditions": {
+      "originalScales": {
+        "animator_duration_scale": "0",
+        "transition_animation_scale": "0",
+        "window_animation_scale": "0"
+      },
+      "runs": [
+        {
+          "name": "before",
+          "flowPassed": true,
+          "beforeScales": {
+            "animator_duration_scale": "1",
+            "transition_animation_scale": "1",
+            "window_animation_scale": "1"
+          },
+          "afterScales": {
+            "animator_duration_scale": "1",
+            "transition_animation_scale": "1",
+            "window_animation_scale": "1"
+          }
+        },
+        {
+          "name": "after",
+          "flowPassed": true,
+          "beforeScales": {
+            "animator_duration_scale": "1",
+            "transition_animation_scale": "1",
+            "window_animation_scale": "1"
+          },
+          "afterScales": {
+            "animator_duration_scale": "1",
+            "transition_animation_scale": "1",
+            "window_animation_scale": "1"
+          }
+        }
+      ]
+    },
+    "limitations": "One debug/emulator sample per build; setup and transitions included. Not a release benchmark or a leak investigation."
+  },
+  "crashBuffers": {
+    "emulator-5558": {
+      "appProcessRecords": 0
+    },
+    "emulator-5556": {
+      "appProcessRecords": 0
+    }
+  },
+  "translations": {
+    "publicLocales": 23,
+    "publicTranslatedStringsPerLocale": 536,
+    "originalLocales": 23,
+    "originalTranslatedStringsPerLocale": 563,
+    "sharedStrings": 1,
+    "passed": true
+  },
+  "screenshots": {
+    "before": 22,
+    "after": 160,
+    "privateGallery": 13,
+    "privateGalleryPassed": true
+  },
+  "finalChecks": {
+    "gitDiffCheckBoth": true,
+    "identityBuildStorageTransportsUpdaterUnchanged": true,
+    "allDocumentationLinksExist": true,
+    "debugApkSignaturesValid": true,
+    "publicationPerformed": false
+  }
+}

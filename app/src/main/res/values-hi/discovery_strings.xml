@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_search_label">कंप्यूटर खोजें</string>
+    <string name="browser_search_hint">नाम, समूह, पता या OS</string>
+    <string name="browser_search_clear">खोज साफ़ करें</string>
+    <string name="browser_filter_recent">हाल के</string>
+    <string name="browser_recent_clear">हाल के साफ़ करें</string>
+    <string name="browser_search_empty_title">कोई मेल खाता कंप्यूटर नहीं</string>
+    <string name="browser_search_empty_description">अलग नाम, समूह, पता या ऑपरेटिंग सिस्टम आज़माएँ।</string>
+    <string name="browser_filter_empty_title">इस फ़िल्टर में कोई कंप्यूटर नहीं</string>
+    <string name="browser_filter_empty_description">दूसरा फ़िल्टर चुनें या खोज साफ़ करें।</string>
+    <string name="browser_recent_empty_title">कोई हाल का कंप्यूटर नहीं</string>
+    <string name="browser_recent_empty_description">आप जो कंप्यूटर खोलेंगे वे यहाँ दिखेंगे।</string>
+    <string name="browser_favorites_empty_title">अभी कोई पसंदीदा नहीं</string>
+    <string name="browser_favorites_empty_description">यहाँ खोजने के लिए कंप्यूटर को पसंदीदा में जोड़ें।</string>
+</resources>

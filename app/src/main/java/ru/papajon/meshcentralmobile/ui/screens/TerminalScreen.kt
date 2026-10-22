@@ -18,6 +18,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.toArgb
@@ -43,10 +45,12 @@ import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.mesh.session.RelayPhase
 import ru.papajon.meshcentralmobile.terminal.TerminalAuth
 import ru.papajon.meshcentralmobile.terminal.TerminalController
+import ru.papajon.meshcentralmobile.ui.components.StatusDot
+import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 import java.util.Locale
 
 @Composable
-fun TerminalScreen(controller: TerminalController, onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun TerminalScreen(controller: TerminalController, onBack: () -> Unit, modifier: Modifier = Modifier, onReopen: (() -> Unit)? = null) {
     val state by controller.state.collectAsState()
     val context = LocalContext.current
     val renderer = remember(controller) { controller.renderer(context) }
@@ -63,50 +67,193 @@ fun TerminalScreen(controller: TerminalController, onBack: () -> Unit, modifier:
     }
     LaunchedEffect(state.ready) { if (!state.ready) { control = false; renderer?.setControl(false) } }
 
+    val ended = state.phase == RelayPhase.Closed || state.phase == RelayPhase.Failed
+    val statusColor = when {
+        state.auth != TerminalAuth.None -> MaterialTheme.colorScheme.tertiary
+        state.ready -> MeshTheme.colors.online
+        state.phase == RelayPhase.Failed -> MaterialTheme.colorScheme.error
+        state.phase == RelayPhase.Closed -> MaterialTheme.colorScheme.outline
+        else -> MeshTheme.colors.warning
+    }
+    val status = stringResource(when {
+        state.auth != TerminalAuth.None -> R.string.terminal_auth_required
+        state.ready -> R.string.terminal_connected
+        state.awaitingShell -> R.string.terminal_waiting_shell
+        state.phase == RelayPhase.Failed -> R.string.terminal_failed
+        state.phase == RelayPhase.Closed -> R.string.terminal_closed
+        state.phase == RelayPhase.Waiting -> R.string.terminal_waiting
+        else -> R.string.terminal_connecting
+    })
+
     Column(modifier.fillMaxSize().imePadding()) {
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.SpaceBetween) {
-            TextButton(onClick = onBack) { Text(stringResource(R.string.terminal_back)) }
-            Text(if (controller.isSsh) stringResource(R.string.terminal_ssh_title) else stringResource(R.string.terminal_title),
-                modifier = Modifier.padding(12.dp), style = MaterialTheme.typography.titleMedium)
-            TextButton(onClick = controller::disconnect, enabled = state.phase != RelayPhase.Closed && state.phase != RelayPhase.Failed) {
-                Text(stringResource(R.string.terminal_disconnect))
+        Surface(color = MaterialTheme.colorScheme.surface) {
+            Column(Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp, vertical = 2.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    TextButton(
+                        onClick = onBack,
+                        modifier = Modifier.heightIn(min = 48.dp),
+                    ) {
+                        Text(stringResource(R.string.terminal_back))
+                    }
+                    Column(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 8.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
+                    ) {
+                        Text(
+                            text = if (controller.isSsh) {
+                                stringResource(R.string.terminal_ssh_title)
+                            } else {
+                                stringResource(R.string.terminal_title)
+                            },
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(6.dp),
+                        ) {
+                            StatusDot(color = statusColor, size = 8.dp)
+                            Text(
+                                text = status,
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                    }
+                    TextButton(
+                        onClick = controller::disconnect,
+                        enabled = !ended,
+                        modifier = Modifier.heightIn(min = 48.dp),
+                    ) {
+                        Text(stringResource(R.string.terminal_disconnect))
+                    }
+                }
+                if (state.recorded) {
+                    Text(
+                        text = stringResource(R.string.terminal_recorded),
+                        modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 4.dp),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.tertiary,
+                    )
+                }
             }
         }
-        Text(stringResource(when {
-            state.auth != TerminalAuth.None -> R.string.terminal_auth_required
-            state.ready -> R.string.terminal_connected
-            state.awaitingShell -> R.string.terminal_waiting_shell
-            state.phase == RelayPhase.Failed -> R.string.terminal_failed
-            state.phase == RelayPhase.Closed -> R.string.terminal_closed
-            state.phase == RelayPhase.Waiting -> R.string.terminal_waiting
-            else -> R.string.terminal_connecting
-        }), Modifier.padding(horizontal = 12.dp), style = MaterialTheme.typography.labelLarge)
-        state.message?.let { Text(it.asString(), Modifier.padding(horizontal = 12.dp).heightIn(max = 96.dp)
-            .verticalScroll(rememberScrollState()), style = MaterialTheme.typography.bodySmall) }
-        if (state.recorded) Text(stringResource(R.string.terminal_recorded), Modifier.padding(horizontal = 12.dp),
-            style = MaterialTheme.typography.bodySmall)
-        if (state.phase == RelayPhase.Closed || state.phase == RelayPhase.Failed) {
-            Text(stringResource(R.string.terminal_reopen_hint), Modifier.padding(horizontal = 12.dp), style = MaterialTheme.typography.bodySmall)
-        }
-        if (renderer != null) AndroidView(
-            factory = renderer::createHost,
-            modifier = Modifier.fillMaxWidth().weight(1f).clipToBounds(),
-            onRelease = renderer::releaseHost,
-        )
-        else Spacer(Modifier.weight(1f))
-        Row(Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-            TextButton(onClick = { renderer?.focus() }, enabled = state.ready) { Text(stringResource(R.string.terminal_keyboard)) }
-            FilterChip(selected = control, onClick = { control = !control; renderer?.setControl(control); renderer?.focus() },
-                enabled = state.ready, label = { Text(stringResource(R.string.terminal_ctrl)) })
-            listOf(R.string.terminal_esc to "\u001b", R.string.terminal_tab to "\t", R.string.terminal_up to "\u001b[A",
-                R.string.terminal_down to "\u001b[B", R.string.terminal_left to "\u001b[D", R.string.terminal_right to "\u001b[C",
-                R.string.terminal_enter to "\r").forEach { (label, key) ->
-                TextButton(onClick = { renderer?.key(key); renderer?.focus() }, enabled = state.ready) { Text(stringResource(label)) }
+        state.message?.let { message ->
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp, vertical = 4.dp),
+                shape = MaterialTheme.shapes.small,
+                color = MaterialTheme.colorScheme.surfaceContainerHigh,
+            ) {
+                Text(
+                    text = message.asString(),
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .heightIn(max = 96.dp)
+                        .verticalScroll(rememberScrollState()),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
             }
-            TextButton(onClick = { renderer?.selectAll() }, enabled = renderer != null) { Text(stringResource(R.string.terminal_select_all)) }
-            TextButton(onClick = { renderer?.copySelection(copyLabel) }, enabled = renderer != null) { Text(stringResource(R.string.terminal_copy)) }
-            TextButton(onClick = { renderer?.clearSelection() }, enabled = renderer != null) { Text(stringResource(R.string.terminal_clear_selection)) }
+        }
+        if (ended) {
+            onReopen?.let { action -> TextButton(onClick = action) { Text(stringResource(R.string.workspace_reopen)) } }
+            if (onReopen == null) Text(
+                text = stringResource(R.string.terminal_reopen_hint),
+                modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        if (renderer != null) {
+            AndroidView(
+                factory = renderer::createHost,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f)
+                    .clipToBounds(),
+                onRelease = renderer::releaseHost,
+            )
+        } else {
+            Spacer(Modifier.weight(1f))
+        }
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = MaterialTheme.colorScheme.surfaceContainerLow,
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                horizontalArrangement = Arrangement.spacedBy(4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                TextButton(
+                    onClick = { renderer?.focus() },
+                    enabled = state.ready,
+                    modifier = Modifier.heightIn(min = 48.dp),
+                ) {
+                    Text(stringResource(R.string.terminal_keyboard))
+                }
+                FilterChip(
+                    selected = control,
+                    onClick = {
+                        control = !control
+                        renderer?.setControl(control)
+                        renderer?.focus()
+                    },
+                    enabled = state.ready,
+                    modifier = Modifier.heightIn(min = 48.dp),
+                    label = { Text(stringResource(R.string.terminal_ctrl)) },
+                )
+                for ((label, key) in listOf(
+                    R.string.terminal_esc to "\u001b",
+                    R.string.terminal_tab to "\t",
+                    R.string.terminal_up to "\u001b[A",
+                    R.string.terminal_down to "\u001b[B",
+                    R.string.terminal_left to "\u001b[D",
+                    R.string.terminal_right to "\u001b[C",
+                    R.string.terminal_enter to "\r",
+                )) {
+                    TextButton(
+                        onClick = { renderer?.key(key); renderer?.focus() },
+                        enabled = state.ready,
+                        modifier = Modifier.heightIn(min = 48.dp),
+                    ) {
+                        Text(stringResource(label))
+                    }
+                }
+                TextButton(
+                    onClick = { renderer?.selectAll() },
+                    enabled = renderer != null,
+                    modifier = Modifier.heightIn(min = 48.dp),
+                ) {
+                    Text(stringResource(R.string.terminal_select_all))
+                }
+                TextButton(
+                    onClick = { renderer?.copySelection(copyLabel) },
+                    enabled = renderer != null,
+                    modifier = Modifier.heightIn(min = 48.dp),
+                ) {
+                    Text(stringResource(R.string.terminal_copy))
+                }
+                TextButton(
+                    onClick = { renderer?.clearSelection() },
+                    enabled = renderer != null,
+                    modifier = Modifier.heightIn(min = 48.dp),
+                ) {
+                    Text(stringResource(R.string.terminal_clear_selection))
+                }
+            }
         }
     }
     if (state.auth != TerminalAuth.None) SshAuthentication(controller, state.auth)
