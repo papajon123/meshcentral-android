@@ -34,8 +34,8 @@ jobs:
           ANDROID_RELEASE_KEYSTORE_B64: ${{ secrets.ANDROID_RELEASE_KEYSTORE_B64 }}
           ANDROID_RELEASE_PASSWORD: ${{ secrets.ANDROID_RELEASE_PASSWORD }}
         run: bash ci/build-release.sh
-      - name: Create draft release
+      - name: Publish verified APK release
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" dist/*.apk dist/SHA256SUMS dist/release-info.json --verify-tag --draft --prerelease --title "MeshCentral Android $RELEASE_VERSION" --notes-file .github/RELEASE_NOTES.md
+        run: gh release create "$TAG" dist/*.apk dist/SHA256SUMS dist/release-info.json --verify-tag --prerelease --title "MeshCentral Android $RELEASE_VERSION" --notes-file .github/RELEASE_NOTES.md
