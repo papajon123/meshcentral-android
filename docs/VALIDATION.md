@@ -1,6 +1,8 @@
 # Validation
 
-## 0.7.0
+## 0.7.1
+
+The public 0.7.0 signing job was blocked by its API 35 checks: a test assumed both virtualized rows were visible. A separate compact-screen reproduction exposed fixed controls consuming the list viewport. Version 0.7.1 fixes the layout and checks each row after scrolling. The original 0.7.0 source tag remains unchanged; no public APK was released for it.
 
 Current feature, test and platform limits: [ROADMAP_IMPLEMENTATION.md](ROADMAP_IMPLEMENTATION.md). The records below are historical and retain their original versions.
 

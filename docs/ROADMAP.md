@@ -1,10 +1,10 @@
-# Roadmap — 0.7.0
+# Roadmap — 0.7.1
 
 Items 1–8 are implemented. Local public build, JVM and API 35 checks passed; see [implementation evidence and limits](ROADMAP_IMPLEMENTATION.md). WebRTC remains a separate measured decision, and the optional plugin avoids a permanent core fork.
 
 ## Status at a glance
 
-| # | Scope | Status in the 0.7.0 candidate | Still open |
+| # | Scope | Status in the 0.7.1 candidate | Still open |
 |---|---|---|---|
 | 1 | Search and recent devices | Implemented: Unicode-normalised, case-insensitive AND search over name/group/host/IP/OS; 20 recents per profile and account | TalkBack, large fonts and long real lists on a phone |
 | 2 | Server profiles | Implemented: up to 20 profiles, migrated default profile, scoped credentials/favourites/recents, global PIN | Signed in-place upgrade and migration on a phone |
@@ -89,7 +89,7 @@ Standard desktop, terminal, files, SSH and SFTP do **not** need it.
 6. **Translation review:** native-speaker review of priority languages; current translations are
    machine-produced.
 
-## What is not in 0.7.0
+## What is not in 0.7.1
 
 - No WebRTC. The WSS relay remains; MeshCentral 1.3.0 does not accept the terminal RTC offer. The
   loopback WSS numbers recorded during research are not mobile or desktop performance evidence.

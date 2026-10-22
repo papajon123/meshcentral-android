@@ -6,6 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasScrollToIndexAction
+import androidx.compose.ui.test.hasText
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -42,8 +46,9 @@ class DevicesDiscoveryUiTest {
     fun emptyFilterResultUsesAFilterSpecificMessage() {
         showDevices(listOf(device("one", "Alpha")), recentIds = emptyList())
 
-        compose.onNodeWithText(text(R.string.browser_filter_recent), substring = true).performClick()
+        compose.onNodeWithText(text(R.string.browser_filter_recent), substring = true).performScrollTo().assertIsDisplayed().performClick()
 
+        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText(text(R.string.browser_recent_empty_title)))
         compose.onNodeWithText(text(R.string.browser_recent_empty_title)).assertIsDisplayed()
         compose.onNodeWithText(text(R.string.browser_search_empty_title)).assertDoesNotExist()
     }
@@ -59,14 +64,16 @@ class DevicesDiscoveryUiTest {
             recentIds = listOf("three", "one", "not-in-the-current-list"),
         )
 
-        compose.onNodeWithText(text(R.string.browser_filter_recent), substring = true).performClick()
+        compose.onNodeWithText(text(R.string.browser_filter_recent), substring = true).performScrollTo().assertIsDisplayed().performClick()
         compose.onNodeWithText("Two").assertDoesNotExist()
 
         val threeTop = compose.onNodeWithText("Three").assertIsDisplayed().fetchSemanticsNode().boundsInRoot.top
         val oneTop = compose.onNodeWithText("One").assertIsDisplayed().fetchSemanticsNode().boundsInRoot.top
         assertTrue("Recent order must put Three before One", threeTop < oneTop)
 
+        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText(text(R.string.browser_recent_clear)))
         compose.onNodeWithText(text(R.string.browser_recent_clear)).performClick()
+        compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText(text(R.string.browser_recent_empty_title)))
         compose.onNodeWithText(text(R.string.browser_recent_empty_title)).assertIsDisplayed()
     }
 

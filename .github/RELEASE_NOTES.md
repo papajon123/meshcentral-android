@@ -1,7 +1,8 @@
-## MeshCentral Mobile 0.7.0
+## MeshCentral Mobile 0.7.1
 
 English · 简体中文 · Русский
 
+- Device lists remain reachable on short screens; search, filters and warnings scroll with the cards.
 - Search and recent computers; separate server profiles.
 - Two open sessions with explicit close and restored selection.
 - Android Share, file queue, cancel/retry and SHA-256 readback.

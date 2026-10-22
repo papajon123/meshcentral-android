@@ -15,7 +15,7 @@
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 Android locale variants">
 </p>
 
-> **Version 0.7.0** adds server profiles, two sessions, sharing files and optional server jobs. See the [changelog](CHANGELOG.md).
+> **Version 0.7.1** adds server profiles, two sessions, sharing files and optional server jobs. See the [changelog](CHANGELOG.md).
 
 ## Screenshots
 
@@ -88,7 +88,7 @@ Jobs, service/process views, confirmed service actions and background notificati
 
 - Local public checks: 240 JVM tests; API 35 instrumentation: 135 passed, 4 opt-in/compatibility assumptions skipped, no failures. International, RTL, font ×2 and tablet galleries were captured. See [implementation and limits](docs/ROADMAP_IMPLEMENTATION.md).
 
-- Not verified: a physical phone, a real Windows Mesh Agent, systemd service actions, TalkBack, physical-phone large-font acceptance, battery use, Doze/OEM background restrictions, and every 0.7.0 flow on Android 8.
+- Not verified: a physical phone, a real Windows Mesh Agent, systemd service actions, TalkBack, physical-phone large-font acceptance, battery use, Doze/OEM background restrictions, and every 0.7.1 flow on Android 8.
 - A physical-phone acceptance must still cover install/update over a signed build, sign-in/2FA, two sessions, rotation/background/lock/network loss/process death, share from real apps, notifications, and the optional plugin.
 - No WebRTC in this release. WebRTC was researched, but MeshCentral 1.3.0 does not accept the terminal RTC offer; the WSS relay remains. See the [roadmap](docs/ROADMAP.md).
 - Intel AMT KVM, RDP, VNC, chat, registry/software management and server administration remain in the web panel. The app does not administer the server.

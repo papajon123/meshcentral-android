@@ -27,15 +27,53 @@ class ConnectionUiTest {
 
     @Test fun disconnectedComputersCannotBeOpenedOrReportedOnline() {
         devices(connected = false)
-        compose.onAllNodesWithContentDescription(compose.activity.getString(R.string.devices_action_connect)).assertCountEquals(0)
-        compose.onAllNodesWithContentDescription(compose.activity.getString(R.string.connection_status_unknown)).assertCountEquals(2)
+        val unknown = compose.activity.getString(R.string.connection_status_unknown)
+        val online = compose.activity.getString(R.string.common_status_online)
+        val connect = compose.activity.getString(R.string.devices_action_connect)
+        val list = compose.onNode(hasScrollToIndexAction())
+        for (nodeId in listOf("one", "two")) {
+            val rowTag = "device-row-$nodeId"
+            list.performScrollToNode(hasTestTag(rowTag))
+            compose.onNodeWithTag(rowTag, useUnmergedTree = true).assertIsDisplayed()
+            compose.onNode(
+                hasContentDescription(unknown) and hasAnyAncestor(hasTestTag(rowTag)),
+                useUnmergedTree = true,
+            ).assertIsDisplayed()
+            compose.onAllNodes(
+                hasContentDescription(online) and hasAnyAncestor(hasTestTag(rowTag)),
+                useUnmergedTree = true,
+            ).assertCountEquals(0)
+            compose.onNodeWithTag(rowTag, useUnmergedTree = true).assertHasNoClickAction()
+            compose.onAllNodes(
+                hasContentDescription(connect) and hasAnyAncestor(hasTestTag(rowTag)),
+                useUnmergedTree = true,
+            ).assertCountEquals(0)
+        }
+        compose.onAllNodesWithContentDescription(connect).assertCountEquals(0)
+        compose.onAllNodesWithContentDescription(online, useUnmergedTree = true).assertCountEquals(0)
+        list.performScrollToNode(hasText(compose.activity.getString(R.string.connection_retry)))
         compose.onNodeWithText(compose.activity.getString(R.string.connection_retry)).assertIsDisplayed()
         snapshot("devices-offline.png")
     }
 
     @Test fun computerCardsAndNavigationFitTheScreen() {
         devices(connected = true)
-        compose.onAllNodesWithContentDescription(compose.activity.getString(R.string.devices_action_connect)).assertCountEquals(2)
+        val connect = compose.activity.getString(R.string.devices_action_connect)
+        val list = compose.onNode(hasScrollToIndexAction())
+        for (nodeId in listOf("one", "two")) {
+            val rowTag = "device-row-$nodeId"
+            list.performScrollToNode(hasTestTag(rowTag))
+            compose.onNodeWithTag(rowTag, useUnmergedTree = true).assertIsDisplayed()
+            compose.onNode(
+                hasClickAction() and hasAnyAncestor(hasTestTag(rowTag)) and
+                    hasAnyDescendant(hasContentDescription(connect)),
+                useUnmergedTree = true,
+            ).assertIsDisplayed().assertIsEnabled()
+            compose.onNode(
+                hasContentDescription(connect) and hasAnyAncestor(hasTestTag(rowTag)),
+                useUnmergedTree = true,
+            ).assertIsDisplayed()
+        }
         compose.onNodeWithText(compose.activity.getString(R.string.common_nav_devices_short)).assertIsDisplayed()
         snapshot("devices-online.png")
     }

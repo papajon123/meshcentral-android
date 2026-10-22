@@ -1,6 +1,6 @@
 # Known Limitations
 
-This page describes 0.7.0. Limits below are deliberate, unverified or outside this client.
+This page describes 0.7.1. Limits below are deliberate, unverified or outside this client.
 
 ## Validation status
 

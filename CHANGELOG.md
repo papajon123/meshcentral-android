@@ -1,3 +1,9 @@
+# 0.7.1 — 2026-10-22
+
+- Keep saved computers reachable on short screens: search, filters and connection warnings scroll with the device list.
+- Check each virtualized device row after scrolling, including disconnected status and unavailable connection actions.
+- Includes the 0.7.0 profiles, sessions, sharing and optional companion features.
+
 # Changelog
 
 Notable changes to MeshCentral Mobile. This project is an independent client and does not follow the MeshCentral server's release cycle.

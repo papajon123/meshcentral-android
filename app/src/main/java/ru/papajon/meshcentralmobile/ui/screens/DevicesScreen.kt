@@ -60,6 +60,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -227,58 +228,64 @@ internal fun DevicesContent(
             )
 
             else -> {
-                DeviceSearchField(query = query, onQueryChange = { query = it })
-                FilterRow(
-                    filter = effectiveFilter,
-                    onFilterChange = { filter = it },
-                    totalCount = clientState.devices.size,
-                    onlineCount = onlineCount,
-                    current = current,
-                    favoritesCount = clientState.devices.count { it.nodeId in favoriteIds },
-                    recentCount = recentCount,
-                )
-                if (effectiveFilter == DeviceFilter.Recent && recentDeviceIds.isNotEmpty()) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
-                        horizontalArrangement = Arrangement.End,
-                    ) {
-                        TextButton(onClick = onClearRecents) {
-                            Text(stringResource(R.string.browser_recent_clear))
-                        }
-                    }
-                }
-                if (!current) {
-                    ConnectionNotice(
-                        message = if (signedIn) stringResource(R.string.devices_syncing) else
-                            listOfNotNull(
-                                clientState.lastError?.asString(),
-                                stringResource(R.string.devices_stale),
-                            ).joinToString("\n"),
-                        modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
-                        onRetry = onRefresh,
-                    )
-                }
-
+                // Everything above the devices scrolls with the single LazyColumn, so short
+                // screens can always reach the cards instead of being clipped by fixed chrome.
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
-                    contentPadding = PaddingValues(
-                        start = 20.dp,
-                        end = 20.dp,
-                        top = 2.dp,
-                        bottom = 24.dp,
-                    ),
+                    contentPadding = PaddingValues(top = 2.dp, bottom = 24.dp),
                 ) {
-                    if (visibleDevices.isEmpty()) {
-                        item {
-                            EmptyState(
-                                icon = when {
-                                    queryActive -> Icons.Outlined.Search
-                                    effectiveFilter == DeviceFilter.Favorites -> Icons.Outlined.StarBorder
-                                    else -> Icons.Outlined.DesktopWindows
-                                },
-                                title = stringResource(emptyTitleRes),
-                                description = stringResource(emptyDescriptionRes),
+                    item(key = "devices-search") {
+                        DeviceSearchField(query = query, onQueryChange = { query = it })
+                    }
+                    item(key = "devices-filter") {
+                        FilterRow(
+                            filter = effectiveFilter,
+                            onFilterChange = { filter = it },
+                            totalCount = clientState.devices.size,
+                            onlineCount = onlineCount,
+                            current = current,
+                            favoritesCount = clientState.devices.count { it.nodeId in favoriteIds },
+                            recentCount = recentCount,
+                        )
+                    }
+                    if (effectiveFilter == DeviceFilter.Recent && recentDeviceIds.isNotEmpty()) {
+                        item(key = "devices-clear-recent") {
+                            Row(
+                                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp),
+                                horizontalArrangement = Arrangement.End,
+                            ) {
+                                TextButton(onClick = onClearRecents) {
+                                    Text(stringResource(R.string.browser_recent_clear))
+                                }
+                            }
+                        }
+                    }
+                    if (!current) {
+                        item(key = "devices-connection-notice") {
+                            ConnectionNotice(
+                                message = if (signedIn) stringResource(R.string.devices_syncing) else
+                                    listOfNotNull(
+                                        clientState.lastError?.asString(),
+                                        stringResource(R.string.devices_stale),
+                                    ).joinToString("\n"),
+                                modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
+                                onRetry = onRefresh,
                             )
+                        }
+                    }
+                    if (visibleDevices.isEmpty()) {
+                        item(key = "devices-empty") {
+                            Box(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
+                                EmptyState(
+                                    icon = when {
+                                        queryActive -> Icons.Outlined.Search
+                                        effectiveFilter == DeviceFilter.Favorites -> Icons.Outlined.StarBorder
+                                        else -> Icons.Outlined.DesktopWindows
+                                    },
+                                    title = stringResource(emptyTitleRes),
+                                    description = stringResource(emptyDescriptionRes),
+                                )
+                            }
                         }
                     }
                     visibleDevices.forEach { (meshId, devices) ->
@@ -289,14 +296,16 @@ internal fun DevicesContent(
                                 meshId.isNotBlank() -> meshId
                                 else -> stringResource(R.string.devices_group_ungrouped)
                             }
-                            GroupHeader(
-                                name = groupName,
-                                count = if (!current) stringResource(R.string.devices_group_saved_count, devices.size) else stringResource(
-                                    R.string.devices_group_counts,
-                                    devices.count { it.online },
-                                    devices.size,
-                                ),
-                            )
+                            Box(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
+                                GroupHeader(
+                                    name = groupName,
+                                    count = if (!current) stringResource(R.string.devices_group_saved_count, devices.size) else stringResource(
+                                        R.string.devices_group_counts,
+                                        devices.count { it.online },
+                                        devices.size,
+                                    ),
+                                )
+                            }
                         }
                         itemsIndexed(
                             items = devices,
@@ -308,19 +317,21 @@ internal fun DevicesContent(
                                 index == devices.lastIndex -> RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
                                 else -> RectangleShape
                             }
-                            DeviceRow(
-                                device = device,
-                                favorite = device.nodeId in favoriteIds,
-                                statusCurrent = current,
-                                shape = shape,
-                                showDivider = index > 0,
-                                onFavoriteChanged = { favorite ->
-                                    if (favorite) onAddFavorite(device.name, device.nodeId)
-                                    else onRemoveFavorite(device.nodeId)
-                                },
-                                onConnect = { onConnect(device) },
-                                onOpenDetails = onOpenDevice?.let { callback -> { callback(device) } },
-                            )
+                            Box(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
+                                DeviceRow(
+                                    device = device,
+                                    favorite = device.nodeId in favoriteIds,
+                                    statusCurrent = current,
+                                    shape = shape,
+                                    showDivider = index > 0,
+                                    onFavoriteChanged = { favorite ->
+                                        if (favorite) onAddFavorite(device.name, device.nodeId)
+                                        else onRemoveFavorite(device.nodeId)
+                                    },
+                                    onConnect = { onConnect(device) },
+                                    onOpenDetails = onOpenDevice?.let { callback -> { callback(device) } },
+                                )
+                            }
                         }
                     }
                 }
@@ -509,6 +520,7 @@ private fun DeviceRow(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
+            .testTag("device-row-${device.nodeId}")
             .clip(shape)
             .then(
                 rowAction?.let { action ->

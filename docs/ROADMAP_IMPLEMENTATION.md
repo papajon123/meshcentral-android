@@ -1,4 +1,4 @@
-# Roadmap implementation — 0.7.0 (code 15)
+# Roadmap implementation — 0.7.1 (code 16)
 
 The implementation of roadmap items 1–8 is in this release candidate. Item 9 is a researched transport decision; item 10 uses an optional plugin, without a permanent MeshCentral fork.
 
@@ -14,7 +14,11 @@ The implementation of roadmap items 1–8 is in this release candidate. Item 9 i
 
 `discovery/`, `model/ServerProfile.kt`, `settings/SettingsRepository.kt`, `security/SecureVault.kt`, `workspace/`, `mesh/control/`, `transfer/`, `management/`, `companion/`, `notifications/`, `ui/screens/`, and `server/mobile-companion/` contain the implementation. Application-lifetime transports are owned by `ConnectionWorkspace`, not a screen.
 
-## Checks actually run
+## Compact-screen correction in 0.7.1
+
+The GitHub API 35 run exposed a test that counted all virtualized rows without scrolling. A separate 360 × 533 dp reproduction showed a real layout issue: fixed search/filter/error controls could consume the whole list viewport. These controls now belong to the device list scroll container. Each row is checked after scrolling; disconnected devices must remain non-interactive and must not report an online status. The correction passed 9 UI scenarios at each of four configurations: 360 × 533 dp, 360 × 640 dp, normal 411 × 914 dp and font scale 2. The public full API 35 run passed 135 cases with 4 opt-in/compatibility assumptions; API 26 passed 130 with 9 assumptions. Both had zero failures. Build, JVM tests and lint passed for both app identities. The nine international device/tool frames were recaptured. Independent image review found no blocking issue in the compact or large-font result.
+
+## Checks actually run for 0.7.0
 
 - Original app: Gradle testDebugUnitTest/lintDebug/assembleDebug/assembleDebugAndroidTest passed; 248 JVM tests, 0 failures; lint 0 errors, 78 warnings.
 - API 35 original: 141 cases, 137 passed, 4 assumptions skipped (opt-in galleries/legacy WebView path); no failures.

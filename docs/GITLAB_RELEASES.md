@@ -106,3 +106,7 @@ References: [Git atomic push](https://git-scm.com/docs/git-push),
 [Git commit-tree](https://git-scm.com/docs/git-commit-tree),
 [GitLab predefined variables](https://docs.gitlab.com/ci/variables/predefined_variables/),
 [GitHub SSH fingerprints](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/githubs-ssh-key-fingerprints).
+
+## Workflow-file changes
+
+The SSH deployment key is associated with an OAuth application that may lack the `workflow` scope. A push that changes `.github/workflows/*` can therefore be rejected even when ordinary read/write access works. Before a release containing a reviewed workflow change, apply that exact file through an authorized owner connection with workflow-write permission and compare its blob SHA with the canonical tag. Then use the normal protected snapshot publication. Do not expand key permissions, bypass branch protections or move published tags as a workaround.
