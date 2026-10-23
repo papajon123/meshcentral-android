@@ -546,6 +546,7 @@ fun MeshCentralApp(
                                         onPower = inspector::power,
                                         onServiceAction = inspector::serviceAction,
                                         onBack = sessionViewModel::showOverview,
+                                        onOpenHelp = { sessionViewModel.selectDeviceTab(DeviceTab.Help) },
                                     )
                                 }
                                 DeviceTab.Help -> {

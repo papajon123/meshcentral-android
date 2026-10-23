@@ -1,6 +1,6 @@
 {
   "name": "meshcentral-mobilecompanion",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "private": true,
   "description": "Optional MeshCentral plugin for mobile jobs, events, notification tokens and read-only HTTP events",
   "main": "mobilecompanion.js",

@@ -1,3 +1,11 @@
+# 0.7.2 — 2026-10-23
+
+- Show specific localized request and job errors in the device inspector, with Refresh and Help actions.
+- Refresh the selected Details, Services or Processes tab and clear stale status messages.
+- Validate the job, device and template throughout polling; never replay a service action after an uncertain response.
+- Share Companion error translations between System and Help without changing supported languages.
+- Include Mobile Companion 1.1.2 source fixes for Windows PowerShell completion and UTF-8 output.
+
 # 0.7.1 — 2026-10-22
 
 - Keep saved computers reachable on short screens: search, filters and connection warnings scroll with the device list.

@@ -1,16 +1,37 @@
 package ru.papajon.meshcentralmobile.ui.screens.management
 
 import androidx.activity.ComponentActivity
+import android.content.res.Configuration
+import android.graphics.Bitmap
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.ui.Modifier
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToNode
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.graphics.asAndroidBitmap
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
+import androidx.test.platform.app.InstrumentationRegistry
+import java.io.File
+import java.util.Locale
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.management.DevicePowerAction
 import ru.papajon.meshcentralmobile.management.DeviceSystemSnapshot
@@ -148,6 +169,137 @@ class DeviceInspectorScreenTest {
         ).assertIsDisplayed()
     }
 
+    @Test
+    fun refreshLoadsTheVisibleListInsteadOfGeneralDetails() {
+        var detailsReads = 0
+        var serviceReads = 0
+        var processReads = 0
+        compose.setContent {
+            var services by remember { mutableStateOf(listOf(spooler)) }
+            var processes by remember { mutableStateOf(listOf(browser)) }
+            MeshCentralMobileTheme {
+                DeviceInspectorScreen(
+                    snapshot, services, processes, false, null, emptySet(), false,
+                    onRefresh = { detailsReads++ },
+                    onLoadServices = {
+                        serviceReads++
+                        if (serviceReads > 1) services = listOf(spooler.copy(displayName = "Updated service"))
+                    },
+                    onLoadProcesses = {
+                        processReads++
+                        if (processReads > 1) processes = listOf(browser.copy(name = "updated-process"))
+                    },
+                    onPower = {}, onServiceAction = { _, _ -> }, onBack = {},
+                    modifier = Modifier.safeDrawingPadding(),
+                )
+            }
+        }
+        compose.onNodeWithTag(DeviceInspectorTestTags.Refresh).performClick()
+        compose.onNodeWithTag(DeviceInspectorTestTags.tab(DeviceInspectorTab.Services)).performClick()
+        compose.onNodeWithText("Print Spooler").assertIsDisplayed()
+        compose.onNodeWithTag(DeviceInspectorTestTags.Refresh).performClick()
+        compose.onNodeWithText("Updated service").assertIsDisplayed()
+        compose.onNodeWithText("Print Spooler").assertDoesNotExist()
+        compose.onNodeWithTag(DeviceInspectorTestTags.tab(DeviceInspectorTab.Processes)).performClick()
+        compose.onNodeWithTag(DeviceInspectorTestTags.Refresh).performClick()
+        compose.onNodeWithText("updated-process").assertIsDisplayed()
+        compose.runOnIdle { assertEquals(1, detailsReads) }
+    }
+
+    @Test
+    fun errorActionsRefreshTheSelectedListAndOpenHelpWithoutMutations() {
+        var detailsReads = 0
+        var serviceReads = 0
+        var helpOpened = false
+        var mutations = 0
+        show(
+            error = compose.activity.getString(R.string.companion_job_error_timeout),
+            onRefresh = { detailsReads++ },
+            onLoadServices = { serviceReads++ },
+            onOpenHelp = { helpOpened = true },
+            onPower = { mutations++ }, onServiceAction = { _, _ -> mutations++ },
+        )
+        compose.onNodeWithTag(DeviceInspectorTestTags.tab(DeviceInspectorTab.Services)).performClick()
+        compose.onNodeWithTag(DeviceInspectorTestTags.ErrorRefresh).performClick()
+        compose.onNodeWithTag(DeviceInspectorTestTags.ErrorHelp).performClick()
+        compose.runOnIdle {
+            assertEquals(2, serviceReads)
+            assertEquals(0, detailsReads)
+            assertEquals(0, mutations)
+            assertTrue(helpOpened)
+        }
+    }
+
+    @Test
+    fun errorActionsAreDisabledWhileARequestIsPending() {
+        show(loading = true, error = "request failed", onOpenHelp = {})
+        compose.onNodeWithTag(DeviceInspectorTestTags.ErrorRefresh).assertIsNotEnabled()
+        compose.onNodeWithTag(DeviceInspectorTestTags.ErrorHelp).assertIsNotEnabled()
+    }
+
+    @Test
+    fun serviceNamedStatusDoesNotCollideWithTheErrorItem() {
+        show(services = listOf(spooler.copy(name = "status", displayName = "Status service")), error = "read failed")
+        compose.onNodeWithTag(DeviceInspectorTestTags.tab(DeviceInspectorTab.Services)).performClick()
+        compose.onNodeWithTag(DeviceInspectorTestTags.ContentList).performScrollToNode(hasTestTag(DeviceInspectorTestTags.service("status")))
+        compose.onNodeWithTag(DeviceInspectorTestTags.service("status")).assertIsDisplayed()
+    }
+
+    @Test
+    fun localizedErrorAndRecoveryActionsFitTheScreen() {
+        val args = InstrumentationRegistry.getArguments()
+        val locale = args.getString("inspectorLocale") ?: "en"
+        val dark = args.getString("inspectorDark") == "true"
+        val configuration = Configuration(compose.activity.resources.configuration).apply {
+            setLocale(Locale.forLanguageTag(locale))
+        }
+        val context = compose.activity.createConfigurationContext(configuration)
+        val message = context.getString(R.string.companion_job_error_server_restart)
+        compose.setContent {
+            CompositionLocalProvider(LocalContext provides context, LocalConfiguration provides configuration) {
+                MeshCentralMobileTheme(darkTheme = dark) {
+                    DeviceInspectorScreen(
+                        snapshot, listOf(spooler), listOf(browser), false, message, emptySet(), false,
+                        onRefresh = {}, onLoadServices = {}, onLoadProcesses = {},
+                        onPower = {}, onServiceAction = { _, _ -> }, onBack = {}, onOpenHelp = {},
+                        modifier = Modifier.safeDrawingPadding(),
+                    )
+                }
+            }
+        }
+        compose.onNodeWithTag(DeviceInspectorTestTags.tab(DeviceInspectorTab.Services)).performClick()
+        compose.onNodeWithText(message).assertIsDisplayed()
+        capture("inspector-error.png")
+        val root = compose.onRoot().getUnclippedBoundsInRoot()
+        for (tag in listOf(DeviceInspectorTestTags.ErrorRefresh, DeviceInspectorTestTags.ErrorHelp)) {
+            val action = compose.onNodeWithTag(tag)
+            action.performScrollTo()
+            action.assertIsDisplayed()
+            val bounds = action.getUnclippedBoundsInRoot()
+            assertTrue("Recovery action must fit vertically", bounds.top >= root.top && bounds.bottom <= root.bottom)
+            assertTrue("Recovery action must fit horizontally", bounds.left >= root.left && bounds.right <= root.right)
+        }
+        compose.onNodeWithTag(DeviceInspectorTestTags.ContentList).performScrollToNode(hasTestTag(DeviceInspectorTestTags.service("Spooler")))
+        compose.onNodeWithTag(DeviceInspectorTestTags.service("Spooler")).assertIsDisplayed()
+        capture("inspector-list.png")
+    }
+
+    private fun capture(name: String) {
+        compose.waitForIdle()
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        // Some API 26 emulator renderers cannot capture the display through UiAutomation.
+        // Capture the actual Compose window in that case; never skip the visual assertions.
+        val display = instrumentation.uiAutomation.takeScreenshot()
+        val bitmap = display ?: compose.onRoot().captureToImage().asAndroidBitmap()
+        assertTrue("Screenshot must contain pixels", bitmap.width > 0 && bitmap.height > 0)
+        File(instrumentation.targetContext.cacheDir, "inspector-capture-method.txt")
+            .writeText(if (display != null) "UiAutomation" else "ComposeWindow")
+        File(instrumentation.targetContext.cacheDir, name).outputStream().use {
+            assertTrue(bitmap.compress(Bitmap.CompressFormat.PNG, 100, it))
+        }
+        bitmap.recycle()
+    }
+
     private fun show(
         snapshot: DeviceSystemSnapshot? = this.snapshot,
         services: List<ManagedService> = emptyList(),
@@ -163,6 +315,7 @@ class DeviceInspectorScreenTest {
         onPower: (DevicePowerAction) -> Unit = {},
         onServiceAction: (String, ServiceAction) -> Unit = { _, _ -> },
         onBack: () -> Unit = {},
+        onOpenHelp: (() -> Unit)? = null,
     ) {
         compose.setContent {
             MeshCentralMobileTheme {
@@ -181,6 +334,8 @@ class DeviceInspectorScreenTest {
                     onServiceAction = onServiceAction,
                     onBack = onBack,
                     pendingAction = pendingAction,
+                    onOpenHelp = onOpenHelp,
+                    modifier = Modifier.safeDrawingPadding(),
                 )
             }
         }

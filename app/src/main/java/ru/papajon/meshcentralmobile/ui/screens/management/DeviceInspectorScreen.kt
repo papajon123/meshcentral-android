@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -87,10 +89,13 @@ enum class DeviceInspectorTab { Details, Services, Processes }
 /** Stable semantics tags shared with the instrumentation tests for this screen. */
 object DeviceInspectorTestTags {
     const val Screen = "device_inspector_screen"
+    const val ContentList = "device_inspector_list"
     const val Back = "device_inspector_back"
     const val Refresh = "device_inspector_refresh"
     const val PowerMenu = "device_inspector_power_menu"
     const val Error = "device_inspector_error"
+    const val ErrorRefresh = "device_inspector_error_refresh"
+    const val ErrorHelp = "device_inspector_error_help"
     const val Pending = "device_inspector_pending"
     const val ConfirmDialog = "device_inspector_confirm_dialog"
     const val Confirm = "device_inspector_confirm"
@@ -146,6 +151,7 @@ fun DeviceInspectorScreen(
     modifier: Modifier = Modifier,
     pendingAction: String? = null,
     notice: String? = null,
+    onOpenHelp: (() -> Unit)? = null,
 ) {
     BackHandler(onBack = onBack)
 
@@ -161,6 +167,27 @@ fun DeviceInspectorScreen(
     val unknownLabel = stringResource(R.string.manage_not_reported)
     val busy = loading || pendingAction?.isNotBlank() == true
     val errorMessage = error?.takeIf { it.isNotBlank() }
+    val refreshSelectedTab: () -> Unit = {
+        when (selectedTab) {
+            DeviceInspectorTab.Details -> onRefresh()
+            DeviceInspectorTab.Services -> onLoadServices()
+            DeviceInspectorTab.Processes -> onLoadProcesses()
+        }
+    }
+    val statusContent: (@Composable () -> Unit)? =
+        if (errorMessage != null || busy || !notice.isNullOrBlank()) {
+            {
+                Column(verticalArrangement = Arrangement.spacedBy(spacing.xs)) {
+                    if (!notice.isNullOrBlank()) Text(
+                        notice,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    if (errorMessage != null) ErrorBanner(errorMessage, refreshSelectedTab, onOpenHelp, !busy)
+                    if (busy) PendingBanner(pendingAction.orEmpty())
+                }
+            }
+        } else null
 
     LaunchedEffect(selectedTab) {
         when (selectedTab) {
@@ -182,31 +209,11 @@ fun DeviceInspectorScreen(
                 powerMenuExpanded = false
                 confirmation = PendingConfirmation.Power(action, deviceLabel)
             },
-            onRefresh = onRefresh,
+            onRefresh = refreshSelectedTab,
             onBack = onBack,
             busy = busy,
         )
         InspectorTabs(selected = selectedTab, enabled = !busy, onSelect = { selectedTab = it })
-
-        if (!notice.isNullOrBlank()) Text(
-            notice,
-            modifier = Modifier.padding(horizontal = spacing.lg, vertical = spacing.xs),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-
-        if (errorMessage != null) {
-            ErrorBanner(
-                message = errorMessage,
-                modifier = Modifier.padding(horizontal = spacing.lg, vertical = spacing.xs),
-            )
-        }
-        if (busy) {
-            PendingBanner(
-                action = pendingAction.orEmpty(),
-                modifier = Modifier.padding(horizontal = spacing.lg, vertical = spacing.xs),
-            )
-        }
 
         Box(Modifier.weight(1f).fillMaxWidth()) {
             val contentModifier = Modifier
@@ -217,11 +224,13 @@ fun DeviceInspectorScreen(
                 DeviceInspectorTab.Details -> DetailsTab(
                     snapshot = snapshot,
                     loading = loading,
+                    statusContent = statusContent,
                     modifier = contentModifier,
                 )
                 DeviceInspectorTab.Services -> ServicesTab(
                     services = services,
                     loading = loading,
+                    statusContent = statusContent,
                     canManageServices = canManageServices,
                     busy = busy,
                     query = serviceQuery,
@@ -239,6 +248,7 @@ fun DeviceInspectorScreen(
                 DeviceInspectorTab.Processes -> ProcessesTab(
                     processes = processes,
                     loading = loading,
+                    statusContent = statusContent,
                     query = processQuery,
                     onQueryChange = { processQuery = it.take(80) },
                     onLoad = onLoadProcesses,
@@ -482,29 +492,20 @@ private fun InspectorTabs(
 private fun DetailsTab(
     snapshot: DeviceSystemSnapshot?,
     loading: Boolean,
+    statusContent: (@Composable () -> Unit)?,
     modifier: Modifier,
 ) {
-    if (snapshot == null) {
-        if (loading) {
-            LoadingContent(modifier)
-        } else {
-            Box(modifier, contentAlignment = Alignment.Center) {
-                EmptyState(
+    if (snapshot == null || !snapshot.hasReportedValues()) {
+        LazyColumn(modifier.testTag(DeviceInspectorTestTags.ContentList), contentPadding = PaddingValues(MeshTheme.spacing.lg)) {
+            if (statusContent != null) item(key = "status") { statusContent() }
+            item(key = "empty") {
+                if (loading) LoadingContent(Modifier.fillMaxWidth())
+                else EmptyState(
                     icon = Icons.Outlined.Info,
                     title = stringResource(R.string.manage_no_details),
                     description = stringResource(R.string.manage_no_details_description),
                 )
             }
-        }
-        return
-    }
-    if (!snapshot.hasReportedValues()) {
-        Box(modifier, contentAlignment = Alignment.Center) {
-            EmptyState(
-                icon = Icons.Outlined.Info,
-                title = stringResource(R.string.manage_no_details),
-                description = stringResource(R.string.manage_no_details_description),
-            )
         }
         return
     }
@@ -531,7 +532,7 @@ private fun DetailsTab(
     }
 
     LazyColumn(
-        modifier = modifier.imePadding(),
+        modifier = modifier.imePadding().testTag(DeviceInspectorTestTags.ContentList),
         contentPadding = PaddingValues(
             start = spacing.lg,
             end = spacing.lg,
@@ -540,6 +541,7 @@ private fun DetailsTab(
         ),
         verticalArrangement = Arrangement.spacedBy(spacing.md),
     ) {
+        if (statusContent != null) item(key = "status") { statusContent() }
         item(key = "subtitle") {
             Text(
                 text = stringResource(R.string.manage_details_subtitle),
@@ -697,6 +699,7 @@ private fun NetworkSection(snapshot: DeviceSystemSnapshot) {
 private fun ServicesTab(
     services: List<ManagedService>,
     loading: Boolean,
+    statusContent: (@Composable () -> Unit)?,
     canManageServices: Boolean,
     busy: Boolean,
     query: String,
@@ -706,14 +709,17 @@ private fun ServicesTab(
     modifier: Modifier,
 ) {
     if (loading && services.isEmpty()) {
-        LoadingContent(modifier)
+        LazyColumn(modifier.testTag(DeviceInspectorTestTags.ContentList), contentPadding = PaddingValues(MeshTheme.spacing.lg)) {
+            if (statusContent != null) item(key = "status") { statusContent() }
+            item(key = "loading") { LoadingContent(Modifier.fillMaxWidth()) }
+        }
         return
     }
     val spacing = MeshTheme.spacing
     val filtered = remember(services, query) { filterServices(services, query) }
 
     LazyColumn(
-        modifier = modifier.imePadding(),
+        modifier = modifier.imePadding().testTag(DeviceInspectorTestTags.ContentList),
         contentPadding = PaddingValues(
             start = spacing.lg,
             end = spacing.lg,
@@ -722,6 +728,7 @@ private fun ServicesTab(
         ),
         verticalArrangement = Arrangement.spacedBy(spacing.sm),
     ) {
+        if (statusContent != null) item(key = "status") { statusContent() }
         if (services.isNotEmpty()) {
             item(key = "search") {
                 SearchField(
@@ -750,7 +757,7 @@ private fun ServicesTab(
             filtered.isEmpty() -> item(key = "no-results") {
                 NoSearchResults()
             }
-            else -> items(items = filtered, key = { it.name }) { service ->
+            else -> items(items = filtered, key = { "service:${it.name}" }) { service ->
                 ServiceRow(
                     service = service,
                     canManageServices = canManageServices,
@@ -766,20 +773,24 @@ private fun ServicesTab(
 private fun ProcessesTab(
     processes: List<ManagedProcess>,
     loading: Boolean,
+    statusContent: (@Composable () -> Unit)?,
     query: String,
     onQueryChange: (String) -> Unit,
     onLoad: () -> Unit,
     modifier: Modifier,
 ) {
     if (loading && processes.isEmpty()) {
-        LoadingContent(modifier)
+        LazyColumn(modifier.testTag(DeviceInspectorTestTags.ContentList), contentPadding = PaddingValues(MeshTheme.spacing.lg)) {
+            if (statusContent != null) item(key = "status") { statusContent() }
+            item(key = "loading") { LoadingContent(Modifier.fillMaxWidth()) }
+        }
         return
     }
     val spacing = MeshTheme.spacing
     val filtered = remember(processes, query) { filterProcesses(processes, query) }
 
     LazyColumn(
-        modifier = modifier.imePadding(),
+        modifier = modifier.imePadding().testTag(DeviceInspectorTestTags.ContentList),
         contentPadding = PaddingValues(
             start = spacing.lg,
             end = spacing.lg,
@@ -788,6 +799,7 @@ private fun ProcessesTab(
         ),
         verticalArrangement = Arrangement.spacedBy(spacing.sm),
     ) {
+        if (statusContent != null) item(key = "status") { statusContent() }
         if (processes.isNotEmpty()) {
             item(key = "search") {
                 SearchField(
@@ -1020,8 +1032,15 @@ private fun ReadOnlyNotice() {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun ErrorBanner(message: String, modifier: Modifier = Modifier) {
+private fun ErrorBanner(
+    message: String,
+    onRefresh: () -> Unit,
+    onOpenHelp: (() -> Unit)?,
+    enabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
     val spacing = MeshTheme.spacing
     Surface(
         modifier = modifier
@@ -1041,12 +1060,24 @@ private fun ErrorBanner(message: String, modifier: Modifier = Modifier) {
                 contentDescription = null,
                 modifier = Modifier.padding(top = 2.dp).size(20.dp),
             )
-            Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Text(
                     text = stringResource(R.string.manage_error),
                     style = MaterialTheme.typography.labelLarge,
                 )
                 Text(text = message, style = MaterialTheme.typography.bodySmall)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(spacing.xs)) {
+                    TextButton(
+                        onClick = onRefresh,
+                        enabled = enabled,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag(DeviceInspectorTestTags.ErrorRefresh),
+                    ) { Text(stringResource(R.string.manage_refresh)) }
+                    if (onOpenHelp != null) TextButton(
+                        onClick = onOpenHelp,
+                        enabled = enabled,
+                        modifier = Modifier.heightIn(min = 48.dp).testTag(DeviceInspectorTestTags.ErrorHelp),
+                    ) { Text(stringResource(R.string.workspace_help)) }
+                }
             }
         }
     }

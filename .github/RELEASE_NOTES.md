@@ -1,21 +1,31 @@
-## MeshCentral Mobile 0.7.1
+## MeshCentral Mobile 0.7.2
 
 English · 简体中文 · Русский
 
-- Device lists remain reachable on short screens; search, filters and warnings scroll with the cards.
-- Search and recent computers; separate server profiles.
-- Two open sessions with explicit close and restored selection.
-- Android Share, file queue, cancel/retry and SHA-256 readback.
-- System information and confirmed device actions.
-- Optional Mobile Companion 1.1.0: fixed jobs, history, Quick Help reports and background events.
-- 23 locale variants, light/dark themes, phone and tablet layouts.
+- Services and Processes explain known failures: permission denied, offline agent,
+  busy device, timeout, interrupted job or invalid result.
+- Refresh reloads the selected tab. Error recovery offers Refresh and Help;
+  it never automatically repeats a service start, stop or restart.
+- Long messages scroll with the list, including Russian at 200% font size.
+- Shared error translations across 23 locale variants.
+- Includes optional Mobile Companion 1.1.2 source with Windows command completion
+  and UTF-8 output fixes. Updating the APK does not deploy this server plugin.
 
-Download the signed APK below. It updates the previous public application with the same package and signer. Standard desktop, terminal, files, SSH and SFTP do not require the optional plugin. Jobs and background events require MeshCentral 1.3.0 and the separately installed plugin; the app does not administer the server.
+Download the signed APK below. It updates the previous public application with
+the same package and signer. Standard desktop, terminal, files, SSH and SFTP do
+not require the optional plugin. Jobs and background events require MeshCentral
+1.3.0 and the separately installed plugin; the app does not administer the server.
 
-Notifications use a 15-minute best-effort Android schedule, not instant push. Running jobs cannot be cancelled. No WebRTC. A current Android System WebView is required for the terminal.
+中文：服务和进程页面现在显示具体的错误原因。刷新仅更新当前标签页，错误提示提供刷新和帮助操作，
+不会自动重复启动、停止或重启服务。长文本随列表滚动。请下载下方签名 APK。
 
-中文：新增搜索、最近设备、独立服务器配置、双会话、文件分享队列、系统信息以及可选任务和事件通知。请下载下方签名 APK。通知按 Android 后台调度执行，非即时推送。
+Русский: в разделах служб и процессов теперь понятные причины ошибок. Обновление
+работает для открытой вкладки. Из сообщения можно обновить данные или открыть
+помощь; команды управления службами автоматически не повторяются. Длинный текст
+прокручивается вместе со списком. Подписанный APK находится ниже.
 
-Русский: поиск и недавние устройства, отдельные профили серверов, два сеанса, очередь отправки файлов, системные сведения, необязательные задания и события. Подписанный APK находится ниже. Для терминала нужен актуальный Android System WebView.
-
-[Implementation and verification limits](https://github.com/papajon123/meshcentral-android/blob/main/docs/ROADMAP_IMPLEMENTATION.md). Physical-phone acceptance, Windows/systemd service actions, TalkBack and battery measurements remain follow-up work.
+[UI verification and screenshots](https://github.com/papajon123/meshcentral-android/blob/main/docs/INSPECTOR_VERIFICATION.md).
+Physical-phone acceptance, Windows/systemd service actions, TalkBack and battery
+measurements remain follow-up work. Notifications use a 15-minute best-effort
+Android schedule; running jobs cannot be cancelled. A current Android System
+WebView is required for the terminal. No WebRTC.

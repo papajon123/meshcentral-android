@@ -672,6 +672,20 @@ operation; failure becomes a failed job, not a completed one.
 
 ## Command execution contract
 
+- Windows stdout/stderr use UTF-8 explicitly (plugin 1.1.2). The default OEM
+  encoding can make replies containing localized service/process names
+  unreadable by the agent/server JSON transport. Regression tests validate the
+  raw output as UTF-8 and round-trip Cyrillic/CJK names and command errors.
+- Windows templates terminate the outer `try/catch` statement with a blank
+  line. MeshCentral invokes `powershell -Command -` and keeps stdin open;
+  without that terminator PowerShell buffers the statement and the appended
+  `exit`, so the job times out without a response. Fixed in plugin 1.1.1.
+- `test/windows-stdin.test.js` exercises all six generated Windows templates
+  and a command failure through real Windows PowerShell with stdin kept open.
+  Cmdlets are replaced with synthetic functions, including service mutations;
+  no real services are changed. Run `npm test` on Windows to execute these
+  checks; other platforms explicitly skip them. This test covers shell input,
+  completion markers and payload parsing, not a connected Windows Mesh Agent.
 - The plugin sends `{ action: "runcommands", type, cmds, runAsUser: 0,
   reply: true, responseid: <server nonce>, sessionid:
   "mobilecompanion/<jobid>" }` directly to `webserver.wsagents[nodeid]`.

@@ -42,6 +42,10 @@ function psMarker(nonce) {
 
 function psPrelude() {
   return [
+    // Mesh Agent embeds stdout/stderr in JSON WebSocket text frames. Windows
+    // OEM code pages corrupt localized service names before the server parser.
+    '[Console]::OutputEncoding = New-Object System.Text.UTF8Encoding($false)',
+    '$OutputEncoding = [Console]::OutputEncoding',
     "$ErrorActionPreference = 'Stop'",
     "$ProgressPreference = 'SilentlyContinue'",
     '$mcRc = 0',
@@ -55,6 +59,10 @@ function psFinish(nonce) {
     '  $mcRc = 1',
     "  [Console]::Error.WriteLine('mobilecompanion: ' + $_.Exception.Message)",
     '}',
+    // MeshCore writes to powershell -Command - without closing stdin. A blank
+    // line terminates this compound statement; otherwise even the appended
+    // exit command is buffered and the agent never sends its final response.
+    '',
     psMarker(nonce)
   ].join('\r\n');
 }

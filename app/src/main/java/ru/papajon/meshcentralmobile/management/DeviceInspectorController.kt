@@ -1,6 +1,5 @@
 package ru.papajon.meshcentralmobile.management
 
-import java.util.UUID
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,6 +25,7 @@ data class InspectorState(
 class DeviceInspectorController(private val client: MeshCentralClient, val nodeId: String, scope: CoroutineScope) : AutoCloseable {
     private val worker = CoroutineScope(scope.coroutineContext + SupervisorJob(scope.coroutineContext[Job]))
     private val companion = CompanionClient(client)
+    private val jobs = InspectorJobRunner(companion, nodeId)
     private val mutable = MutableStateFlow(InspectorState())
     val state = mutable.asStateFlow()
     private var operation: Job? = null
@@ -33,6 +33,7 @@ class DeviceInspectorController(private val client: MeshCentralClient, val nodeI
 
     fun refresh() = perform {
         val available = try { CompanionClient(client, timeoutMillis = 5_000).capabilities().operations.contains("startJob") }
+            catch (_: TimeoutCancellationException) { false }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (_: Exception) { false }
         mutable.update { it.copy(companionAvailable = available) }
@@ -52,7 +53,9 @@ class DeviceInspectorController(private val client: MeshCentralClient, val nodeI
         mutable.update { it.copy(processes = result.items.map { p -> ManagedProcess(p.pid, p.name, p.cpu?.toString(), p.memoryBytes?.toString()) }) }
     }
     fun serviceAction(name: String, action: ServiceAction) = perform {
-        require(device?.rights?.let { it and ru.papajon.meshcentralmobile.mesh.MeshRights.REMOTE_COMMAND != 0 } == true)
+        if (device?.rights?.let { it and ru.papajon.meshcentralmobile.mesh.MeshRights.REMOTE_COMMAND != 0 } != true) {
+            throw CompanionException(CompanionErrorCode.FORBIDDEN)
+        }
         val result = runTemplate("service-${action.name.lowercase(java.util.Locale.ROOT)}", mapOf("name" to name), true)
         if (result !is CompanionServiceMutation || result.name != name) throw MissingInfo()
         readServices()
@@ -61,13 +64,7 @@ class DeviceInspectorController(private val client: MeshCentralClient, val nodeI
 
     private suspend fun runTemplate(id: String, parameters: Map<String, String> = emptyMap(), confirmed: Boolean = false): CompanionResult {
         val template = CompanionTemplate.entries.first { it.id == id }
-        // No automatic second start: after an uncertain response, the saved server history is authoritative.
-        var job = companion.startJob(nodeId, template, parameters, UUID.randomUUID().toString(), System.currentTimeMillis(), confirmed)
-        withTimeout(310_000) {
-            while (job.active) { delay(2_000); job = companion.getJob(job.id) }
-        }
-        if (job.nodeId != nodeId || !job.verifiedComplete) throw MissingInfo()
-        return job.result!!
+        return jobs.run(template, parameters, confirmed)
     }
 
     fun power(action: DevicePowerAction) = perform {
@@ -102,11 +99,11 @@ class DeviceInspectorController(private val client: MeshCentralClient, val nodeI
     private fun perform(block: suspend () -> Unit) {
         if (operation?.isActive == true) return
         operation = worker.launch {
-            mutable.update { it.copy(loading = true, error = null) }
+            mutable.update { it.copy(loading = true, error = null, notice = null) }
             try { block() }
-            catch (_: TimeoutCancellationException) { mutable.update { it.copy(error = UiText.resource(R.string.workspace_management_failed)) } }
+            catch (timeout: TimeoutCancellationException) { mutable.update { it.copy(error = inspectorFailureText(timeout)) } }
             catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: Exception) { mutable.update { it.copy(error = UiText.resource(R.string.workspace_management_failed)) } }
+            catch (error: Exception) { mutable.update { it.copy(error = inspectorFailureText(error)) } }
             finally { mutable.update { it.copy(loading = false) } }
         }
     }

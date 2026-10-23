@@ -1,7 +1,7 @@
 {
   "name": "Mobile Companion",
   "shortName": "mobilecompanion",
-  "version": "1.1.0",
+  "version": "1.1.2",
   "description": "Optional server-side jobs, events, notification tokens and a read-only HTTP events endpoint for the MeshCentral Android companion. No HTTP command execution.",
   "hasAdminPanel": false,
   "homepage": "",
