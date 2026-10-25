@@ -27,6 +27,23 @@
 
 <p align="center"><sub>使用虚构数据在应用中实际渲染的演示界面。界面为英文；设备和文件名不会自动翻译。</sub></p>
 
+## 为什么不直接用网页面板？
+
+MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏幕设计的。本应用为触控而设计：
+
+- **适合手指操作的远程桌面：** 触控和触控板模式、键盘、剪贴板文本、切换显示器；终端提供 Ctrl、Esc、Tab 和方向键行。
+- **分享到计算机：** 从相册、文件管理器或邮件应用直接把文件发送到计算机上的文件夹，并通过 SHA-256 校验。
+- **所有服务器集中管理：** 最多 20 个配置文件、收藏、搜索和最近计算机；可选 PIN 或生物识别应用锁。
+- **注重隐私：** 凭据由 Android Keystore 保护；没有广告、分析或项目运营的后端。
+
+## 欢迎帮助
+
+这是一个处于公开预览阶段的小型独立项目。目前最有帮助的是：
+
+- **在你的手机上试用**，并提交[设备报告](https://github.com/papajon123/meshcentral-android/issues/new?template=device_report.yml)：哪些功能可用，哪些不可用。特别欢迎真实手机和 Windows 代理的反馈。
+- **提问和分享想法**：请到 [Discussions](https://github.com/papajon123/meshcentral-android/discussions)。
+- **报告错误**：使用[错误报告表单](https://github.com/papajon123/meshcentral-android/issues/new?template=bug_report.yml)。请勿公开服务器地址、凭据或私人设备数据。
+
 ## 快速开始
 
 1. **安装应用。** 从 [GitHub Releases](https://github.com/papajon123/meshcentral-android/releases) 下载[已签名 APK](https://github.com/papajon123/meshcentral-android/releases)。需要 Android 8.0（API 26）或更高版本。公开版本没有应用内更新器。
@@ -102,6 +119,8 @@
 ## 安装和更新
 
 从 [GitHub Releases](https://github.com/papajon123/meshcentral-android/releases) 下载已签名 APK 并手动安装。更新需要相同的包名、相同的签名密钥和更高的 `versionCode`。早期非公开构建使用不同的包名；它们是独立应用，不共享数据或签名密钥。
+
+如需获得新版本通知，可将 `https://github.com/papajon123/meshcentral-android` 添加到 [Obtainium](https://github.com/ImranR98/Obtainium) 并开启 **Include prereleases**：当前所有构建均为公开预览版。
 
 ## 隐私与安全
 

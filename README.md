@@ -17,15 +17,28 @@
 
 > **Version 0.7.2** adds clearer inspector errors, refreshes the selected tool and fixes Windows Companion output. See the [changelog](CHANGELOG.md).
 
-## Screenshots
+## Tour
 
-<p align="center">
-  <img src="docs/images/roadmap/en-light-devices.png" width="220" alt="Device search, profiles and recent computers">
-  <img src="docs/images/roadmap/en-light-system.png" width="220" alt="System information, services and processes">
-  <img src="docs/images/roadmap/en-light-jobs.png" width="220" alt="Jobs and Quick Help report">
-</p>
+<p align="center"><img src="docs/assets/demo.gif" width="300" alt="Animated tour with demo data: computer list, tool selection, terminal, files, system information and diagnostics"></p>
 
-<p align="center"><sub>Demo screens rendered by the app with fictional data. The interface is shown in English; device and file names are not automatically translated.</sub></p>
+<p align="center"><sub>Demo screens rendered by the app with fictional data.</sub></p>
+
+## Why not just the web panel?
+
+The MeshCentral web panel opens in a mobile browser, but it is designed for a desktop screen. This app is designed for touch:
+
+- **Remote desktop for fingers:** touch and trackpad modes, keyboard, clipboard text and monitor switching; the terminal has a Ctrl, Esc, Tab and arrow key row.
+- **Share to a computer:** send files from a gallery, file manager or mail app straight to a folder on a computer, verified by SHA-256.
+- **All your servers in one place:** up to 20 profiles, favourites, search and recent computers; optional app lock with a PIN or biometrics.
+- **Private by design:** credentials stay in Android Keystore-backed storage; no ads, analytics or project-operated backend.
+
+## Help wanted
+
+This is a small independent project in public preview. The most useful help right now:
+
+- **Try it on your phone** and leave a [device report](https://github.com/papajon123/meshcentral-android/issues/new?template=device_report.yml): what works and what does not. Real phones and Windows agents are especially welcome.
+- **Ask questions and share ideas** in [Discussions](https://github.com/papajon123/meshcentral-android/discussions).
+- **Report bugs** with the [bug report form](https://github.com/papajon123/meshcentral-android/issues/new?template=bug_report.yml). Never post server addresses, credentials or private device data.
 
 ## Quick start
 
@@ -103,6 +116,8 @@ Jobs, service/process views, confirmed service actions and background notificati
 ## Install and update
 
 Download the signed APK from [GitHub Releases](https://github.com/papajon123/meshcentral-android/releases) and install it manually. Updates require the same package name, the same signing key and a higher `versionCode`. Earlier private builds use a different package name; they are separate applications and do not share data or signing keys.
+
+To be notified about new versions, add `https://github.com/papajon123/meshcentral-android` to [Obtainium](https://github.com/ImranR98/Obtainium) and turn on **Include prereleases**: all current builds are public previews.
 
 ## Privacy and security
 

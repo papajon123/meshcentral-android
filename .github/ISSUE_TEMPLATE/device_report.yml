@@ -1,0 +1,47 @@
+name: Device report
+description: Tell us how the app works on your phone or tablet. Working results are as useful as failures.
+title: "Device report: "
+labels: ["device report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing. Do not include server addresses, account names, device names, tokens or remote screen content.
+  - type: input
+    id: device
+    attributes:
+      label: Phone or tablet model and Android version
+      placeholder: "Pixel 7, Android 15"
+    validations:
+      required: true
+  - type: input
+    id: app
+    attributes:
+      label: App version
+      placeholder: "0.7.2"
+    validations:
+      required: true
+  - type: input
+    id: server
+    attributes:
+      label: MeshCentral version and agent operating systems
+      placeholder: "MeshCentral 1.3.0; Windows 11 and Debian 12 agents"
+  - type: checkboxes
+    id: works
+    attributes:
+      label: What worked
+      options:
+        - label: Install or update
+        - label: Sign-in (including 2FA, if you use it)
+        - label: Computer list and search
+        - label: Remote desktop
+        - label: Terminal
+        - label: Files
+        - label: SSH or SFTP
+        - label: Share to a computer
+        - label: Optional plugin features (jobs, services, notifications)
+  - type: textarea
+    id: problems
+    attributes:
+      label: What did not work or felt wrong
+      description: Steps, expected result and actual result. Redacted screenshots are welcome.
