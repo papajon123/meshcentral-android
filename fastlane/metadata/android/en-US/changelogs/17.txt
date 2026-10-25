@@ -1,0 +1,4 @@
+0.7.2
+- Services and Processes explain known failures: permission denied, offline agent, busy device, timeout, interrupted job or invalid result.
+- Refresh reloads the selected tab; error recovery never repeats a service action automatically.
+- Long messages scroll with the list, including large font sizes.

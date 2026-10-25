@@ -1,0 +1,21 @@
+<p>An independent Android client for your own <b>MeshCentral</b> server. Open your computers from a phone or tablet: remote desktop, terminal, files, SSH and SFTP.</p>
+<p>You need your own MeshCentral server reachable over HTTPS. No server or account is preconfigured, and the app does not install or administer MeshCentral.</p>
+<p><b>Features</b></p>
+<ul>
+<li>Groups and computers with online filter, favourites, search and recent devices</li>
+<li>Remote desktop with touch, trackpad, keyboard, clipboard text and monitor switching</li>
+<li>Terminal, file manager (download, upload, rename, delete), SSH and SFTP through the server relays</li>
+<li>Two sessions at once: a desktop plus a tool, or two tools</li>
+<li>Share files from other apps straight to a folder on a computer, verified by SHA-256</li>
+<li>Up to 20 server profiles with separate credentials</li>
+<li>System, disk, memory and network information already stored by MeshCentral</li>
+<li>Optional server plugin: allowlisted diagnostics jobs, service and process views, Quick Help reports and background notifications</li>
+<li>22 languages, light and dark themes, tablet layouts</li>
+</ul>
+<p><b>Privacy</b></p>
+<ul>
+<li>No ads, analytics, telemetry or project-operated backend</li>
+<li>Credentials and the app PIN are protected with an Android Keystore key</li>
+<li>Optional app lock with PIN or biometrics</li>
+</ul>
+<p>Standard desktop, terminal, files, SSH and SFTP do not require a server plugin. Builds are public previews; see the project page for known limitations. This project is not affiliated with the MeshCentral authors.</p>
