@@ -1,5 +1,25 @@
 # Validation
 
+## 0.7.3
+
+[#10](https://github.com/papajon123/meshcentral-android/issues/10): on a server that requires a
+second factor, sign-in showed the verification-code step, but the button stayed in "Signing in…" and
+the screen kept refreshing with "Connection to the server was lost". MeshCentral answers a password-only `x-meshauth` header with a `tokenrequired`
+close message and `ws.close()`, an empty close frame. OkHttp reports it as 1005; the client echoed
+that reserved code, the resulting exception cleared the rejection and an endless reconnect followed.
+A wrong password looped the same way. See [PROTOCOL.md](PROTOCOL.md).
+
+- A local MeshCentral 1.3.1 test instance with an authenticator (TOTP) test account reproduced the
+  loop with the 0.7.2 client code on an Android 16 / API 36.1 emulator. With the fix, the code step
+  stayed stable and a current TOTP code signed in. A raw probe confirmed the server frames: a
+  `tokenrequired` text frame followed by a close frame without a status code.
+- `TwoFactorSignInTest` replays those frames over a socket fixture. On the 0.7.2 client code three
+  of its four cases failed (three connections within 2.5 seconds instead of one); all four pass.
+- Local checks: translation check, 21 CI script tests, 250 JVM tests, lint and debug build passed.
+  The instrumented suite on the API 36.1 emulator: 135 passed, 13 skipped opt-in/gallery cases,
+  no failures.
+- Not verified: a physical phone, e-mail/SMS/push code delivery and a third-party server.
+
 ## 0.7.1
 
 The public 0.7.0 signing job was blocked by its API 35 checks: a test assumed both virtualized rows were visible. A separate compact-screen reproduction exposed fixed controls consuming the list viewport. Version 0.7.1 fixes the layout and checks each row after scrolling. The original 0.7.0 source tag remains unchanged; no public APK was released for it.

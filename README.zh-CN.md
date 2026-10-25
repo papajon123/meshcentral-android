@@ -15,7 +15,7 @@
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 个 Android 区域变体">
 </p>
 
-> **0.7.2 版本**改进设备检查页的错误提示和当前页面刷新，并修复 Windows Companion 的输出编码。详见[更新日志](CHANGELOG.md)。
+> **0.7.3 版本**修复了在需要验证码（双重验证）的服务器上无法登录的问题。详见[更新日志](CHANGELOG.md)。
 
 ## 截图
 
@@ -104,7 +104,7 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 ## 验证和限制
 
 - 公开版本已通过本地构建和 240 项 JVM 测试；API 35：135 项通过、4 项可选或兼容性测试跳过、0 项失败。已生成多语言、RTL、双倍字体和平板截图。
-- 已在真实 Windows Mesh Agent 上验证 Companion 1.1.2 的服务和进程读取。其他 Windows 流程、物理手机、systemd 服务操作、TalkBack、设备上的大字体、电池消耗、Doze/OEM 后台限制，以及 Android 8 上的全部 0.7.2 流程仍未验证。
+- 已在真实 Windows Mesh Agent 上验证 Companion 1.1.2 的服务和进程读取。其他 Windows 流程、物理手机、systemd 服务操作、TalkBack、设备上的大字体、电池消耗、Doze/OEM 后台限制，以及 Android 8 上的全部 0.7.3 流程仍未验证。
 - 手机验收仍需覆盖：在已签名版本上安装/更新、登录/2FA、两个会话、旋转/后台/锁屏/断网/进程终止、从真实应用分享、通知和可选插件。
 - 本版本不包含 WebRTC。该技术已调研，但 MeshCentral 1.3.0 不接受终端 RTC offer；继续使用 WSS 中继。参见[路线图](docs/ROADMAP.md)。
 - Intel AMT KVM、RDP、VNC、聊天、注册表/软件管理和服务器管理仍在网页面板中。应用不管理服务器。

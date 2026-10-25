@@ -1,0 +1,4 @@
+0.7.3
+- Sign-in works on servers that require a verification code: the code step stays on screen instead of flickering with "Connection to the server was lost".
+- A rejected password or code request is shown once and is not retried automatically.
+- Automatic reconnection stops after five attempts if the server keeps closing the connection.

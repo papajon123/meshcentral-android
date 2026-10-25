@@ -796,7 +796,8 @@ class MeshCentralClient(
         override fun onOpen(webSocket: WebSocket, response: Response) {
             if (controlSocket !== webSocket) return
             controlConnected = true
-            controlAttempt = 0
+            // MeshCentral checks credentials only after the upgrade, so an open socket does not
+            // restore the retry budget; `userinfo` does.
             _clientState.update {
                 it.copy(
                     connectionState = ConnectionState.Authenticated,
@@ -819,6 +820,7 @@ class MeshCentralClient(
                 }
 
                 is UserInfo -> {
+                    controlAttempt = 0
                     isSiteAdmin = event.siteAdmin
                     userGroupIds = event.userGroupIds
                     _clientState.update { state ->
@@ -902,8 +904,14 @@ class MeshCentralClient(
             closeAdditionalRelays()
             if (relay.hasActiveSession()) pendingDesktopResume = true
             controlConnected = false
-            val reason = MeshConnectionError.describe(t, response?.code)
             Log.w(TAG, "Control socket failed: ${t.javaClass.simpleName}")
+            // The server already gave its close reason: a broken transport afterwards must neither
+            // replace that reason nor retry the rejected credentials.
+            if (authRejected) {
+                _clientState.update { it.copy(socketConnected = false, devicesCurrent = false) }
+                return
+            }
+            val reason = MeshConnectionError.describe(t, response?.code)
             authRejected = response?.code == 401 || response?.code == 403
             _clientState.update {
                 it.copy(
@@ -919,7 +927,9 @@ class MeshCentralClient(
         }
 
         override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-            if (controlSocket === webSocket) webSocket.close(code, null)
+            // MeshCentral's `ws.close()` has no status code (reported as 1005), and OkHttp throws
+            // when a reserved code is echoed. Answer with a normal closure instead.
+            if (controlSocket === webSocket) webSocket.close(1000, null)
         }
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {

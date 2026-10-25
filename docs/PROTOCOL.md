@@ -21,7 +21,10 @@ Line numbers below refer to MeshCentral 1.2.5 and can drift between releases. Th
 
 A native client should not send an `Origin` header.
 
-Failure frames: `{action:'close', cause, msg}` followed by the socket close.
+Failure frames: `{action:'close', cause, msg}` followed by `ws.close()` without a status code.
+OkHttp reports that empty close frame as 1005, a reserved code that must not be echoed; answer with
+1000. The WebSocket upgrade succeeds before the credentials are checked, so an open socket is not an
+accepted sign-in: `userinfo` is. Verified against MeshCentral 1.3.1.
 
 | `msg` | Meaning |
 |---|---|

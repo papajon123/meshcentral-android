@@ -1,3 +1,9 @@
+# 0.7.3 — 2026-10-25
+
+- Fix sign-in on servers that require a second factor ([#10](https://github.com/papajon123/meshcentral-android/issues/10)): the verification-code step stays on screen instead of reconnecting endlessly with "Connection to the server was lost" and a disabled button.
+- Show a rejected password or code request once; never retry rejected credentials automatically.
+- Count an automatic reconnect as successful only after the server accepts the account, so a server that keeps closing the connection stops after five attempts.
+
 # 0.7.2 — 2026-10-23
 
 - Show specific localized request and job errors in the device inspector, with Refresh and Help actions.
