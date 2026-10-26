@@ -3,6 +3,7 @@ package ru.papajon.meshcentralmobile.ui.screens.management
 import android.content.res.Configuration
 import android.graphics.Bitmap
 import androidx.activity.ComponentActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -40,6 +41,7 @@ class Parity2InspectorTest {
         compose.onNodeWithTag("parity2_confirm_name").performTextInput("Wrong")
         compose.onNodeWithTag("parity2_remove_confirm").assertIsNotEnabled()
         compose.onNodeWithTag("parity2_confirm_name").performTextReplacement("Example PC")
+        hideKeyboard()
         compose.onNodeWithTag("parity2_remove_confirm").performClick()
         assertEquals(listOf(DeviceRemovalAction.RemoveDevice to "Example PC"), sent)
     }
@@ -78,8 +80,11 @@ class Parity2InspectorTest {
         val sent = mutableListOf<String>()
         show { RunCommandContent("node//example", true, false, null, false, { command, utf8 -> assertFalse(utf8); sent.add(command) }, {}, Modifier.fillMaxSize()) }
         compose.onNodeWithTag("parity2_command").performTextInput("echo example")
-        compose.onNodeWithTag("parity2_run_review").performScrollTo().performClick()
+        hideKeyboard()
+        compose.onNodeWithTag("parity2_run_screen").performScrollToNode(hasTestTag("parity2_run_review"))
+        compose.onNodeWithTag("parity2_run_review").assertIsDisplayed().performClick()
         assertTrue(sent.isEmpty())
+        compose.onNode(isDialog()).assertExists()
         val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
         automation.serviceInfo = automation.serviceInfo.apply {
             flags = flags or android.accessibilityservice.AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
@@ -99,12 +104,61 @@ class Parity2InspectorTest {
         compose.onNodeWithTag("windows_polish_powershell_utf8").performScrollTo().assertIsOff().performClick()
         capture("windows-utf8-mode")
         compose.onNodeWithTag("parity2_command").performScrollTo().performTextInput("Write-Output 'Привет'")
-        compose.onNodeWithTag("parity2_run_review").performScrollTo().performClick()
+        hideKeyboard()
+        compose.onNodeWithTag("parity2_run_screen").performScrollToNode(hasTestTag("parity2_run_review"))
+        compose.onNodeWithTag("parity2_run_review").assertIsDisplayed().performClick()
         assertTrue(sent.isEmpty())
-        compose.onAllNodesWithText(compose.activity.getString(R.string.windows_polish_powershell_utf8)).onLast().assertIsDisplayed()
+        compose.onNode(isDialog()).assertExists()
+        compose.onNode(hasText(compose.activity.getString(R.string.windows_polish_powershell_utf8)) and
+            hasAnyAncestor(isDialog())).assertIsDisplayed()
         capture("windows-utf8-confirm")
-        compose.onNodeWithTag("parity2_run_confirm").performClick()
+        compose.onNodeWithTag("parity2_run_confirm").assertIsDisplayed().performClick()
         compose.runOnIdle { assertEquals(listOf("Write-Output 'Привет'" to true), sent) }
+    }
+
+    @Test fun commandReviewIsReachableWithKeyboardInTheAppWindow() {
+        val sent = mutableListOf<Pair<String, Boolean>>()
+        show { RunCommandContent("node//windows", true, false, null, false,
+            { command, utf8 -> sent.add(command to utf8) }, {}, Modifier.fillMaxSize(), windows = true) }
+        val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
+        automation.serviceInfo = automation.serviceInfo.apply {
+            flags = flags or android.accessibilityservice.AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
+        }
+        compose.onNodeWithTag("parity2_command").performScrollTo().performClick().performTextInput("echo example")
+        compose.waitUntil(timeoutMillis = 10_000) {
+            automation.windows.any { it.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_INPUT_METHOD }
+        }
+        // Android delivers IME insets outside Compose's test clock; let the viewport settle first.
+        var previousBounds: androidx.compose.ui.geometry.Rect? = null
+        var stableSince = android.os.SystemClock.uptimeMillis()
+        compose.waitUntil(timeoutMillis = 10_000) {
+            val bounds = compose.onNodeWithTag("parity2_run_screen").fetchSemanticsNode().boundsInWindow
+            val now = android.os.SystemClock.uptimeMillis()
+            if (bounds != previousBounds) stableSince = now
+            previousBounds = bounds
+            now - stableSince >= 300
+        }
+        val review = compose.onNodeWithTag("parity2_run_review")
+        compose.onNodeWithTag("parity2_run_screen").performScrollToNode(hasTestTag("parity2_run_review"))
+        capture("run-keyboard-app-window")
+        review.assertIsDisplayed()
+        val keyboard = requireNotNull(automation.windows.firstOrNull {
+            it.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_INPUT_METHOD
+        }) { "This check requires a visible software keyboard" }
+        val keyboardBounds = android.graphics.Rect().also(keyboard::getBoundsInScreen)
+        val windowOrigin = IntArray(2)
+        compose.runOnIdle { compose.activity.window.decorView.getLocationOnScreen(windowOrigin) }
+        val actionBounds = review.fetchSemanticsNode().boundsInWindow
+        assertTrue("Review action $actionBounds overlaps keyboard $keyboardBounds",
+            actionBounds.height >= 40 * compose.activity.resources.displayMetrics.density - 1 &&
+                actionBounds.bottom + windowOrigin[1] <= keyboardBounds.top)
+        // Deliberately keep the keyboard open: the production layout must make this click reachable.
+        review.performClick()
+        assertTrue(sent.isEmpty())
+        compose.onNode(isDialog()).assertExists()
+        compose.onNode(hasText("echo example") and hasAnyAncestor(isDialog())).assertIsDisplayed()
+        compose.onNodeWithTag("parity2_run_confirm").assertIsDisplayed().performClick()
+        compose.runOnIdle { assertEquals(listOf("echo example" to false), sent) }
     }
 
     @Test fun softwareDoesNotAutoFetchAndDisabledActionCannotRead() {
@@ -157,6 +211,11 @@ class Parity2InspectorTest {
     }
 
     private fun show(content: @Composable () -> Unit) {
+        // Match MainActivity and AndroidManifest.xml so imePadding receives the real IME insets.
+        compose.activityRule.scenario.onActivity {
+            it.enableEdgeToEdge()
+            it.window.setSoftInputMode(android.view.WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+        }
         val args = InstrumentationRegistry.getArguments()
         val locale = args.getString("parity2Locale") ?: "en"
         val config = Configuration(compose.activity.resources.configuration).apply { setLocale(Locale.forLanguageTag(locale)) }
@@ -173,6 +232,17 @@ class Parity2InspectorTest {
                 }
             }
         }
+    }
+    private fun hideKeyboard() {
+        androidx.test.espresso.Espresso.closeSoftKeyboard()
+        val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
+        automation.serviceInfo = automation.serviceInfo.apply {
+            flags = flags or android.accessibilityservice.AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
+        }
+        compose.waitUntil(timeoutMillis = 5_000) {
+            automation.windows.none { it.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_INPUT_METHOD }
+        }
+        compose.waitForIdle()
     }
     private fun capture(name: String) {
         compose.waitForIdle()

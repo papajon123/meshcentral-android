@@ -1,6 +1,8 @@
-## MeshCentral Mobile 0.8.0
+## MeshCentral Mobile 0.8.1
 
 English · 简体中文 · Русский
+
+0.8.1 is the first public build of the 0.8 line: the 0.8.0 app with stabilized release device tests.
 
 - **Phones:** view the screen after Android consent, see battery and device details,
   send confirmed vibration, flashlight, message, link and dial-pad requests, and
@@ -34,7 +36,7 @@ SSH and SFTP do not require the optional plugin. Jobs, service/process tools and
 background notifications require the separately installed Mobile Companion plugin;
 the app does not administer the server.
 
-中文：新增手机屏幕查看、电池和设备信息、经确认后发送的操作请求，
+中文：0.8.1 是 0.8 系列首个公开版本（0.8.0 应用加上修复的发布设备测试）。新增手机屏幕查看、电池和设备信息、经确认后发送的操作请求，
 以及带大小和 SHA-256 校验的文件传输。触摸、滑动、导航和文字输入需要支持输入的修改版代理、
 已启用的无障碍服务及足够权限；这项代理支持尚未合入上游项目，官方代理仍只能查看屏幕。
 新增按服务器配置固定公钥，以及使用 Android Keystore 加密保存的“记住此设备”双重验证凭据。
@@ -45,7 +47,7 @@ the app does not administer the server.
 断网后会话可自动恢复，清除已保存登录不再卡住界面，下载失败不会留下不完整文件。
 可选择检查 GitHub 更新，下载在浏览器中打开，不会自动安装。
 
-Русский: Для телефонов доступны
+Русский: 0.8.1 — первая публичная сборка линии 0.8 (приложение 0.8.0 и исправленные тесты устройств). Для телефонов доступны
 просмотр экрана после согласия Android, батарея и сведения об устройстве, запросы
 действий с подтверждением и передача файлов с проверкой размера и SHA-256.
 Касания, свайпы, навигация и ввод текста требуют доработанного агента с поддержкой

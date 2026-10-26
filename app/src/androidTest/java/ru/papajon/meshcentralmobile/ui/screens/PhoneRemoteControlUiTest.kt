@@ -74,6 +74,7 @@ class PhoneRemoteControlUiTest {
         compose.onNodeWithText(compose.activity.getString(R.string.phone_control_text_hint)).assertIsDisplayed()
         compose.onNodeWithTag("phone_control_text_field").performTextInput("Привет 😀")
         screenshot("phone-control-text")
+        androidx.test.espresso.Espresso.closeSoftKeyboard()
         compose.onNodeWithTag("phone_control_send").performClick()
         compose.runOnIdle { assertEquals(listOf("Привет 😀"), input.texts) }
         compose.onNodeWithTag("phone_control_text").performClick()

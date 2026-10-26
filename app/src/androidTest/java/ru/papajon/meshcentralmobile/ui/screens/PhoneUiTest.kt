@@ -93,6 +93,7 @@ class PhoneUiTest {
         screenshot("phone-actions")
         compose.onNodeWithTag("phone_action_Alert").performScrollTo().performClick()
         compose.onNodeWithTag("phone_message_text").performTextInput("Привет \"телефон\"\n😀")
+        androidx.test.espresso.Espresso.closeSoftKeyboard()
         assertTrue(sent.isEmpty())
         compose.onNodeWithTag("phone_review").performClick()
         compose.onNodeWithTag("phone_preview").assertTextEquals("Привет ”телефон”\n😀")

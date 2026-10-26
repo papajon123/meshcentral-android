@@ -1,3 +1,7 @@
+# 0.8.1 — 2026-10-26
+
+- First public build of the 0.8 line. It contains the same app as 0.8.0, which did not reach GitHub Releases because two device tests failed on the release emulators (a keyboard covering a button on a small screen, and a slow WebSocket teardown). The tests were stabilized; app code is unchanged.
+
 # 0.8.0 — 2026-10-26
 
 ## Connection reliability

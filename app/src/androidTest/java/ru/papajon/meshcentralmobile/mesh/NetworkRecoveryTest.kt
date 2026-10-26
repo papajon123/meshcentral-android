@@ -19,15 +19,19 @@ import ru.papajon.meshcentralmobile.model.ConnectionState
 import ru.papajon.meshcentralmobile.security.SecureVault
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.TimeUnit
 
 class NetworkRecoveryTest {
+    private val serverSockets = ConcurrentHashMap.newKeySet<WebSocket>()
+
     @Test fun foregroundBeforeNetworkRecoveryResumesTheDesktopStream() = withClient { client, server ->
         val relayConnections = java.util.concurrent.atomic.AtomicInteger()
         val recoveredPackets = java.util.concurrent.ConcurrentLinkedQueue<ByteArray>()
         server.dispatcher = object : okhttp3.mockwebserver.Dispatcher() {
             override fun dispatch(request: okhttp3.mockwebserver.RecordedRequest): MockResponse {
                 if (request.requestUrl?.encodedPath == "/control.ashx") {
-                    return MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
+                    return webSocketResponse(object : WebSocketListener() {
                         override fun onOpen(webSocket: WebSocket, response: Response) {
                             webSocket.send("""{"action":"userinfo","userinfo":{"_id":"user/test/fixture"}}""")
                             webSocket.send("""{"action":"nodes","nodes":{}}""")
@@ -43,7 +47,7 @@ class NetworkRecoveryTest {
                     })
                 }
                 val generation = relayConnections.incrementAndGet()
-                return MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
+                return webSocketResponse(object : WebSocketListener() {
                     override fun onOpen(webSocket: WebSocket, response: Response) { webSocket.send("c") }
                     override fun onMessage(webSocket: WebSocket, text: String) {
                         if (text == "2") webSocket.send(okio.ByteString.of(0, 7, 0, 8, 0, 16, 0, 16))
@@ -94,7 +98,7 @@ class NetworkRecoveryTest {
     }
 
     @Test fun anAcceptedSocketThatImmediatelyClosesStillExhaustsTheBudget() = withClient { client, server ->
-        repeat(10) { server.enqueue(MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
+        repeat(10) { server.enqueue(webSocketResponse(object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) { webSocket.close(1000, "fixture refusal") }
         })) }
         client.login(server.url("/").toString(), "fixture", "fixture-password")
@@ -128,7 +132,7 @@ class NetworkRecoveryTest {
 
     @Test fun desktopSurvivesSevenDropsBeforeUpgrade() = withRelay { relay, server ->
         repeat(7) { server.enqueue(MockResponse().setSocketPolicy(SocketPolicy.DISCONNECT_AT_START)) }
-        server.enqueue(MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
+        server.enqueue(webSocketResponse(object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) { webSocket.send("c") }
             override fun onMessage(webSocket: WebSocket, text: String) {
                 if (text == "2") webSocket.send(okio.ByteString.of(0, 7, 0, 8, 0, 16, 0, 16))
@@ -142,7 +146,7 @@ class NetworkRecoveryTest {
     }
 
     @Test fun desktopServerClosuresStopAfterFiveRetries() = withRelay { relay, server ->
-        repeat(10) { server.enqueue(MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
+        repeat(10) { server.enqueue(webSocketResponse(object : WebSocketListener() {
             override fun onOpen(webSocket: WebSocket, response: Response) { webSocket.close(1000, "fixture refusal") }
         })) }
         val url = server.url("/")
@@ -159,18 +163,29 @@ class NetworkRecoveryTest {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         val transport = okhttp3.OkHttpClient()
         val relay = MeshDesktopRelay(transport, scope, sendControlMessage = { true })
-        val server = MockWebServer()
-        try { server.start(); block(relay, server) }
-        finally {
-            onMain { relay.disconnect() }
-            scope.cancel(); transport.dispatcher.cancelAll(); transport.connectionPool.evictAll(); server.shutdown()
+        MockWebServer().use { server ->
+            try { server.start(); block(relay, server) }
+            finally {
+                try {
+                    onMain { relay.disconnect() }
+                    scope.cancel()
+                    closeServerSockets()
+                } finally {
+                    scope.cancel()
+                    transport.dispatcher.cancelAll()
+                    transport.connectionPool.evictAll()
+                    transport.dispatcher.executorService.shutdown()
+                    assertTrue("Relay transport executor did not stop",
+                        transport.dispatcher.executorService.awaitTermination(10, TimeUnit.SECONDS))
+                }
+            }
         }
     }
 
     private fun onMain(action: () -> Unit) = runBlocking { withContext(Dispatchers.Main) { action() } }
     private fun fixtureDevice() = MeshDevice(nodeId = "node/test/fixture", meshId = "mesh/test/fixture", name = "Fixture", agentId = 4, conn = 1)
 
-    private fun accepted() = MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
+    private fun accepted() = webSocketResponse(object : WebSocketListener() {
         override fun onOpen(webSocket: WebSocket, response: Response) {
             webSocket.send("""{"action":"userinfo","userinfo":{"_id":"user/test/fixture"}}""")
             webSocket.send("""{"action":"nodes","nodes":{}}""")
@@ -186,14 +201,59 @@ class NetworkRecoveryTest {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         val vault = SecureVault(isolated)
         val client = MeshCentralClient(vault, scope)
-        val server = MockWebServer()
-        try { server.start(); block(client, server) }
-        finally { client.close(); scope.cancel(); vault.clearCredentials(); server.shutdown() }
+        MockWebServer().use { server ->
+            try { server.start(); block(client, server) }
+            finally {
+                try {
+                    onMain { client.close() }
+                    scope.cancel()
+                    closeServerSockets()
+                } finally {
+                    scope.cancel()
+                    vault.clearCredentials()
+                }
+            }
+        }
     }
 
-    private fun await(timeout: Long, condition: () -> Boolean) {
+    private fun webSocketResponse(listener: WebSocketListener) =
+        MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
+            override fun onOpen(webSocket: WebSocket, response: Response) {
+                serverSockets.add(webSocket)
+                listener.onOpen(webSocket, response)
+            }
+            override fun onMessage(webSocket: WebSocket, text: String) = listener.onMessage(webSocket, text)
+            override fun onMessage(webSocket: WebSocket, bytes: okio.ByteString) = listener.onMessage(webSocket, bytes)
+            override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+                listener.onClosing(webSocket, code, reason)
+                // A WebSocketListener's default onClosing does not finish the close handshake.
+                webSocket.close(code, null)
+            }
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                try { listener.onClosed(webSocket, code, reason) }
+                finally { serverSockets.remove(webSocket) }
+            }
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                try { listener.onFailure(webSocket, t, response) }
+                finally { serverSockets.remove(webSocket) }
+            }
+        })
+
+    private fun closeServerSockets() {
+        // Wait for terminal callbacks before MockWebServer.use invokes shutdown (which only waits 5s).
+        // A timeout is an assertion failure, not an ignored shutdown exception; cancel only to release
+        // remaining resources after that failure. This keeps a leaked socket visible to the test.
+        serverSockets.toList().forEach { it.close(1000, "Test finished") }
+        try {
+            await(10_000, "Server WebSockets did not terminate before shutdown") { serverSockets.isEmpty() }
+        } finally {
+            serverSockets.toList().forEach { it.cancel() }
+        }
+    }
+
+    private fun await(timeout: Long, message: String = "Timed out waiting for automatic recovery", condition: () -> Boolean) {
         val deadline = System.currentTimeMillis() + timeout
         while (!condition() && System.currentTimeMillis() < deadline) Thread.sleep(25)
-        assertTrue("Timed out waiting for automatic recovery", condition())
+        assertTrue(message, condition())
     }
 }
