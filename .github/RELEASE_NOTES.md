@@ -1,14 +1,26 @@
-## MeshCentral Mobile 0.8.2
+## MeshPilot 0.8.4
 
 English · 简体中文 · Русский
 
-**New in 0.8.2 — stylus and S Pen:** the pen works as a precise mouse on computer desktops in every pointer
-mode. Hover moves the cursor without clicking, the tip clicks and drags, the side button right-clicks, and
-palm touches are ignored while the pen is near the screen. On phones with remote input it gives precise taps
-and swipes. Pressure and tilt are not carried by MeshCentral's remote-desktop protocol.
+**MeshCentral Mobile is now MeshPilot.** At the request of the MeshCentral maintainers, third-party apps do not use
+the MeshCentral name. MeshPilot is an independent client for MeshCentral servers: it is not affiliated with or
+endorsed by the MeshCentral project, so please report problems with this app here, not to the MeshCentral team.
+The package and signing key are unchanged, so 0.8.4 installs as a normal update. 0.8.4 is the same app as 0.8.3,
+which was built and tested but could not be uploaded to GitHub.
+
+**New in 0.8.3 and 0.8.4:**
+
+- **Login tokens and login keys.** Sign in with a MeshCentral login token: its own `~t:` user name and the token
+  password. The sign-in screen now explains where to create one, which helps on servers that allow only tokens or
+  single sign-on. Servers protected with a login key (`loginKey`) work too: enter the key in the server settings.
+  Fixes #11.
+- **Lower memory use in long desktop sessions:** decoded screen tiles are released right after drawing.
 
 Also in the 0.8 line (since 0.7.3):
 
+- **Stylus and S Pen (0.8.2):** the pen works as a precise mouse on computer desktops with hover, tip clicks and
+  drags, side-button right click and palm rejection; on phones with remote input it gives precise taps and swipes.
+  Pressure and tilt are not carried by MeshCentral's remote-desktop protocol.
 - **Phones:** view the screen after Android consent, see battery and device details,
   send confirmed vibration, flashlight, message, link and dial-pad requests, and
   transfer files with size/SHA-256 verification. Unsupported folder creation and
@@ -41,7 +53,7 @@ SSH and SFTP do not require the optional plugin. Jobs, service/process tools and
 background notifications require the separately installed Mobile Companion plugin;
 the app does not administer the server.
 
-中文：0.8.2 新增手写笔和 S Pen 支持：在电脑桌面上作为精确鼠标，悬停移动光标，侧键右击，并忽略手掌触摸；在支持远程输入的手机上进行精确点按和滑动。MeshCentral 协议不传递压力和倾斜。新增手机屏幕查看、电池和设备信息、经确认后发送的操作请求，
+中文：MeshCentral Mobile 现更名为 MeshPilot：应 MeshCentral 维护者的要求，第三方应用不使用 MeshCentral 名称。MeshPilot 是 MeshCentral 服务器的独立客户端，与 MeshCentral 项目没有关联，也未获其认可；请在本仓库报告本应用的问题，而不要向 MeshCentral 团队报告。0.8.3/0.8.4 新增（0.8.4 与未能上传到 GitHub 的 0.8.3 为同一应用）：支持 MeshCentral 登录令牌（`~t:` 用户名和令牌密码）及受登录密钥（loginKey）保护的服务器；长时间远程桌面会话的内存占用更低。0.8.2 新增手写笔和 S Pen 支持（悬停、侧键右击、防误触）。新增手机屏幕查看、电池和设备信息、经确认后发送的操作请求，
 以及带大小和 SHA-256 校验的文件传输。触摸、滑动、导航和文字输入需要支持输入的修改版代理、
 已启用的无障碍服务及足够权限；这项代理支持尚未合入上游项目，官方代理仍只能查看屏幕。
 新增按服务器配置固定公钥，以及使用 Android Keystore 加密保存的“记住此设备”双重验证凭据。
@@ -52,7 +64,7 @@ the app does not administer the server.
 断网后会话可自动恢复，清除已保存登录不再卡住界面，下载失败不会留下不完整文件。
 可选择检查 GitHub 更新，下载在浏览器中打开，不会自动安装。
 
-Русский: в 0.8.2 появилась поддержка стилуса и S Pen: перо работает как точная мышь на компьютере, наведение двигает курсор без нажатия, боковая кнопка даёт правый клик, касания ладонью игнорируются; на телефонах с удалённым вводом — точные касания и свайпы. Давление и наклон протокол MeshCentral не передаёт. Для телефонов доступны
+Русский: MeshCentral Mobile теперь называется MeshPilot: по просьбе сопровождающих MeshCentral сторонние приложения не используют это имя. MeshPilot — независимый клиент для серверов MeshCentral, он не связан с проектом MeshCentral и не одобрен им; о проблемах с приложением сообщайте здесь, а не команде MeshCentral. Новое в 0.8.3 и 0.8.4 (0.8.4 — то же приложение, что 0.8.3, которую не удалось загрузить на GitHub): вход по токену MeshCentral (имя `~t:…` и пароль токена) и поддержка серверов с ключом входа (loginKey); меньше памяти в долгих сеансах рабочего стола. В 0.8.2 появилась поддержка стилуса и S Pen (наведение, правый клик боковой кнопкой, защита от ладони). Для телефонов доступны
 просмотр экрана после согласия Android, батарея и сведения об устройстве, запросы
 действий с подтверждением и передача файлов с проверкой размера и SHA-256.
 Касания, свайпы, навигация и ввод текста требуют доработанного агента с поддержкой
@@ -70,7 +82,7 @@ the app does not administer the server.
 приложение, а неудачное скачивание не оставляет неполный файл.
 Проверку обновлений GitHub можно включить по желанию; скачивание открывается в браузере.
 
-[Validation and remaining acceptance](https://github.com/papajon123/meshcentral-android/blob/main/docs/RELEASE_0_8_0_VALIDATION.md).
+[Validation and remaining acceptance](https://github.com/papajon123/meshcentral-android/blob/main/docs/RELEASE_0_8_2_VALIDATION.md).
 Tested on emulators and a local MeshCentral 1.3.1 bench with Linux, Windows and Android agents;
 acceptance on physical phones continues. Power/removal
 execution, phone hardware effects and broad Windows/macOS coverage are not promised.

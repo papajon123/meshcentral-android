@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">MeshCentral Mobile کا قفل کھولیں</string>
+    <string name="biometric_unlock_title">MeshPilot کا قفل کھولیں</string>
     <string name="biometric_unlock_subtitle">ایپ کھولنے کے لیے ڈیوائس کی بایومیٹرک شناخت سے اپنی شناخت کی تصدیق کریں۔</string>
     <string name="cancel">منسوخ کریں</string>
     <string name="biometric_unlock_requires_android9">بایومیٹرکس کے لیے Android 9 یا اس سے نیا ورژن درکار ہے۔</string>
@@ -196,7 +196,7 @@
     <string name="login_title">لاگ ان</string>
     <string name="login_edit_server">سرور کا پتہ تبدیل کریں</string>
     <string name="login_username">صارف نام</string>
-    <string name="login_password">پاس ورڈ یا لاگ ان ٹوکن</string>
+    <string name="login_password">پاس ورڈ یا ٹوکن پاس ورڈ</string>
     <string name="login_password_show">پاس ورڈ دکھائیں</string>
     <string name="login_password_hide">پاس ورڈ چھپائیں</string>
     <string name="login_two_factor_title">تصدیقی کوڈ درکار ہے</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">محفوظ لاگ ان حذف ہو گیا۔</string>
     <string name="settings_section_about">ایپ کے بارے میں</string>
     <string name="settings_section_about_subtitle">بلڈ کی معلومات</string>
+    <string name="settings_about_independent">MeshPilot، MeshCentral سرورز کے لیے ایک آزاد کلائنٹ ہے۔ یہ MeshCentral پروجیکٹ سے وابستہ نہیں ہے اور نہ ہی اس کی جانب سے تائید یافتہ ہے۔ براہ کرم اس ایپ کے مسائل github.com/papajon123/meshcentral-android/issues پر رپورٹ کریں، MeshCentral ٹیم کو نہیں۔</string>
     <string name="settings_version">ورژن %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· ڈی بگ بلڈ</string>
     <string name="settings_debug_webview">ڈی بگ WebView</string>

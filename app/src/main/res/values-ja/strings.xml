@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">MeshCentral Mobile のロック解除</string>
+    <string name="biometric_unlock_title">MeshPilot のロック解除</string>
     <string name="biometric_unlock_subtitle">アプリを開くには、デバイスの生体認証で本人確認を行ってください。</string>
     <string name="cancel">キャンセル</string>
     <string name="biometric_unlock_requires_android9">生体認証には Android 9 以降が必要です。</string>
@@ -196,7 +196,7 @@
     <string name="login_title">ログイン</string>
     <string name="login_edit_server">サーバーアドレスを変更</string>
     <string name="login_username">ユーザー名</string>
-    <string name="login_password">パスワードまたはログイントークン</string>
+    <string name="login_password">パスワードまたはトークンのパスワード</string>
     <string name="login_password_show">パスワードを表示</string>
     <string name="login_password_hide">パスワードを非表示</string>
     <string name="login_two_factor_title">確認コードが必要です</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">保存されたログイン情報を削除しました。</string>
     <string name="settings_section_about">アプリについて</string>
     <string name="settings_section_about_subtitle">ビルド情報</string>
+    <string name="settings_about_independent">MeshPilot は MeshCentral サーバー向けの独立したクライアントです。MeshCentral プロジェクトとは提携しておらず、同プロジェクトの承認も受けていません。このアプリの問題は、MeshCentral チームではなく github.com/papajon123/meshcentral-android/issues までご報告ください。</string>
     <string name="settings_version">バージョン %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· デバッグビルド</string>
     <string name="settings_debug_webview">デバッグ用 WebView</string>

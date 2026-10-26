@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">Mở khóa MeshCentral Mobile</string>
+    <string name="biometric_unlock_title">Mở khóa MeshPilot</string>
     <string name="biometric_unlock_subtitle">Xác minh danh tính bằng sinh trắc học của thiết bị để mở ứng dụng.</string>
     <string name="cancel">Hủy</string>
     <string name="biometric_unlock_requires_android9">Sinh trắc học yêu cầu Android 9 trở lên.</string>
@@ -196,7 +196,7 @@
     <string name="login_title">Đăng nhập</string>
     <string name="login_edit_server">Sửa địa chỉ máy chủ</string>
     <string name="login_username">Tên người dùng</string>
-    <string name="login_password">Mật khẩu hoặc mã thông báo đăng nhập</string>
+    <string name="login_password">Mật khẩu hoặc mật khẩu mã thông báo</string>
     <string name="login_password_show">Hiện mật khẩu</string>
     <string name="login_password_hide">Ẩn mật khẩu</string>
     <string name="login_two_factor_title">Cần mã xác minh</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">Đã xóa đăng nhập đã lưu.</string>
     <string name="settings_section_about">Giới thiệu ứng dụng</string>
     <string name="settings_section_about_subtitle">Thông tin bản dựng</string>
+    <string name="settings_about_independent">MeshPilot là ứng dụng khách độc lập dành cho các máy chủ MeshCentral. Ứng dụng không liên kết với dự án MeshCentral và cũng không được dự án này chứng thực. Vui lòng báo cáo các vấn đề của ứng dụng này tại github.com/papajon123/meshcentral-android/issues, không phải với nhóm MeshCentral.</string>
     <string name="settings_version">Phiên bản %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· bản dựng gỡ lỗi</string>
     <string name="settings_debug_webview">WebView để gỡ lỗi</string>

@@ -300,6 +300,9 @@ class SnapshotTests(unittest.TestCase):
                 self.assertNotIn(env["GITHUB_DEPLOY_KEY_B64"], str(git_env))
                 self.assertIn("StrictHostKeyChecking=yes", git_env["GIT_SSH_COMMAND"])
                 self.assertIn("IdentityFile=none", git_env["GIT_SSH_COMMAND"])
+                # github.com:22 is unreachable from the runner; port 443 keeps the github.com host-key pins.
+                for option in ("HostName=ssh.github.com", "Port=443", "HostKeyAlias=github.com"):
+                    self.assertIn(option, git_env["GIT_SSH_COMMAND"])
         addition = next(kwargs for command, kwargs in calls if command == ["ssh-add", "-"])
         self.assertEqual(addition["input"], key)
         self.assertTrue(all(key.decode() not in str(command) for command, _ in calls))

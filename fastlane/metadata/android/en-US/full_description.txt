@@ -1,4 +1,5 @@
 <p>An independent Android client for your own <b>MeshCentral</b> server. Open your computers from a phone or tablet: remote desktop, terminal, files, SSH and SFTP.</p>
+<p><b>MeshPilot</b> is an independent, third-party app. It is not affiliated with, endorsed by or supported by the MeshCentral project. Please report problems with this app at https://github.com/papajon123/meshcentral-android/issues, not to the MeshCentral team.</p>
 <p>You need your own MeshCentral server reachable over HTTPS. No server or account is preconfigured, and the app does not install or administer MeshCentral.</p>
 <p><b>Features</b></p>
 <ul>

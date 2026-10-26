@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">MeshCentral Mobile-ஐ அன்லாக் செய்</string>
+    <string name="biometric_unlock_title">MeshPilot-ஐ அன்லாக் செய்</string>
     <string name="biometric_unlock_subtitle">பயன்பாட்டைத் திறக்க, சாதனத்தின் பயோமெட்ரிக் மூலம் உங்கள் அடையாளத்தை உறுதிசெய்யவும்.</string>
     <string name="cancel">ரத்துசெய்</string>
     <string name="biometric_unlock_requires_android9">பயோமெட்ரிக்கிற்கு Android 9 அல்லது அதற்குப் பிந்தைய பதிப்பு தேவை.</string>
@@ -196,7 +196,7 @@
     <string name="login_title">உள்நுழை</string>
     <string name="login_edit_server">சேவையக முகவரியை மாற்று</string>
     <string name="login_username">பயனர் பெயர்</string>
-    <string name="login_password">கடவுச்சொல் அல்லது உள்நுழைவு டோக்கன்</string>
+    <string name="login_password">கடவுச்சொல் அல்லது டோக்கன் கடவுச்சொல்</string>
     <string name="login_password_show">கடவுச்சொல்லைக் காட்டு</string>
     <string name="login_password_hide">கடவுச்சொல்லை மறை</string>
     <string name="login_two_factor_title">சரிபார்ப்புக் குறியீடு தேவை</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">சேமிக்கப்பட்ட உள்நுழைவு நீக்கப்பட்டது.</string>
     <string name="settings_section_about">பயன்பாடு பற்றி</string>
     <string name="settings_section_about_subtitle">பில்ட் தகவல்</string>
+    <string name="settings_about_independent">MeshPilot என்பது MeshCentral சேவையகங்களுக்கான சுயாதீன கிளையண்ட் ஆகும். இது MeshCentral திட்டத்துடன் தொடர்புடையது அல்ல, அத்திட்டத்தால் அங்கீகரிக்கப்பட்டதும் இல்லை. இந்தப் பயன்பாட்டின் சிக்கல்களை MeshCentral குழுவிடம் அல்லாமல் github.com/papajon123/meshcentral-android/issues இல் தெரிவிக்கவும்.</string>
     <string name="settings_version">பதிப்பு %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· பிழைத்திருத்த பில்ட்</string>
     <string name="settings_debug_webview">பிழைத்திருத்த WebView</string>

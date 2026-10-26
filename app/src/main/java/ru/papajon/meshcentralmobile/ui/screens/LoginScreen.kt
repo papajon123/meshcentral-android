@@ -69,6 +69,8 @@ import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
 import ru.papajon.meshcentralmobile.mesh.MeshClientState
+import ru.papajon.meshcentralmobile.mesh.MeshAuthDiagnostics
+import ru.papajon.meshcentralmobile.mesh.MeshAuthFailure
 import ru.papajon.meshcentralmobile.mesh.TwoFactorChallenge
 import ru.papajon.meshcentralmobile.mesh.TwoFactorChannel
 import ru.papajon.meshcentralmobile.mesh.tls.ServerCertificateFailure
@@ -95,6 +97,7 @@ fun LoginScreen(
     onTrustCertificate: (ServerCertificateFailure) -> Unit = {},
     onReplaceCertificate: (ServerCertificateFailure) -> Unit = {},
     onDismissCertificate: () -> Unit = meshClient::dismissCertificateFailure,
+    onEditServerSettings: () -> Unit = onEditServer,
 ) {
     val storedCredentials = remember(serverUrl) { secureVault.getCredentials(serverUrl) }
     val clientState by meshClient.clientState.collectAsState()
@@ -106,6 +109,7 @@ fun LoginScreen(
         onRequestCode = meshClient::requestTwoFactorCode,
         onContinueWithoutSignIn = onContinueWithoutSignIn,
         onEditServer = onEditServer, modifier = modifier,
+        onEditServerSettings = onEditServerSettings,
     )
     clientState.certificateFailure?.let { failure ->
         ServerCertificateDialog(
@@ -130,6 +134,7 @@ internal fun LoginContent(
     onContinueWithoutSignIn: (() -> Unit)? = null,
     onEditServer: () -> Unit = {},
     modifier: Modifier = Modifier,
+    onEditServerSettings: () -> Unit = onEditServer,
 ) {
     // An edited endpoint must never inherit the previous server's in-progress credentials.
     var username by rememberSaveable(serverUrl) { mutableStateOf(storedUsername.orEmpty()) }
@@ -190,6 +195,12 @@ internal fun LoginContent(
                 LoginErrorCard(message = error.asString())
             } else if (clientState.connectionState == ConnectionState.Failed) {
                 LoginErrorCard(message = stringResource(R.string.login_status_failed))
+            }
+
+            if (error == MeshAuthDiagnostics.describe(MeshAuthFailure.AccessKeyRequired)) {
+                TextButton(onClick = onEditServerSettings, modifier = Modifier.testTag("login-server-settings")) {
+                    Text(stringResource(R.string.login_server_settings))
+                }
             }
 
             if (challenge == null) {
@@ -364,6 +375,7 @@ private fun CredentialsGroup(
     onTogglePasswordVisible: () -> Unit,
 ) {
     val spacing = MeshTheme.spacing
+    var tokenHelpVisible by rememberSaveable { mutableStateOf(false) }
     Surface(
         modifier = Modifier.fillMaxWidth(),
         shape = MaterialTheme.shapes.medium,
@@ -418,6 +430,18 @@ private fun CredentialsGroup(
                     }
                 },
             )
+            TextButton(
+                onClick = { tokenHelpVisible = !tokenHelpVisible },
+                modifier = Modifier.testTag("login-token-help"),
+            ) { Text(stringResource(R.string.token_login_help_title)) }
+            if (tokenHelpVisible) {
+                Text(
+                    stringResource(R.string.token_login_help_body),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.testTag("login-token-instructions"),
+                )
+            }
         }
     }
 }

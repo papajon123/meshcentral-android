@@ -2,7 +2,7 @@
 
 ## Product shape
 
-MeshCentral Mobile is a native Android control client for an existing MeshCentral deployment. It is not an Android Agent, does not expose the phone for management, and does not administer the MeshCentral server.
+MeshPilot is a native Android control client for an existing MeshCentral deployment. It is not an Android Agent, does not expose the phone for management, and does not administer the MeshCentral server.
 
 The primary path is Kotlin and Jetpack Compose. The desktop is native KVM; Agent terminal/files use the MeshCentral relay; SSH/SFTP are server-side relays. The terminal's **text renderer** is a deliberately isolated local WebView, not the raw server WebView. The raw **Debug WebView** in Settings is a troubleshooting view of the configured MeshCentral page and is unrelated to the terminal renderer.
 

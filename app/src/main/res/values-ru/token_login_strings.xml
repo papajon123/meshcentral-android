@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">Использовать токен входа</string>
+    <string name="token_login_help_body">В MeshCentral откройте «Моя учётная запись» → «Токены входа» и создайте токен. В поле «Имя пользователя» введите имя пользователя токена (~t:…), а в поле «Пароль» — пароль токена. Не используйте имя пользователя своей учётной записи или код двухфакторной аутентификации.</string>
+    <string name="server_login_key_label">Ключ доступа к серверу (необязательно)</string>
+    <string name="server_login_key_help">Если ссылка на сервер содержит ?key=…, введите здесь только этот ключ. Это не то же самое, что токен входа.</string>
+    <string name="login_server_settings">Настройки сервера</string>
+    <string name="token_login_key_required">Для этого сервера требуется ключ доступа. Откройте «Настройки сервера» и введите ключ из ссылки на сервер (?key=…).</string>
+</resources>

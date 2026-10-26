@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">లాగిన్ టోకెన్ని ఉపయోగించండి</string>
+    <string name="token_login_help_body">MeshCentralలో “నా ఖాతా” → “లాగిన్ టోకెన్లు” తెరిచి టోకెన్ను సృష్టించండి. “వినియోగదారు పేరు”లో టోకెన్ యొక్క వినియోగదారు పేరు (~t:…)ను, “పాస్వర్డ్”లో టోకెన్ పాస్వర్డ్ను నమోదు చేయండి. మీ ఖాతా వినియోగదారు పేరును లేదా రెండు-దశల కోడ్ను ఉపయోగించవద్దు.</string>
+    <string name="server_login_key_label">సర్వర్ యాక్సెస్ కీ (ఐచ్ఛికం)</string>
+    <string name="server_login_key_help">మీ సర్వర్ లింక్లో ?key=… ఉంటే, ఇక్కడ ఆ కీని మాత్రమే నమోదు చేయండి. ఇది లాగిన్ టోకెన్కు భిన్నమైనది.</string>
+    <string name="login_server_settings">సర్వర్ సెట్టింగ్లు</string>
+    <string name="token_login_key_required">ఈ సర్వర్కు యాక్సెస్ కీ అవసరం. “సర్వర్ సెట్టింగ్లు” తెరిచి మీ సర్వర్ లింక్ నుండి కీని నమోదు చేయండి (?key=…).</string>
+</resources>

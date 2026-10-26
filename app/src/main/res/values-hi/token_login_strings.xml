@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">लॉगिन टोकन का उपयोग करें</string>
+    <string name="token_login_help_body">MeshCentral में «मेरा खाता» → «लॉगिन टोकन» खोलें और एक टोकन बनाएँ। «उपयोगकर्ता नाम» में टोकन का उपयोगकर्ता नाम (~t:…) और «पासवर्ड» में टोकन पासवर्ड दर्ज करें। अपने खाते का उपयोगकर्ता नाम या दो-चरणीय सत्यापन कोड इस्तेमाल न करें।</string>
+    <string name="server_login_key_label">सर्वर एक्सेस कुंजी (वैकल्पिक)</string>
+    <string name="server_login_key_help">यदि आपके सर्वर लिंक में ?key=… है, तो यहाँ केवल वही कुंजी दर्ज करें। यह लॉगिन टोकन से अलग है।</string>
+    <string name="login_server_settings">सर्वर सेटिंग्स</string>
+    <string name="token_login_key_required">इस सर्वर के लिए एक्सेस कुंजी आवश्यक है। सर्वर सेटिंग्स खोलें और अपने सर्वर लिंक से कुंजी दर्ज करें (?key=…)।</string>
+</resources>

@@ -13,7 +13,14 @@ import android.graphics.Rect
  * `BitmapFactory` understands (JPEG/PNG/WebP), because `cmd 5` allows switching the type.
  * Tiles are applied in arrival order, which matches the browser's `PendingOperations` queue.
  */
-class KvmFramebuffer {
+class KvmFramebuffer internal constructor(
+    // The decoder transfers exclusive ownership of each returned tile to this framebuffer.
+    private val decodeBitmap: (ByteArray, BitmapFactory.Options) -> Bitmap?,
+) {
+    constructor() : this({ bytes, options ->
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+    })
+
     private val paint = Paint(Paint.FILTER_BITMAP_FLAG)
     private val options = BitmapFactory.Options().apply {
         inPreferredConfig = Bitmap.Config.ARGB_8888
@@ -73,7 +80,13 @@ class KvmFramebuffer {
         if (packet.image.isEmpty()) return null
         if (packet.x >= width || packet.y >= height) return null
         val tile = decodeTile(packet.image) ?: return null
-        target.drawBitmap(tile, packet.x.toFloat(), packet.y.toFloat(), paint)
+        try {
+            // This bitmap-backed software Canvas copies the pixels synchronously. Only
+            // the destination frame is published; the privately decoded tile never is.
+            target.drawBitmap(tile, packet.x.toFloat(), packet.y.toFloat(), paint)
+        } finally {
+            tile.recycle()
+        }
         return FramebufferUpdate(bitmap = frame, width = width, height = height)
     }
 
@@ -104,7 +117,7 @@ class KvmFramebuffer {
     }
 
     private fun decodeTile(bytes: ByteArray): Bitmap? {
-        return runCatching { BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options) }.getOrNull()
+        return runCatching { decodeBitmap(bytes, options) }.getOrNull()
     }
 
     private companion object {

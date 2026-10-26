@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">解锁 MeshCentral Mobile</string>
+    <string name="biometric_unlock_title">解锁 MeshPilot</string>
     <string name="biometric_unlock_subtitle">使用设备生物识别验证身份，以打开应用。</string>
     <string name="cancel">取消</string>
     <string name="biometric_unlock_requires_android9">生物识别需要 Android 9 或更高版本。</string>
@@ -196,7 +196,7 @@
     <string name="login_title">登录</string>
     <string name="login_edit_server">更改服务器地址</string>
     <string name="login_username">用户名</string>
-    <string name="login_password">密码或登录令牌</string>
+    <string name="login_password">密码或令牌密码</string>
     <string name="login_password_show">显示密码</string>
     <string name="login_password_hide">隐藏密码</string>
     <string name="login_two_factor_title">需要验证码</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">已删除保存的登录信息。</string>
     <string name="settings_section_about">关于应用</string>
     <string name="settings_section_about_subtitle">构建信息</string>
+    <string name="settings_about_independent">MeshPilot 是 MeshCentral 服务器的独立客户端。它与 MeshCentral 项目没有关联，也未获得该项目的认可。请将本应用的问题报告至 github.com/papajon123/meshcentral-android/issues，而不要报告给 MeshCentral 团队。</string>
     <string name="settings_version">版本 %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· 调试版本</string>
     <string name="settings_debug_webview">调试 WebView</string>

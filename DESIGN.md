@@ -1,4 +1,4 @@
-# MeshCentral Mobile — Signal design system
+# MeshPilot — Signal design system
 
 ## Product and scope
 

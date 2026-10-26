@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">MeshCentral Mobile अनलॉक करें</string>
+    <string name="biometric_unlock_title">MeshPilot अनलॉक करें</string>
     <string name="biometric_unlock_subtitle">ऐप खोलने के लिए डिवाइस की बायोमेट्रिक्स से अपनी पहचान की पुष्टि करें।</string>
     <string name="cancel">रद्द करें</string>
     <string name="biometric_unlock_requires_android9">बायोमेट्रिक्स के लिए Android 9 या नया संस्करण आवश्यक है।</string>
@@ -196,7 +196,7 @@
     <string name="login_title">साइन इन</string>
     <string name="login_edit_server">सर्वर पता बदलें</string>
     <string name="login_username">उपयोगकर्ता नाम</string>
-    <string name="login_password">पासवर्ड या साइन-इन टोकन</string>
+    <string name="login_password">पासवर्ड या टोकन पासवर्ड</string>
     <string name="login_password_show">पासवर्ड दिखाएँ</string>
     <string name="login_password_hide">पासवर्ड छिपाएँ</string>
     <string name="login_two_factor_title">पुष्टि कोड आवश्यक है</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">सहेजा गया साइन-इन हटा दिया गया।</string>
     <string name="settings_section_about">ऐप के बारे में</string>
     <string name="settings_section_about_subtitle">बिल्ड जानकारी</string>
+    <string name="settings_about_independent">MeshPilot, MeshCentral सर्वर के लिए एक स्वतंत्र क्लाइंट है। यह MeshCentral प्रोजेक्ट से संबद्ध नहीं है और उसके द्वारा अनुमोदित भी नहीं है। कृपया इस ऐप की समस्याएँ github.com/papajon123/meshcentral-android/issues पर रिपोर्ट करें, MeshCentral टीम को नहीं।</string>
     <string name="settings_version">संस्करण %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· डिबग बिल्ड</string>
     <string name="settings_debug_webview">डिबग WebView</string>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">ログイントークンを使用する</string>
+    <string name="token_login_help_body">MeshCentral で「マイアカウント」→「ログイントークン」を開き、トークンを作成します。「ユーザー名」にトークンのユーザー名（~t:…）を、「パスワード」にトークンのパスワードを入力します。アカウントのユーザー名や二要素認証コードは使用しないでください。</string>
+    <string name="server_login_key_label">サーバーアクセスキー（任意）</string>
+    <string name="server_login_key_help">サーバーリンクに ?key=… が含まれている場合は、そのキーだけをここに入力してください。これはログイントークンとは別です。</string>
+    <string name="login_server_settings">サーバー設定</string>
+    <string name="token_login_key_required">このサーバーにはアクセスキーが必要です。「サーバー設定」を開き、サーバーリンクのキーを入力してください（?key=…）。</string>
+</resources>

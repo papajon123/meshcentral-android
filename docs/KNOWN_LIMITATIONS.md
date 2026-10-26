@@ -110,7 +110,7 @@ Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM back
   the user must re-enable notifications. The raw Debug WebView does not inherit pins and is
   available only in debug builds.
 - The app needs an HTTPS/WSS path to `/control.ashx`, `/meshrelay.ashx`, `/sshterminalrelay.ashx` and `/sshfilesrelay.ashx`. A reverse proxy that blocks WebSocket upgrades breaks sign-in or a tool session.
-- Browser SSO, domain URL access keys (`?key=`) and server administration are not supported by the native sign-in path. The app reports policy refusals instead of bypassing them.
+- Browser SSO and server administration are not supported by the native sign-in path. MeshCentral login-token pairs and the separate domain access key (`loginKey`) are supported; set the key in server settings. The app reports policy refusals instead of bypassing them.
 - A reverse proxy with a subpath still needs live compatibility testing.
 - Network changes, VPNs, captive portals and TLS interception can cause failures that the app reports but cannot repair.
 - No SLA, general server-version support matrix, or bug-fix timeline is provided.

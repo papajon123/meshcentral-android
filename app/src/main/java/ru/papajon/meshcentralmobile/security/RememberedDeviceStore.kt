@@ -50,7 +50,10 @@ class RememberedDeviceStore internal constructor(
         if (trust == null) return null
         if (!server.isHttps && !allowHttp) return null
         if (server.isHttps == (trust == RememberedDeviceTrust.DebugHttp)) return null
-        if (requestUrl != server.resolve("control.ashx")) return null
+        // loginKey gates the same control endpoint; no other query auth, duplicates or fragments
+        // may broaden the remembered-cookie destination.
+        if (requestUrl.queryParameterValues("key").size > 1 ||
+            requestUrl.newBuilder().removeAllQueryParameters("key").build() != server.resolve("control.ashx")) return null
         val device = get(serverUrl, username) ?: return null
         if (device.trust != trust) return null
         return Cookie.Builder().name("twofactor").value(device.cookie).hostOnlyDomain(server.host)

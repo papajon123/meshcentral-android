@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">ปลดล็อก MeshCentral Mobile</string>
+    <string name="biometric_unlock_title">ปลดล็อก MeshPilot</string>
     <string name="biometric_unlock_subtitle">ยืนยันตัวตนด้วยไบโอเมตริกของอุปกรณ์เพื่อเปิดแอป</string>
     <string name="cancel">ยกเลิก</string>
     <string name="biometric_unlock_requires_android9">ไบโอเมตริกต้องใช้ Android 9 หรือใหม่กว่า</string>
@@ -196,7 +196,7 @@
     <string name="login_title">เข้าสู่ระบบ</string>
     <string name="login_edit_server">แก้ไขที่อยู่เซิร์ฟเวอร์</string>
     <string name="login_username">ชื่อผู้ใช้</string>
-    <string name="login_password">รหัสผ่านหรือโทเค็นเข้าสู่ระบบ</string>
+    <string name="login_password">รหัสผ่านหรือรหัสผ่านโทเค็น</string>
     <string name="login_password_show">แสดงรหัสผ่าน</string>
     <string name="login_password_hide">ซ่อนรหัสผ่าน</string>
     <string name="login_two_factor_title">ต้องใช้รหัสยืนยัน</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">ลบการเข้าสู่ระบบที่บันทึกไว้แล้ว</string>
     <string name="settings_section_about">เกี่ยวกับแอป</string>
     <string name="settings_section_about_subtitle">ข้อมูลบิลด์</string>
+    <string name="settings_about_independent">MeshPilot เป็นไคลเอนต์อิสระสำหรับเซิร์ฟเวอร์ MeshCentral ไม่มีความเกี่ยวข้องกับโครงการ MeshCentral และไม่ได้รับการรับรองจากโครงการดังกล่าว โปรดรายงานปัญหาของแอปนี้ที่ github.com/papajon123/meshcentral-android/issues ไม่ใช่ทีม MeshCentral</string>
     <string name="settings_version">เวอร์ชัน %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· บิลด์ดีบัก</string>
     <string name="settings_debug_webview">WebView สำหรับดีบัก</string>

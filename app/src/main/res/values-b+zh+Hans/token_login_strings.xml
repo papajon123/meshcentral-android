@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">使用登录令牌</string>
+    <string name="token_login_help_body">在 MeshCentral 中，打开“我的账户”→“登录令牌”并创建一个令牌。在“用户名”中输入该令牌的用户名（~t:…），在“密码”中输入令牌密码。请勿使用账户用户名或双重验证码。</string>
+    <string name="server_login_key_label">服务器访问密钥（可选）</string>
+    <string name="server_login_key_help">如果服务器链接包含 ?key=…，请在此处仅输入该密钥。这与登录令牌不同。</string>
+    <string name="login_server_settings">服务器设置</string>
+    <string name="token_login_key_required">此服务器需要访问密钥。打开“服务器设置”，并输入服务器链接中的密钥（?key=…）。</string>
+</resources>

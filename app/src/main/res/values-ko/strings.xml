@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">MeshCentral Mobile 잠금 해제</string>
+    <string name="biometric_unlock_title">MeshPilot 잠금 해제</string>
     <string name="biometric_unlock_subtitle">앱을 열려면 기기 생체 인증으로 본인을 확인하세요.</string>
     <string name="cancel">취소</string>
     <string name="biometric_unlock_requires_android9">생체 인증에는 Android 9 이상이 필요합니다.</string>
@@ -196,7 +196,7 @@
     <string name="login_title">로그인</string>
     <string name="login_edit_server">서버 주소 변경</string>
     <string name="login_username">사용자 이름</string>
-    <string name="login_password">비밀번호 또는 로그인 토큰</string>
+    <string name="login_password">비밀번호 또는 토큰 비밀번호</string>
     <string name="login_password_show">비밀번호 표시</string>
     <string name="login_password_hide">비밀번호 숨기기</string>
     <string name="login_two_factor_title">확인 코드가 필요합니다</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">저장된 로그인 정보를 삭제했습니다.</string>
     <string name="settings_section_about">앱 정보</string>
     <string name="settings_section_about_subtitle">빌드 정보</string>
+    <string name="settings_about_independent">MeshPilot은 MeshCentral 서버용 독립 클라이언트입니다. MeshCentral 프로젝트와 제휴하지 않으며 해당 프로젝트의 승인도 받지 않았습니다. 이 앱의 문제는 MeshCentral 팀이 아니라 github.com/papajon123/meshcentral-android/issues에 보고해 주세요.</string>
     <string name="settings_version">버전 %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· 디버그 빌드</string>
     <string name="settings_debug_webview">디버그 WebView</string>

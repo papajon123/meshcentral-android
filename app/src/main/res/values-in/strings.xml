@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">Buka kunci MeshCentral Mobile</string>
+    <string name="biometric_unlock_title">Buka kunci MeshPilot</string>
     <string name="biometric_unlock_subtitle">Konfirmasi identitas Anda dengan biometrik perangkat untuk membuka aplikasi.</string>
     <string name="cancel">Batal</string>
     <string name="biometric_unlock_requires_android9">Biometrik memerlukan Android 9 atau lebih baru.</string>
@@ -196,7 +196,7 @@
     <string name="login_title">Masuk</string>
     <string name="login_edit_server">Ubah alamat server</string>
     <string name="login_username">Nama pengguna</string>
-    <string name="login_password">Kata sandi atau token login</string>
+    <string name="login_password">Kata sandi atau kata sandi token</string>
     <string name="login_password_show">Tampilkan kata sandi</string>
     <string name="login_password_hide">Sembunyikan kata sandi</string>
     <string name="login_two_factor_title">Kode verifikasi diperlukan</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">Login tersimpan dihapus.</string>
     <string name="settings_section_about">Tentang aplikasi</string>
     <string name="settings_section_about_subtitle">Informasi build</string>
+    <string name="settings_about_independent">MeshPilot adalah klien independen untuk server MeshCentral. Aplikasi ini tidak berafiliasi dengan proyek MeshCentral dan tidak didukung olehnya. Silakan laporkan masalah pada aplikasi ini di github.com/papajon123/meshcentral-android/issues, bukan kepada tim MeshCentral.</string>
     <string name="settings_version">Versi %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· build debug</string>
     <string name="settings_debug_webview">WebView debug</string>

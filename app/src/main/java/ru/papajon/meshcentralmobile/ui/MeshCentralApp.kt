@@ -327,7 +327,7 @@ fun MeshCentralApp(
                     sessionViewModel.switchProfile(profiles.first { it.id != id }.id)
                     loginDismissed = false
                 }
-                SecureVault(context, id).clearCredentials()
+                SecureVault(context, id).apply { clearCredentials(); clearLoginKey() }
                 NotificationController.disableLocal(context, id)
                 RecentDevicesStore(context, id).clearProfile()
                 settingsRepository.removeProfile(id)
@@ -372,6 +372,8 @@ fun MeshCentralApp(
     if (!settings.onboardingCompleted || !serverUrlIsValid) {
         OnboardingScreen(
             settings = settings,
+            initialLoginKey = profileVault.getLoginKey(settings.serverUrl).orEmpty(),
+            onLoginKeySaved = { url, key -> profileVault.saveLoginKey(url, key) },
             // Saving the server is the single action of the onboarding flow: it also ends it.
             onServerUrlSaved = { url ->
                 settingsRepository.updateServerUrl(url)
@@ -387,6 +389,11 @@ fun MeshCentralApp(
         ModalBottomSheet(onDismissRequest = { editingServer = false }) {
             ServerSettingsScreen(
                 settings = settings,
+                initialLoginKey = profileVault.getLoginKey(settings.serverUrl).orEmpty(),
+                onLoginKeySaved = { url, key ->
+                    if (profileVault.getLoginKey(url).orEmpty() != key) meshClient.logout(clearStoredCredentials = false)
+                    profileVault.saveLoginKey(url, key)
+                },
                 pinnedSpkiSha256 = activeProfile.pinnedSpkiSha256,
                 onForgetServerKey = certificateApproval::requestForget,
                 rememberedDeviceExpiresAt = clientState.rememberedDeviceExpiresAt,
@@ -415,6 +422,7 @@ fun MeshCentralApp(
             serverUrl = settings.serverUrl,
             onContinueWithoutSignIn = { loginDismissed = true },
             onEditServer = { managingProfiles = true },
+            onEditServerSettings = { editingServer = true },
             confirmingCertificateReplacement = certificateApproval.pendingReplacement == clientState.certificateFailure &&
                 clientState.certificateFailure != null,
             onTrustCertificate = { failure ->

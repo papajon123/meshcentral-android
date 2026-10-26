@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">Dùng mã thông báo đăng nhập</string>
+    <string name="token_login_help_body">Trong MeshCentral, mở “Tài khoản của tôi” → “Mã thông báo đăng nhập” và tạo một mã thông báo. Nhập tên người dùng của mã thông báo (~t:…) vào “Tên người dùng” và mật khẩu của mã thông báo vào “Mật khẩu”. Không dùng tên người dùng của tài khoản bạn hoặc mã xác thực hai bước.</string>
+    <string name="server_login_key_label">Khóa truy cập máy chủ (không bắt buộc)</string>
+    <string name="server_login_key_help">Nếu liên kết máy chủ của bạn có ?key=…, chỉ nhập khóa đó ở đây. Khóa này tách biệt với mã thông báo đăng nhập.</string>
+    <string name="login_server_settings">Cài đặt máy chủ</string>
+    <string name="token_login_key_required">Máy chủ này yêu cầu khóa truy cập. Mở “Cài đặt máy chủ” và nhập khóa từ liên kết máy chủ của bạn (?key=…).</string>
+</resources>

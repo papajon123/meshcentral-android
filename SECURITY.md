@@ -34,6 +34,15 @@ Out of scope: vulnerabilities in MeshCentral itself (report them to the upstream
 These properties are implemented in the current source tree:
 
 - Credentials are persisted only after the server accepts the login, encrypted with AES-GCM using a non-exportable Android Keystore key.
+- An explicitly entered MeshCentral login token is a generated `~t:` username and token password pair;
+  it uses the same encrypted credential storage as an account password. It is not a TOTP secret.
+- The optional server `loginKey` is a separate encrypted setting, scoped to the profile and normalized
+  HTTPS endpoint (HTTP only in debug builds). It is not part of public profile metadata or saved UI
+  state. Only that endpoint's `control.ashx` request receives it as `?key=`, never a relay or WebView.
+  The draft key cannot follow an edited endpoint; deleting a profile removes its key. Pasting a server
+  link separates its key into the masked field. Only query-free, credential-free endpoint drafts can
+  enter saved UI state. Account logout keeps this server setting; clearing the key field and saving
+  removes it. URLs containing it must not be logged.
 - The PIN is salted and hashed with PBKDF2-HMAC-SHA256 (120,000 iterations, 256-bit output), then encrypted with the same Keystore key. Verification happens locally.
 - Session and relay cookies are kept in memory. Android backup and device-to-device transfer are disabled for app data.
 - The optional **Remember this device** 2FA cookie is stored separately in `SecureVault`, encrypted with
@@ -41,7 +50,8 @@ These properties are implemented in the current source tree:
   advertised lifetime, expiry and issuing connection's trust mode (platform trust or the pinned SPKI)
   are encrypted alongside it, within the profile namespace. It is only
   requested after an accepted code-based sign-in with the default-checked option enabled. No TOTP
-  secret or MeshCentral login token is saved. The username and password are still required on each login.
+  secret is saved, and remembering does not create a MeshCentral login token. The username and password
+  (or an explicitly entered login-token pair) are still required on each login.
 - Remembered-device cookies are sent only to that account's exact HTTPS `control.ashx` endpoint (HTTP
   only in debug builds), never to relays, other hosts/ports/domain paths or WebView. Expired cookies and
   server-rejected cookies are discarded. A cookie is eligible only under the same trust mode and,

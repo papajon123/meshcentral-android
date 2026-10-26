@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">MeshCentral Mobile kilidini aç</string>
+    <string name="biometric_unlock_title">MeshPilot kilidini aç</string>
     <string name="biometric_unlock_subtitle">Uygulamayı açmak için cihaz biyometrisiyle kimliğinizi doğrulayın.</string>
     <string name="cancel">İptal</string>
     <string name="biometric_unlock_requires_android9">Biyometri Android 9 veya üzerini gerektirir.</string>
@@ -196,7 +196,7 @@
     <string name="login_title">Oturum açma</string>
     <string name="login_edit_server">Sunucu adresini değiştir</string>
     <string name="login_username">Kullanıcı adı</string>
-    <string name="login_password">Parola veya oturum açma belirteci</string>
+    <string name="login_password">Parola veya belirteç parolası</string>
     <string name="login_password_show">Parolayı göster</string>
     <string name="login_password_hide">Parolayı gizle</string>
     <string name="login_two_factor_title">Doğrulama kodu gerekli</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">Kaydedilmiş oturum açma silindi.</string>
     <string name="settings_section_about">Uygulama hakkında</string>
     <string name="settings_section_about_subtitle">Derleme bilgileri</string>
+    <string name="settings_about_independent">MeshPilot, MeshCentral sunucuları için bağımsız bir istemcidir. MeshCentral projesiyle bağlantılı değildir ve bu proje tarafından onaylanmamıştır. Lütfen bu uygulamayla ilgili sorunları MeshCentral ekibine değil, github.com/papajon123/meshcentral-android/issues adresine bildirin.</string>
     <string name="settings_version">Sürüm %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· hata ayıklama derlemesi</string>
     <string name="settings_debug_webview">WebView hata ayıklama</string>

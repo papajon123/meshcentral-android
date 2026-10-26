@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">Gunakan token login</string>
+    <string name="token_login_help_body">Di MeshCentral, buka «Akun Saya» → «Token Login» dan buat token. Masukkan nama pengguna token (~t:…) di «Nama pengguna» dan kata sandi token di «Kata sandi». Jangan gunakan nama pengguna akun Anda atau kode dua faktor.</string>
+    <string name="server_login_key_label">Kunci akses server (opsional)</string>
+    <string name="server_login_key_help">Jika tautan server Anda berisi ?key=…, masukkan hanya kunci tersebut di sini. Ini terpisah dari token login.</string>
+    <string name="login_server_settings">Setelan server</string>
+    <string name="token_login_key_required">Server ini memerlukan kunci akses. Buka «Setelan server» dan masukkan kunci dari tautan server Anda (?key=…).</string>
+</resources>

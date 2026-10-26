@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">استفاده از توکن ورود</string>
+    <string name="token_login_help_body">در MeshCentral، «حساب من» → «توکن‌های ورود» را باز کنید و یک توکن بسازید. نام کاربری توکن (&#x2066;~t:…&#x2069;) را در «نام کاربری» و گذرواژه توکن را در «گذرواژه» وارد کنید. از نام کاربری حساب خود یا کد تأیید دو مرحله‌ای استفاده نکنید.</string>
+    <string name="server_login_key_label">کلید دسترسی سرور (اختیاری)</string>
+    <string name="server_login_key_help">اگر پیوند سرور شما شامل &#x2066;?key=…&#x2069; است، فقط همان کلید را اینجا وارد کنید. این مورد از توکن ورود جداست.</string>
+    <string name="login_server_settings">تنظیمات سرور</string>
+    <string name="token_login_key_required">این سرور به کلید دسترسی نیاز دارد. «تنظیمات سرور» را باز کنید و کلید را از پیوند سرور خود وارد کنید (&#x2066;?key=…&#x2069;).</string>
+</resources>

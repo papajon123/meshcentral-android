@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">Oturum açma belirteci kullan</string>
+    <string name="token_login_help_body">MeshCentral\'da “Hesabım” → “Oturum Açma Belirteçleri” bölümünü açın ve bir belirteç oluşturun. “Kullanıcı adı” alanına belirtecin kullanıcı adını (~t:…), “Parola” alanına belirteç parolasını girin. Hesabınızın kullanıcı adını veya iki faktörlü kodu kullanmayın.</string>
+    <string name="server_login_key_label">Sunucu erişim anahtarı (isteğe bağlı)</string>
+    <string name="server_login_key_help">Sunucu bağlantınız ?key=… içeriyorsa buraya yalnızca o anahtarı girin. Bu, oturum açma belirtecinden ayrıdır.</string>
+    <string name="login_server_settings">Sunucu ayarları</string>
+    <string name="token_login_key_required">Bu sunucu bir erişim anahtarı gerektiriyor. Sunucu ayarlarını açın ve sunucu bağlantınızdaki anahtarı girin (?key=…).</string>
+</resources>

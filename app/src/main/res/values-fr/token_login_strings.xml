@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">Utiliser un jeton de connexion</string>
+    <string name="token_login_help_body">Dans MeshCentral, ouvrez « Mon compte » → « Jetons de connexion » et créez un jeton. Saisissez le nom d’utilisateur du jeton (~t:…) dans « Nom d’utilisateur » et le mot de passe du jeton dans « Mot de passe ». N’utilisez pas le nom d’utilisateur de votre compte ni un code de vérification à deux facteurs.</string>
+    <string name="server_login_key_label">Clé d’accès au serveur (facultatif)</string>
+    <string name="server_login_key_help">Si le lien de votre serveur contient ?key=…, saisissez uniquement cette clé ici. Elle est distincte d’un jeton de connexion.</string>
+    <string name="login_server_settings">Paramètres du serveur</string>
+    <string name="token_login_key_required">Ce serveur exige une clé d’accès. Ouvrez « Paramètres du serveur » et saisissez la clé du lien de votre serveur (?key=…).</string>
+</resources>

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name" translatable="false">MeshCentral Mobile</string>
-    <string name="biometric_unlock_title">Unlock MeshCentral Mobile</string>
+    <string name="app_name" translatable="false">MeshPilot</string>
+    <string name="biometric_unlock_title">Unlock MeshPilot</string>
     <string name="biometric_unlock_subtitle">Confirm your identity with device biometrics to open the app.</string>
     <string name="cancel">Cancel</string>
     <string name="biometric_unlock_requires_android9">Biometrics require Android 9 or newer.</string>
@@ -197,7 +197,7 @@
     <string name="login_title">Sign in</string>
     <string name="login_edit_server">Change server address</string>
     <string name="login_username">Username</string>
-    <string name="login_password">Password or sign-in token</string>
+    <string name="login_password">Password or token password</string>
     <string name="login_password_show">Show password</string>
     <string name="login_password_hide">Hide password</string>
     <string name="login_two_factor_title">Verification code required</string>
@@ -269,6 +269,7 @@
     <string name="settings_session_cleared">Saved sign-in removed.</string>
     <string name="settings_section_about">About</string>
     <string name="settings_section_about_subtitle">Build information</string>
+    <string name="settings_about_independent">MeshPilot is an independent client for MeshCentral servers. It is not affiliated with or endorsed by the MeshCentral project. Please report problems with this app at github.com/papajon123/meshcentral-android/issues, not to the MeshCentral team.</string>
     <string name="settings_version">Version %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· debug build</string>
     <string name="settings_debug_webview">Debug WebView</string>

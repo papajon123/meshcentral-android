@@ -41,12 +41,16 @@ fun OnboardingScreen(
     onServerUrlSaved: (String) -> Unit,
     onAllowHttpInDebugChanged: (Boolean) -> Unit,
     onTrustSelfSignedChanged: (Boolean) -> Unit,
+    initialLoginKey: String = "",
+    onLoginKeySaved: ((String, String) -> Unit)? = null,
 ) {
     ServerSettingsScreen(
         settings = settings,
         onServerUrlSaved = onServerUrlSaved,
         onAllowHttpInDebugChanged = onAllowHttpInDebugChanged,
         onTrustSelfSignedChanged = onTrustSelfSignedChanged,
+        initialLoginKey = initialLoginKey,
+        onLoginKeySaved = onLoginKeySaved,
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .windowInsetsPadding(WindowInsets.systemBars),

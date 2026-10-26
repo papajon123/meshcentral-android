@@ -1,6 +1,11 @@
 name: Bug report
 description: Report a reproducible problem without credentials or private device data.
 body:
+  - type: markdown
+    attributes:
+      value: |
+        MeshPilot is an independent app, not part of the MeshCentral project. Report problems with this app here;
+        report MeshCentral server or agent problems to the MeshCentral project.
   - type: input
     id: version
     attributes:

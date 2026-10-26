@@ -1,12 +1,12 @@
 # MeshCentral on Android: comparison
 
-As of **2026-10-26**. Our column describes the **0.8.0 release candidate (code 19), not a published APK**.
+As of **2026-10-26**. Our column describes the published **0.8.2 prerelease (code 21)**.
 Competitor columns describe the linked public sources checked on that date, not hands-on tests.
 **Not stated** means not found in those descriptions; it does not mean absent.
 **Partial** identifies a concrete capability or acceptance limit, not a claim of complete parity.
 A client manages other devices from a phone; an agent makes that phone a managed device.
 
-| Capability | MeshCentral Mobile 0.8.0 candidate | PocketMesh [P] | MeshControl Pro [M] | Official Android agent [A] |
+| Capability | MeshPilot 0.8.2 | PocketMesh [P] | MeshControl Pro [M] | Official Android agent [A] |
 |---|---|---|---|---|
 | Role, source and price | Independent client; Apache 2.0; free, no ads/analytics [1] | Client; closed source; currently free | Client; proprietary distribution; 15-day trial, then advertised €4.89/month or €48.99/year | Agent, not a control client; Apache 2.0 |
 | Distribution and updates | GitHub APKs; opt-in daily/manual checks, browser download, no automatic installation [2] | GitHub APK; checks every 12 hours | Google Play | Google Play or GitHub APK/AAB |
@@ -14,6 +14,7 @@ A client manages other devices from a phone; an agent makes that phone a managed
 | Self-signed/private-CA server | Explicit SHA-256 public-key approval and per-profile pinning in all builds; rejection stops requests [3] | Not stated | Self-signed support advertised | Agent pairing/trust model; not comparable to a client's sign-in |
 | Profiles, search and app lock | Up to 20 server profiles; favorites, recent devices, search; PIN/biometrics [4] | Multiple servers; biometric lock | Multiple servers, groups, search; fingerprint | Not a multi-server control client |
 | Computer desktop | Touch/trackpad, two-finger right click, clipboard text, monitors, fixed shortcuts and up to 12 saved combinations/profile [5] | Trackpad, gestures, key combinations, text | Gestures, special keys, saved combinations, rotation | Not a computer-control client |
+| Stylus / S Pen | Pen as an absolute mouse in every pointer mode: hover moves the cursor without clicking, side-button right/middle clicks, eraser as the right button, palm rejection; precise tap/hold/swipe on phones with remote input. **Partial:** no pressure or tilt (not carried by the MeshCentral protocol); emulator-tested, physical S Pen acceptance pending [12] | Not stated | Not stated | Not a control client |
 | Phone screen and battery | Screen viewing after Android capture consent; battery and cached system/network details. Emulator/file evidence; broad physical-phone acceptance pending [6] | Phone-specific support not stated | Phone-specific support not stated | Shares screen after consent; reports battery/system/network |
 | Phone touch/navigation/text | **Requires modified input-capable agent**, enabled accessibility and sufficient rights; support is not yet upstream [6] | Not stated | Not stated | **View-only**; no touch, swipe or typing |
 | Phone actions | **Partial:** confirmed vibration/flashlight/message/link/dial requests with rights checks; sent does not mean executed, hardware effects remain unverified [6] | Not stated | Not stated | Notifications and limited console commands |
@@ -32,8 +33,9 @@ A client manages other devices from a phone; an agent makes that phone a managed
 ## Evidence for this app
 
 Each numbered note gives production code and a validation report. Source availability or a passing
-unit test does **not** establish live support on every agent, OS or physical device. Current candidate
-checks and remaining release gates are recorded in [0.8.0 validation](RELEASE_0_8_0_VALIDATION.md).
+unit test does **not** establish live support on every agent, OS or physical device. Candidate checks
+are recorded in [0.8.0 validation](RELEASE_0_8_0_VALIDATION.md); published releases and remaining acceptance in
+[0.8.1 and 0.8.2 release validation](RELEASE_0_8_2_VALIDATION.md).
 Historical reports keep their original versions; newer scoped evidence supersedes only matching claims.
 
 1. [License](../LICENSE), [dependencies and package](../app/build.gradle.kts), [privacy](../PRIVACY.md);
@@ -85,6 +87,9 @@ Historical reports keep their original versions; newer scoped evidence supersede
     [candidate notification TLS tests](RELEASE_0_8_0_VALIDATION.md#scope-and-evidence).
 11. [Localized resources](../app/src/main/res/), [translation verifier](../ci/check_translations.py),
     [candidate translation results](RELEASE_0_8_0_VALIDATION.md#checks).
+12. [Stylus controller](../app/src/main/java/ru/papajon/meshcentralmobile/mesh/StylusInputController.kt),
+    [canvas input](../app/src/main/java/ru/papajon/meshcentralmobile/ui/screens/session/StylusCanvasInput.kt),
+    [design and limits](STYLUS.md), [0.8.2 device checks](RELEASE_0_8_2_VALIDATION.md#082).
 
 ## Public sources
 
@@ -99,6 +104,8 @@ Historical reports keep their original versions; newer scoped evidence supersede
 - **[A] Official agent:** [upstream README](https://github.com/Ylianst/MeshCentralAndroidAgent#readme).
   It explicitly states that remote desktop is view-only. Our conditional control support must not be
   read as an upstream agent release announcement.
+
+Stylus support was checked against the same sources on 2026-10-26; none of them mentions pen, stylus or S Pen input.
 
 The MeshCentral web panel remains the reference for server administration and tools this client does
 not implement; see [why use a mobile client](../README.md#why-not-just-the-web-panel). This comparison

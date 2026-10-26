@@ -1,8 +1,11 @@
-<h1 align="center"><img src="docs/assets/header.png" alt="MeshCentral Mobile" width="100%"></h1>
+<h1 align="center"><img src="docs/assets/header.png" alt="MeshPilot" width="100%"></h1>
 
 <p align="center"><a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.ru.md"><strong>Русский</strong></a></p>
 
 <p align="center"><strong>Независимый Android-клиент для вашего сервера MeshCentral: компьютеры, рабочий стол, терминал, файлы, SSH и SFTP с телефона или планшета.</strong></p>
+
+> [!NOTE]
+> **MeshPilot — независимое стороннее приложение** (раньше называлось «MeshCentral Mobile»). Оно не связано с проектом MeshCentral и его разработчиками, не одобрено и не поддерживается ими. О проблемах с приложением сообщайте в [вопросах этого репозитория](https://github.com/papajon123/meshcentral-android/issues), а не команде MeshCentral.
 
 <p align="center">
   <a href="https://github.com/papajon123/meshcentral-android/releases"><strong>Скачать APK</strong></a>

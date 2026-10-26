@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -34,6 +35,7 @@ import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
+import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -62,6 +64,7 @@ import ru.papajon.meshcentralmobile.model.AppSettings
 import ru.papajon.meshcentralmobile.ui.components.MeshNavigationBar
 import ru.papajon.meshcentralmobile.ui.screens.LoginContent
 import ru.papajon.meshcentralmobile.ui.screens.OnboardingScreen
+import ru.papajon.meshcentralmobile.ui.screens.ServerSettingsScreen
 import ru.papajon.meshcentralmobile.ui.theme.MeshCentralMobileTheme
 
 /**
@@ -74,6 +77,60 @@ import ru.papajon.meshcentralmobile.ui.theme.MeshCentralMobileTheme
 class AdaptiveLayoutTest {
     @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
     private val app get() = InstrumentationRegistry.getInstrumentation().targetContext
+
+    @Test fun loginTokenGuidanceFitsNarrowLargeTextAndRtlLayouts() {
+        val state = AdaptiveState("en", 360, 640, 1f)
+        show(state) { LoginContent(MeshClientState(), DEMO_SERVER_URL) }
+        compose.onNodeWithTag("login-token-help").performScrollTo().performClick()
+        for ((language, width, height, scale) in tokenLayouts) {
+            compose.runOnIdle { state.language = language; state.widthDp = width; state.heightDp = height; state.fontScale = scale }
+            val context = localizedContext(language, width, height, scale)
+            compose.onNodeWithTag("login-token-instructions").performScrollTo().assertIsDisplayed()
+            assertGlyphsFit(context.getString(R.string.token_login_help_body), "token help $language")
+            snapshotViewport("token-help-$language-$width-$height")
+            val action = compose.onNodeWithTag("login-token-help").performScrollTo()
+            action.assertIsDisplayed()
+            assertGlyphsFit(context.getString(R.string.token_login_help_title), "token help action $language")
+            assertFullyInsideViewport(action, "token help action $language")
+        }
+    }
+
+    @Test fun serverAccessKeyAndSaveStayReachableAcrossLayouts() {
+        val state = AdaptiveState("en", 360, 640, 1f)
+        var saved = 0
+        show(state) {
+            ServerSettingsScreen(AppSettings(serverUrl = DEMO_SERVER_URL), { saved++ }, {}, {},
+                onLoginKeySaved = { _, _ -> })
+        }
+        for ((language, width, height, scale) in tokenLayouts) {
+            compose.runOnIdle { state.language = language; state.widthDp = width; state.heightDp = height; state.fontScale = scale }
+            val context = localizedContext(language, width, height, scale)
+            compose.onNodeWithTag("server-login-key").performScrollTo().assertIsDisplayed()
+            assertGlyphsFit(context.getString(R.string.server_login_key_label), "key label $language")
+            assertGlyphsFit(context.getString(R.string.server_login_key_help), "key help $language")
+            snapshotViewport("server-key-$language-$width-$height")
+            val save = compose.onNodeWithText(context.getString(R.string.server_save)).performScrollTo()
+            save.assertIsDisplayed()
+            assertFullyInsideViewport(save, "key save $language")
+            save.performClick()
+        }
+        compose.runOnIdle { assertEquals(tokenLayouts.size, saved) }
+    }
+
+    private data class TokenLayout(val language: String, val width: Int, val height: Int, val scale: Float)
+    private val tokenLayouts = listOf(
+        TokenLayout("en", 360, 640, 1f), TokenLayout("ru", 320, 480, 2f),
+        TokenLayout("ar", 320, 480, 2f), TokenLayout("zh-Hans", 360, 640, 1f),
+        TokenLayout("en", 640, 320, 1.3f),
+    )
+
+    private fun snapshotViewport(name: String) {
+        compose.onNodeWithTag(VIEWPORT_TAG).captureToImage().asAndroidBitmap().let { image ->
+            File(app.cacheDir, "token-layout-$name.png").outputStream().use {
+                check(image.compress(Bitmap.CompressFormat.PNG, 100, it))
+            }
+        }
+    }
 
     @Test
     fun onboardingSetupAt320x480WithFont2StaysReachableInRuDeAr() {

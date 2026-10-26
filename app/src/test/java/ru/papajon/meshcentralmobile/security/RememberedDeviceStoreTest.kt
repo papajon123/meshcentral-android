@@ -68,6 +68,14 @@ class RememberedDeviceStoreTest {
         assertNotNull(store.cookieForRequest(server, "alice", target, true, RememberedDeviceTrust.DebugHttp))
     }
 
+    @Test fun accessKeyDoesNotPreventRememberingButOtherQueriesStillDo() {
+        store.save(SERVER, "alice", "fixture-cookie", 30, RememberedDeviceTrust.Platform)
+        assertEquals("fixture-cookie", cookie("https://example.test/team/control.ashx?key=syntheticKey")?.value)
+        listOf("?key=synthetic&auth=other", "?key=one&key=two", "?key=synthetic#fragment").forEach {
+            assertNull(cookie("https://example.test/team/control.ashx$it"))
+        }
+    }
+
     @Test fun expiredCookieIsNotSentEvenWithoutReadingStatusFirst() {
         store.save(SERVER, "alice", "fixture-cookie", 1, RememberedDeviceTrust.Platform)
         now = 86_401_000L

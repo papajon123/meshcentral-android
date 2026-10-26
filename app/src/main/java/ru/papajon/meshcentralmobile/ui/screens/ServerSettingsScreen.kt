@@ -42,6 +42,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +56,7 @@ import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.BuildConfig
@@ -63,6 +65,8 @@ import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.model.AppSettings
 import ru.papajon.meshcentralmobile.settings.ServerUrlValidator
+import ru.papajon.meshcentralmobile.settings.ServerAddressInput
+import ru.papajon.meshcentralmobile.security.CredentialScope
 import ru.papajon.meshcentralmobile.ui.components.IconBadge
 import ru.papajon.meshcentralmobile.ui.components.SectionHeader
 import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
@@ -88,8 +92,15 @@ fun ServerSettingsScreen(
     onForgetServerKey: () -> Unit = {},
     rememberedDeviceExpiresAt: Long? = null,
     onForgetRememberedDevice: () -> Unit = {},
+    initialLoginKey: String = "",
+    onLoginKeySaved: ((String, String) -> Unit)? = null,
 ) {
-    var serverUrl by rememberSaveable(settings.serverUrl) { mutableStateOf(settings.serverUrl) }
+    var serverUrl by rememberSaveable(settings.serverUrl, stateSaver = ServerAddressDraftSaver) { mutableStateOf(settings.serverUrl) }
+    // Keep a draft bound to its endpoint even when the user edits the address away and back.
+    // Neither this key nor its scope enters SavedState/Bundle.
+    var loginKey by remember(settings.serverUrl) { mutableStateOf(initialLoginKey) }
+    var loginKeyServer by remember(settings.serverUrl) { mutableStateOf(settings.serverUrl) }
+    val scopedLoginKey = loginKey.takeIf { CredentialScope.matches(loginKeyServer, serverUrl) }.orEmpty()
     var validationMessageId by rememberSaveable { mutableStateOf<Int?>(null) }
     var savedMessageId by rememberSaveable { mutableStateOf<Int?>(null) }
     val validationMessage = validationMessageId?.let { UiText.Resource(it) }
@@ -117,11 +128,34 @@ fun ServerSettingsScreen(
                     serverUrl = serverUrl,
                     validationMessage = validationMessage,
                     onUrlChange = {
-                        serverUrl = it
+                        // Import a pasted link, while ordinary typing keeps the validator's feedback.
+                        val replacesAddress = it.length - serverUrl.length > 1 || !it.startsWith(serverUrl)
+                        val input = if (onLoginKeySaved != null && replacesAddress) ServerAddressInput.split(it)
+                            else ServerAddressInput.Parsed(it, null)
+                        serverUrl = input.address
+                        if (input.loginKey != null) {
+                            loginKeyServer = input.address
+                            loginKey = input.loginKey
+                        }
                         validationMessageId = null
                         savedMessageId = null
                     },
                 )
+
+                if (onLoginKeySaved != null) {
+                    OutlinedTextField(
+                        value = scopedLoginKey,
+                        onValueChange = { if (it.length <= 8192) { loginKeyServer = serverUrl; loginKey = it } },
+                        modifier = Modifier.fillMaxWidth().testTag("server-login-key"),
+                        label = { Text(stringResource(R.string.server_login_key_label)) },
+                        supportingText = { Text(stringResource(R.string.server_login_key_help)) },
+                        singleLine = true,
+                        visualTransformation = PasswordVisualTransformation(),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done),
+                        textStyle = MaterialTheme.typography.bodyLarge.copy(textDirection = TextDirection.Ltr),
+                        shape = MaterialTheme.shapes.small,
+                    )
+                }
 
                 Button(
                     onClick = {
@@ -132,6 +166,7 @@ fun ServerSettingsScreen(
                         validationMessageId = (error as? UiText.Resource)?.id
                         savedMessageId = null
                         if (error == null) {
+                            onLoginKeySaved?.invoke(serverUrl.trim(), scopedLoginKey)
                             onServerUrlSaved(serverUrl.trim())
                             savedMessageId = R.string.server_saved
                         }
@@ -181,6 +216,11 @@ fun ServerSettingsScreen(
         }
     }
 }
+
+private val ServerAddressDraftSaver = Saver<String, String>(
+    save = { ServerAddressInput.restorableDraft(it) },
+    restore = { it },
+)
 
 @Composable
 private fun RememberedDeviceStatus(expiresAt: Long?, onForget: () -> Unit) {

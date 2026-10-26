@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">Anmeldetoken verwenden</string>
+    <string name="token_login_help_body">Öffnen Sie in MeshCentral „Mein Konto“ → „Anmeldetoken“ und erstellen Sie einen Token. Geben Sie den Benutzernamen des Tokens (~t:…) unter „Benutzername“ und das Token-Passwort unter „Passwort“ ein. Verwenden Sie weder den Benutzernamen Ihres Kontos noch einen Zwei-Faktor-Code.</string>
+    <string name="server_login_key_label">Server-Zugriffsschlüssel (optional)</string>
+    <string name="server_login_key_help">Wenn Ihr Serverlink ?key=… enthält, geben Sie hier nur diesen Schlüssel ein. Er ist nicht mit einem Anmeldetoken identisch.</string>
+    <string name="login_server_settings">Servereinstellungen</string>
+    <string name="token_login_key_required">Dieser Server erfordert einen Zugriffsschlüssel. Öffnen Sie die „Servereinstellungen“ und geben Sie den Schlüssel aus Ihrem Serverlink ein (?key=…).</string>
+</resources>

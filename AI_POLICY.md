@@ -1,6 +1,6 @@
 # AI Policy
 
-This page describes how MeshCentral Mobile is written and checked, and the rules for contributions made with AI tools.
+This page describes how MeshPilot is written and checked, and the rules for contributions made with AI tools.
 
 ## How the project is written
 

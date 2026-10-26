@@ -1,8 +1,11 @@
-<h1 align="center"><img src="docs/assets/header.png" alt="MeshCentral Mobile" width="100%"></h1>
+<h1 align="center"><img src="docs/assets/header.png" alt="MeshPilot" width="100%"></h1>
 
 <p align="center"><a href="README.md">English</a> · <a href="README.zh-CN.md"><strong>简体中文</strong></a> · <a href="README.ru.md">Русский</a></p>
 
 <p align="center"><strong>面向你自己的 MeshCentral 服务器的独立 Android 客户端：在手机或平板上查看计算机，并使用桌面、终端、文件、SSH 和 SFTP。</strong></p>
+
+> [!NOTE]
+> **MeshPilot 是独立的第三方应用**（原名“MeshCentral Mobile”），与 MeshCentral 项目及其开发者没有关联，也未获其认可或支持。请在[本仓库的 Issues](https://github.com/papajon123/meshcentral-android/issues) 中报告本应用的问题，而不要向 MeshCentral 团队报告。
 
 <p align="center">
   <a href="https://github.com/papajon123/meshcentral-android/releases"><strong>下载 APK</strong></a>

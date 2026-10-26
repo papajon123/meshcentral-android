@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">Déverrouillage de MeshCentral Mobile</string>
+    <string name="biometric_unlock_title">Déverrouillage de MeshPilot</string>
     <string name="biometric_unlock_subtitle">Confirmez votre identité avec la biométrie de l’appareil pour ouvrir l’application.</string>
     <string name="cancel">Annuler</string>
     <string name="biometric_unlock_requires_android9">La biométrie nécessite Android 9 ou une version ultérieure.</string>
@@ -196,7 +196,7 @@
     <string name="login_title">Connexion</string>
     <string name="login_edit_server">Modifier l’adresse du serveur</string>
     <string name="login_username">Nom d’utilisateur</string>
-    <string name="login_password">Mot de passe ou jeton de connexion</string>
+    <string name="login_password">Mot de passe ou mot de passe du jeton</string>
     <string name="login_password_show">Afficher le mot de passe</string>
     <string name="login_password_hide">Masquer le mot de passe</string>
     <string name="login_two_factor_title">Code de vérification requis</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">La connexion enregistrée a été supprimée.</string>
     <string name="settings_section_about">À propos de l’application</string>
     <string name="settings_section_about_subtitle">Informations de compilation</string>
+    <string name="settings_about_independent">MeshPilot est un client indépendant pour les serveurs MeshCentral. Il n’est ni affilié au projet MeshCentral ni approuvé par celui-ci. Veuillez signaler les problèmes liés à cette application sur github.com/papajon123/meshcentral-android/issues, et non à l’équipe MeshCentral.</string>
     <string name="settings_version">Version %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· version de débogage</string>
     <string name="settings_debug_webview">WebView de débogage</string>

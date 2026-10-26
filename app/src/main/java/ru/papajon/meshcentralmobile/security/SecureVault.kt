@@ -92,6 +92,15 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
         prefs.edit().remove("secret.$credentialKey.$label").apply()
     }
 
+    /** Server setting, separate from account credentials; never store it in profile metadata. */
+    fun saveLoginKey(serverUrl: String, value: String) {
+        if (value.isEmpty()) clearLoginKey() else saveScopedSecret("login_key", serverUrl, value)
+    }
+
+    fun getLoginKey(serverUrl: String): String? = getScopedSecret("login_key", serverUrl)
+
+    fun clearLoginKey() = clearScopedSecret("login_key")
+
     fun savePin(pin: String) {
         val salt = ByteArray(PIN_SALT_BYTES)
         random.nextBytes(salt)

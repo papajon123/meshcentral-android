@@ -1,3 +1,23 @@
+# 0.8.4 — 2026-10-26
+
+- Same app as 0.8.3, which was built and tested but never reached GitHub Releases: the release runner can no longer reach github.com on port 22, so the snapshot upload failed. Publication now uses ssh.github.com on port 443 with the same pinned host keys.
+
+# 0.8.3 — 2026-10-26
+
+## Name and affiliation
+
+- Renamed the app from “MeshCentral Mobile” to **MeshPilot** at the request of the MeshCentral maintainers: third-party apps must not use the MeshCentral name. The package ID and repository stay the same, so updates install over existing copies.
+- Added a notice in Settings → About, the README, store listings, release notes and issue forms: MeshPilot is an independent client, not affiliated with or endorsed by the MeshCentral project; report problems with the app here, not to the MeshCentral team.
+
+## Sign-in
+
+- Explain MeshCentral login tokens on the sign-in screen: use the generated `~t:` username and token password as a pair, with guidance in all 23 locales.
+- Support the separate server access key (`loginKey`) in server setup/settings. Store it encrypted per profile and endpoint and send it only to `control.ashx`; a missing key offers a direct path to server settings.
+
+## Memory
+
+- Recycle each decoded remote-desktop tile right after it is drawn into the frame. Over eight network-drop cycles reachable Bitmaps stayed at 10 and native memory stayed flat at equal frame size; a lifetime test checks that every decoded tile is released.
+
 # 0.8.2 — 2026-10-26
 
 ## Stylus / S Pen
@@ -112,7 +132,7 @@
 
 # Changelog
 
-Notable changes to MeshCentral Mobile. This project is an independent client and does not follow the MeshCentral server's release cycle.
+Notable changes to MeshPilot (named MeshCentral Mobile before 0.8.3). This project is an independent client and does not follow the MeshCentral server's release cycle.
 
 ## 0.7.0 — prepared 2026-10-22, not published
 

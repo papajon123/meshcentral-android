@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">使用登入權杖</string>
+    <string name="token_login_help_body">在 MeshCentral 中，開啟「我的帳戶」→「登入權杖」並建立一個權杖。在「使用者名稱」中輸入該權杖的使用者名稱（~t:…），在「密碼」中輸入權杖密碼。請勿使用帳戶使用者名稱或雙重驗證碼。</string>
+    <string name="server_login_key_label">伺服器存取金鑰（選用）</string>
+    <string name="server_login_key_help">如果伺服器連結包含 ?key=…，請只在此處輸入該金鑰。這與登入權杖不同。</string>
+    <string name="login_server_settings">伺服器設定</string>
+    <string name="token_login_key_required">此伺服器需要存取金鑰。開啟「伺服器設定」，並輸入伺服器連結中的金鑰（?key=…）。</string>
+</resources>

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="biometric_unlock_title">Разблокировка MeshCentral Mobile</string>
+    <string name="biometric_unlock_title">Разблокировка MeshPilot</string>
     <string name="biometric_unlock_subtitle">Подтвердите личность биометрией устройства, чтобы открыть приложение.</string>
     <string name="cancel">Отмена</string>
     <string name="biometric_unlock_requires_android9">Биометрия требует Android 9 или новее.</string>
@@ -196,7 +196,7 @@
     <string name="login_title">Вход</string>
     <string name="login_edit_server">Изменить адрес сервера</string>
     <string name="login_username">Имя пользователя</string>
-    <string name="login_password">Пароль или токен входа</string>
+    <string name="login_password">Пароль или пароль токена</string>
     <string name="login_password_show">Показать пароль</string>
     <string name="login_password_hide">Скрыть пароль</string>
     <string name="login_two_factor_title">Нужен код подтверждения</string>
@@ -268,6 +268,7 @@
     <string name="settings_session_cleared">Сохранённый вход удалён.</string>
     <string name="settings_section_about">О приложении</string>
     <string name="settings_section_about_subtitle">Сведения о\u00A0сборке</string>
+    <string name="settings_about_independent">MeshPilot — независимый клиент для серверов MeshCentral. Он не\u00A0связан с\u00A0проектом MeshCentral и\u00A0не\u00A0одобрен им. Сообщайте о\u00A0проблемах с\u00A0этим приложением на github.com/papajon123/meshcentral-android/issues, а не команде MeshCentral.</string>
     <string name="settings_version">Версия %1$s</string>
     <string name="settings_version_debug_suffix">\u0020· отладочная сборка</string>
     <string name="settings_debug_webview">Отладочный WebView</string>

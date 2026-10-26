@@ -865,7 +865,7 @@ class MeshCentralClient(
             it.copy(connectionState = ConnectionState.Connecting, message = UiText.Resource(R.string.runtime_opening_control_channel))
         }
         val request = Request.Builder()
-            .url(url.toWebSocketUrl("/control.ashx"))
+            .url(MeshControlEndpoint.url(url, secureVault.getLoginKey(url.toString())))
             .header(HEADER_MESH_AUTH, MeshAuth.headerValue(username, password, sessionToken))
             .tag(ControlCookieScope::class.java, ControlCookieScope(url.toString(), username))
             .build()
@@ -1371,20 +1371,6 @@ class MeshCentralClient(
         val candidate = trim()
         if (candidate.isBlank()) return null
         return (if (candidate.endsWith("/")) candidate else "$candidate/").toHttpUrlOrNull()
-    }
-
-    private fun HttpUrl.toWebSocketUrl(path: String): String {
-        val secure = isHttps
-        val httpUrl = newBuilder()
-            .encodedPath(encodedPath.trimEnd('/') + "/" + path.trimStart('/'))
-            .query(null)
-            .build()
-            .toString()
-        return when {
-            secure && httpUrl.startsWith("https://") -> "wss://" + httpUrl.removePrefix("https://")
-            !secure && httpUrl.startsWith("http://") -> "ws://" + httpUrl.removePrefix("http://")
-            else -> httpUrl
-        }
     }
 
     private data class ClipboardRequest(

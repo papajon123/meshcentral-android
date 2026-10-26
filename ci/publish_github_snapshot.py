@@ -268,7 +268,10 @@ def deployment_agent(job_env: Mapping[str, str]) -> Iterator[dict[str, str]]:
             known = Path(directory).resolve() / "known_hosts"
             known.write_text("\n".join(lines) + "\n", encoding="ascii")  # Public host pins, never the private key.
             known.chmod(0o600)
-            options = ["ssh", "-F", os.devnull, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes",
+            # Port 22 of github.com is unreachable from the release runner's network. ssh.github.com:443
+            # serves the same published host keys, which stay pinned under the github.com alias.
+            options = ["ssh", "-F", os.devnull, "-o", "HostName=ssh.github.com", "-o", "Port=443",
+                       "-o", "HostKeyAlias=github.com", "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes",
                        "-o", "UserKnownHostsFile=" + str(known), "-o", "GlobalKnownHostsFile=" + os.devnull,
                        "-o", "IdentityFile=none", "-o", "IdentitiesOnly=no", "-o", "IdentityAgent=" + env["SSH_AUTH_SOCK"],
                        "-o", "PreferredAuthentications=publickey", "-o", "PasswordAuthentication=no",

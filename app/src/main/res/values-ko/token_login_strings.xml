@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">로그인 토큰 사용</string>
+    <string name="token_login_help_body">MeshCentral에서 “내 계정” → “로그인 토큰”을 열고 토큰을 만드세요. “사용자 이름”에 토큰의 사용자 이름(~t:…)을, “비밀번호”에 토큰 비밀번호를 입력하세요. 계정 사용자 이름이나 2단계 인증 코드를 사용하지 마세요.</string>
+    <string name="server_login_key_label">서버 액세스 키(선택 사항)</string>
+    <string name="server_login_key_help">서버 링크에 ?key=…가 포함되어 있으면 해당 키만 여기에 입력하세요. 이는 로그인 토큰과 별개입니다.</string>
+    <string name="login_server_settings">서버 설정</string>
+    <string name="token_login_key_required">이 서버에는 액세스 키가 필요합니다. “서버 설정”을 열고 서버 링크의 키를 입력하세요(?key=…).</string>
+</resources>

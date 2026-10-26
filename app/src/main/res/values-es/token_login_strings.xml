@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">Usar un token de inicio de sesión</string>
+    <string name="token_login_help_body">En MeshCentral, abre «Mi cuenta» → «Tokens de inicio de sesión» y crea un token. Escribe el nombre de usuario del token (~t:…) en «Nombre de usuario» y la contraseña del token en «Contraseña». No uses el nombre de usuario de tu cuenta ni un código de verificación en dos pasos.</string>
+    <string name="server_login_key_label">Clave de acceso al servidor (opcional)</string>
+    <string name="server_login_key_help">Si el enlace del servidor contiene ?key=…, introduce solo esa clave aquí. Es independiente de un token de inicio de sesión.</string>
+    <string name="login_server_settings">Ajustes del servidor</string>
+    <string name="token_login_key_required">Este servidor requiere una clave de acceso. Abre «Ajustes del servidor» e introduce la clave del enlace del servidor (?key=…).</string>
+</resources>

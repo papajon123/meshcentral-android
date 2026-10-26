@@ -12,6 +12,20 @@ import ru.papajon.meshcentralmobile.localization.UiText
  * accepts two or three parts; a three part header answers a two-factor challenge.
  */
 class MeshAuthTest {
+    @Test fun loginTokenUsesTwoPartsAndPreservesItsUsernameCaseAndPrefix() {
+        val user = "~t:SyntheticMixedCASE"
+        val password = "synthetic-token-password"
+        val decoded = MeshAuth.headerValue(user, password).split(',').map {
+            String(java.util.Base64.getDecoder().decode(it), Charsets.UTF_8)
+        }
+        assertEquals(listOf(user, password), decoded)
+    }
+
+    @Test fun invalidOrExpiredLoginTokenIsNotASecondFactorChallenge() {
+        // 1.3.1 uses noauth-2d for x-meshauth authentication failure, including tokens.
+        assertEquals(MeshAuthFailure.BadCredentials, MeshAuthDiagnostics.classify("noauth", "noauth-2d"))
+        assertEquals(MeshAuthFailure.AccessKeyRequired, MeshAuthDiagnostics.classify("noauth", "nokey"))
+    }
     @Test
     fun buildsTwoPartHeaderForUserAndPassword() {
         assertEquals("dGVzdC11c2Vy,cHc=", MeshAuth.headerValue("test-user", "pw"))

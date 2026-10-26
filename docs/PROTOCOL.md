@@ -38,6 +38,28 @@ accepted sign-in: `userinfo` is. Verified against MeshCentral 1.3.1.
 
 Passing `**email**`, `**sms**`, or `**msg**` as the third `x-meshauth` part asks the server to send a new code; the answer is `tokenrequired` with `email2fasent`, `sms2fasent`, or `msg2fasent`.
 
+### Login tokens and server access keys (MeshCentral 1.3.1)
+
+The following references are to the **1.3.1 npm package**. A login token is two values, not a bearer
+token: **My Account → Login Tokens** calls `createLoginToken` and returns `tokenUser` (starting with
+`~t:`) plus `tokenPass` (`meshuser.js:5398-5433`). Send the pair as the first two `x-meshauth` parts,
+preserving the generated username's case. Do not use the account username with the token password.
+`authenticate` resolves the token to its owner and checks its hash/expiry (`webserver.js:614-653`);
+`loginOptions.tokenName` exempts it from second-factor verification (`webserver.js:1094-1095`,
+`1118-1119`). `tokenrequired` still means a two-factor challenge, not a request to create a login token.
+
+`showPasswordLogin: false` controls the web page's password form (`webserver.js:3768`), not this native
+header path. Token creation can be disabled or restricted by `passwordrequirements.loginTokens`
+(`meshuser.js:5402-5403`). Rejected/expired token credentials use the ordinary authentication failure.
+
+The independent `loginKey` domain setting is checked **before** header authentication on `control.ashx`
+(`webserver.js:7599-7612`). Without `?key=<value>`, even a valid token gets
+`{"action":"close","cause":"noauth","msg":"nokey"}`. Configuration accepts alphanumeric keys of
+1–128 characters (`meshcentral.js:1535-1536`). The native client stores this setting separately in
+`SecureVault`, builds the control URL with one encoded query value, and offers server settings on
+`nokey`. URL metadata remains query-free. Relay endpoints do not share this gate; they retain their
+existing authenticated-cookie mechanisms. No browser session or OIDC integration is added here.
+
 ### Remember this device (MeshCentral 1.3.1)
 
 The following references are to the audited **1.3.1 npm package**, not the 1.2.5 references above:
@@ -817,7 +839,7 @@ preventing a duplicate right click after long press. Physical touch acceptance r
 The client supports native Mesh Agent desktop, terminal and files, plus server-mediated SSH/SFTP.
 Intel AMT KVM, Web-RDP, Web-VNC and WebRTC remain unimplemented.
 
-A server that requires a domain URL access key (`?key=`), blocks tool clients with `notools`, or requires
-browser SSO may refuse the native sign-in path. The app surfaces the server's message; it does not bypass
-these policies. Verify protocol details against MeshCentral 1.2.5 or the upstream source for the version you
-run; support for other versions is not claimed.
+A domain access key (`loginKey`) is supported as described in the 1.3.1 authentication section above.
+A server that blocks tool clients with `notools` or requires browser SSO can still refuse the native
+sign-in path. The app surfaces that refusal; it does not bypass these policies. Verify each protocol
+detail against the upstream source for the server version you run; a general support matrix is not claimed.

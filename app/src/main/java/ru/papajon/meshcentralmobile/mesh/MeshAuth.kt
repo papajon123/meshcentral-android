@@ -7,9 +7,10 @@ import ru.papajon.meshcentralmobile.localization.UiText
 /**
  * `x-meshauth` header construction and control-channel failure classification.
  *
- * Verified against MeshCentral 1.2.5 `webserver.js:9165-9250`:
+ * Verified against MeshCentral 1.3.1 `webserver.js:9442-9539`:
  * the header is `base64(user),base64(password)[,base64(2fa)]`, split on `,` and base64 decoded.
- * Two parts request a two-factor challenge, three parts answer it. The special third values
+ * A login token uses its generated `~t:` username and token password as two parts, without 2FA.
+ * Account credentials may receive a two-factor challenge; three parts answer it. The special third values
  * `**email**`, `**sms**` and `**msg**` ask the server to send a fresh code before answering.
  */
 object MeshAuth {
@@ -75,7 +76,7 @@ object MeshAuthDiagnostics {
                 MeshAuthFailure.BadCredentials -> R.string.runtime_auth_bad_credentials
                 MeshAuthFailure.MalformedHeader -> R.string.runtime_auth_malformed_header
                 MeshAuthFailure.TwoFactorRequired -> R.string.runtime_auth_two_factor_required
-                MeshAuthFailure.AccessKeyRequired -> R.string.runtime_auth_access_key_required
+                MeshAuthFailure.AccessKeyRequired -> R.string.token_login_key_required
                 MeshAuthFailure.Banned -> R.string.runtime_auth_banned
                 MeshAuthFailure.ToolsDisabled -> R.string.runtime_auth_tools_disabled
                 MeshAuthFailure.EmailValidationRequired -> R.string.runtime_auth_email_validation

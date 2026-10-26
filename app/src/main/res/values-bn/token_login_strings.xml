@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">লগইন টোকেন ব্যবহার করুন</string>
+    <string name="token_login_help_body">MeshCentral-এ «আমার অ্যাকাউন্ট» → «লগইন টোকেন» খুলে একটি টোকেন তৈরি করুন। «ব্যবহারকারীর নাম» ক্ষেত্রে টোকেনের ব্যবহারকারীর নাম (~t:…) এবং «পাসওয়ার্ড» ক্ষেত্রে টোকেনের পাসওয়ার্ড লিখুন। আপনার অ্যাকাউন্টের ব্যবহারকারীর নাম বা দুই-ধাপের যাচাইকরণ কোড ব্যবহার করবেন না।</string>
+    <string name="server_login_key_label">সার্ভার অ্যাক্সেস কী (ঐচ্ছিক)</string>
+    <string name="server_login_key_help">আপনার সার্ভার লিঙ্কে ?key=… থাকলে এখানে শুধু সেই কী লিখুন। এটি লগইন টোকেন থেকে আলাদা।</string>
+    <string name="login_server_settings">সার্ভার সেটিংস</string>
+    <string name="token_login_key_required">এই সার্ভারের জন্য একটি অ্যাক্সেস কী প্রয়োজন। সার্ভার সেটিংস খুলে আপনার সার্ভার লিঙ্কের কী লিখুন (?key=…)।</string>
+</resources>

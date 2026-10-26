@@ -11,6 +11,29 @@ import ru.papajon.meshcentralmobile.settings.SettingsRepository
 import java.util.UUID
 
 class ProfileStorageTest {
+    @Test fun accessKeysAreEncryptedAndBoundToProfileAndCompleteEndpoint() {
+        val first = SecureVault(context, "first", vaultName)
+        val second = SecureVault(context, "second", vaultName)
+        val server = "https://mesh.example/team/"
+        val secret = "synthetic-access-key"
+        first.saveLoginKey(server, secret)
+        assertEquals(secret, SecureVault(context, "first", vaultName).getLoginKey(server))
+        assertNull(second.getLoginKey(server))
+        assertNull(first.getLoginKey("https://mesh.example/other/"))
+        assertNull(first.getLoginKey("https://mesh.example:4443/team/"))
+        assertNull(first.getLoginKey("http://mesh.example/team/"))
+        assertFalse(context.getSharedPreferences(vaultName, Context.MODE_PRIVATE).all.values.any {
+            it.toString().contains(secret)
+        })
+        first.clearCredentials()
+        assertEquals(secret, first.getLoginKey(server)) // A server setting survives account logout.
+        second.saveLoginKey(server, "synthetic-second-key")
+        first.clearLoginKey() // Profile deletion must clear only that profile.
+        assertNull(first.getLoginKey(server))
+        assertEquals("synthetic-second-key", second.getLoginKey(server))
+        second.saveLoginKey(server, "")
+        assertNull(second.getLoginKey(server))
+    }
     @Test fun favoriteCommandsPersistPerProfileWithTwentyItemLimit() {
         val store = SettingsRepository(context, name)
         val first = store.activeProfile.id

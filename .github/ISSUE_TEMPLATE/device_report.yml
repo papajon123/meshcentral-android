@@ -6,6 +6,11 @@ body:
   - type: markdown
     attributes:
       value: |
+        MeshPilot is an independent app, not part of the MeshCentral project. Report problems with this app here;
+        report MeshCentral server or agent problems to the MeshCentral project.
+  - type: markdown
+    attributes:
+      value: |
         Thank you for testing. Do not include server addresses, account names, device names, tokens or remote screen content.
   - type: input
     id: device

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">ใช้โทเค็นเข้าสู่ระบบ</string>
+    <string name="token_login_help_body">ใน MeshCentral ให้เปิด “บัญชีของฉัน” → “โทเค็นเข้าสู่ระบบ” แล้วสร้างโทเค็น ป้อนชื่อผู้ใช้ของโทเค็น (~t:…) ใน “ชื่อผู้ใช้” และป้อนรหัสผ่านของโทเค็นใน “รหัสผ่าน” อย่าใช้ชื่อผู้ใช้บัญชีของคุณหรือรหัสยืนยันแบบสองขั้นตอน</string>
+    <string name="server_login_key_label">คีย์การเข้าถึงเซิร์ฟเวอร์ (ไม่บังคับ)</string>
+    <string name="server_login_key_help">หากลิงก์เซิร์ฟเวอร์ของคุณมี ?key=… ให้ป้อนเฉพาะคีย์นั้นที่นี่ คีย์นี้แยกจากโทเค็นเข้าสู่ระบบ</string>
+    <string name="login_server_settings">การตั้งค่าเซิร์ฟเวอร์</string>
+    <string name="token_login_key_required">เซิร์ฟเวอร์นี้ต้องใช้คีย์การเข้าถึง เปิด “การตั้งค่าเซิร์ฟเวอร์” แล้วป้อนคีย์จากลิงก์เซิร์ฟเวอร์ของคุณ (?key=…)</string>
+</resources>

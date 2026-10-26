@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="token_login_help_title">Use a login token</string>
+    <string name="token_login_help_body">In MeshCentral, open My Account → Login Tokens and create a token. Enter its username (~t:…) in Username and its token password in Password. Do not use your account username or a two-factor code.</string>
+    <string name="server_login_key_label">Server access key (optional)</string>
+    <string name="server_login_key_help">If your server link contains ?key=…, enter only that key here. This is separate from a login token.</string>
+    <string name="login_server_settings">Server settings</string>
+    <string name="token_login_key_required">This server requires an access key. Open Server settings and enter the key from your server link (?key=…).</string>
+</resources>

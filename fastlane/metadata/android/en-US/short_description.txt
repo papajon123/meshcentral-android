@@ -1,1 +1,1 @@
-Android client for your own MeshCentral server: desktop, terminal, files, SSH
+Independent client for your own MeshCentral server: desktop, terminal, files

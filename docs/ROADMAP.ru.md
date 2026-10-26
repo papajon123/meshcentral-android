@@ -1,4 +1,4 @@
-# Как развивать MeshCentral Mobile
+# Как развивать MeshPilot
 
 [English roadmap](ROADMAP.md)
 

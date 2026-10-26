@@ -1,8 +1,11 @@
-<h1 align="center"><img src="docs/assets/header.png" alt="MeshCentral Mobile" width="100%"></h1>
+<h1 align="center"><img src="docs/assets/header.png" alt="MeshPilot" width="100%"></h1>
 
 <p align="center"><a href="README.md"><strong>English</strong></a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.ru.md">Русский</a></p>
 
 <p align="center"><strong>An independent Android client for your own MeshCentral server: computers and phones, desktop, terminal, files, SSH and SFTP from a phone or tablet.</strong></p>
+
+> [!NOTE]
+> **MeshPilot is an independent, third-party app** (formerly “MeshCentral Mobile”). It is not affiliated with, endorsed by or supported by the MeshCentral project or its developers. Please report problems with this app in [this repository's issues](https://github.com/papajon123/meshcentral-android/issues), not to the MeshCentral team.
 
 <p align="center">
   <a href="https://github.com/papajon123/meshcentral-android/releases"><strong>Download APK</strong></a>
@@ -15,7 +18,7 @@
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 Android locale variants">
 </p>
 
-> **Version 0.8.2** adds stylus and S Pen input, phone viewing and files, phone control with an input-capable agent, server-key pinning, remembered two-factor sign-in and expanded computer tools. See the [changelog](CHANGELOG.md) and [validation](docs/RELEASE_0_8_0_VALIDATION.md).
+> **Version 0.8.4** renames the app to MeshPilot and adds sign-in with login tokens and login keys. The 0.8 line adds stylus and S Pen input, phone viewing and files, phone control with an input-capable agent, server-key pinning, remembered two-factor sign-in and expanded computer tools. See the [changelog](CHANGELOG.md) and [validation](docs/RELEASE_0_8_0_VALIDATION.md).
 
 This is a client: you manage computers and phones *from* your phone. The managed phone needs the official [MeshCentral Android agent](https://github.com/Ylianst/MeshCentralAndroidAgent), which shares its screen after Android consent and remains view-only. Remote touch, navigation and text entry require a modified agent with input support, enabled accessibility and sufficient rights. That agent support is not yet in the upstream project. See [how the options compare](docs/COMPARISON.md) and [how this app is built](AI_POLICY.md).
 
@@ -106,7 +109,7 @@ Jobs, service/process views, confirmed service actions and background notificati
 
 ## Validation and limitations
 
-- Candidate checks and their exact scope are recorded in [0.8.0 validation](docs/RELEASE_0_8_0_VALIDATION.md). Historical API 26/35 and international/RTL/large-font/tablet results remain in [implementation and limits](docs/ROADMAP_IMPLEMENTATION.md); they are not a fresh acceptance of every 0.8.0 flow.
+- Candidate checks and their exact scope are recorded in [0.8.0 validation](docs/RELEASE_0_8_0_VALIDATION.md); published 0.8.1 and 0.8.2 checks, hashes and remaining acceptance are in [release validation](docs/RELEASE_0_8_2_VALIDATION.md). Historical API 26/35 and international/RTL/large-font/tablet results remain in [implementation and limits](docs/ROADMAP_IMPLEMENTATION.md); they are not a fresh acceptance of every 0.8.0 flow.
 
 - Live evidence covers Linux CPU/RAM, history and reviewed command output ([parity checks](docs/PARITY_FIXES_VALIDATION.md)), and phone downloads/verified uploads with official agent 1.0.23 ([phone file checks](docs/PHONE_FILES_FIXES_VALIDATION.md)). Phone input requires the modified agent; hardware effects, broad Windows/macOS acceptance, physical phones, systemd service actions, TalkBack, battery use, Doze/OEM restrictions and every 0.8.0 flow on Android 8 remain unverified.
 - A physical-phone acceptance must still cover install/update over a signed build, sign-in/2FA, two sessions, rotation/background/lock/network loss/process death, share from real apps, notifications, and the optional plugin.
