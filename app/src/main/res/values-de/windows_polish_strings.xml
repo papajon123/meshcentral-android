@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">Der Agent kann Windows-Ausgaben, die nicht UTF-8 sind, schon vor dem Senden beschädigen. Wählen Sie für PowerShell-Befehle den UTF-8-Modus: Er stellt Konsoleneingabe und -ausgabe auf UTF-8 ein. In diesem Modus gilt die PowerShell-Syntax, nicht die von cmd.exe. Programme mit eigener Ausgabekodierung können sich dennoch anders verhalten.</string>
+    <string name="windows_polish_default_shell">Standard-Befehlsshell (unverändert)</string>
+</resources>

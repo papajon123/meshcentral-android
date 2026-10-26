@@ -8,6 +8,7 @@ import kotlinx.coroutines.sync.withLock
 import ru.papajon.meshcentralmobile.security.SecureVault
 import ru.papajon.meshcentralmobile.settings.SettingsRepository
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicBoolean
 
 /** One mutex per profile prevents a one-time check and a periodic run from overlapping. */
 object NotificationLocks {
@@ -24,7 +25,7 @@ class NotificationPoller(
     context: Context,
     private val profileId: String,
     private val clock: () -> Long = System::currentTimeMillis,
-    private val httpClient: NotificationHttpClient = NotificationHttpClient(),
+    private val httpClient: NotificationHttpClient? = null,
     private val hasPermission: (Context) -> Boolean = NotificationNotifier::hasPermission,
     private val deliver: (Context, String, NotificationFeedItem) -> Boolean = NotificationNotifier::notifyEvent,
 ) {
@@ -35,7 +36,8 @@ class NotificationPoller(
 
     private suspend fun pollLocked(): NotificationPollResult {
         val now = clock()
-        val profile = SettingsRepository(appContext).profilesState.value.firstOrNull { it.id == profileId }
+        val profiles = SettingsRepository(appContext)
+        val profile = profiles.currentProfile(profileId)
         if (profile == null) {
             NotificationController.disableLocal(appContext, profileId)
             return NotificationPollResult.PROFILE_MISSING
@@ -75,14 +77,15 @@ class NotificationPoller(
             expireToken(store, vault, now)
             return NotificationPollResult.TOKEN_EXPIRED
         }
-        when (val support = NotificationTransport.support(appContext, profileId, profile.serverUrl)) {
+        val support = NotificationTransport.support(profile)
+        when (support) {
             is NotificationTransportSupport.Unsupported -> {
                 store.setEnabled(false)
                 NotificationWorkScheduler.cancel(appContext, profileId)
                 store.markError(support.reason, now)
                 return NotificationPollResult.UNAVAILABLE
             }
-            NotificationTransportSupport.Supported -> Unit
+            is NotificationTransportSupport.Supported -> Unit
         }
         val endpoint = NotificationEndpoint.resolve(profile.serverUrl, token.endpoint)
         if (endpoint == null) {
@@ -90,9 +93,24 @@ class NotificationPoller(
             return NotificationPollResult.UNAVAILABLE
         }
         val settings = store.settings()
+        val policyInvalidated = AtomicBoolean(false)
+        fun matchesPolicy(current: ru.papajon.meshcentralmobile.model.ServerProfile?) = current != null &&
+            current.serverUrl == profile.serverUrl && current.pinnedSpkiSha256 == profile.pinnedSpkiSha256
+        fun isCurrentPolicy() = !policyInvalidated.get() && matchesPolicy(profiles.currentProfile(profileId))
+        val transport = httpClient ?: NotificationHttpClient.forServer(support.server, support.pinnedSpkiSha256,
+            isCurrentPolicy = ::isCurrentPolicy)
+        val observation = profiles.observeProfile(profileId) { current ->
+            if (!matchesPolicy(current)) {
+                policyInvalidated.set(true)
+                transport.cancel()
+            }
+        }
         val page = try {
-            httpClient.fetch(endpoint, token.token, store.cursor())
+            // Subscribe first, then re-read: policy changes during client construction cannot hide.
+            if (!isCurrentPolicy()) return NotificationPollResult.DISABLED
+            transport.fetch(endpoint, token.token, store.cursor())
         } catch (error: NotificationHttpException) {
+            if (!isCurrentPolicy()) return NotificationPollResult.DISABLED
             return when (error.kind) {
                 NotificationHttpException.Kind.UNAUTHORIZED -> {
                     expireToken(store, vault, now)
@@ -120,20 +138,27 @@ class NotificationPoller(
                 }
             }
         } catch (_: SSLException) {
+            if (!isCurrentPolicy()) return NotificationPollResult.DISABLED
             store.setEnabled(false)
             NotificationWorkScheduler.cancel(appContext, profileId)
             store.markError(NotificationError.TLS_UNTRUSTED, now)
             return NotificationPollResult.UNAVAILABLE
         } catch (_: NotificationProtocolException) {
+            if (!isCurrentPolicy()) return NotificationPollResult.DISABLED
             store.markError(NotificationError.PROTOCOL, now)
             return NotificationPollResult.RETRY
         } catch (_: IOException) {
+            if (!isCurrentPolicy()) return NotificationPollResult.DISABLED
             store.markError(NotificationError.NETWORK, now)
             return NotificationPollResult.RETRY
+        } finally {
+            observation.close()
+            if (httpClient == null) transport.close()
         }
 
         // A disable/revoke may have happened while the HTTP call was in flight.
         if (!store.isEnabled()) return NotificationPollResult.DISABLED
+        if (!isCurrentPolicy()) return NotificationPollResult.DISABLED
         val currentRaw = runCatching {
             vault.getScopedSecret(NotificationContract.LABEL, profile.serverUrl)
         }.getOrNull()

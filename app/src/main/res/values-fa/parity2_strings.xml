@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">حذف نصب عامل</string>
+    <string name="parity2_remove">حذف دستگاه</string>
+    <string name="parity2_uninstall_warning">دسترسی از راه دور متوقف می‌شود. رکورد دستگاه باقی می‌ماند. نصب مجدد نیازمند دسترسی به رایانه است.</string>
+    <string name="parity2_remove_warning">رکورد دستگاه و تاریخچه آن حذف می‌شوند. عامل نصب‌شده باقی می‌ماند و ممکن است دوباره ثبت شود.</string>
+    <string name="parity2_confirm_name">نام دستگاه را دقیق وارد کنید</string>
+    <string name="parity2_removal_pending">درخواست ارسال شد. در حال بررسی فهرست دستگاه‌ها؛ اجرا تأیید نشده است.</string>
+    <string name="parity2_removal_absent">دستگاه در فهرست تازه‌شده نیست. ممکن است حذف شده یا دسترسی تغییر کرده باشد.</string>
+    <string name="parity2_removal_disconnected">ارتباط عامل قطع شده است. حذف نصب تأیید نشده است.</string>
+    <string name="parity2_removal_unknown">نتیجه نامشخص است. پیش از تکرار، دستگاه را بررسی کنید.</string>
+    <string name="parity2_software">برنامه‌های نصب‌شده</string>
+    <string name="parity2_software_hint">خواندن از عامل متصل. حداکثر 1000 برنامه؛ مقادیر موجودنبودنی نامشخص می‌مانند.</string>
+    <string name="parity2_software_error">فهرست برنامه‌ها دریافت نشد. عامل و مجوزها را بررسی کنید؛ پس از پایان مهلت، پیش از تلاش مجدد دوباره وصل شوید.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">مادربرد</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">سازنده</string>
+    <string name="parity2_bios_date">تاریخ میان‌افزار</string>
+    <string name="parity2_mode">حالت</string>
+    <string name="parity2_spec">مشخصات</string>
+    <string name="parity2_activated">فعال‌شده</string>
+    <string name="parity2_owned">مالک تعیین‌شده</string>
+    <string name="parity2_last_boot">آخرین راه‌اندازی گزارش‌شده</string>
+    <string name="parity2_uptime">زمان کار تخمینی (س:دد:ثث)</string>
+    <string name="parity2_metrics">مصرف پردازنده و حافظه</string>
+    <string name="parity2_sample_time">اندازه‌گیری دریافت شد: %1$s</string>
+    <string name="parity2_run">اجرای فرمان</string>
+    <string name="parity2_command">فرمان</string>
+    <string name="parity2_run_warning">با حساب عامل، معمولاً SYSTEM یا root اجرا می‌شود. ممکن است رایانه را تغییر دهد و در سرور ثبت شود. لغو و کد خروج در دسترس نیست. اطلاعات محرمانه وارد نکنید.</string>
+    <string name="parity2_run_uncertain">نتیجه تأیید نشده است. شاید فرمان هنوز در حال اجرا باشد. پیش از تکرار در پایانه بررسی کنید.</string>
+    <string name="parity2_output">خروجی فرمان</string>
+    <string name="parity2_output_note">حداکثر 65536 نویسه. خروجی موفقیت را اثبات نمی‌کند؛ تغییر موردنظر را بررسی کنید.</string>
+    <string name="parity2_seven_days">7 روز گذشته</string>
+    <string name="parity2_history_note">تاریخچه گزارش‌شده توان و اتصال‌ها. شکاف‌ها نامشخص‌اند، نه زمان خاموشی. حداکثر 100 تغییر اخیر در زیر نمایش داده می‌شود.</string>
+    <string name="parity2_favorites">فرمان‌های برگزیده</string>
+    <string name="parity2_favorites_hint">حداکثر 20 فرمان در هر نمایه. برای ویرایش پیش‌نویس انتخاب کنید، سپس بدون Enter درج کنید. فقط یک خط؛ اطلاعات محرمانه ذخیره نکنید.</string>
+    <string name="parity2_insert">درج بدون Enter</string>
+</resources>

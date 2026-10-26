@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_control_disabled">Remote control accessibility service is turned off on the phone</string>
+    <string name="phone_control_unsupported">Android on this phone does not support remote input</string>
+    <string name="phone_control_unknown">The agent does not report input support</string>
+    <string name="phone_control_no_permission">Your permissions allow viewing only</string>
+    <string name="phone_control_back">Back</string>
+    <string name="phone_control_home">Home</string>
+    <string name="phone_control_recents">Recents</string>
+    <string name="phone_control_notifications">Notifications</string>
+    <string name="phone_control_quick_settings">Quick settings</string>
+    <string name="phone_control_text">Enter text</string>
+    <string name="phone_control_text_hint">Text is appended to the focused field. Input is blocked in password fields.</string>
+    <string name="phone_control_consent_hint">The phone owner must approve control. Lock screen and PIN entry are unavailable.</string>
+</resources>

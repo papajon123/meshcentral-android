@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">沒有網路。正在等待重新連線…</string>
+    <string name="reliability_clearing_session">正在移除已儲存的登入資訊和工作階段…</string>
+    <string name="reliability_clear_failed">無法完成工作階段清除。請重試。</string>
+</resources>

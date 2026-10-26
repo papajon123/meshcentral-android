@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">شبکهای وجود ندارد. در انتظار اتصال دوباره…</string>
+    <string name="reliability_clearing_session">در حال حذف ورود و نشست ذخیرهشده…</string>
+    <string name="reliability_clear_failed">پاک کردن نشست کامل نشد. دوباره امتحان کنید.</string>
+</resources>

@@ -53,6 +53,38 @@ class OpenSession(
 /** Application lifetime, never holds an Activity. Foreground transfers can outlive its UI. */
 class ConnectionWorkspace private constructor(private val application: Application) {
     val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    var clearingSession by mutableStateOf(false)
+        private set
+
+    /** One application-owned operation: rotation cannot cancel cleanup or allow a competing login. */
+    fun clearSavedSession(disableNotifications: suspend () -> Unit) {
+        if (clearingSession) return
+        clearingSession = true
+        val owner = client
+        val vault = credentialVault
+        val id = profileId
+        scope.launch {
+            try {
+                closeAll()
+                // Revocation is best effort. Its Keystore/WorkManager work must not run on Main.
+                try { withContext(Dispatchers.IO) { withTimeout(25_000) { disableNotifications() } } }
+                catch (_: TimeoutCancellationException) { /* Always finish the local cleanup. */ }
+                catch (cancelled: CancellationException) { throw cancelled }
+                catch (_: Exception) { /* Offline revocation must not retain local sign-in. */ }
+                // Invalidate callbacks BEFORE deleting credentials so a late userinfo cannot save
+                // them again. RememberedDeviceStore may be locked by an IO cookie read; clear on IO.
+                owner.logout(clearStoredCredentials = false, clearRememberedDevice = false)
+                withContext(Dispatchers.IO) {
+                    vault.clearCredentials()
+                    NotificationController.disableLocal(application, id)
+                }
+                ru.papajon.meshcentralmobile.web.MeshWebViewController.clearWebViewSession(application)
+                message = UiText.Resource(R.string.settings_session_cleared)
+            } catch (cancelled: CancellationException) { throw cancelled }
+            catch (_: Exception) { message = UiText.Resource(R.string.reliability_clear_failed) }
+            finally { clearingSession = false }
+        }
+    }
     var transfers by mutableStateOf(TransferQueue(scope))
         private set
     var sharedFiles by mutableStateOf<List<SharedFile>>(emptyList())
@@ -131,6 +163,7 @@ class ConnectionWorkspace private constructor(private val application: Applicati
     }
     var profileId by mutableStateOf(SettingsRepository(application).activeProfile.id)
         private set
+    private var networkAvailable = application.getSystemService(ConnectivityManager::class.java).activeNetwork != null
     var credentialVault = vault(profileId)
         private set
     var client by mutableStateOf(MeshCentralClient(credentialVault, scope))
@@ -163,7 +196,9 @@ class ConnectionWorkspace private constructor(private val application: Applicati
     }
 
     fun switchProfile(id: String) {
+        if (clearingSession) return
         if (id == profileId) return
+        client.forgetRememberedDevice()
         val incoming = sharedFiles // Shared files have no target until the user confirms a folder.
         closeAll()
         sharedFiles = incoming
@@ -172,6 +207,7 @@ class ConnectionWorkspace private constructor(private val application: Applicati
         boundIdentity = null
         credentialVault = vault(id)
         client = MeshCentralClient(credentialVault, scope)
+        if (!networkAvailable) client.onNetworkLost()
     }
 
     fun identityFor(url: String, user: String?): String? = user?.let { "$profileId|${CredentialScope.normalize(url)}|$it" }
@@ -264,9 +300,17 @@ class ConnectionWorkspace private constructor(private val application: Applicati
     }
 
     init {
+        if (!networkAvailable) client.onNetworkLost()
         application.getSystemService(ConnectivityManager::class.java).registerDefaultNetworkCallback(
             object : ConnectivityManager.NetworkCallback() {
-                override fun onAvailable(network: Network) { scope.launch { client.onNetworkAvailable() } }
+                override fun onAvailable(network: Network) { scope.launch {
+                    networkAvailable = true
+                    client.onNetworkAvailable()
+                } }
+                override fun onLost(network: Network) { scope.launch {
+                    networkAvailable = false
+                    client.onNetworkLost()
+                } }
             },
         )
     }

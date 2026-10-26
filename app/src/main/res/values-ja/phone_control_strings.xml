@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">スマートフォンで遠隔操作のユーザー補助サービスがオフになっています</string>
+    <string name="phone_control_unsupported">このスマートフォンの Android はリモート入力をサポートしていません</string>
+    <string name="phone_control_unknown">エージェントが入力サポートを報告していません</string>
+    <string name="phone_control_no_permission">権限では表示のみ可能です</string>
+    <string name="phone_control_back">戻る</string>
+    <string name="phone_control_home">ホーム</string>
+    <string name="phone_control_recents">最近</string>
+    <string name="phone_control_notifications">通知</string>
+    <string name="phone_control_quick_settings">クイック設定</string>
+    <string name="phone_control_text">テキストを入力</string>
+    <string name="phone_control_text_hint">テキストは選択中のフィールドの末尾に追加されます。パスワード欄では入力できません。</string>
+    <string name="phone_control_consent_hint">スマートフォンの所有者が操作を承認する必要があります。ロック画面と PIN 入力は利用できません。</string>
+</resources>

@@ -20,6 +20,7 @@ data class DeviceSystemSnapshot(
     val memoryModules: List<MemoryModule> = emptyList(),
     val disks: List<Disk> = emptyList(),
     val networkAddresses: List<NetworkAddress> = emptyList(),
+    val hardwareDetails: HardwareDetails = HardwareDetails(),
 ) {
     /**
      * Sum of the module capacities, but only when every listed module reported one. A partial sum

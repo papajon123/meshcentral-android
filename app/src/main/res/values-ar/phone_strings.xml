@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">هاتف Android</string>
+    <string name="phone_view_only">وكيل الهاتف يشارك الشاشة فقط. التحكم عن بُعد غير متاح بعد. اسحب للتحريك واستخدم إصبعين للتكبير.</string>
+    <string name="phone_unknown">غير معروف</string>
+    <string name="phone_battery">البطارية: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">جارٍ الشحن</string>
+    <string name="phone_on_battery">يعمل بالبطارية</string>
+    <string name="phone_power_unknown">حالة الشحن غير معروفة</string>
+    <string name="phone_find">العثور على الهاتف والتواصل مع صاحبه</string>
+    <string name="phone_vibrate">اهتزاز لمدة 5 ثوانٍ</string>
+    <string name="phone_flash">مصباح لمدة 10 ثوانٍ</string>
+    <string name="phone_alert">رسالة إلى الهاتف</string>
+    <string name="phone_toast">إشعار قصير</string>
+    <string name="phone_open_url">فتح رابط</string>
+    <string name="phone_dial">فتح لوحة الاتصال</string>
+    <string name="phone_actions_unavailable">تتطلب الإجراءات وكيلاً متصلاً وإذن التحكم عن بُعد.</string>
+    <string name="phone_message_title">العنوان</string>
+    <string name="phone_message_text">الرسالة</string>
+    <string name="phone_url">الرابط</string>
+    <string name="phone_number">رقم الهاتف</string>
+    <string name="phone_message_hint">حتى 1000 حرف للرسالة و80 للعنوان. قد يسجّل الخادم الرسالة.</string>
+    <string name="phone_url_hint">استخدم رابط http أو https كاملاً دون مسافات أو بيانات اعتماد مضمنة.</string>
+    <string name="phone_dial_hint">الأرقام و+ و* و# فقط، حتى 40 حرفاً. يبدأ الشخص على الهاتف المكالمة بنفسه.</string>
+    <string name="phone_quotes_hint">تُستبدل علامتا الاقتباس المزدوجتان المستقيمتان بعلامات منحنية لأن وكيل الهاتف لا يستطيع الاحتفاظ بهما.</string>
+    <string name="phone_confirm">هل تريد إرسال هذا الأمر إلى الهاتف المحدد؟</string>
+    <string name="phone_send">إرسال الأمر</string>
+    <string name="phone_review">مراجعة</string>
+    <string name="phone_edit">تعديل</string>
+    <string name="phone_cancel">إلغاء</string>
+    <string name="phone_command_sent">أُرسل الأمر. لم يتم تأكيد تنفيذه على الهاتف.</string>
+    <string name="phone_send_failed">لم يُرسل الأمر. تحقق من الاتصال وإذن التحكم عن بُعد.</string>
+    <string name="phone_files_limits">لا يدعم وكيل الهاتف إنشاء المجلدات والملفات أو إعادة تسميتها. قد يطلب Android إذناً على الهاتف.</string>
+</resources>

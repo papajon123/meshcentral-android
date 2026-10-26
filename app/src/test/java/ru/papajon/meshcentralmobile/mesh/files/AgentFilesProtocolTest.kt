@@ -6,6 +6,23 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class AgentFilesProtocolTest {
+    @Test fun mediaDuplicatesRemainVisibleButCannotAddressTheWrongFile() {
+        // MeshTunnel.getFolder in both 1.0.23 and main provides n/t/s/d, no path or media ID.
+        val response = JSONObject("""{"path":"Images","dir":[{"n":"same.jpg","t":3,"s":4,"d":12},{"n":"same.jpg","t":3,"s":9,"d":13},{"n":"unique.jpg","t":3,"s":1,"d":14}]}""")
+        val entries = AgentFilesProtocol.entries(response, phoneMedia = true)
+        assertEquals(3, entries.size)
+        assertEquals(listOf(0, 1, 2), entries.map { it.listingIndex })
+        assertEquals(listOf(4L, 9L), entries.filter { it.ambiguousName }.map { it.size })
+        assertTrue(entries.filter { it.name == "same.jpg" }.none { it.actionable })
+        assertTrue(entries.single { it.name == "unique.jpg" }.actionable)
+    }
+    @Test fun androidCategoriesStayRelativeAndReturnToTheVirtualRoot() {
+        assertEquals("Images", AgentFilesProtocol.join("", "Images"))
+        assertEquals("Sdcard/Download", AgentFilesProtocol.join("Sdcard", "Download"))
+        assertEquals("", AgentFilesProtocol.parent("Images"))
+        assertEquals("Sdcard", AgentFilesProtocol.parent("Sdcard/Download"))
+    }
+
     @Test fun jsonBudgetMatchesOneMiBTransportAndCountsUtf8Bytes() {
         assertEquals(1_048_576, AgentFilesProtocol.MAX_JSON_BYTES)
         assertTrue(AgentFilesProtocol.jsonWithinLimit("a".repeat(1_048_576)))

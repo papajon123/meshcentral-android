@@ -8,7 +8,7 @@ The primary path is Kotlin and Jetpack Compose. The desktop is native KVM; Agent
 
 ## Runtime flows
 
-1. **Onboarding and server settings.** `ServerUrlValidator` accepts the user's own HTTPS URL; plain HTTP and self-signed certificates are debug-only options. No endpoint is preconfigured.
+1. **Onboarding and server settings.** `ServerUrlValidator` accepts the user's own HTTPS URL. Untrusted server keys require explicit, per-profile fingerprint approval; plain HTTP and the legacy certificate bypass remain debug-only. No endpoint is preconfigured.
 2. **Sign-in and control channel.** `MeshCentralClient` opens `wss://<host>/control.ashx` with `x-meshauth`, handles two-factor challenges, requests `serverinfo`, `userinfo`, `meshes`, `nodes` and `authcookie`, and keeps the device list current.
 3. **Device details.** `DeviceScreen` presents Details, Desktop, Terminal, Files, SSH and SFTP. `SessionAvailability` decides `Available`, `Unknown`, `Offline`, `Unsupported` or `Denied`. Known denial is blocked; unknown permits an explicit attempt; the server remains the authority.
 4. **Desktop.** `MeshDesktopRelay` requests a control-channel tunnel, opens `/meshrelay.ashx?browser=1&p=2`, performs the text `c`/`cr` handshake, sends protocol `2`, then decodes KVM frames. The existing reconnect and framebuffer path is unchanged.
@@ -80,13 +80,89 @@ All endpoints are on the configured MeshCentral server. Agent terminal/files als
 
 ## Security boundaries
 
-- The configured MeshCentral server is trusted for the session, but release builds validate TLS against the Android platform trust store. Debug-only overrides are explicit and off by default.
+- Without a pin, native TLS requires Android platform trust and a matching hostname. An explicitly approved per-profile key is mandatory once saved, as described below. Debug-only overrides are explicit and off by default.
 - New SSH passwords/keys are sent with `keep=false` (SFTP) or `keep:0` (Agent terminal); server-saved key unlock uses `sshkeyauth`. All are used only for the current outbound message and none is persisted or logged.
 - SSH is terminated at MeshCentral. The Android app has no direct SSH stack, host-key store or host-key pinning claim; server-side host-key policy was not live-audited.
 - Terminal content may be recorded by the server. The relay's `cr` marker drives a visible recording notice; no marker does not prove recording is disabled.
 - The local terminal WebView and the raw server Debug WebView are separate. The raw view loads the configured server page and stores its own WebView cookies; **Settings → Data** clears them.
 - Android backup and device transfer exclude all app data. Screenshot blocking is opt-in `FLAG_SECURE`.
 - The app has no telemetry or project backend.
+
+### TLS server-key approval
+
+`ServerProfile.pinnedSpkiSha256` stores SHA-256 of the **leaf certificate's SubjectPublicKeyInfo**, as
+64 lowercase hexadecimal characters. Older profiles default to `null`. This is public key metadata,
+not authentication material. Trust is scoped to the profile and normalized HTTPS endpoint (host,
+port and MeshCentral domain path); changing the address clears the pin. Equivalent casing/default
+port/trailing-slash spellings do not change the endpoint. A different profile never inherits trust.
+
+`mesh/tls/ServerTrust.kt` checks certificate validity before accepting any key. Expired and
+not-yet-valid certificates produce a separate non-overridable error asking the user to check the
+phone clock and server certificate. An existing pin is **mandatory even for platform-trusted
+chains**: a different key is blocked. Returning to platform-only trust requires explicitly choosing
+**Forget**. Renewal with the same public key is accepted while the certificate is valid.
+
+Without a pin, a platform-trusted chain uses Android's path builder and normal OkHttp hostname
+validation. The app checks leaf dates only, leaving alternate/reordered/expired intermediate
+certificates to Android's path selection. An
+untrusted but internally consistent chain can be approved explicitly, including a self-signed leaf
+or a leaf issued by an unknown CA whose root is omitted (the default MeshCentral setup). Every
+supplied link must have a matching issuer name and valid signature; issuers must satisfy CA basic
+constraints, path length and keyCertSign usage when present. Invalid self-signatures and broken
+chains cannot be approved, even with a saved pin. Private and pinned chains check dates across the
+supplied chain. Private chains also reject RSA keys below 2048 bits, EC keys below 256 bits,
+MD5/SHA-1 leaf signatures and explicit extended key usage without serverAuth.
+The dialog says when an issuer identifies itself as a MeshCentral root, or identifies an unknown CA; for a public certificate with an
+incomplete chain, it recommends repairing the server. The issuer name is untrusted descriptive
+metadata, not evidence of authenticity. An approvable hostname mismatch has a separate warning.
+An exact saved key permits a
+hostname mismatch, including a platform-trusted chain with a wrong name, only at the configured
+host and port. The verifier reads that specific TLS session's certificate; it has no mutable
+last-match flag or shared chain-decision cache.
+
+The TLS context and OkHttp receive the **same** trust manager. Its Android
+`checkServerTrusted(chain, authType, host)` overload supports `X509TrustManagerExtensions` and
+OkHttp's Android chain cleaner; unpinned checks delegate to the platform's host-aware validation.
+Network Security Config and system trust anchors are not relaxed. Native requests are restricted
+to the configured origin, and redirects remain disabled. Desktop and all tool relay URLs derive
+from `baseUrl`; a separate relay host is unsupported and cannot inherit the pin.
+
+The dialog shows two different SHA-256 values: **public key (SPKI)**, which is pinned, and the
+**certificate**, which browsers display. Both use colon-separated bytes. It also shows the subject,
+validity dates and endpoint. An administrator can calculate SPKI from a trusted local certificate:
+
+```sh
+openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c
+```
+
+For direct TLS, substitute `meshcentral-data/webserver-cert-public.crt` for `cert.pem`; if a reverse
+proxy terminates TLS, use the proxy certificate instead. `openssl x509 -in cert.pem -fingerprint
+-sha256 -noout` calculates the separate certificate fingerprint. Verify through an independent,
+trusted channel: a fingerprint fetched over the same unverified connection cannot detect an
+intermediary. These instructions and errors are included in all 23 locale variants.
+
+Every native control, desktop, Agent terminal/files and SSH/SFTP relay uses this policy in debug
+and release. A certificate refusal stops automatic retries, network-recovery retries and desktop
+resume. Trusting retries only the current in-memory sign-in attempt. Replacing a changed key requires
+a second explicit warning/confirmation and fresh PIN/biometric unlock when app lock is enabled.
+Forgetting also requires confirmation and the same unlock, so it cannot bypass replacement protection.
+Confirmations are bound to profile, endpoint, old key and displayed certificate. Settings shows the
+saved fingerprint and Forget. Changing an endpoint clears its pin; switching profiles creates a new
+client. Changing trust cancels active requests, closes all control/desktop/tool sockets and replaces
+the OkHttp client, TLS context and connection pool. Control callbacks run in the owner's Main scope
+and verify the session generation and transport identity, so a late handshake cannot authenticate
+or persist credentials for a replacement profile or endpoint.
+
+**NotificationHttpClient uses the same ServerTls policy:** each poll reads the current profile's
+endpoint and pin and creates an isolated client. A changed key blocks the handshake before the
+bearer token is sent, disables polling and cancels its scheduled work. The user must resolve trust
+and re-enable notifications. Unpinned servers require Android trust and a valid hostname; approved
+private keys work. A profile observer cancels in-flight calls when the endpoint/pin changes, and a
+network interceptor rechecks policy after TLS but before sending HTTP headers. Obsolete polls do
+not disable or overwrite the replacement policy's status; their responses are discarded. Notification clients
+never use the permissive debug override. The raw Debug WebView is available only in debug builds
+and does not inherit the native client's pins. The legacy debug-only override remains for local
+tests and is not enabled by the pinning flow; it cannot override an existing pin or validity failure.
 
 ## Lifecycle and threading
 
@@ -99,7 +175,9 @@ All endpoints are on the configured MeshCentral server. Agent terminal/files als
 
 The repository contains no server component. The MeshCentral server must provide:
 
-- HTTPS with a certificate valid for the public host name.
+- HTTPS with a platform-trusted certificate valid for the host name, or an independently verified,
+  explicitly approved leaf public key for native control/relay connections. Notification polling
+  still requires platform trust and a valid host name.
 - WebSocket upgrades for `/control.ashx`, `/meshrelay.ashx`, `/sshterminalrelay.ashx` and `/sshfilesrelay.ashx` through any reverse proxy.
 - A Mesh Agent supporting desktop/terminal/file relays, plus an SSH host and enabled SSH/SFTP server features for those tabs.
 - An account with the relevant remote-control/view, terminal/file and SSH rights for the device group.

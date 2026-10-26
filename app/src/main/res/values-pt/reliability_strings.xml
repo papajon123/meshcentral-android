@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">Sem rede. À espera de reconexão…</string>
+    <string name="reliability_clearing_session">A remover o início de sessão e a sessão guardados…</string>
+    <string name="reliability_clear_failed">Não foi possível concluir a limpeza da sessão. Tente novamente.</string>
+</resources>

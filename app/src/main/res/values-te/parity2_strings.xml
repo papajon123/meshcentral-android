@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">ఏజెంట్‌ను అన్‌ఇన్‌స్టాల్ చేయండి</string>
+    <string name="parity2_remove">పరికరాన్ని తొలగించండి</string>
+    <string name="parity2_uninstall_warning">రిమోట్ యాక్సెస్ ఆగిపోతుంది. పరికర రికార్డు ఉంటుంది. మళ్లీ ఇన్‌స్టాల్ చేయడానికి కంప్యూటర్ యాక్సెస్ అవసరం.</string>
+    <string name="parity2_remove_warning">పరికర రికార్డు, చరిత్ర తొలగించబడతాయి. ఏజెంట్ ఇన్‌స్టాల్ అయి ఉంటుంది; మళ్లీ నమోదు కావచ్చు.</string>
+    <string name="parity2_confirm_name">పరికరం పేరును కచ్చితంగా టైప్ చేయండి</string>
+    <string name="parity2_removal_pending">అభ్యర్థన పంపబడింది. పరికర జాబితా తనిఖీ అవుతోంది; అమలు నిర్ధారించబడలేదు.</string>
+    <string name="parity2_removal_absent">తాజా జాబితాలో పరికరం లేదు. తొలగింపు లేదా యాక్సెస్ మార్పు కారణం కావచ్చు.</string>
+    <string name="parity2_removal_disconnected">ఏజెంట్ కనెక్షన్ తెగింది. అన్‌ఇన్‌స్టాల్ నిర్ధారించబడలేదు.</string>
+    <string name="parity2_removal_unknown">ఫలితం తెలియదు. చర్యను మళ్లీ చేసే ముందు పరికరాన్ని తనిఖీ చేయండి.</string>
+    <string name="parity2_software">ఇన్‌స్టాల్ చేసిన ప్రోగ్రామ్‌లు</string>
+    <string name="parity2_software_hint">కనెక్ట్ అయిన ఏజెంట్ నుంచి చదవబడుతుంది. గరిష్ఠంగా 1000 ప్రోగ్రామ్‌లు; లేని విలువలు తెలియనివిగా ఉంటాయి.</string>
+    <string name="parity2_software_error">ప్రోగ్రామ్ జాబితా అందలేదు. ఏజెంట్, అనుమతులు తనిఖీ చేయండి; గడువు ముగిశాక మళ్లీ ప్రయత్నించే ముందు తిరిగి కనెక్ట్ అవ్వండి.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">మదర్‌బోర్డ్</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">తయారీదారు</string>
+    <string name="parity2_bios_date">ఫర్మ్‌వేర్ తేదీ</string>
+    <string name="parity2_mode">మోడ్</string>
+    <string name="parity2_spec">స్పెసిఫికేషన్</string>
+    <string name="parity2_activated">సక్రియం చేయబడింది</string>
+    <string name="parity2_owned">యజమాని నిర్ణయించబడ్డారు</string>
+    <string name="parity2_last_boot">చివరిగా నివేదించిన బూట్</string>
+    <string name="parity2_uptime">అంచనా పని సమయం (గం:ని:సె)</string>
+    <string name="parity2_metrics">CPU మరియు మెమరీ వినియోగం</string>
+    <string name="parity2_sample_time">కొలత అందింది: %1$s</string>
+    <string name="parity2_run">కమాండ్ అమలు చేయండి</string>
+    <string name="parity2_command">కమాండ్</string>
+    <string name="parity2_run_warning">ఏజెంట్ ఖాతాతో, సాధారణంగా SYSTEM లేదా root గా అమలవుతుంది. కంప్యూటర్‌ను మార్చవచ్చు; సర్వర్‌లో నమోదు కావచ్చు. రద్దు లేదా నిష్క్రమణ కోడ్ అందుబాటులో లేదు. రహస్య సమాచారం ఇవ్వవద్దు.</string>
+    <string name="parity2_run_uncertain">ఫలితం నిర్ధారించబడలేదు. కమాండ్ ఇంకా నడుస్తూ ఉండవచ్చు. మళ్లీ అమలు చేసే ముందు టెర్మినల్‌లో తనిఖీ చేయండి.</string>
+    <string name="parity2_output">కమాండ్ అవుట్‌పుట్</string>
+    <string name="parity2_output_note">గరిష్ఠంగా 65536 అక్షరాలు. అవుట్‌పుట్ విజయాన్ని నిరూపించదు; ఆశించిన మార్పును తనిఖీ చేయండి.</string>
+    <string name="parity2_seven_days">గత 7 రోజులు</string>
+    <string name="parity2_history_note">నివేదించిన పవర్, కనెక్షన్ చరిత్ర. ఖాళీలు తెలియని సమాచారం, నిలిచిపోయిన సమయం కాదు. కింద గరిష్ఠంగా 100 ఇటీవలి మార్పులు ఉన్నాయి.</string>
+    <string name="parity2_favorites">ఇష్టమైన కమాండ్‌లు</string>
+    <string name="parity2_favorites_hint">ప్రొఫైల్‌కు గరిష్ఠంగా 20. స్థానిక ముసాయిదా మార్చడానికి ఎంచుకుని, తర్వాత Enter లేకుండా చేర్చండి. ఒకే వరుస; రహస్యాలు దాచవద్దు.</string>
+    <string name="parity2_insert">Enter లేకుండా చేర్చండి</string>
+</resources>

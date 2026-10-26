@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">नेटवर्क नाही. पुन्हा कनेक्ट होण्याची प्रतीक्षा करत आहे…</string>
+    <string name="reliability_clearing_session">जतन केलेला साइन इन आणि सत्र काढून टाकत आहे…</string>
+    <string name="reliability_clear_failed">सत्र साफ करणे पूर्ण होऊ शकले नाही. पुन्हा प्रयत्न करा.</string>
+</resources>

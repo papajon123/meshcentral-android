@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">Tidak ada jaringan. Menunggu untuk menyambung kembali…</string>
+    <string name="reliability_clearing_session">Menghapus info masuk dan sesi yang tersimpan…</string>
+    <string name="reliability_clear_failed">Tidak dapat menyelesaikan penghapusan sesi. Coba lagi.</string>
+</resources>

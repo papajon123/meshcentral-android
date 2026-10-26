@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">சேவையகச் சான்றிதழ் நம்பகமானது அல்ல. நம்புவதற்கு முன் அதன் கைரேகையைச் சேவையகத்தில் உள்ள சான்றிதழுடன் ஒப்பிடுங்கள்.</string>
+    <string name="tls_error_changed">சேவையகச் சாவி மாறியுள்ளது. இணைப்பு தடுக்கப்பட்டது: புதிய கைரேகையைச் சேவையக நிர்வாகியிடம் சரிபாருங்கள்.</string>
+    <string name="tls_untrusted_title">நம்பகமற்ற சேவையகச் சான்றிதழ்</string>
+    <string name="tls_changed_title">சேவையகச் சான்றிதழ் மாறியுள்ளது</string>
+    <string name="tls_fingerprint">பொதுச் சாவியின் SHA-256 கைரேகை (SPKI)</string>
+    <string name="tls_previous_fingerprint">முன்பு நம்பப்பட்ட பொதுச் சாவி, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">புதிய பொதுச் சாவி, SHA-256 (SPKI)</string>
+    <string name="tls_subject">சான்றிதழ் உரிமையாளர்: %1$s</string>
+    <string name="tls_validity">செல்லுபடியாகும் காலம்: %1$s முதல் %2$s வரை</string>
+    <string name="tls_server">சேவையகம்: %1$s</string>
+    <string name="tls_compare">தனியான நம்பகமான தகவல்தொடர்பு வழியாக இந்தக் கைரேகையைச் சேவையகத்தில் உள்ள சான்றிதழுடன் ஒப்பிடுங்கள்.</string>
+    <string name="tls_trust">இந்தச் சேவையகத்தை நம்பு</string>
+    <string name="tls_replace">கைரேகையை மாற்று…</string>
+    <string name="tls_replace_title">நம்பகமான சாவியை மாற்றவா?</string>
+    <string name="tls_replace_warning">சாவி மாறியது, யாரோ உங்கள் சேவையகமாக ஆள்மாறாட்டம் செய்வதைக் குறிக்கலாம். புதிய கைரேகையைத் தனியாகச் சரிபார்த்த பிறகே தொடருங்கள். முந்தைய சாவி இனி நம்பப்படாது.</string>
+    <string name="tls_confirm_replace">மாற்றத்தை உறுதிசெய்</string>
+    <string name="tls_pinned_key">நம்பகமான சேவையகச் சாவி</string>
+    <string name="tls_forget">மறந்துவிடு</string>
+    <string name="tls_forget_title">நம்பகமான சாவியை மறந்துவிடவா?</string>
+    <string name="tls_forget_warning">தற்போதைய இணைப்பு மூடப்படும். சேவையகச் சான்றிதழை Android நம்பவில்லை என்றால், இந்தச் சேவையகத்தை மீண்டும் சரிபார்க்க வேண்டும்.</string>
+    <string name="tls_certificate_fingerprint">சான்றிதழின் SHA-256 — உலாவியில் காட்டப்படும் மதிப்பு</string>
+    <string name="tls_error_validity">சான்றிதழ் காலாவதியானது அல்லது இன்னும் செல்லுபடியாகவில்லை. தொலைபேசியின் தேதி, நேரம் மற்றும் சேவையகச் சான்றிதழின் செல்லுபடிக் காலத்தைச் சரிபார்க்கவும். நம்பிக்கையை உறுதிப்படுத்துவதால் இந்தப் பிழையைத் தவிர்க்க முடியாது.</string>
+    <string name="tls_error_chain">சான்றிதழ் அல்லது அதன் சங்கிலியில் செல்லாத கையொப்பம், பலவீனமான விசை அல்லது வழிமுறை, அல்லது சான்றிதழ் ஆணையத்தின் செல்லாத நோக்கம் அல்லது கட்டுப்பாடுகள் உள்ளன. நிர்வாகி சான்றிதழைச் சரிசெய்ய வேண்டும்; இதை அங்கீகரிக்க முடியாது.</string>
+    <string name="tls_error_hostname">சான்றிதழ் சேவையக முகவரியுடன் பொருந்தவில்லை. முகவரியைச் சரிபார்த்து, சான்றிதழில் உள்ள பெயர்களைச் சரிசெய்ய நிர்வாகியிடம் கேட்கவும்.</string>
+    <string name="tls_hostname_warning">எச்சரிக்கை: சான்றிதழில் உள்ள பெயர் சேவையக முகவரியுடன் பொருந்தவில்லை. சுயாதீனச் சரிபார்ப்புக்குப் பிறகு மட்டுமே விசையை அங்கீகரிக்கவும்.</string>
+    <string name="tls_blocked_title">சேவையகச் சான்றிதழ் நிராகரிக்கப்பட்டது</string>
+    <string name="tls_verify_instructions">கீழுள்ள கட்டளையால் நிர்வாகி SPKI கைரேகையைக் கணக்கிடலாம். நேரடி TLS-க்கு meshcentral-data/webserver-cert-public.crt கோப்பையும், TLS ரிவர்ஸ் ப்ராக்ஸியில் முடிந்தால் அதன் சான்றிதழையும் பயன்படுத்தவும். cert.pem என்பதற்குப் பதிலாக அந்தக் கோப்பை இடவும். உலாவி சான்றிதழின் தனிக் கைரேகையைக் காட்டும்.</string>
+    <string name="tls_independent_warning">தனித்த, நம்பகமான வழியில் சரிபார்க்கவும். இதே சரிபார்க்கப்படாத இணைப்பு வழியாகப் பெற்ற கைரேகை இடைநிலைத் தாக்குதலிலிருந்து பாதுகாக்காது.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">சான்றிதழ் வழங்குநர் தன்னை MeshCentral மூலச் சான்றிதழாக அறிவிக்கிறார்.</string>
+    <string name="tls_issuer_unknown">இந்தச் சான்றிதழ் தெரியாத சான்றிதழ் ஆணையத்தால் கையொப்பமிடப்பட்டுள்ளது. சேவையகம் பொதுச் சான்றிதழைப் பயன்படுத்தினால், அதன் சங்கிலி முழுமையற்றதாக இருக்கலாம் — சேவையகத்தைச் சரிசெய்வது நல்லது.</string>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">앱 업데이트</string>
+    <string name="update_consent_title">GitHub에서 새 버전을 확인할까요?</string>
+    <string name="update_consent_body">앱은 하루에 한 번 api.github.com에 연결하며 사용자 데이터는 전송하지 않습니다.</string>
+    <string name="update_privacy_detail">GitHub와 해당 CDN에는 IP 주소와 HTTP 헤더가 전달됩니다.</string>
+    <string name="update_allow">업데이트 확인</string>
+    <string name="update_not_now">나중에</string>
+    <string name="update_never">아직 확인하지 않았습니다.</string>
+    <string name="update_current">호환되는 새 버전이 없습니다.</string>
+    <string name="update_found">업데이트를 찾았습니다.</string>
+    <string name="update_suppressed">이 버전을 나중으로 미루거나 건너뛰었습니다.</string>
+    <string name="update_network_error">확인하지 못했습니다. 24시간 후에 다시 시도하세요.</string>
+    <string name="update_rate_limit">GitHub가 요청을 제한했습니다. 24시간 후에 다시 시도하세요.</string>
+    <string name="update_invalid_metadata">버전 정보를 검증하지 못했습니다. 24시간 후에 다시 시도하세요.</string>
+    <string name="update_wrong_signer">이 빌드는 서명이 달라 호환되는 업데이트를 제공할 수 없습니다.</string>
+    <string name="update_checking">확인 중…</string>
+    <string name="update_last_check">마지막 시도: %1$s</string>
+    <string name="update_recently_checked">1분 이내에 확인했습니다. 잠시 후 다시 시도하세요.</string>
+    <string name="update_check_now">지금 확인</string>
+    <string name="update_available">버전 %1$s 사용 가능</string>
+    <string name="update_download">다운로드</string>
+    <string name="update_later">나중에</string>
+    <string name="update_skip">이 버전 건너뛰기</string>
+    <string name="update_browser_error">사용 가능한 브라우저가 없습니다. 브라우저를 설치하거나 사용 설정하세요.</string>
+</resources>

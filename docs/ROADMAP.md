@@ -1,4 +1,24 @@
-# Roadmap — 0.7.1
+# Roadmap
+
+## Direction for 0.8
+
+This is a direction, not a schedule: there are no dates, and plans can change after review and testing.
+
+### Planned
+
+- Pinning a self-signed server certificate after an explicit fingerprint confirmation.
+- Remembering a device after two-factor sign-in.
+- Update notifications from GitHub Releases.
+- Phones with the official MeshCentral Android agent: viewing the screen, battery and device information, finding the phone and showing a message.
+- Windows security status with a “needs attention” filter.
+- Custom keyboard shortcuts.
+- Publishing a written [AI policy](../AI_POLICY.md) and a [feature comparison](COMPARISON.md).
+
+### Exploring
+
+- Remote control (tap, swipe, typing, Back/Home) for the official Android agent through Android's accessibility API, to be offered to the official project.
+
+## Release 0.7.1
 
 Items 1–8 are implemented. Local public build, JVM and API 35 checks passed; see [implementation evidence and limits](ROADMAP_IMPLEMENTATION.md). WebRTC remains a separate measured decision, and the optional plugin avoids a permanent core fork.
 

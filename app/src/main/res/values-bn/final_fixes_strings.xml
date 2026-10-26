@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s অসম্পূর্ণ নথিটি মুছে ফেলা হয়েছে।</string>
+    <string name="final_fixes_download_marked">%1$s অসম্পূর্ণ নথিতে .partial যোগ করা হয়েছে। আবার চেষ্টা করার আগে Android-এর ফাইল অ্যাপে এটি মুছুন।</string>
+    <string name="final_fixes_download_retained">%1$s Android অসম্পূর্ণ নথিটি মুছতে বা তাতে .partial যোগ করতে পারেনি। এটি ব্যবহার করবেন না; Android-এর ফাইল অ্যাপে এটি মুছুন।</string>
+    <string name="final_fixes_download_transport_failed">ডাউনলোডের সময় সংযোগ বিচ্ছিন্ন হয়েছে। নতুন ফাইল সেশন খুলে আবার চেষ্টা করুন।</string>
+    <string name="final_fixes_download_invalid">ডাউনলোড করা ডেটা প্রত্যাশিত ফাইলের সঙ্গে মেলেনি। নতুন ফাইল সেশন খুলে আবার চেষ্টা করুন।</string>
+</resources>

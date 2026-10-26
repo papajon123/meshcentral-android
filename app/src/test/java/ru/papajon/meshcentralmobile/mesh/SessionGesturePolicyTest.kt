@@ -141,6 +141,10 @@ class SessionGesturePolicyTest {
 
     @Test
     fun twoFingerTapIsARightClickAndTwoFingerDragIsNotAClick() {
+        assertEquals(SessionGestureAction.RightClick, SessionGesturePolicy.onUp(RemoteControlMode.Trackpad, false, false, true, false))
+        assertEquals(SessionGestureAction.Pending, SessionGesturePolicy.onUp(RemoteControlMode.PanZoom, false, false, true, false))
+        assertEquals(SessionGestureAction.Pending, SessionGesturePolicy.onUp(RemoteControlMode.Scroll, false, false, true, false))
+        assertEquals(SessionGestureAction.Pending, SessionGesturePolicy.onUp(RemoteControlMode.DirectTouch, false, false, true, false, rightClickSent = true))
         assertEquals(
             SessionGestureAction.RightClick,
             SessionGesturePolicy.onUp(RemoteControlMode.DirectTouch, false, false, wasMultiTouch = true, viewPanning = false),

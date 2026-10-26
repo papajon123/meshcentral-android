@@ -21,11 +21,21 @@ object MeshControlMessages {
         return json
     }
 
+    /** MeshCentral 1.3.1 meshuser.js:1134–1164; node-specific, server-filtered history. */
+    fun deviceEvents(nodeId: String): JSONObject = JSONObject().put("action", "events")
+        .put("nodeid", nodeId).put("limit", 50)
+
+    /** MeshCentral 1.3.1 meshuser.js:7149–7184. */
+    fun powerTimeline(nodeId: String): JSONObject = JSONObject().put("action", "powertimeline").put("nodeid", nodeId)
+
     /**
      * Relay credentials. The answer is `{action:'authcookie', cookie, rcookie}`; `cookie` is used
      * as `?auth=` on the relay WebSocket and `rcookie` as `&rauth=` in the tunnel request.
      */
     fun authCookie(): JSONObject = JSONObject().put("action", "authcookie")
+
+    /** MeshCentral 1.3.1 meshuser.js:5154-5168; no responseid and no response on refusal. */
+    fun twoFactorCookie(): JSONObject = JSONObject().put("action", "twoFactorCookie")
 
     fun ping(): JSONObject = JSONObject().put("action", "ping").put("responseid", "android-ping")
 

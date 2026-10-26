@@ -59,6 +59,19 @@ class TerminalControllerTest {
         assertEquals(1, relay.binary.size)
     }
 
+    @Test fun favoriteIsLiteralUtf8WithoutEnterAndCannotExecuteControlCharacters() = withSession(RelayProtocol.AgentTerminal) { relay, controller ->
+        controller.connect()
+        assertTrue(controller.insertFavorite("echo Привет"))
+        assertEquals("echo Привет", relay.binary.single().toString(Charsets.UTF_8))
+        listOf("echo test\r", "echo test\n", "\u001b[A", "\u0003", "").forEach { assertFalse(controller.insertFavorite(it)) }
+        assertEquals(1, relay.binary.size)
+        controller.resize(80, 10, 800, 200)
+        controller.resize(80, 24, 800, 480)
+        assertEquals(1, relay.binary.size)
+        relay.close()
+        assertFalse(controller.insertFavorite("never replay"))
+    }
+
     @Test fun sshWebsocketOpenIsNotShellReadyAndAuthenticationNeverPersists() = withSession(RelayProtocol.SshTerminal) { relay, controller ->
         controller.connect()
         assertFalse(controller.state.value.ready)

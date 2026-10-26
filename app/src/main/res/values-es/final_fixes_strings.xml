@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s El documento incompleto se ha eliminado.</string>
+    <string name="final_fixes_download_marked">%1$s El documento incompleto se ha marcado con el sufijo .partial. Elimínalo en la aplicación Archivos de Android antes de volver a intentarlo.</string>
+    <string name="final_fixes_download_retained">%1$s Android no ha podido eliminar el documento incompleto ni añadirle el sufijo .partial. No lo uses; elimínalo en la aplicación Archivos de Android.</string>
+    <string name="final_fixes_download_transport_failed">La conexión se interrumpió durante la descarga. Abre una nueva sesión de archivos y vuelve a intentarlo.</string>
+    <string name="final_fixes_download_invalid">Los datos descargados no coincidían con el archivo esperado. Abre una nueva sesión de archivos y vuelve a intentarlo.</string>
+</resources>

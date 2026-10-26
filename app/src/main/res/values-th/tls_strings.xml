@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">ใบรับรองของเซิร์ฟเวอร์ไม่น่าเชื่อถือ โปรดเปรียบเทียบลายนิ้วมือกับใบรับรองบนเซิร์ฟเวอร์ก่อนเชื่อถือ</string>
+    <string name="tls_error_changed">คีย์ของเซิร์ฟเวอร์เปลี่ยนไป การเชื่อมต่อถูกบล็อก: โปรดยืนยันลายนิ้วมือใหม่กับผู้ดูแลเซิร์ฟเวอร์</string>
+    <string name="tls_untrusted_title">ใบรับรองของเซิร์ฟเวอร์ไม่น่าเชื่อถือ</string>
+    <string name="tls_changed_title">ใบรับรองของเซิร์ฟเวอร์เปลี่ยนไป</string>
+    <string name="tls_fingerprint">ลายนิ้วมือ SHA-256 ของคีย์สาธารณะ (SPKI)</string>
+    <string name="tls_previous_fingerprint">คีย์สาธารณะที่เคยเชื่อถือ SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">คีย์สาธารณะใหม่ SHA-256 (SPKI)</string>
+    <string name="tls_subject">เจ้าของใบรับรอง: %1$s</string>
+    <string name="tls_validity">ใช้ได้ตั้งแต่ %1$s ถึง %2$s</string>
+    <string name="tls_server">เซิร์ฟเวอร์: %1$s</string>
+    <string name="tls_compare">เปรียบเทียบลายนิ้วมือนี้กับใบรับรองบนเซิร์ฟเวอร์ผ่านช่องทางอื่นที่เชื่อถือได้</string>
+    <string name="tls_trust">เชื่อถือเซิร์ฟเวอร์นี้</string>
+    <string name="tls_replace">เปลี่ยนลายนิ้วมือ…</string>
+    <string name="tls_replace_title">เปลี่ยนคีย์ที่เชื่อถือหรือไม่?</string>
+    <string name="tls_replace_warning">คีย์ที่เปลี่ยนไปอาจหมายถึงมีผู้แอบอ้างเป็นเซิร์ฟเวอร์ของคุณ โปรดดำเนินการต่อเมื่อยืนยันลายนิ้วมือใหม่ผ่านช่องทางอื่นแล้วเท่านั้น คีย์เดิมจะไม่ได้รับความเชื่อถืออีกต่อไป</string>
+    <string name="tls_confirm_replace">ยืนยันการเปลี่ยน</string>
+    <string name="tls_pinned_key">คีย์เซิร์ฟเวอร์ที่เชื่อถือ</string>
+    <string name="tls_forget">ลืม</string>
+    <string name="tls_forget_title">ลืมคีย์ที่เชื่อถือหรือไม่?</string>
+    <string name="tls_forget_warning">การเชื่อมต่อปัจจุบันจะปิดลง คุณจะต้องยืนยันเซิร์ฟเวอร์นี้อีกครั้งหาก Android ไม่เชื่อถือใบรับรองของเซิร์ฟเวอร์</string>
+    <string name="tls_certificate_fingerprint">SHA-256 ของใบรับรอง — ค่าที่แสดงในเบราว์เซอร์</string>
+    <string name="tls_error_validity">ใบรับรองหมดอายุหรือยังไม่ถึงวันที่เริ่มใช้ ตรวจสอบวันที่และเวลาของโทรศัพท์และอายุใบรับรองของเซิร์ฟเวอร์ การยืนยันความเชื่อถือไม่สามารถข้ามข้อผิดพลาดนี้ได้</string>
+    <string name="tls_error_chain">ใบรับรองหรือห่วงโซ่มีลายเซ็นที่ไม่ถูกต้อง กุญแจหรืออัลกอริทึมที่อ่อนแอ หรือวัตถุประสงค์หรือข้อจำกัดของหน่วยงานออกใบรับรองที่ไม่ถูกต้อง ผู้ดูแลระบบต้องแก้ไขใบรับรอง ไม่สามารถยืนยันใบรับรองนี้ได้</string>
+    <string name="tls_error_hostname">ใบรับรองไม่ตรงกับที่อยู่เซิร์ฟเวอร์ ตรวจสอบที่อยู่และขอให้ผู้ดูแลแก้ไขชื่อในใบรับรอง</string>
+    <string name="tls_hostname_warning">คำเตือน: ชื่อในใบรับรองไม่ตรงกับที่อยู่เซิร์ฟเวอร์ อย่ายืนยันคีย์จนกว่าจะตรวจสอบอย่างอิสระแล้ว</string>
+    <string name="tls_blocked_title">ใบรับรองเซิร์ฟเวอร์ถูกปฏิเสธ</string>
+    <string name="tls_verify_instructions">ผู้ดูแลสามารถคำนวณลายนิ้วมือ SPKI ด้วยคำสั่งด้านล่าง สำหรับ TLS โดยตรง ให้ใช้ meshcentral-data/webserver-cert-public.crt หาก TLS สิ้นสุดที่พร็อกซีย้อนกลับ ให้ใช้ใบรับรองของพร็อกซี แทนที่ cert.pem ด้วยไฟล์นั้น เบราว์เซอร์จะแสดงลายนิ้วมือของใบรับรองซึ่งเป็นคนละค่า</string>
+    <string name="tls_independent_warning">ตรวจสอบผ่านช่องทางอิสระที่เชื่อถือได้ ลายนิ้วมือที่ได้จากการเชื่อมต่อเดียวกันซึ่งยังไม่ได้ตรวจสอบไม่สามารถป้องกันผู้โจมตีที่อยู่ตรงกลางได้</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">ผู้ออกใบรับรองระบุว่าตนเองเป็นรากของ MeshCentral</string>
+    <string name="tls_issuer_unknown">ใบรับรองนี้ลงนามโดยหน่วยงานออกใบรับรองที่ไม่รู้จัก หากเซิร์ฟเวอร์ใช้ใบรับรองสาธารณะ ห่วงโซ่ใบรับรองอาจไม่ครบถ้วน แนะนำให้แก้ไขเซิร์ฟเวอร์</string>
+</resources>

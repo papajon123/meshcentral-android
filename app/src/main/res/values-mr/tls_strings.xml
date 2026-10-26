@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">सर्व्हरचे प्रमाणपत्र विश्वासार्ह नाही. विश्वास ठेवण्यापूर्वी त्याचा फिंगरप्रिंट सर्व्हरवरील प्रमाणपत्राशी जुळवून पाहा.</string>
+    <string name="tls_error_changed">सर्व्हरची की बदलली आहे. जोडणी रोखली आहे: सर्व्हर प्रशासकाकडून नवीन फिंगरप्रिंटची खात्री करा.</string>
+    <string name="tls_untrusted_title">अविश्वासार्ह सर्व्हर प्रमाणपत्र</string>
+    <string name="tls_changed_title">सर्व्हरचे प्रमाणपत्र बदलले आहे</string>
+    <string name="tls_fingerprint">सार्वजनिक कीचा SHA-256 फिंगरप्रिंट (SPKI)</string>
+    <string name="tls_previous_fingerprint">पूर्वीची विश्वासार्ह सार्वजनिक की, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">नवीन सार्वजनिक की, SHA-256 (SPKI)</string>
+    <string name="tls_subject">प्रमाणपत्र धारक: %1$s</string>
+    <string name="tls_validity">वैधता: %1$s ते %2$s</string>
+    <string name="tls_server">सर्व्हर: %1$s</string>
+    <string name="tls_compare">स्वतंत्र, विश्वासार्ह संपर्क माध्यमातून हा फिंगरप्रिंट सर्व्हरवरील प्रमाणपत्राशी जुळवून पाहा.</string>
+    <string name="tls_trust">या सर्व्हरवर विश्वास ठेवा</string>
+    <string name="tls_replace">फिंगरप्रिंट बदला…</string>
+    <string name="tls_replace_title">विश्वासार्ह की बदलायची?</string>
+    <string name="tls_replace_warning">की बदलल्याचा अर्थ कोणीतरी तुमच्या सर्व्हरची ओळख वापरत असू शकते. नवीन फिंगरप्रिंटची स्वतंत्रपणे खात्री केल्यानंतरच पुढे जा. आधीची की यापुढे विश्वासार्ह मानली जाणार नाही.</string>
+    <string name="tls_confirm_replace">बदलाची पुष्टी करा</string>
+    <string name="tls_pinned_key">सर्व्हरची विश्वासार्ह की</string>
+    <string name="tls_forget">विसरा</string>
+    <string name="tls_forget_title">विश्वासार्ह की विसरायची?</string>
+    <string name="tls_forget_warning">सध्याची जोडणी बंद होईल. Android सर्व्हरच्या प्रमाणपत्रावर विश्वास ठेवत नसल्यास, तुम्हाला हा सर्व्हर पुन्हा तपासावा लागेल.</string>
+    <string name="tls_certificate_fingerprint">प्रमाणपत्राचा SHA-256 — ब्राउझरमध्ये दिसणारे मूल्य</string>
+    <string name="tls_error_validity">प्रमाणपत्राची मुदत संपली आहे किंवा अद्याप सुरू झालेली नाही. फोनची तारीख व वेळ आणि सर्व्हर प्रमाणपत्राची वैधता तपासा. विश्वासाची पुष्टी करून ही त्रुटी टाळता येत नाही.</string>
+    <string name="tls_error_chain">प्रमाणपत्रात किंवा त्याच्या साखळीत अवैध स्वाक्षरी, कमकुवत की किंवा अल्गोरिदम, किंवा प्रमाणपत्र प्राधिकरणाचा अवैध उद्देश किंवा मर्यादा आहेत. प्रशासकाने प्रमाणपत्र दुरुस्त करणे आवश्यक आहे; हे मंजूर करता येत नाही.</string>
+    <string name="tls_error_hostname">प्रमाणपत्र सर्व्हरच्या पत्त्याशी जुळत नाही. पत्ता तपासा आणि प्रशासकाला प्रमाणपत्रातील नावे दुरुस्त करण्यास सांगा.</string>
+    <string name="tls_hostname_warning">इशारा: प्रमाणपत्रातील नाव सर्व्हरच्या पत्त्याशी जुळत नाही. स्वतंत्र पडताळणीनंतरच की मंजूर करा.</string>
+    <string name="tls_blocked_title">सर्व्हर प्रमाणपत्र नाकारले</string>
+    <string name="tls_verify_instructions">प्रशासक खालील कमांडने SPKI ठसा मोजू शकतो. थेट TLS साठी meshcentral-data/webserver-cert-public.crt वापरा; TLS रिव्हर्स प्रॉक्सीवर संपत असल्यास प्रॉक्सीचे प्रमाणपत्र वापरा. cert.pem च्या जागी ती फाइल द्या. ब्राउझर प्रमाणपत्राचा वेगळा ठसा दाखवतो.</string>
+    <string name="tls_independent_warning">स्वतंत्र, विश्वासार्ह माध्यमातून पडताळा. याच अप्रमाणित जोडणीतून मिळालेला ठसा मध्यस्थ हल्लेखोरापासून संरक्षण देत नाही.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">प्रमाणपत्र जारी करणारा स्वतःला MeshCentral मूळ प्रमाणपत्र म्हणवतो.</string>
+    <string name="tls_issuer_unknown">हे प्रमाणपत्र अज्ञात प्रमाणपत्र प्राधिकरणाने स्वाक्षरी केलेले आहे. सर्व्हर सार्वजनिक प्रमाणपत्र वापरत असल्यास त्याची साखळी अपूर्ण असू शकते — सर्व्हर दुरुस्त करणे चांगले.</string>
+</resources>

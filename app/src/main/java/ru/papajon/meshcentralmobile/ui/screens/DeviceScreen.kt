@@ -21,6 +21,7 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ExpandMore
 import androidx.compose.material.icons.automirrored.outlined.ArrowForward
 import androidx.compose.material.icons.outlined.DesktopWindows
+import androidx.compose.material.icons.outlined.Smartphone
 import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Info
@@ -121,6 +122,7 @@ fun DeviceScreen(
                     .padding(vertical = 4.dp),
                 verticalArrangement = Arrangement.spacedBy(2.dp),
             ) {
+                if (device.isAndroidAgent) Icon(Icons.Outlined.Smartphone, stringResource(R.string.phone_title))
                 Text(
                     text = device.name,
                     style = MaterialTheme.typography.titleLarge,
@@ -206,6 +208,7 @@ private fun DeviceOverview(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             DeviceMetadata(device = device)
+            if (device.isAndroidAgent) ru.papajon.meshcentralmobile.ui.screens.management.PhoneBatterySummary(device, current)
             Text(
                 text = stringResource(R.string.workspace_tools),
                 style = MaterialTheme.typography.titleMedium,

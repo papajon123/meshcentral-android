@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">Layanan aksesibilitas kendali jarak jauh dimatikan di ponsel</string>
+    <string name="phone_control_unsupported">Android di ponsel ini tidak mendukung masukan jarak jauh</string>
+    <string name="phone_control_unknown">Agen tidak melaporkan dukungan masukan</string>
+    <string name="phone_control_no_permission">Izin Anda hanya mengizinkan melihat</string>
+    <string name="phone_control_back">Kembali</string>
+    <string name="phone_control_home">Beranda</string>
+    <string name="phone_control_recents">Terbaru</string>
+    <string name="phone_control_notifications">Notifikasi</string>
+    <string name="phone_control_quick_settings">Setelan cepat</string>
+    <string name="phone_control_text">Masukkan teks</string>
+    <string name="phone_control_text_hint">Teks ditambahkan ke akhir kolom yang dipilih. Masukan diblokir di kolom kata sandi.</string>
+    <string name="phone_control_consent_hint">Pemilik ponsel harus menyetujui kendali. Layar kunci dan masukan PIN tidak tersedia.</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">Nessuna rete. In attesa di riconnessione…</string>
+    <string name="reliability_clearing_session">Rimozione dei dati di accesso e della sessione salvati…</string>
+    <string name="reliability_clear_failed">Impossibile completare la cancellazione della sessione. Riprova.</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">تلفن Android</string>
+    <string name="phone_view_only">عامل تلفن فقط صفحه را به اشتراک می‌گذارد. کنترل از راه دور هنوز در دسترس نیست. برای جابه‌جایی بکشید و برای بزرگ‌نمایی از دو انگشت استفاده کنید.</string>
+    <string name="phone_unknown">نامشخص</string>
+    <string name="phone_battery">باتری: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">در حال شارژ</string>
+    <string name="phone_on_battery">استفاده از باتری</string>
+    <string name="phone_power_unknown">وضعیت شارژ نامشخص است</string>
+    <string name="phone_find">یافتن تلفن و تماس با صاحب آن</string>
+    <string name="phone_vibrate">لرزش به مدت ۵ ثانیه</string>
+    <string name="phone_flash">چراغ‌قوه به مدت ۱۰ ثانیه</string>
+    <string name="phone_alert">پیام روی تلفن</string>
+    <string name="phone_toast">اعلان کوتاه</string>
+    <string name="phone_open_url">باز کردن پیوند</string>
+    <string name="phone_dial">باز کردن شماره‌گیر</string>
+    <string name="phone_actions_unavailable">این کارها به عامل متصل و مجوز کنترل از راه دور نیاز دارند.</string>
+    <string name="phone_message_title">عنوان</string>
+    <string name="phone_message_text">پیام</string>
+    <string name="phone_url">پیوند</string>
+    <string name="phone_number">شماره تلفن</string>
+    <string name="phone_message_hint">پیام حداکثر ۱۰۰۰ نویسه و عنوان حداکثر ۸۰ نویسه. سرور ممکن است پیام را ثبت کند.</string>
+    <string name="phone_url_hint">پیوند کامل http یا https بدون فاصله یا اطلاعات ورود تعبیه‌شده وارد کنید.</string>
+    <string name="phone_dial_hint">فقط رقم، +، * و # تا ۴۰ نویسه. شخصی که تلفن را در دست دارد تماس را آغاز می‌کند.</string>
+    <string name="phone_quotes_hint">علامت نقل‌قول دوتایی مستقیم با نوع خمیده جایگزین می‌شود، زیرا عامل تلفن نمی‌تواند آن را حفظ کند.</string>
+    <string name="phone_confirm">این فرمان به تلفن انتخاب‌شده فرستاده شود؟</string>
+    <string name="phone_send">ارسال فرمان</string>
+    <string name="phone_review">بازبینی</string>
+    <string name="phone_edit">ویرایش</string>
+    <string name="phone_cancel">لغو</string>
+    <string name="phone_command_sent">فرمان ارسال شد. اجرای آن روی تلفن تأیید نشده است.</string>
+    <string name="phone_send_failed">فرمان ارسال نشد. اتصال و مجوز کنترل از راه دور را بررسی کنید.</string>
+    <string name="phone_files_limits">عامل تلفن از ایجاد یا تغییر نام پوشه‌ها و فایل‌ها پشتیبانی نمی‌کند. ممکن است Android روی تلفن اجازه بخواهد.</string>
+</resources>

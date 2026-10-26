@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">에이전트가 UTF-8이 아닌 Windows 출력을 보내기 전에 손상시킬 수 있습니다. PowerShell 명령에는 UTF-8 모드를 선택하세요. 이 모드는 콘솔 입력과 출력을 UTF-8로 설정합니다. 이 모드에서는 cmd.exe 구문이 아니라 PowerShell 구문을 사용합니다. 자체 출력 인코딩을 사용하는 프로그램은 여전히 다르게 동작할 수 있습니다.</string>
+    <string name="windows_polish_default_shell">기본 명령 셸(변경 없음)</string>
+</resources>

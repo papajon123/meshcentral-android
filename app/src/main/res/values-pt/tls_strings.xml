@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">O certificado do servidor não é confiável. Compare sua impressão digital com a do certificado no servidor antes de confiar nele.</string>
+    <string name="tls_error_changed">A chave do servidor mudou. Conexão bloqueada: verifique a nova impressão digital com o administrador do servidor.</string>
+    <string name="tls_untrusted_title">Certificado do servidor não confiável</string>
+    <string name="tls_changed_title">O certificado do servidor mudou</string>
+    <string name="tls_fingerprint">Impressão digital SHA-256 da chave pública (SPKI)</string>
+    <string name="tls_previous_fingerprint">Chave pública anteriormente confiável, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">Nova chave pública, SHA-256 (SPKI)</string>
+    <string name="tls_subject">Titular: %1$s</string>
+    <string name="tls_validity">Válido de %1$s até %2$s</string>
+    <string name="tls_server">Servidor: %1$s</string>
+    <string name="tls_compare">Compare esta impressão digital com a do certificado no servidor por um canal separado e confiável.</string>
+    <string name="tls_trust">Confiar neste servidor</string>
+    <string name="tls_replace">Substituir impressão digital…</string>
+    <string name="tls_replace_title">Substituir a chave confiável?</string>
+    <string name="tls_replace_warning">Uma mudança de chave pode indicar que alguém está se passando pelo seu servidor. Continue somente após verificar a nova impressão digital por um meio independente. A chave anterior deixará de ser confiável.</string>
+    <string name="tls_confirm_replace">Confirmar substituição</string>
+    <string name="tls_pinned_key">Chave confiável do servidor</string>
+    <string name="tls_forget">Esquecer</string>
+    <string name="tls_forget_title">Esquecer a chave confiável?</string>
+    <string name="tls_forget_warning">A conexão atual será encerrada. Será necessário verificar este servidor novamente se o Android não confiar no certificado dele.</string>
+    <string name="tls_certificate_fingerprint">SHA-256 do certificado — exibido no navegador</string>
+    <string name="tls_error_validity">O certificado expirou ou ainda não é válido. Verifique a data e a hora do telefone e a validade do certificado do servidor. Confiar não permite ignorar este erro.</string>
+    <string name="tls_error_chain">O certificado ou a sua cadeia apresenta uma assinatura inválida, uma chave ou um algoritmo fracos, ou uma finalidade ou restrições de autoridade de certificação inválidas. O administrador deve corrigir o certificado; não é possível aceitá-lo.</string>
+    <string name="tls_error_hostname">O certificado não corresponde ao endereço do servidor. Verifique o endereço e peça ao administrador que corrija os nomes no certificado.</string>
+    <string name="tls_hostname_warning">Aviso: o nome no certificado não corresponde ao endereço do servidor. Confirme a chave apenas após uma verificação independente.</string>
+    <string name="tls_blocked_title">Certificado do servidor rejeitado</string>
+    <string name="tls_verify_instructions">O administrador pode calcular a impressão digital SPKI com o comando abaixo. Para TLS direto, use meshcentral-data/webserver-cert-public.crt; se o TLS terminar num proxy reverso, use o certificado dele. Substitua cert.pem por esse arquivo. Os navegadores exibem a impressão digital separada do certificado.</string>
+    <string name="tls_independent_warning">Verifique por um canal independente e confiável. Uma impressão digital obtida por esta mesma conexão não verificada não protege contra um intermediário.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">O emissor do certificado identifica-se como uma raiz do MeshCentral.</string>
+    <string name="tls_issuer_unknown">O certificado é assinado por uma autoridade de certificação desconhecida. Se o servidor usa um certificado público, a cadeia pode estar incompleta; é recomendável corrigir o servidor.</string>
+</resources>

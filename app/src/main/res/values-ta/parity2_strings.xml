@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">முகவரை நிறுவல் நீக்கு</string>
+    <string name="parity2_remove">சாதனத்தை அகற்று</string>
+    <string name="parity2_uninstall_warning">தொலைநிலை அணுகல் நிறுத்தப்படும். சாதனப் பதிவு இருக்கும். மீண்டும் நிறுவக் கணினியை அணுக வேண்டும்.</string>
+    <string name="parity2_remove_warning">சாதனப் பதிவும் வரலாறும் நீக்கப்படும். முகவர் நிறுவப்பட்டே இருக்கும்; மீண்டும் பதிவு செய்யலாம்.</string>
+    <string name="parity2_confirm_name">சாதனத்தின் பெயரைத் துல்லியமாக உள்ளிடவும்</string>
+    <string name="parity2_removal_pending">கோரிக்கை அனுப்பப்பட்டது. சாதனப் பட்டியல் சரிபார்க்கப்படுகிறது; செயலாக்கம் உறுதியாகவில்லை.</string>
+    <string name="parity2_removal_absent">புதுப்பித்த பட்டியலில் சாதனம் இல்லை. நீக்கப்பட்டிருக்கலாம் அல்லது அணுகல் உரிமை மாறியிருக்கலாம்.</string>
+    <string name="parity2_removal_disconnected">முகவர் இணைப்பு துண்டிக்கப்பட்டது. நிறுவல் நீக்கம் உறுதியாகவில்லை.</string>
+    <string name="parity2_removal_unknown">முடிவு தெரியவில்லை. மீண்டும் செய்வதற்கு முன் சாதனத்தைச் சரிபார்க்கவும்.</string>
+    <string name="parity2_software">நிறுவப்பட்ட நிரல்கள்</string>
+    <string name="parity2_software_hint">இணைக்கப்பட்ட முகவரிடமிருந்து படிக்கப்படும். அதிகபட்சம் 1000 நிரல்கள்; இல்லாத மதிப்புகள் தெரியாதவையாகவே இருக்கும்.</string>
+    <string name="parity2_software_error">நிரல் பட்டியல் கிடைக்கவில்லை. முகவரையும் அனுமதிகளையும் சரிபார்க்கவும்; நேரம் முடிந்தால் மீண்டும் முயலும் முன் மறுஇணைப்பு செய்யவும்.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">தாய்ப்பலகை</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">உற்பத்தியாளர்</string>
+    <string name="parity2_bios_date">நிலைபொருள் தேதி</string>
+    <string name="parity2_mode">முறை</string>
+    <string name="parity2_spec">விவரக்குறிப்பு</string>
+    <string name="parity2_activated">செயல்படுத்தப்பட்டது</string>
+    <string name="parity2_owned">உரிமையாளர் அமைக்கப்பட்டார்</string>
+    <string name="parity2_last_boot">கடைசியாக அறிவிக்கப்பட்ட தொடக்கம்</string>
+    <string name="parity2_uptime">மதிப்பிடப்பட்ட இயக்க நேரம் (ம:நி:வி)</string>
+    <string name="parity2_metrics">CPU மற்றும் நினைவகப் பயன்பாடு</string>
+    <string name="parity2_sample_time">அளவீடு பெறப்பட்டது: %1$s</string>
+    <string name="parity2_run">கட்டளையை இயக்கு</string>
+    <string name="parity2_command">கட்டளை</string>
+    <string name="parity2_run_warning">முகவர் கணக்கில், பொதுவாக SYSTEM அல்லது root ஆக இயங்கும். கணினியை மாற்றலாம்; சேவையகத்தில் பதிவாகலாம். ரத்துசெய்தல் அல்லது வெளியேற்றக் குறியீடு இல்லை. ரகசியத் தகவலை உள்ளிட வேண்டாம்.</string>
+    <string name="parity2_run_uncertain">முடிவு உறுதியாகவில்லை. கட்டளை இன்னும் இயங்கலாம். மீண்டும் இயக்கும் முன் முனையத்தில் சரிபார்க்கவும்.</string>
+    <string name="parity2_output">கட்டளை வெளியீடு</string>
+    <string name="parity2_output_note">அதிகபட்சம் 65536 எழுத்துகள். வெளியீடு வெற்றியை நிரூபிக்காது; எதிர்பார்த்த மாற்றத்தைச் சரிபார்க்கவும்.</string>
+    <string name="parity2_seven_days">கடந்த 7 நாட்கள்</string>
+    <string name="parity2_history_note">அறிவிக்கப்பட்ட மின்சக்தி மற்றும் இணைப்பு வரலாறு. இடைவெளிகள் தெரியாத தரவு; செயலிழப்பு நேரமல்ல. கீழே அதிகபட்சம் 100 சமீபத்திய மாற்றங்கள் உள்ளன.</string>
+    <string name="parity2_favorites">விருப்பக் கட்டளைகள்</string>
+    <string name="parity2_favorites_hint">சுயவிவரத்திற்கு அதிகபட்சம் 20. வரைவைத் திருத்தத் தேர்ந்தெடுத்து, பிறகு Enter இன்றி செருகவும். ஒரே வரி மட்டும்; ரகசியங்களைச் சேமிக்க வேண்டாம்.</string>
+    <string name="parity2_insert">Enter இன்றி செருகு</string>
+</resources>

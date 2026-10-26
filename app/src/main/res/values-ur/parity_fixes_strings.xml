@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">انتباه</string>
+    <string name="parity_fixes_server_rejected">سرور کا جواب: %1$s</string>
+    <string name="parity_fixes_output_truncated">آؤٹ پٹ کو 65,536 حروف تک مختصر کر دیا گیا۔</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: پچھلی پیمائش سے اوسط، بشمول دیگر سیشنوں کی طلب کردہ پیمائشیں۔</string>
+    <string name="parity_fixes_run_warning">اس ڈیوائس پر کمانڈ چلائی جاتی ہے۔ اسے احتیاط سے جانچیں۔ اس ڈیوائس تک رسائی رکھنے والے تمام صارفین کمانڈ کا آؤٹ پٹ دیکھ سکتے ہیں۔ خفیہ معلومات شامل نہ کریں۔</string>
+</resources>

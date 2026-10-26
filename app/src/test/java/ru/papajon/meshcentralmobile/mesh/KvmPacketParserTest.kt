@@ -14,6 +14,49 @@ import org.junit.Test
  * and reads back in `agent-redir-ws-0.1.1.js:224-231`.
  */
 class KvmPacketParserTest {
+    @Test fun fragmentedPaddedJumboMessageKeepsItsBytesAndTheNextCommand() {
+        val decoder = KvmFrameDecoder(paddedMessages = true)
+        val tile = byteArrayOf(0, 27, 0, 8, 0, 0, 0, 10, 0, 3, 0, 0, 0, 0, 0, 0, 1, 2, 9, 8, 7, 6, 5, 4)
+        assertTrue(decoder.append(tile.copyOfRange(0, 15)).isEmpty())
+        assertArrayEquals(byteArrayOf(1, 2), (decoder.append(tile.copyOfRange(15, 24)).single() as KvmPacket.Tile).image)
+        assertEquals(0, decoder.pendingBytes)
+        assertEquals(listOf(KvmPacket.ScreenSize(1024, 768)), decoder.append(byteArrayOf(0, 7, 0, 8, 4, 0, 3, 0)))
+    }
+    @Test fun paddedMessagesDoNotSwallowTheFollowingScreenSize() {
+        val decoder = KvmFrameDecoder(paddedMessages = true)
+        // The viewer trims the 8-byte-aligned transport tail to the declared command size.
+        assertEquals(listOf(KvmPacket.KeyState(2)), decoder.append(byteArrayOf(0, 18, 0, 5, 2, 77, 66, 55)))
+        assertEquals(0, decoder.pendingBytes)
+        assertEquals(listOf(KvmPacket.ScreenSize(1024, 768)), decoder.append(byteArrayOf(0, 7, 0, 8, 4, 0, 3, 0)))
+        val tile = byteArrayOf(0, 27, 0, 8, 0, 0, 0, 10, 0, 3, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0)
+        assertArrayEquals(byteArrayOf(1, 2), (decoder.append(tile).single() as KvmPacket.Tile).image)
+        assertEquals(0, decoder.pendingBytes)
+        assertEquals(listOf(KvmPacket.ScreenSize(1024, 768)), decoder.append(byteArrayOf(0, 7, 0, 8, 4, 0, 3, 0)))
+    }
+    @Test
+    fun androidKeepaliveDoesNotConsumeTheFollowingScreenSizeOrJumboTile() {
+        // Android 1.0.23 MeshTunnel.startConnectionTimer sends a standalone 00 before
+        // ScreenCaptureService sends size and jumbo tiles. Captured on the local bench.
+        val decoder = KvmFrameDecoder()
+        val size = byteArrayOf(0, 7, 0, 8, 4, 56, 9, 96) // 1080 x 2400
+        val image = byteArrayOf(0xff.toByte(), 0xd8.toByte(), 1, 2, 0xff.toByte(), 0xd9.toByte())
+        val tile = byteArrayOf(0, 27, 0, 8, 0, 0, 0, 14, 0, 3, 0, 0, 0, 0, 0, 0) + image
+
+        assertTrue(decoder.append(byteArrayOf(0)).isEmpty())
+        assertEquals(listOf(KvmPacket.ScreenSize(1080, 2400)), decoder.append(size))
+        assertArrayEquals(image, (decoder.append(tile).single() as KvmPacket.Tile).image)
+        assertEquals(0, decoder.pendingBytes)
+        assertTrue(decoder.append(byteArrayOf(0)).isEmpty())
+        assertEquals(listOf(KvmPacket.ScreenSize(1080, 2400)), decoder.append(size))
+    }
+
+    @Test
+    fun singleZeroStillCompletesAnAlreadyFragmentedCommand() {
+        val decoder = KvmFrameDecoder()
+        assertTrue(decoder.append(byteArrayOf(0, 7, 0, 8, 4, 0, 3)).isEmpty())
+        assertEquals(listOf(KvmPacket.ScreenSize(1024, 768)), decoder.append(byteArrayOf(0)))
+    }
+
     @Test
     fun parsesScreenSizeCommand() {
         val frame = command(7, u16(1920) + u16(1080))

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s نامکمل دستاویز حذف کر دی گئی ہے۔</string>
+    <string name="final_fixes_download_marked">%1$s نامکمل دستاویز میں .partial لاحقہ شامل کر دیا گیا ہے۔ دوبارہ کوشش کرنے سے پہلے اسے Android کے فائلز ایپ میں حذف کریں۔</string>
+    <string name="final_fixes_download_retained">%1$s Android نامکمل دستاویز کو حذف نہیں کر سکا اور نہ ہی اس میں .partial شامل کر سکا۔ اسے استعمال نہ کریں؛ اسے Android کے فائلز ایپ میں حذف کریں۔</string>
+    <string name="final_fixes_download_transport_failed">ڈاؤن لوڈ کے دوران کنکشن منقطع ہو گیا۔ نیا فائل سیشن کھولیں اور دوبارہ کوشش کریں۔</string>
+    <string name="final_fixes_download_invalid">ڈاؤن لوڈ شدہ ڈیٹا متوقع فائل سے مطابقت نہیں رکھتا۔ نیا فائل سیشن کھولیں اور دوبارہ کوشش کریں۔</string>
+</resources>

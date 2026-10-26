@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">ফোনে দূর থেকে নিয়ন্ত্রণের অ্যাক্সেসিবিলিটি পরিষেবা বন্ধ আছে</string>
+    <string name="phone_control_unsupported">এই ফোনের Android দূর থেকে ইনপুট সমর্থন করে না</string>
+    <string name="phone_control_unknown">এজেন্ট ইনপুট সমর্থনের কথা জানায় না</string>
+    <string name="phone_control_no_permission">আপনার অনুমতি শুধু দেখার সুযোগ দেয়</string>
+    <string name="phone_control_back">ফিরে যান</string>
+    <string name="phone_control_home">হোম</string>
+    <string name="phone_control_recents">সাম্প্রতিক</string>
+    <string name="phone_control_notifications">বিজ্ঞপ্তি</string>
+    <string name="phone_control_quick_settings">দ্রুত সেটিংস</string>
+    <string name="phone_control_text">টেক্সট লিখুন</string>
+    <string name="phone_control_text_hint">টেক্সট নির্বাচিত ফিল্ডের শেষে যোগ হয়। পাসওয়ার্ড ফিল্ডে ইনপুট বন্ধ থাকে।</string>
+    <string name="phone_control_consent_hint">ফোনের মালিককে নিয়ন্ত্রণ অনুমোদন করতে হবে। লক স্ক্রিন ও PIN ইনপুট উপলব্ধ নয়।</string>
+</resources>

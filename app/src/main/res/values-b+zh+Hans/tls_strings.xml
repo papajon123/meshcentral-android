@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">服务器证书不受信任。信任之前，请将指纹与服务器上的证书进行核对。</string>
+    <string name="tls_error_changed">服务器密钥已更改。连接已阻止：请向服务器管理员核实新指纹。</string>
+    <string name="tls_untrusted_title">不受信任的服务器证书</string>
+    <string name="tls_changed_title">服务器证书已更改</string>
+    <string name="tls_fingerprint">SHA-256 公钥指纹 (SPKI)</string>
+    <string name="tls_previous_fingerprint">先前受信任的公钥，SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">新公钥，SHA-256 (SPKI)</string>
+    <string name="tls_subject">主体：%1$s</string>
+    <string name="tls_validity">有效期：%1$s 至 %2$s</string>
+    <string name="tls_server">服务器：%1$s</string>
+    <string name="tls_compare">请通过独立的可信渠道，将此指纹与服务器上的证书进行核对。</string>
+    <string name="tls_trust">信任此服务器</string>
+    <string name="tls_replace">更换指纹…</string>
+    <string name="tls_replace_title">更换受信任的密钥？</string>
+    <string name="tls_replace_warning">密钥更改可能意味着有人冒充您的服务器。请独立核实新指纹后再继续。旧密钥将不再受信任。</string>
+    <string name="tls_confirm_replace">确认更换</string>
+    <string name="tls_pinned_key">受信任的服务器密钥</string>
+    <string name="tls_forget">忘记</string>
+    <string name="tls_forget_title">忘记受信任的密钥？</string>
+    <string name="tls_forget_warning">当前连接将关闭。如果 Android 不信任服务器证书，您需要重新验证此服务器。</string>
+    <string name="tls_certificate_fingerprint">证书 SHA-256 — 浏览器中显示的指纹</string>
+    <string name="tls_error_validity">证书已过期或尚未生效。请检查手机日期和时间，以及服务器证书的有效期。确认信任无法绕过此错误。</string>
+    <string name="tls_error_chain">证书或其链存在无效签名、弱密钥或弱算法，或者证书颁发机构的用途或限制无效。管理员必须修复证书；无法确认此证书。</string>
+    <string name="tls_error_hostname">证书与服务器地址不匹配。请检查地址，并让管理员修正证书中的名称。</string>
+    <string name="tls_hostname_warning">警告：证书中的名称与服务器地址不匹配。仅在独立核实后确认密钥。</string>
+    <string name="tls_blocked_title">服务器证书被拒绝</string>
+    <string name="tls_verify_instructions">请管理员使用下方命令计算 SPKI 指纹。直接使用 TLS 时，请使用 meshcentral-data/webserver-cert-public.crt；若 TLS 在反向代理终止，请使用代理的证书。将 cert.pem 替换为该文件。浏览器显示的是单独的证书指纹。</string>
+    <string name="tls_independent_warning">请通过独立且可信的渠道核对。通过同一条未经验证的连接取得的指纹无法防范中间人攻击。</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">证书颁发者自称是 MeshCentral 根证书。</string>
+    <string name="tls_issuer_unknown">此证书由未知的证书颁发机构签名。如果服务器使用公共证书，其证书链可能不完整，建议修复服务器配置。</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">लक्ष देणे आवश्यक</string>
+    <string name="parity_security">Windows सुरक्षा</string>
+    <string name="parity_security_cached">शेवटची मिळालेली स्थिती; ती जुनी असू शकते.</string>
+    <string name="parity_antivirus">अँटीव्हायरस</string>
+    <string name="parity_updates">स्वयंचलित अद्यतने</string>
+    <string name="parity_firewall">फायरवॉल</string>
+    <string name="parity_enabled">सक्षम</string>
+    <string name="parity_updated">अद्ययावत</string>
+    <string name="parity_unknown">अज्ञात</string>
+    <string name="parity_ok">ठीक</string>
+    <string name="parity_message">संगणक वापरकर्त्याला संदेश</string>
+    <string name="parity_message_title">शीर्षक</string>
+    <string name="parity_message_confirm">हा संदेश पाठवायचा?</string>
+    <string name="parity_message_sent">पाठवला. पोहोचल्याची पुष्टी झालेली नाही.</string>
+    <string name="parity_shortcuts">माझे शॉर्टकट</string>
+    <string name="parity_remove_shortcut">%1$s काढा</string>
+    <string name="parity_add_shortcut">शॉर्टकट जोडा</string>
+    <string name="parity_suggestions">सूचना</string>
+    <string name="parity_shortcut_label">नाव</string>
+    <string name="parity_shortcut_key">कळ: %1$s</string>
+    <string name="parity_review">तपासा</string>
+    <string name="parity_save">जतन करा</string>
+    <string name="parity_history">इतिहास</string>
+    <string name="parity_events">उपकरणाच्या घटना (जास्तीत जास्त 50)</string>
+    <string name="parity_power_history">पॉवर इतिहास</string>
+    <string name="parity_history_error">लोड करता आले नाही. पुन्हा प्रयत्न करण्यासाठी रिफ्रेश करा.</string>
+    <string name="parity_history_empty">कोणत्याही नोंदी मिळाल्या नाहीत.</string>
+    <string name="parity_power_on">चालू</string>
+    <string name="parity_hibernating">हायबरनेशनमध्ये</string>
+    <string name="parity_power_off">बंद</string>
+    <string name="parity_yes">होय</string>
+    <string name="parity_no">नाही</string>
+</resources>

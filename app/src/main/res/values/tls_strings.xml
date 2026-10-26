@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">The server certificate is not trusted. Compare its fingerprint with the certificate on your server before trusting it.</string>
+    <string name="tls_error_changed">The server key has changed. Connection blocked: verify the new fingerprint with your server administrator.</string>
+    <string name="tls_untrusted_title">Untrusted server certificate</string>
+    <string name="tls_changed_title">Server certificate changed</string>
+    <string name="tls_fingerprint">SHA-256 public key (SPKI) — pinned</string>
+    <string name="tls_previous_fingerprint">Previously trusted public key, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">New public key, SHA-256 (SPKI)</string>
+    <string name="tls_certificate_fingerprint">SHA-256 certificate — shown in browsers</string>
+    <string name="tls_error_validity">The certificate has expired or is not yet valid. Check the date and time on your phone and the validity of the server certificate. Trust cannot bypass this error.</string>
+    <string name="tls_error_chain">The certificate or its chain has an invalid signature, a weak key or algorithm, or an invalid certificate authority purpose or constraints. The administrator must fix the certificate; it cannot be approved.</string>
+    <string name="tls_error_hostname">The certificate does not match this server address. Check the address and ask the administrator to fix the certificate names.</string>
+    <string name="tls_hostname_warning">Warning: the certificate name does not match the server address. Approve the key only after independent verification.</string>
+    <string name="tls_blocked_title">Server certificate rejected</string>
+    <string name="tls_verify_instructions">Ask the administrator to calculate the SPKI fingerprint with the command below. Use meshcentral-data/webserver-cert-public.crt for direct TLS, or the reverse proxy certificate when a proxy terminates TLS; substitute that file for cert.pem. Browsers show the separate certificate fingerprint.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_independent_warning">Verify through an independent, trusted channel. A fingerprint obtained through this same unverified connection does not protect against an intermediary.</string>
+    <string name="tls_subject">Subject: %1$s</string>
+    <string name="tls_validity">Valid from %1$s to %2$s</string>
+    <string name="tls_server">Server: %1$s</string>
+    <string name="tls_compare">Compare this fingerprint with the certificate on the server through a separate, trusted channel.</string>
+    <string name="tls_trust">Trust this server</string>
+    <string name="tls_replace">Replace fingerprint…</string>
+    <string name="tls_replace_title">Replace the trusted key?</string>
+    <string name="tls_replace_warning">A changed key may mean someone is impersonating your server. Continue only after independently verifying the new fingerprint. The previous key will no longer be trusted.</string>
+    <string name="tls_confirm_replace">Confirm replacement</string>
+    <string name="tls_pinned_key">Trusted server key</string>
+    <string name="tls_forget">Forget</string>
+    <string name="tls_forget_title">Forget the trusted key?</string>
+    <string name="tls_forget_warning">The current connection will close. You will need to verify this server again if its certificate is not trusted by Android.</string>
+    <string name="tls_issuer_meshcentral">The certificate issuer identifies itself as a MeshCentral root.</string>
+    <string name="tls_issuer_unknown">The certificate is signed by an unknown certificate authority. If the server uses a public certificate, its chain may be incomplete — fixing the server is recommended.</string>
+</resources>

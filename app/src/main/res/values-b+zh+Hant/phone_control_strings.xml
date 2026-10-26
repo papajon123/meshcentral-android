@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">手機上的遠端控制無障礙服務已關閉</string>
+    <string name="phone_control_unsupported">此手機上的 Android 不支援遠端輸入</string>
+    <string name="phone_control_unknown">代理程式未回報輸入支援</string>
+    <string name="phone_control_no_permission">你的權限僅允許檢視</string>
+    <string name="phone_control_back">返回</string>
+    <string name="phone_control_home">主畫面</string>
+    <string name="phone_control_recents">最近使用的應用程式</string>
+    <string name="phone_control_notifications">通知</string>
+    <string name="phone_control_quick_settings">快速設定</string>
+    <string name="phone_control_text">輸入文字</string>
+    <string name="phone_control_text_hint">文字會附加到目前聚焦欄位的結尾。密碼欄位中無法輸入。</string>
+    <string name="phone_control_consent_hint">手機擁有者必須核准控制。鎖定螢幕和 PIN 輸入無法使用。</string>
+</resources>

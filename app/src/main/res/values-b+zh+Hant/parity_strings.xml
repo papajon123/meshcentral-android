@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">需要注意</string>
+    <string name="parity_security">Windows 安全性</string>
+    <string name="parity_security_cached">最近回報的狀態，可能已過時。</string>
+    <string name="parity_antivirus">防毒軟體</string>
+    <string name="parity_updates">自動更新</string>
+    <string name="parity_firewall">防火牆</string>
+    <string name="parity_enabled">已啟用</string>
+    <string name="parity_updated">已更新</string>
+    <string name="parity_unknown">未知</string>
+    <string name="parity_ok">正常</string>
+    <string name="parity_message">傳送訊息給電腦使用者</string>
+    <string name="parity_message_title">標題</string>
+    <string name="parity_message_confirm">傳送此訊息？</string>
+    <string name="parity_message_sent">已傳送。尚未確認送達。</string>
+    <string name="parity_shortcuts">我的快捷鍵</string>
+    <string name="parity_remove_shortcut">刪除 %1$s</string>
+    <string name="parity_add_shortcut">新增快捷鍵</string>
+    <string name="parity_suggestions">建議組合</string>
+    <string name="parity_shortcut_label">名稱</string>
+    <string name="parity_shortcut_key">按鍵：%1$s</string>
+    <string name="parity_review">檢查</string>
+    <string name="parity_save">儲存</string>
+    <string name="parity_history">歷程</string>
+    <string name="parity_events">裝置事件（最多 50 筆）</string>
+    <string name="parity_power_history">電源歷程</string>
+    <string name="parity_history_error">無法載入。請按重新整理再試一次。</string>
+    <string name="parity_history_empty">未收到紀錄。</string>
+    <string name="parity_power_on">已開機</string>
+    <string name="parity_hibernating">休眠</string>
+    <string name="parity_power_off">已關機</string>
+    <string name="parity_yes">是</string>
+    <string name="parity_no">否</string>
+</resources>

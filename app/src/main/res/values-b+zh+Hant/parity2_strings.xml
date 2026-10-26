@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">解除安裝代理程式</string>
+    <string name="parity2_remove">移除裝置</string>
+    <string name="parity2_uninstall_warning">遠端存取將停止。裝置記錄會保留。重新安裝需要存取此電腦。</string>
+    <string name="parity2_remove_warning">裝置記錄及其歷史將被刪除。代理程式仍會保留，可能再次註冊。</string>
+    <string name="parity2_confirm_name">準確輸入裝置名稱</string>
+    <string name="parity2_removal_pending">請求已傳送。正在檢查裝置清單，尚未確認執行。</string>
+    <string name="parity2_removal_absent">重新整理後的清單中沒有此裝置。可能是裝置已刪除，也可能是存取權限有所變更。</string>
+    <string name="parity2_removal_disconnected">代理程式已中斷連線。尚未確認解除安裝。</string>
+    <string name="parity2_removal_unknown">結果未知。重複操作前請檢查裝置。</string>
+    <string name="parity2_software">已安裝的軟體</string>
+    <string name="parity2_software_hint">從已連線的代理程式讀取。最多顯示 1000 個程式；缺少的值仍顯示為未知。</string>
+    <string name="parity2_software_error">未收到軟體清單。請檢查代理程式與權限；請求逾時後，請重新連線再重試。</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">主機板</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">製造商</string>
+    <string name="parity2_bios_date">韌體日期</string>
+    <string name="parity2_mode">模式</string>
+    <string name="parity2_spec">規格</string>
+    <string name="parity2_activated">已啟用</string>
+    <string name="parity2_owned">已設定擁有者</string>
+    <string name="parity2_last_boot">最近回報的啟動時間</string>
+    <string name="parity2_uptime">估計運作時間（時:分:秒）</string>
+    <string name="parity2_metrics">CPU 與記憶體使用率</string>
+    <string name="parity2_sample_time">收到測量值：%1$s</string>
+    <string name="parity2_run">執行命令</string>
+    <string name="parity2_command">命令</string>
+    <string name="parity2_run_warning">以代理程式帳戶執行，通常為 SYSTEM 或 root。命令可能修改電腦並被伺服器記錄。不支援取消，也不提供結束代碼。請勿輸入機密資訊。</string>
+    <string name="parity2_run_uncertain">尚未確認結果。命令可能仍在執行。再次執行前請在終端機中檢查。</string>
+    <string name="parity2_output">命令輸出</string>
+    <string name="parity2_output_note">最多 65536 個字元。輸出不代表成功；請驗證預期變更。</string>
+    <string name="parity2_seven_days">最近 7 天</string>
+    <string name="parity2_history_note">回報的電源與連線歷史。空白表示未知，並非停機。下方最多顯示最近 100 次狀態轉換。</string>
+    <string name="parity2_favorites">常用命令</string>
+    <string name="parity2_favorites_hint">每個設定檔最多 20 條。選取後先編輯本機草稿，再插入且不傳送 Enter。僅限單行；請勿儲存機密資訊。</string>
+    <string name="parity2_insert">插入但不傳送 Enter</string>
+</resources>

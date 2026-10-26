@@ -49,7 +49,7 @@ Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM back
 ## Remote desktop scope
 
 - Only the native Mesh Agent desktop path is supported: `/meshrelay.ashx?p=2`.
-- Intel AMT KVM, RDP, VNC and WebRTC are not native clients. Device events, wake/power, chat, registry/software and server administration are also outside this release; use the web panel where appropriate.
+- Intel AMT KVM, RDP, VNC and WebRTC are not native clients. Device events, chat, registry/software and server administration are also outside this release; use the web panel where appropriate.
 - The KVM cursor-shape index is parsed but the app draws its own pointer; the Agent does not paint the cursor into tiles.
 - Touch uses mouse packets, not the KVM touch command. Pinch zoom is bounded at 16×; a tap outside the picture is ignored.
 - View-only desktop sessions do not send input. Input can also be blocked by the remote input lock or keyboard state.
@@ -85,6 +85,30 @@ Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM back
 
 ## Network and deployment
 
+- Native control/relay connections support one explicitly approved SHA-256 leaf-SPKI pin per profile
+  and normalized endpoint. Approval depends on an independent, trusted fingerprint comparison.
+  SPKI and certificate fingerprints are different; browsers show the latter. Behind a TLS-terminating
+  reverse proxy, the pinned key is the proxy's external key, not an internal MeshCentral/Agent key.
+- An existing pin is mandatory even for platform-trusted certificates. A different key is blocked
+  until explicitly replaced. Returning to platform-only trust requires **Forget**. Both actions
+  require confirmation and fresh app unlock if enabled, and close all active native connections.
+- A matching pin permits a chain/name exception only at that endpoint. It never bypasses certificate
+  expiry or a not-yet-valid date: fix the phone clock or server certificate. Renewal with the same
+  key works within the new validity interval. Without a pin, chain and hostname checks remain strict.
+- An unknown issuer or omitted root can be approved only by explicitly verifying the leaf-key
+  fingerprint. This supports MeshCentral's default private root. A public certificate may instead
+  need server-side chain repair, as explained in the dialog. Broken signatures and invalid CA
+  basic constraints/key usage cannot be approved or bypassed with a saved pin. Private chains with
+  RSA keys below 2048 bits, EC keys below 256 bits, MD5/SHA-1 leaf signatures or an explicit EKU
+  without serverAuth are also rejected. Issuer names alone
+  do not establish identity.
+- Only one key is supported per endpoint. Load balancers serving different keys (including separate
+  RSA/ECDSA keys) can cause intermittent refusals. Use a consistent key; keys are never auto-added.
+- Desktop, Agent terminal/files and SSH/SFTP relays derive from `baseUrl`. Separate relay hosts are
+  unsupported. The profile's trust exception cannot be forwarded to another host or port.
+- Background notifications use the profile pin and stop on TLS rejection. After resolving trust,
+  the user must re-enable notifications. The raw Debug WebView does not inherit pins and is
+  available only in debug builds.
 - The app needs an HTTPS/WSS path to `/control.ashx`, `/meshrelay.ashx`, `/sshterminalrelay.ashx` and `/sshfilesrelay.ashx`. A reverse proxy that blocks WebSocket upgrades breaks sign-in or a tool session.
 - Browser SSO, domain URL access keys (`?key=`) and server administration are not supported by the native sign-in path. The app reports policy refusals instead of bypassing them.
 - A reverse proxy with a subpath still needs live compatibility testing.

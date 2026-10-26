@@ -111,7 +111,7 @@ class MeshControlParserTest {
     @Test
     fun siteAdminGetsFullRights() {
         val device = MeshDevice(nodeId = "node//n1", meshId = "mesh//abc", name = "demo-pc", conn = 1, agentId = 1)
-        val resolved = MeshControlParser.resolveRights(listOf(device), emptyList(), "user//demo-user", siteAdmin = true).single()
+        val resolved = MeshControlParser.resolveRights(listOf(device), emptyList(), "user//demo-user", siteAdmin = true, manageAllDeviceGroups = true).single()
 
         assertEquals(MeshRights.FULL, resolved.rights)
         assertTrue(resolved.inputAllowed)

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s The incomplete document was deleted.</string>
+    <string name="final_fixes_download_marked">%1$s The incomplete document was marked with .partial. Delete it in Android Files before retrying.</string>
+    <string name="final_fixes_download_retained">%1$s Android could not delete or mark the incomplete document. Do not use it; delete it in Android Files.</string>
+    <string name="final_fixes_download_transport_failed">The download connection failed. Reopen this file session to retry.</string>
+    <string name="final_fixes_download_invalid">The downloaded data did not match the expected file. Reopen this file session to retry.</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">Uyarı</string>
+    <string name="parity_fixes_server_rejected">Sunucu yanıtı: %1$s</string>
+    <string name="parity_fixes_output_truncated">Çıktı 65.536 karaktere kısaltıldı.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: önceki ölçümden bu yana ortalama; diğer oturumların istediği ölçümler dahil.</string>
+    <string name="parity_fixes_run_warning">Bu cihazda bir komut çalıştırılır. Dikkatle inceleyin. Bu cihaza erişimi olan tüm kullanıcılar komut çıktısını görebilir. Gizli bilgi eklemeyin.</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">सर्वर का प्रमाणपत्र भरोसेमंद नहीं है। भरोसा करने से पहले इसका फ़िंगरप्रिंट सर्वर पर मौजूद प्रमाणपत्र से मिलाएँ।</string>
+    <string name="tls_error_changed">सर्वर की कुंजी बदल गई है। कनेक्शन रोक दिया गया है: सर्वर व्यवस्थापक से नया फ़िंगरप्रिंट सत्यापित करें।</string>
+    <string name="tls_untrusted_title">सर्वर का प्रमाणपत्र भरोसेमंद नहीं है</string>
+    <string name="tls_changed_title">सर्वर का प्रमाणपत्र बदल गया है</string>
+    <string name="tls_fingerprint">सार्वजनिक कुंजी का SHA-256 फ़िंगरप्रिंट (SPKI)</string>
+    <string name="tls_previous_fingerprint">पहले की भरोसेमंद सार्वजनिक कुंजी, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">नई सार्वजनिक कुंजी, SHA-256 (SPKI)</string>
+    <string name="tls_subject">प्रमाणपत्र धारक: %1$s</string>
+    <string name="tls_validity">वैधता: %1$s से %2$s तक</string>
+    <string name="tls_server">सर्वर: %1$s</string>
+    <string name="tls_compare">किसी अलग, भरोसेमंद माध्यम से इस फ़िंगरप्रिंट को सर्वर पर मौजूद प्रमाणपत्र से मिलाएँ।</string>
+    <string name="tls_trust">इस सर्वर पर भरोसा करें</string>
+    <string name="tls_replace">फ़िंगरप्रिंट बदलें…</string>
+    <string name="tls_replace_title">भरोसेमंद कुंजी बदलें?</string>
+    <string name="tls_replace_warning">कुंजी बदलने का मतलब हो सकता है कि कोई आपके सर्वर की पहचान का इस्तेमाल कर रहा है। नए फ़िंगरप्रिंट की स्वतंत्र रूप से पुष्टि करने के बाद ही आगे बढ़ें। पुरानी कुंजी अब भरोसेमंद नहीं मानी जाएगी।</string>
+    <string name="tls_confirm_replace">बदलने की पुष्टि करें</string>
+    <string name="tls_pinned_key">सर्वर की भरोसेमंद कुंजी</string>
+    <string name="tls_forget">भूल जाएँ</string>
+    <string name="tls_forget_title">भरोसेमंद कुंजी भूल जाएँ?</string>
+    <string name="tls_forget_warning">मौजूदा कनेक्शन बंद हो जाएगा। यदि Android को सर्वर के प्रमाणपत्र पर भरोसा नहीं है, तो आपको इस सर्वर को फिर से सत्यापित करना होगा।</string>
+    <string name="tls_certificate_fingerprint">प्रमाणपत्र का SHA-256 — ब्राउज़र में दिखने वाला मान</string>
+    <string name="tls_error_validity">प्रमाणपत्र की अवधि समाप्त हो गई है या अभी शुरू नहीं हुई है। फ़ोन की तारीख और समय तथा सर्वर प्रमाणपत्र की वैधता जाँचें। भरोसा स्वीकार करने से यह त्रुटि नहीं टलेगी।</string>
+    <string name="tls_error_chain">प्रमाणपत्र या उसकी शृंखला में अमान्य हस्ताक्षर, कमज़ोर कुंजी या एल्गोरिदम, या प्रमाणन प्राधिकरण का अमान्य उद्देश्य या पाबंदियाँ हैं। व्यवस्थापक को प्रमाणपत्र ठीक करना होगा; इसे स्वीकार नहीं किया जा सकता।</string>
+    <string name="tls_error_hostname">प्रमाणपत्र सर्वर के पते से मेल नहीं खाता। पता जाँचें और व्यवस्थापक से प्रमाणपत्र के नाम ठीक करने को कहें।</string>
+    <string name="tls_hostname_warning">चेतावनी: प्रमाणपत्र का नाम सर्वर पते से मेल नहीं खाता। कुंजी की पुष्टि केवल स्वतंत्र सत्यापन के बाद करें।</string>
+    <string name="tls_blocked_title">सर्वर प्रमाणपत्र अस्वीकार किया गया</string>
+    <string name="tls_verify_instructions">व्यवस्थापक नीचे दी गई कमांड से SPKI फ़िंगरप्रिंट निकाल सकता है। सीधे TLS के लिए meshcentral-data/webserver-cert-public.crt और रिवर्स प्रॉक्सी पर TLS समाप्त होने पर प्रॉक्सी का प्रमाणपत्र इस्तेमाल करें। cert.pem की जगह वह फ़ाइल रखें। ब्राउज़र प्रमाणपत्र का अलग फ़िंगरप्रिंट दिखाता है।</string>
+    <string name="tls_independent_warning">किसी स्वतंत्र, विश्वसनीय माध्यम से जाँचें। इसी अप्रमाणित कनेक्शन से मिला फ़िंगरप्रिंट बीच में मौजूद हमलावर से सुरक्षा नहीं देता।</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">प्रमाणपत्र जारीकर्ता स्वयं को MeshCentral रूट बताता है।</string>
+    <string name="tls_issuer_unknown">यह प्रमाणपत्र किसी अज्ञात प्रमाणन प्राधिकरण से हस्ताक्षरित है। यदि सर्वर सार्वजनिक प्रमाणपत्र का उपयोग करता है, तो उसकी शृंखला अधूरी हो सकती है — सर्वर को ठीक करना बेहतर है।</string>
+</resources>

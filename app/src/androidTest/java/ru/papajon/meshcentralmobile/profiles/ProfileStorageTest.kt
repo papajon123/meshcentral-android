@@ -11,6 +11,21 @@ import ru.papajon.meshcentralmobile.settings.SettingsRepository
 import java.util.UUID
 
 class ProfileStorageTest {
+    @Test fun favoriteCommandsPersistPerProfileWithTwentyItemLimit() {
+        val store = SettingsRepository(context, name)
+        val first = store.activeProfile.id
+        val other = store.createProfile("Other", "https://other.example/")
+        repeat(20) { assertTrue(store.addFavoriteCommand(first, ru.papajon.meshcentralmobile.model.FavoriteCommand("Example $it", "echo $it"))) }
+        assertFalse(store.addFavoriteCommand(first, ru.papajon.meshcentralmobile.model.FavoriteCommand("Extra", "echo extra")))
+        assertTrue(store.activateProfile(other.id))
+        assertTrue(store.activeProfile.favoriteCommands.isEmpty())
+        val reread = SettingsRepository(context, name)
+        assertTrue(reread.activeProfile.favoriteCommands.isEmpty())
+        reread.activateProfile(first)
+        assertEquals(20, reread.activeProfile.favoriteCommands.size)
+        reread.removeFavoriteCommand(first, 0)
+        assertEquals("echo 1", SettingsRepository(context, name).activeProfile.favoriteCommands.first().command)
+    }
     private val context = InstrumentationRegistry.getInstrumentation().targetContext
     private val name = "profile-test-${UUID.randomUUID()}"
     private val vaultName = "$name-vault"

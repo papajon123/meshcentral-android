@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">Handlungsbedarf</string>
+    <string name="parity_security">Windows-Sicherheit</string>
+    <string name="parity_security_cached">Zuletzt gemeldeter Status; möglicherweise veraltet.</string>
+    <string name="parity_antivirus">Virenschutz</string>
+    <string name="parity_updates">Automatische Updates</string>
+    <string name="parity_firewall">Firewall</string>
+    <string name="parity_enabled">Aktiviert</string>
+    <string name="parity_updated">Aktuell</string>
+    <string name="parity_unknown">Unbekannt</string>
+    <string name="parity_ok">In Ordnung</string>
+    <string name="parity_message">Nachricht an den Computerbenutzer</string>
+    <string name="parity_message_title">Titel</string>
+    <string name="parity_message_confirm">Diese Nachricht senden?</string>
+    <string name="parity_message_sent">Gesendet. Zustellung nicht bestätigt.</string>
+    <string name="parity_shortcuts">Meine Tastenkombinationen</string>
+    <string name="parity_remove_shortcut">%1$s entfernen</string>
+    <string name="parity_add_shortcut">Tastenkombination hinzufügen</string>
+    <string name="parity_suggestions">Vorschläge</string>
+    <string name="parity_shortcut_label">Bezeichnung</string>
+    <string name="parity_shortcut_key">Taste: %1$s</string>
+    <string name="parity_review">Prüfen</string>
+    <string name="parity_save">Speichern</string>
+    <string name="parity_history">Verlauf</string>
+    <string name="parity_events">Geräteereignisse (bis zu 50)</string>
+    <string name="parity_power_history">Energieverlauf</string>
+    <string name="parity_history_error">Laden fehlgeschlagen. Zum Wiederholen auf Aktualisieren tippen.</string>
+    <string name="parity_history_empty">Keine Einträge gemeldet.</string>
+    <string name="parity_power_on">Eingeschaltet</string>
+    <string name="parity_hibernating">Ruhezustand</string>
+    <string name="parity_power_off">Ausgeschaltet</string>
+    <string name="parity_yes">Ja</string>
+    <string name="parity_no">Nein</string>
+</resources>

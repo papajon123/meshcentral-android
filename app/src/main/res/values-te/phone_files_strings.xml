@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">సందేశాలు, లింక్‌లు మరియు నంబర్ డయల్ చేయడానికి రిమోట్ నియంత్రణతో పాటు కన్సోల్ అనుమతి కూడా అవసరం.</string>
+    <string name="phone_url_format">http:// లేదా https:// చిన్న అక్షరాలలో ఉపయోగించండి. ఖాళీలు మరియు డబుల్ కోట్‌లు అనుమతించబడవు; శాతం ఎన్‌కోడింగ్ ఉపయోగించండి.</string>
+    <string name="phone_files_choose_category">అప్‌లోడ్ చేయడానికి ముందు ఫోన్ వర్గం లేదా ఫోల్డర్‌ను ఎంచుకోండి.</string>
+    <string name="phone_files_ambiguous_name">అనేక మీడియా ఫైల్‌లు ఒకే పేరును పంచుకుంటున్నాయి. సరైన ఫైల్‌ను డౌన్‌లోడ్ చేయడానికి లేదా తొలగించడానికి Sdcardలోని దాని ఫోల్డర్ నుండి ఫైల్‌ను తెరవండి.</string>
+    <string name="phone_files_directory_too_large">ఈ వర్గంలో జాబితా చేయడానికి చాలా ఎక్కువ ఫైల్‌లు ఉన్నాయి. Sdcardలో చిన్న ఫోల్డర్‌ను తెరవండి.</string>
+</resources>

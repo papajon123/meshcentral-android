@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">এজেন্ট পাঠানোর আগেই নন-UTF-8 Windows আউটপুট নষ্ট করতে পারে। PowerShell কমান্ডের জন্য UTF-8 মোড বেছে নিন: এটি কনসোলের ইনপুট ও আউটপুট UTF-8-এ সেট করে। এই মোডে PowerShell সিনট্যাক্স ব্যবহার করা হয়, cmd.exe সিনট্যাক্স নয়। নিজস্ব আউটপুট এনকোডিং থাকা প্রোগ্রামগুলি এখনও ভিন্ন আচরণ করতে পারে।</string>
+    <string name="windows_polish_default_shell">ডিফল্ট কমান্ড শেল (অপরিবর্তিত)</string>
+</resources>

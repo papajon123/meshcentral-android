@@ -2,6 +2,9 @@ package ru.papajon.meshcentralmobile.mesh
 
 import android.content.Context
 import android.content.ContextWrapper
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.*
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
 import java.io.BufferedInputStream
 import java.io.ByteArrayOutputStream
@@ -19,10 +22,14 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import org.junit.Assert.*
 import org.junit.Test
+import org.junit.Rule
+import org.json.JSONObject
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.model.ConnectionState
 import ru.papajon.meshcentralmobile.security.SecureVault
+import ru.papajon.meshcentralmobile.ui.screens.LoginScreen
+import ru.papajon.meshcentralmobile.ui.theme.MeshCentralMobileTheme
 
 /**
  * MeshCentral answers a password-only `x-meshauth` header with a `tokenrequired` close message and
@@ -30,6 +37,7 @@ import ru.papajon.meshcentralmobile.security.SecureVault
  * frame, so a small socket fixture reproduces the server's exact bytes.
  */
 class TwoFactorSignInTest {
+    @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
     @Test fun emptyCloseFrameKeepsTheCodeStepWithoutReconnecting() {
         assertChallengeStaysStable(AfterChallenge.EmptyCloseFrame)
     }
@@ -39,7 +47,7 @@ class TwoFactorSignInTest {
     }
 
     @Test fun codeFromTheChallengeCompletesSignIn() {
-        withClient(AfterChallenge.EmptyCloseFrame) { client, server ->
+        withClient(AfterChallenge.EmptyCloseFrame) { client, server, _ ->
             client.login(server.url, "test-user", PASSWORD)
             await { client.clientState.value.twoFactorChallenge != null }
             client.submitTwoFactorCode(VALID_CODE)
@@ -52,7 +60,7 @@ class TwoFactorSignInTest {
     }
 
     @Test fun rejectedPasswordIsNotRetried() {
-        withClient(AfterChallenge.EmptyCloseFrame) { client, server ->
+        withClient(AfterChallenge.EmptyCloseFrame) { client, server, _ ->
             client.login(server.url, "test-user", "wrong-password")
             await { client.clientState.value.lastError != null }
             Thread.sleep(RETRY_WINDOW_MILLIS)
@@ -66,7 +74,7 @@ class TwoFactorSignInTest {
     }
 
     private fun assertChallengeStaysStable(afterChallenge: AfterChallenge) {
-        withClient(afterChallenge) { client, server ->
+        withClient(afterChallenge) { client, server, _ ->
             client.login(server.url, "test-user", PASSWORD)
             await { client.clientState.value.twoFactorChallenge != null }
             Thread.sleep(RETRY_WINDOW_MILLIS)
@@ -78,7 +86,183 @@ class TwoFactorSignInTest {
         }
     }
 
-    private fun withClient(afterChallenge: AfterChallenge, block: (MeshCentralClient, SignInFixture) -> Unit) {
+    @Test fun rememberedDeviceSkipsCodeOnNextLogin() {
+        withClient { client, server, vault ->
+            remember(client, server)
+            assertEquals(1, server.cookieRequests.size)
+            val expiry = vault.rememberedDevice.get(server.url, "test-user")!!.expiresAt
+            assertTrue(expiry in (System.currentTimeMillis() + 6 * 86_400_000L)..(System.currentTimeMillis() + 7 * 86_400_000L))
+            client.close()
+            val count = server.authHeaders.size
+            withNewClient(vault) { next ->
+                assertTrue(next.loginWithStoredCredentials(server.url))
+                await { !next.clientState.value.requiresSignIn && next.clientState.value.devicesCurrent }
+                Thread.sleep(RETRY_WINDOW_MILLIS)
+                assertEquals(count + 1, server.authHeaders.size)
+                assertEquals(2, server.authHeaders.last().size)
+                assertTrue(server.rememberCookieHeaders.last())
+                assertNull(next.clientState.value.twoFactorChallenge)
+                assertEquals(1, server.cookieRequests.size)
+            }
+        }
+    }
+
+    @Test fun expiredRememberCookieFallsBackToCodeStep() {
+        withClient { client, server, vault ->
+            remember(client, server)
+            server.acceptRememberedCookie = false
+            val count = server.authHeaders.size
+            client.login(server.url, "test-user", PASSWORD)
+            await { client.clientState.value.twoFactorChallenge != null }
+            Thread.sleep(RETRY_WINDOW_MILLIS)
+            assertEquals(count + 1, server.authHeaders.size)
+            assertTrue(server.rememberCookieHeaders.last())
+            assertNull(vault.rememberedDevice.get(server.url, "test-user"))
+            assertNull(client.clientState.value.rememberedDeviceExpiresAt)
+            assertEquals(ConnectionState.Failed, client.clientState.value.connectionState)
+            assertTrue(client.clientState.value.requiresSignIn)
+        }
+    }
+
+    @Test fun logoutForgetsRememberedDevice() {
+        withClient { client, server, vault ->
+            remember(client, server)
+            client.logout(clearStoredCredentials = false)
+            assertNull(vault.rememberedDevice.get(server.url, "test-user"))
+            assertTrue(client.loginWithStoredCredentials(server.url))
+            await { client.clientState.value.twoFactorChallenge != null }
+            assertFalse(server.rememberCookieHeaders.last())
+        }
+    }
+
+    @Test fun rememberCookieIsNotSentToAnotherServer() {
+        withClient { client, first, vault ->
+            remember(client, first)
+            SignInFixture(AfterChallenge.EmptyCloseFrame).use { second ->
+                client.login(second.url, "test-user", PASSWORD)
+                await { client.clientState.value.twoFactorChallenge != null }
+                assertFalse(second.rememberCookieHeaders.single())
+                assertNull(vault.rememberedDevice.get(first.url, "test-user"))
+                client.login(first.url, "test-user", PASSWORD)
+                await { client.clientState.value.twoFactorChallenge != null }
+                assertFalse(first.rememberCookieHeaders.last())
+            }
+        }
+    }
+
+    @Test fun uncheckedBoxDoesNotRequestCookie() {
+        withClient { client, server, vault ->
+            client.login(server.url, "test-user", PASSWORD)
+            await { client.clientState.value.twoFactorChallenge != null }
+            compose.setContent {
+                MeshCentralMobileTheme { LoginScreen(client, vault, server.url) }
+            }
+            compose.onNodeWithTag("remember-device-checkbox").performScrollTo().assertIsOn().performClick().assertIsOff()
+            compose.onNodeWithText(compose.activity.getString(R.string.login_two_factor_code)).performTextInput(VALID_CODE)
+            compose.onNodeWithText(compose.activity.getString(R.string.login_action_sign_in_with_code)).performScrollTo().performClick()
+            try {
+                await { !client.clientState.value.requiresSignIn && client.clientState.value.devicesCurrent }
+            } catch (failure: AssertionError) {
+                val state = client.clientState.value
+                throw AssertionError("UI sign-in did not finish: attempts=${server.authHeaders.size}, " +
+                    "state=${state.connectionState}, challenge=${state.twoFactorChallenge != null}, " +
+                    "requiresSignIn=${state.requiresSignIn}, devicesCurrent=${state.devicesCurrent}", failure)
+            }
+            Thread.sleep(300)
+            assertTrue(server.cookieRequests.isEmpty())
+            assertNull(vault.rememberedDevice.get(server.url, "test-user"))
+        }
+    }
+
+    @Test fun badCredentialsEraseRememberedDevice() {
+        withClient { client, server, vault ->
+            remember(client, server)
+            client.login(server.url, "test-user", "wrong-password")
+            await { client.clientState.value.connectionState == ConnectionState.Failed }
+            assertNull(vault.rememberedDevice.get(server.url, "test-user"))
+        }
+    }
+
+    @Test fun rememberCookieIsNotSentToAnotherUser() {
+        withClient { client, server, vault ->
+            remember(client, server)
+            client.login(server.url, "other-user", PASSWORD)
+            await { client.clientState.value.twoFactorChallenge != null }
+            assertFalse(server.rememberCookieHeaders.last())
+            assertNull(vault.rememberedDevice.get(server.url, "test-user"))
+        }
+    }
+
+    @Test fun forgetActionCannotBeUndoneByALateCookieReply() {
+        withClient { client, server, vault ->
+            server.delayCookieReply = true
+            client.login(server.url, "test-user", PASSWORD)
+            await { client.clientState.value.twoFactorChallenge != null }
+            client.submitTwoFactorCode(VALID_CODE)
+            await { server.cookieRequests.size == 1 }
+            client.forgetRememberedDevice()
+            server.sendDelayedCookie()
+            Thread.sleep(300)
+            assertNull(vault.rememberedDevice.get(server.url, "test-user"))
+        }
+    }
+
+    @Test fun serverCanDisableRememberingWithoutBreakingSignIn() {
+        withClient { client, server, vault ->
+            server.cookieDays = 0
+            client.login(server.url, "test-user", PASSWORD)
+            await { client.clientState.value.twoFactorChallenge != null }
+            assertEquals(0, client.clientState.value.twoFactorChallenge!!.twoFactorCookieDays)
+            client.submitTwoFactorCode(VALID_CODE)
+            await { !client.clientState.value.requiresSignIn && client.clientState.value.devicesCurrent }
+            Thread.sleep(300)
+            assertTrue(server.cookieRequests.isEmpty())
+            assertNull(vault.rememberedDevice.get(server.url, "test-user"))
+        }
+    }
+
+    @Test fun silentCookieRefusalDoesNotBlockAnAcceptedSignIn() {
+        withClient { client, server, vault ->
+            server.delayCookieReply = true
+            client.login(server.url, "test-user", PASSWORD)
+            await { client.clientState.value.twoFactorChallenge != null }
+            client.submitTwoFactorCode(VALID_CODE)
+            await { !client.clientState.value.requiresSignIn && client.clientState.value.devicesCurrent }
+            await { server.cookieRequests.size == 1 }
+            Thread.sleep(300)
+            assertNull(vault.rememberedDevice.get(server.url, "test-user"))
+            assertNull(client.clientState.value.twoFactorChallenge)
+            assertEquals(2, server.authHeaders.size)
+        }
+    }
+
+    @Test fun codeDeliveryMarkersNeverRequestARememberCookie() {
+        withClient { client, server, vault ->
+            for (channel in TwoFactorChannel.entries) {
+                val count = server.authHeaders.size
+                client.login(server.url, "test-user", PASSWORD, channel.requestToken)
+                await { server.authHeaders.size == count + 1 && client.clientState.value.twoFactorChallenge != null }
+            }
+            assertTrue(server.cookieRequests.isEmpty())
+            assertNull(vault.rememberedDevice.get(server.url, "test-user"))
+        }
+    }
+
+    private fun remember(client: MeshCentralClient, server: SignInFixture) {
+        client.login(server.url, "test-user", PASSWORD)
+        await { client.clientState.value.twoFactorChallenge != null }
+        client.submitTwoFactorCode(VALID_CODE)
+        await { client.clientState.value.rememberedDeviceExpiresAt != null }
+    }
+
+    private fun withNewClient(vault: SecureVault, block: (MeshCentralClient) -> Unit) {
+        val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+        val client = MeshCentralClient(vault, scope)
+        try { block(client) } finally { client.close(); scope.cancel() }
+    }
+
+    private fun withClient(afterChallenge: AfterChallenge = AfterChallenge.EmptyCloseFrame,
+        block: (MeshCentralClient, SignInFixture, SecureVault) -> Unit) {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val isolated = object : ContextWrapper(context) {
@@ -86,10 +270,11 @@ class TwoFactorSignInTest {
             override fun getSharedPreferences(name: String, mode: Int) = super.getSharedPreferences("two-factor-test-$name", mode)
         }
         val vault = SecureVault(isolated)
+        vault.clearCredentials()
         val client = MeshCentralClient(vault, scope)
         val server = SignInFixture(afterChallenge)
         try {
-            block(client, server)
+            block(client, server, vault)
         } finally {
             client.close()
             scope.cancel()
@@ -111,6 +296,12 @@ class TwoFactorSignInTest {
         private val serverSocket = ServerSocket(0, 8, InetAddress.getByName("127.0.0.1"))
         private val sockets = CopyOnWriteArrayList<Socket>()
         val authHeaders = CopyOnWriteArrayList<List<String>>()
+        val rememberCookieHeaders = CopyOnWriteArrayList<Boolean>()
+        val cookieRequests = CopyOnWriteArrayList<JSONObject>()
+        @Volatile var acceptRememberedCookie = true
+        @Volatile var delayCookieReply = false
+        @Volatile var cookieDays = 7
+        @Volatile private var pendingCookieSocket: Socket? = null
         val url: String get() = "http://127.0.0.1:${serverSocket.localPort}/"
 
         init {
@@ -129,16 +320,27 @@ class TwoFactorSignInTest {
             val auth = headers.getValue("x-meshauth").split(',')
                 .map { String(Base64.getDecoder().decode(it), Charsets.UTF_8) }
             authHeaders += auth
+            val hasCookie = headers["cookie"]?.split("; ")?.contains("twofactor=$REMEMBER_COOKIE") == true
+            rememberCookieHeaders += hasCookie
             val output = socket.getOutputStream()
             output.write(
                 ("HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\n" +
                     "Sec-WebSocket-Accept: ${acceptKey(headers.getValue("sec-websocket-key"))}\r\n\r\n")
                     .toByteArray(Charsets.US_ASCII),
             )
-            if (auth[1] == PASSWORD && auth.size == 3 && auth[2] == VALID_CODE) {
+            if (auth[1] == PASSWORD && ((auth.size == 3 && auth[2] == VALID_CODE) ||
+                (hasCookie && acceptRememberedCookie && auth[0] == "test-user"))) {
                 output.write(textFrame("""{"action":"userinfo","userinfo":{"_id":"user/test/fixture","name":"test-user"}}"""))
                 output.write(textFrame("""{"action":"nodes","nodes":{}}"""))
                 output.flush()
+                while (true) {
+                    val command = readClientMessage(input) ?: break
+                    if (command.optString("action") == "twoFactorCookie") {
+                        cookieRequests += command
+                        if (delayCookieReply) pendingCookieSocket = socket else sendCookie(socket)
+                    }
+                }
+                return@use
             } else {
                 // webserver.js: ws.send({action:'close', cause:'noauth', msg:...}); ws.close();
                 output.write(
@@ -147,7 +349,7 @@ class TwoFactorSignInTest {
                             """{"action":"close","cause":"noauth","msg":"noauth-2a"}"""
                         } else {
                             """{"action":"close","cause":"noauth","msg":"tokenrequired","email2fa":false,""" +
-                                """"sms2fa":false,"msg2fa":false,"twoFactorCookieDays":30}"""
+                                """"sms2fa":false,"msg2fa":false,"twoFactorCookieDays":$cookieDays}"""
                         },
                     ),
                 )
@@ -160,6 +362,32 @@ class TwoFactorSignInTest {
             }
             // Drain until the client leaves, so its own frames never meet a reset connection.
             while (input.read() != -1) Unit
+        }
+
+        fun sendDelayedCookie() { pendingCookieSocket?.let(::sendCookie) }
+
+        private fun sendCookie(socket: Socket) {
+            socket.getOutputStream().apply {
+                write(textFrame("""{"action":"twoFactorCookie","cookie":"$REMEMBER_COOKIE"}"""))
+                flush()
+            }
+        }
+
+        private fun readClientMessage(input: InputStream): JSONObject? {
+            val first = input.read()
+            if (first == -1 || first and 0x0f == 8) return null
+            val second = input.read()
+            if (second == -1) return null
+            var length = second and 0x7f
+            if (length == 126) length = (input.read() shl 8) or input.read()
+            check(length in 0..65535)
+            val mask = if (second and 0x80 != 0) ByteArray(4) { input.read().toByte() } else null
+            val payload = ByteArray(length) { index ->
+                val byte = input.read()
+                check(byte >= 0)
+                (byte xor (mask?.get(index % 4)?.toInt() ?: 0)).toByte()
+            }
+            return runCatching { JSONObject(String(payload, Charsets.UTF_8)) }.getOrDefault(JSONObject())
         }
 
         private fun readHeaders(input: InputStream): Map<String, String> {
@@ -199,6 +427,7 @@ class TwoFactorSignInTest {
     private companion object {
         const val PASSWORD = "test-password"
         const val VALID_CODE = "123456"
+        const val REMEMBER_COOKIE = "synthetic-remember-cookie"
 
         /** Longer than the first automatic retry delay: a retry would open a second connection. */
         const val RETRY_WINDOW_MILLIS = 2_500L

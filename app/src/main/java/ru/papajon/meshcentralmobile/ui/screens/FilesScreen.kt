@@ -1,5 +1,6 @@
 package ru.papajon.meshcentralmobile.ui.screens
 
+import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -60,10 +61,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
 import androidx.compose.ui.semantics.liveRegion
@@ -72,7 +75,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.background.FileTransferService
 import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.mesh.files.FileChange
 import ru.papajon.meshcentralmobile.mesh.files.FilesController
@@ -81,15 +86,20 @@ import ru.papajon.meshcentralmobile.ui.components.IconBadge
 import ru.papajon.meshcentralmobile.ui.theme.MeshMono
 import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 import java.util.Locale
+import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /** SAF grants are temporary; no storage-wide permission, persisted URI, or saved transfer is used. */
 @Composable
 fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modifier = Modifier, preserveOnBack: Boolean = false, onReopen: (() -> Unit)? = null) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
     val state by controller.state.collectAsState()
     var selected by remember(controller) { mutableStateOf<RemoteFile?>(null) }
     var leaving by remember(controller) { mutableStateOf(false) }
     val createDocument = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/octet-stream")) { uri ->
-        controller.downloadChosen(uri)
+        scope.launch { controller.downloadChosen(uri) }
     }
     val openDocument = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) controller.proposeUpload(uri)
@@ -141,7 +151,10 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                     onRefresh = controller::refresh,
                     onCreateDirectory = { controller.propose(FileChange.CreateDirectory) },
                     onUpload = { openDocument.launch(arrayOf("*/*")) },
+                    canCreateDirectory = !state.androidPhone,
+                    canUpload = !state.androidPhone || state.path.isNotEmpty(),
                 )
+                if (state.androidPhone) Text(stringResource(R.string.phone_files_limits), style = MaterialTheme.typography.bodySmall)
                 if (!state.connected && !state.busy && !state.authRequired) {
                     onReopen?.let { action -> TextButton(onClick = action) { Text(stringResource(R.string.workspace_reopen)) } }
                     if (onReopen == null) Text(
@@ -174,7 +187,7 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
         }
         itemsIndexed(
             items = state.entries,
-            key = { _, entry -> entry.name },
+            key = { _, entry -> entry.listingIndex?.let { "media:$it" } ?: entry.name },
         ) { index, entry ->
             Column {
                 if (index > 0) {
@@ -199,7 +212,8 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                         .verticalScroll(rememberScrollState()),
                     verticalArrangement = Arrangement.spacedBy(spacing.sm),
                 ) {
-                    if (!entry.actionable) Text(stringResource(R.string.files_name_unavailable))
+                    if (!entry.actionable) Text(stringResource(if (entry.ambiguousName) R.string.phone_files_ambiguous_name
+                        else R.string.files_name_unavailable))
                     if (entry.actionable && entry.directory) {
                         TextButton(
                             onClick = { selected = null; controller.open(entry) },
@@ -212,7 +226,17 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                         TextButton(
                             onClick = {
                                 selected = null
-                                if (controller.prepareDownload(entry)) createDocument.launch(entry.name + ".partial")
+                                scope.launch {
+                                if (controller.prepareDownload(entry)) {
+                                    try {
+                                        // Start while this Activity is visible, before SAF can background it.
+                                        ContextCompat.startForegroundService(context, Intent(context, FileTransferService::class.java))
+                                        createDocument.launch(entry.name + ".partial")
+                                    } catch (_: Exception) {
+                                        withContext(NonCancellable) { controller.downloadPreparationFailed() }
+                                    }
+                                }
+                                }
                             },
                             enabled = enabled,
                             modifier = Modifier.heightIn(min = 48.dp),
@@ -226,6 +250,7 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                         )
                     }
                     if (entry.actionable && entry.type != 1) {
+                        if (!state.androidPhone) {
                         TextButton(
                             onClick = { selected = null; controller.propose(FileChange.Rename, entry) },
                             enabled = enabled,
@@ -233,6 +258,8 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                         ) {
                             Text(stringResource(R.string.files_rename))
                         }
+                        }
+                        if (!state.androidPhone || state.path.isNotEmpty()) {
                         TextButton(
                             onClick = { selected = null; controller.propose(FileChange.Delete, entry) },
                             enabled = enabled,
@@ -242,6 +269,7 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                                 text = stringResource(R.string.files_delete),
                                 color = MaterialTheme.colorScheme.error,
                             )
+                        }
                         }
                     }
                 }
@@ -405,6 +433,8 @@ private fun FilesToolbar(
     onRefresh: () -> Unit,
     onCreateDirectory: () -> Unit,
     onUpload: () -> Unit,
+    canCreateDirectory: Boolean = true,
+    canUpload: Boolean = true,
 ) {
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -428,7 +458,7 @@ private fun FilesToolbar(
             Spacer(Modifier.width(6.dp))
             Text(stringResource(R.string.files_refresh))
         }
-        OutlinedButton(
+        if (canCreateDirectory) OutlinedButton(
             onClick = onCreateDirectory,
             enabled = enabled,
             modifier = Modifier.heightIn(min = 48.dp),
@@ -439,7 +469,7 @@ private fun FilesToolbar(
         }
         Button(
             onClick = onUpload,
-            enabled = enabled,
+            enabled = enabled && canUpload,
             modifier = Modifier.heightIn(min = 48.dp),
         ) {
             Icon(Icons.Outlined.UploadFile, contentDescription = null, modifier = Modifier.size(18.dp))
@@ -521,6 +551,7 @@ private fun TransferBanner(name: String?, transferred: Long?, onCancel: () -> Un
 @Composable
 private fun FileRow(entry: RemoteFile, enabled: Boolean, onClick: () -> Unit) {
     val supporting = when {
+        entry.ambiguousName -> "#${entry.listingIndex?.plus(1)} · ${stringResource(R.string.files_size, entry.size)}"
         !entry.actionable -> stringResource(R.string.files_name_unavailable)
         entry.directory -> stringResource(R.string.files_folder)
         else -> {

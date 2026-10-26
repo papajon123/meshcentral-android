@@ -84,7 +84,7 @@ import ru.papajon.meshcentralmobile.ui.components.MeshCard
 import ru.papajon.meshcentralmobile.ui.components.MeshLoadingIndicator
 import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 
-enum class DeviceInspectorTab { Details, Services, Processes }
+enum class DeviceInspectorTab { Details, Services, Processes, History, Software, Command }
 
 /** Stable semantics tags shared with the instrumentation tests for this screen. */
 object DeviceInspectorTestTags {
@@ -152,26 +152,56 @@ fun DeviceInspectorScreen(
     pendingAction: String? = null,
     notice: String? = null,
     onOpenHelp: (() -> Unit)? = null,
+    phoneDevice: ru.papajon.meshcentralmobile.mesh.MeshDevice? = null,
+    devicesCurrent: Boolean = false,
+    onPhoneCommand: (ru.papajon.meshcentralmobile.mesh.PhoneRequest) -> Unit = {},
+    device: ru.papajon.meshcentralmobile.mesh.MeshDevice? = null,
+    canSendToast: Boolean = false,
+    onSendToast: (String, String) -> Unit = { _, _ -> },
+    events: List<ru.papajon.meshcentralmobile.management.DeviceHistoryEvent>? = null,
+    powerTimeline: List<ru.papajon.meshcentralmobile.management.PowerTransition>? = null,
+    eventsError: Boolean = false,
+    timelineError: Boolean = false,
+    onLoadHistory: () -> Unit = {},
+    software: List<ru.papajon.meshcentralmobile.management.InstalledProgram>? = null,
+    softwareError: Boolean = false,
+    onLoadSoftware: () -> Unit = {},
+    metrics: ru.papajon.meshcentralmobile.management.MetricsSample? = null,
+    metricsError: Boolean = false,
+    onLoadMetrics: () -> Unit = {},
+    commandOutput: String? = null,
+    commandUncertain: Boolean = false,
+    commandOutputTruncated: Boolean = false,
+    historyLoading: Boolean = false,
+    onRunCommand: (String, Boolean) -> Unit = { _, _ -> },
+    onOpenTerminal: () -> Unit = {},
+    onRemove: (ru.papajon.meshcentralmobile.management.DeviceRemovalAction, String) -> Unit = { _, _ -> },
 ) {
     BackHandler(onBack = onBack)
 
     var selectedTab by rememberSaveable { mutableStateOf(DeviceInspectorTab.Details) }
+    val activeTab = if (phoneDevice != null) DeviceInspectorTab.Details else selectedTab
     var powerMenuExpanded by rememberSaveable { mutableStateOf(false) }
     var serviceQuery by rememberSaveable { mutableStateOf("") }
     var processQuery by rememberSaveable { mutableStateOf("") }
-    var confirmation by remember { mutableStateOf<PendingConfirmation?>(null) }
+    var confirmation by remember(device?.nodeId ?: phoneDevice?.nodeId) { mutableStateOf<PendingConfirmation?>(null) }
+    var composingToast by rememberSaveable(device?.nodeId) { mutableStateOf(false) }
 
     val spacing = MeshTheme.spacing
     val deviceLabel = snapshot?.deviceName?.takeIf { it.isNotBlank() }
+        ?: device?.name?.takeIf { it.isNotBlank() }
         ?: stringResource(R.string.manage_device_fallback)
     val unknownLabel = stringResource(R.string.manage_not_reported)
     val busy = loading || pendingAction?.isNotBlank() == true
     val errorMessage = error?.takeIf { it.isNotBlank() }
     val refreshSelectedTab: () -> Unit = {
-        when (selectedTab) {
+        when (activeTab) {
             DeviceInspectorTab.Details -> onRefresh()
             DeviceInspectorTab.Services -> onLoadServices()
             DeviceInspectorTab.Processes -> onLoadProcesses()
+            DeviceInspectorTab.History -> onLoadHistory()
+            DeviceInspectorTab.Software -> onLoadSoftware()
+            DeviceInspectorTab.Command -> Unit
         }
     }
     val statusContent: (@Composable () -> Unit)? =
@@ -189,18 +219,21 @@ fun DeviceInspectorScreen(
             }
         } else null
 
-    LaunchedEffect(selectedTab) {
-        when (selectedTab) {
+    LaunchedEffect(activeTab) {
+        when (activeTab) {
             DeviceInspectorTab.Details -> Unit
             DeviceInspectorTab.Services -> onLoadServices()
             DeviceInspectorTab.Processes -> onLoadProcesses()
+            DeviceInspectorTab.History -> onLoadHistory()
+            DeviceInspectorTab.Software -> Unit
+            DeviceInspectorTab.Command -> Unit
         }
     }
 
     Column(modifier.fillMaxSize().testTag(DeviceInspectorTestTags.Screen)) {
         InspectorHeader(
-            deviceName = snapshot?.deviceName,
-            osName = snapshot?.osName,
+            deviceName = snapshot?.deviceName ?: device?.name,
+            osName = snapshot?.osName ?: device?.osDescription,
             loading = loading,
             powerActions = availablePowerActions,
             powerMenuExpanded = powerMenuExpanded,
@@ -213,19 +246,50 @@ fun DeviceInspectorScreen(
             onBack = onBack,
             busy = busy,
         )
-        InspectorTabs(selected = selectedTab, enabled = !busy, onSelect = { selectedTab = it })
+        if (phoneDevice == null) InspectorTabs(selected = selectedTab, enabled = !busy, onSelect = { selectedTab = it })
 
         Box(Modifier.weight(1f).fillMaxWidth()) {
             val contentModifier = Modifier
                 .align(Alignment.TopCenter)
                 .widthIn(max = 900.dp)
                 .fillMaxSize()
-            when (selectedTab) {
+            when (activeTab) {
+                DeviceInspectorTab.Software -> SoftwareContent(software, softwareError, busy,
+                    device?.let { ru.papajon.meshcentralmobile.management.InstalledSoftware.allowed(it, devicesCurrent) } == true,
+                    onLoadSoftware, statusContent, contentModifier)
+                DeviceInspectorTab.Command -> RunCommandContent(device?.nodeId.orEmpty(),
+                    device?.let { ru.papajon.meshcentralmobile.management.RunCommand.allowed(it, devicesCurrent) } == true,
+                    busy, commandOutput, commandUncertain, onRunCommand, onOpenTerminal, contentModifier,
+                    outputTruncated = commandOutputTruncated, status = statusContent, windows = device?.isWindows == true)
+                DeviceInspectorTab.History -> DeviceHistoryContent(events, powerTimeline, eventsError, timelineError, historyLoading, statusContent, contentModifier)
                 DeviceInspectorTab.Details -> DetailsTab(
                     snapshot = snapshot,
                     loading = loading,
                     statusContent = statusContent,
                     modifier = contentModifier,
+                    phoneContent = phoneDevice?.let { phone ->
+                        { PhoneSection(phone, devicesCurrent, busy, onPhoneCommand) }
+                    },
+                    parityContent = {
+                        if (device?.isWindows == true) {
+                            WindowsSecuritySection(device.windowsSecurity)
+                        }
+                        if (canSendToast) TextButton(enabled = !busy, onClick = { composingToast = true }, modifier = Modifier.testTag("parity_toast_open")) {
+                            Text(stringResource(R.string.parity_message))
+                        }
+                        if (device != null && !device.isAndroidAgent) androidx.compose.runtime.key(device.nodeId) {
+                            RemovalActions(device.name,
+                                ru.papajon.meshcentralmobile.management.DeviceRemovalCommand.available(device, devicesCurrent), busy, onRemove)
+                        }
+                    },
+                    hardwareContent = if (phoneDevice == null) ({
+                        HardwareDetailsContent((snapshot?.hardwareDetails ?: ru.papajon.meshcentralmobile.management.HardwareDetails()).let {
+                            if (device?.lastBootKnown == true) it.copy(lastBootMillis = device.lastBootMillis) else it
+                        },
+                            devicesCurrent && device?.connectivityKnown == true && device.conn and 1 != 0)
+                        NativeMetricsContent(metrics, metricsError,
+                            !busy && device?.let { ru.papajon.meshcentralmobile.management.NativeMetrics.allowed(it, devicesCurrent) } == true, onLoadMetrics, linux = device?.isLinux == true)
+                    }) else null,
                 )
                 DeviceInspectorTab.Services -> ServicesTab(
                     services = services,
@@ -258,6 +322,7 @@ fun DeviceInspectorScreen(
         }
     }
 
+    if (composingToast) ToastComposer(device?.name ?: deviceLabel, canSendToast && !busy, onSendToast) { composingToast = false }
     confirmation?.let { current ->
         when (current) {
             is PendingConfirmation.Power -> {
@@ -494,10 +559,16 @@ private fun DetailsTab(
     loading: Boolean,
     statusContent: (@Composable () -> Unit)?,
     modifier: Modifier,
+    phoneContent: (@Composable () -> Unit)? = null,
+    parityContent: @Composable () -> Unit,
+    hardwareContent: (@Composable () -> Unit)? = null,
 ) {
     if (snapshot == null || !snapshot.hasReportedValues()) {
         LazyColumn(modifier.testTag(DeviceInspectorTestTags.ContentList), contentPadding = PaddingValues(MeshTheme.spacing.lg)) {
+            if (phoneContent != null) item(key = "phone") { phoneContent() }
             if (statusContent != null) item(key = "status") { statusContent() }
+            item(key = "parity") { parityContent() }
+            if (hardwareContent != null) item(key = "extra_hardware") { hardwareContent() }
             item(key = "empty") {
                 if (loading) LoadingContent(Modifier.fillMaxWidth())
                 else EmptyState(
@@ -542,6 +613,8 @@ private fun DetailsTab(
         verticalArrangement = Arrangement.spacedBy(spacing.md),
     ) {
         if (statusContent != null) item(key = "status") { statusContent() }
+        if (phoneContent != null) item(key = "phone") { phoneContent() }
+        item(key = "parity") { parityContent() }
         item(key = "subtitle") {
             Text(
                 text = stringResource(R.string.manage_details_subtitle),
@@ -574,6 +647,7 @@ private fun DetailsTab(
             }
         }
         item(key = "memory") { MemorySection(snapshot) }
+        if (hardwareContent != null) item(key = "extra_hardware") { hardwareContent() }
         item(key = "disks") { DisksSection(snapshot) }
         item(key = "network") { NetworkSection(snapshot) }
     }
@@ -1208,6 +1282,9 @@ private fun DeviceInspectorTab.labelRes(): Int = when (this) {
     DeviceInspectorTab.Details -> R.string.manage_tab_details
     DeviceInspectorTab.Services -> R.string.manage_tab_services
     DeviceInspectorTab.Processes -> R.string.manage_tab_processes
+    DeviceInspectorTab.History -> R.string.parity_history
+    DeviceInspectorTab.Software -> R.string.parity2_software
+    DeviceInspectorTab.Command -> R.string.parity2_run
 }
 
 @Composable

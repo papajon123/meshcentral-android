@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">Warning</string>
+    <string name="parity_fixes_server_rejected">Server response: %1$s</string>
+    <string name="parity_fixes_output_truncated">Output truncated to 65,536 characters.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: average since the previous sample, including samples requested by other sessions.</string>
+    <string name="parity_fixes_run_warning">Runs a command on this device. Review it carefully. All users with access to this device can see the command output. Do not include secrets.</string>
+</resources>

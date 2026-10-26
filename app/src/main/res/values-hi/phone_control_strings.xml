@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">फ़ोन पर रिमोट नियंत्रण की अभिगम्यता सेवा बंद है</string>
+    <string name="phone_control_unsupported">इस फ़ोन पर Android रिमोट इनपुट का समर्थन नहीं करता</string>
+    <string name="phone_control_unknown">एजेंट इनपुट समर्थन की जानकारी नहीं देता</string>
+    <string name="phone_control_no_permission">आपकी अनुमतियाँ केवल देखने की अनुमति देती हैं</string>
+    <string name="phone_control_back">वापस</string>
+    <string name="phone_control_home">होम</string>
+    <string name="phone_control_recents">हाल के</string>
+    <string name="phone_control_notifications">सूचनाएँ</string>
+    <string name="phone_control_quick_settings">त्वरित सेटिंग्स</string>
+    <string name="phone_control_text">टेक्स्ट डालें</string>
+    <string name="phone_control_text_hint">टेक्स्ट चयनित फ़ील्ड के अंत में जोड़ा जाता है। पासवर्ड फ़ील्ड में इनपुट अवरुद्ध है।</string>
+    <string name="phone_control_consent_hint">फ़ोन के मालिक को नियंत्रण स्वीकृत करना होगा। लॉक स्क्रीन और PIN इनपुट उपलब्ध नहीं हैं।</string>
+</resources>

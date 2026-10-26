@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">سرور کا سرٹیفکیٹ قابلِ اعتماد نہیں ہے۔ اعتماد کرنے سے پہلے اس کا فنگرپرنٹ سرور پر موجود سرٹیفکیٹ سے ملائیں۔</string>
+    <string name="tls_error_changed">سرور کی کلید بدل گئی ہے۔ کنکشن روک دیا گیا ہے: سرور کے منتظم سے نئے فنگرپرنٹ کی تصدیق کریں۔</string>
+    <string name="tls_untrusted_title">سرور کا سرٹیفکیٹ قابلِ اعتماد نہیں</string>
+    <string name="tls_changed_title">سرور کا سرٹیفکیٹ بدل گیا ہے</string>
+    <string name="tls_fingerprint">عوامی کلید کا SHA-256 فنگرپرنٹ (SPKI)</string>
+    <string name="tls_previous_fingerprint">پہلے قابلِ اعتماد عوامی کلید، SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">نئی عوامی کلید، SHA-256 (SPKI)</string>
+    <string name="tls_subject">سرٹیفکیٹ کا حامل: %1$s</string>
+    <string name="tls_validity">مدتِ اعتبار: %1$s سے %2$s تک</string>
+    <string name="tls_server">سرور: %1$s</string>
+    <string name="tls_compare">کسی الگ، قابلِ اعتماد ذریعے سے اس فنگرپرنٹ کو سرور پر موجود سرٹیفکیٹ سے ملائیں۔</string>
+    <string name="tls_trust">اس سرور پر اعتماد کریں</string>
+    <string name="tls_replace">فنگرپرنٹ بدلیں…</string>
+    <string name="tls_replace_title">قابلِ اعتماد کلید بدلیں؟</string>
+    <string name="tls_replace_warning">کلید بدلنے کا مطلب یہ ہو سکتا ہے کہ کوئی آپ کے سرور کی نقالی کر رہا ہے۔ نئے فنگرپرنٹ کی آزادانہ تصدیق کے بعد ہی آگے بڑھیں۔ پرانی کلید اب قابلِ اعتماد نہیں رہے گی۔</string>
+    <string name="tls_confirm_replace">تبدیلی کی تصدیق کریں</string>
+    <string name="tls_pinned_key">سرور کی قابلِ اعتماد کلید</string>
+    <string name="tls_forget">بھول جائیں</string>
+    <string name="tls_forget_title">قابلِ اعتماد کلید بھول جائیں؟</string>
+    <string name="tls_forget_warning">موجودہ کنکشن بند ہو جائے گا۔ اگر Android سرور کے سرٹیفکیٹ پر اعتماد نہیں کرتا تو آپ کو اس سرور کی دوبارہ تصدیق کرنی ہوگی۔</string>
+    <string name="tls_certificate_fingerprint">سرٹیفکیٹ کا SHA-256 — براؤزر میں دکھائی جانے والی قدر</string>
+    <string name="tls_error_validity">سرٹیفکیٹ کی میعاد ختم ہو گئی ہے یا ابھی شروع نہیں ہوئی۔ فون کی تاریخ اور وقت اور سرور کے سرٹیفکیٹ کی میعاد چیک کریں۔ اعتماد کی منظوری سے یہ خرابی نظرانداز نہیں ہو سکتی۔</string>
+    <string name="tls_error_chain">سرٹیفکیٹ یا اس کی زنجیر میں غلط دستخط، کمزور کلید یا الگورتھم، یا سرٹیفکیٹ اتھارٹی کا غلط مقصد یا پابندیاں ہیں۔ منتظم کو سرٹیفکیٹ درست کرنا ہوگا؛ اسے منظور نہیں کیا جا سکتا۔</string>
+    <string name="tls_error_hostname">سرٹیفکیٹ سرور کے پتے سے مطابقت نہیں رکھتا۔ پتہ چیک کریں اور منتظم سے سرٹیفکیٹ کے نام درست کرنے کو کہیں۔</string>
+    <string name="tls_hostname_warning">انتباہ: سرٹیفکیٹ میں درج نام سرور کے پتے سے مطابقت نہیں رکھتا۔ کلید کی منظوری صرف آزاد تصدیق کے بعد دیں۔</string>
+    <string name="tls_blocked_title">سرور کا سرٹیفکیٹ مسترد</string>
+    <string name="tls_verify_instructions">منتظم نیچے دی گئی کمانڈ سے SPKI فنگرپرنٹ نکال سکتا ہے۔ براہ راست TLS کے لیے meshcentral-data/webserver-cert-public.crt استعمال کریں؛ اگر TLS ریورس پراکسی پر ختم ہوتا ہے تو پراکسی کا سرٹیفکیٹ استعمال کریں۔ cert.pem کی جگہ وہ فائل رکھیں۔ براؤزر سرٹیفکیٹ کا الگ فنگرپرنٹ دکھاتا ہے۔</string>
+    <string name="tls_independent_warning">آزاد اور قابل اعتماد ذریعے سے تصدیق کریں۔ اسی غیر تصدیق شدہ کنکشن سے حاصل کردہ فنگرپرنٹ درمیانی حملہ آور سے تحفظ نہیں دیتا۔</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">سرٹیفکیٹ جاری کرنے والا خود کو MeshCentral روٹ قرار دیتا ہے۔</string>
+    <string name="tls_issuer_unknown">یہ سرٹیفکیٹ ایک نامعلوم سرٹیفکیٹ اتھارٹی سے دستخط شدہ ہے۔ اگر سرور عوامی سرٹیفکیٹ استعمال کرتا ہے تو اس کی زنجیر نامکمل ہو سکتی ہے — سرور کو درست کرنا بہتر ہے۔</string>
+</resources>

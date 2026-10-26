@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s 未完成的檔案已刪除。</string>
+    <string name="final_fixes_download_marked">%1$s 未完成的檔案已加上 .partial 後綴。重試前，請在 Android 的「檔案」應用程式中將其刪除。</string>
+    <string name="final_fixes_download_retained">%1$s Android 無法刪除未完成的檔案，也無法為它加上 .partial 後綴。請勿使用它；請在 Android 的「檔案」應用程式中將其刪除。</string>
+    <string name="final_fixes_download_transport_failed">下載過程中連線中斷。請開啟新的檔案工作階段並重試。</string>
+    <string name="final_fixes_download_invalid">下載的資料與預期檔案不符。請開啟新的檔案工作階段並重試。</string>
+</resources>

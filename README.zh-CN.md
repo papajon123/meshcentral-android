@@ -17,6 +17,8 @@
 
 > **0.7.3 版本**修复了在需要验证码（双重验证）的服务器上无法登录的问题。详见[更新日志](CHANGELOG.md)。
 
+这是一个客户端：你*用手机*控制自己的计算机。若要管理手机本身，请在手机上安装官方的 [MeshCentral Android 代理](https://github.com/Ylianst/MeshCentralAndroidAgent)；它的远程桌面目前只能查看。详见[方案对比](docs/COMPARISON.md)和 [AI 政策](AI_POLICY.md)。
+
 ## 截图
 
 <p align="center">
@@ -46,7 +48,7 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 
 ## 快速开始
 
-1. **安装应用。** 从 [GitHub Releases](https://github.com/papajon123/meshcentral-android/releases) 下载[已签名 APK](https://github.com/papajon123/meshcentral-android/releases)。需要 Android 8.0（API 26）或更高版本。公开版本没有应用内更新器。
+1. **安装应用。** 从 [GitHub Releases](https://github.com/papajon123/meshcentral-android/releases) 下载[已签名 APK](https://github.com/papajon123/meshcentral-android/releases)。需要 Android 8.0（API 26）或更高版本。经你同意后，应用每天检查一次 GitHub 更新，并在浏览器中打开下载页面。
 2. **保持签名一致。** Android 只接受包名相同、签名密钥相同且 `versionCode` 更高的更新。
 3. **连接你自己的服务器。** 输入 MeshCentral 服务器的完整 HTTPS 地址，例如 `https://meshcentral.example.com/`，然后使用 MeshCentral 账户登录。应用没有预置服务器或账户。不支持浏览器 SSO。使用终端前，请安装最新版 Android System WebView。
 
@@ -108,6 +110,10 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 - 手机验收仍需覆盖：在已签名版本上安装/更新、登录/2FA、两个会话、旋转/后台/锁屏/断网/进程终止、从真实应用分享、通知和可选插件。
 - 本版本不包含 WebRTC。该技术已调研，但 MeshCentral 1.3.0 不接受终端 RTC offer；继续使用 WSS 中继。参见[路线图](docs/ROADMAP.md)。
 - Intel AMT KVM、RDP、VNC、聊天、注册表/软件管理和服务器管理仍在网页面板中。应用不管理服务器。
+
+## 本应用如何开发
+
+大部分代码、测试和文档由 AI 编程智能体（Claude Code 和 OpenAI Codex）在维护者的指导下编写。维护者亲自审查每一项更改：在合并请求中阅读代码和架构，并在发布前自己验证应用的行为。自动检查以及 AI 辅助贡献的规则见 [AI 政策](AI_POLICY.md)。
 
 ## 语言
 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s Tamamlanmamış belge silindi.</string>
+    <string name="final_fixes_download_marked">%1$s Tamamlanmamış belgeye .partial soneki eklendi. Yeniden denemeden önce belgeyi Android cihazındaki Dosyalar uygulamasından silin.</string>
+    <string name="final_fixes_download_retained">%1$s Android tamamlanmamış belgeyi silemedi veya ona .partial sonekini ekleyemedi. Belgeyi kullanmayın; Android cihazınızdaki Dosyalar uygulamasından silin.</string>
+    <string name="final_fixes_download_transport_failed">İndirme sırasında bağlantı kesildi. Yeni bir dosya oturumu açıp yeniden deneyin.</string>
+    <string name="final_fixes_download_invalid">İndirilen veriler beklenen dosyayla eşleşmedi. Yeni bir dosya oturumu açıp yeniden deneyin.</string>
+</resources>

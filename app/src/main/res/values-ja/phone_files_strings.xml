@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">メッセージ、リンク、ダイヤルには、リモート コントロールに加えてコンソールの権限が必要です。</string>
+    <string name="phone_url_format">http:// または https:// を小文字で使用してください。スペースと二重引用符は使用できません。パーセント エンコードを使用してください。</string>
+    <string name="phone_files_choose_category">アップロードする前に、携帯電話のカテゴリまたはフォルダーを選択してください。</string>
+    <string name="phone_files_ambiguous_name">複数のメディア ファイルが同じ名前を使用しています。正しいファイルをダウンロードまたは削除するには、Sdcard 内のそのファイルのフォルダーから開いてください。</string>
+    <string name="phone_files_directory_too_large">このカテゴリには一覧表示するにはファイルが多すぎます。Sdcard 内のより小さいフォルダーを開いてください。</string>
+</resources>

@@ -23,7 +23,7 @@ enum class SessionAvailability {
 internal fun availabilityFor(device: MeshDevice, protocol: RelayProtocol, server: MeshServerCapabilities): SessionAvailability {
     val ssh = protocol == RelayProtocol.SshTerminal || protocol == RelayProtocol.SshFiles
     // Both SSH endpoints enforce NOTERMINAL in apprelays.js (1.2.6:1763,2315).
-    val denyBit = if (protocol == RelayProtocol.AgentFiles) MeshRights.NO_FILES else MeshRights.NO_TERMINAL
+    val denyBit = if (protocol == RelayProtocol.AgentFiles || protocol == RelayProtocol.AgentFileDownload) MeshRights.NO_FILES else MeshRights.NO_TERMINAL
     val rights = device.rights
     if (rights != null && rights != MeshRights.FULL &&
         ((rights and MeshRights.REMOTE_CONTROL) == 0 || (rights and denyBit) != 0)) return SessionAvailability.Denied

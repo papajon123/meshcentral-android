@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">Atualizações do aplicativo</string>
+    <string name="update_consent_title">Buscar novas versões no GitHub?</string>
+    <string name="update_consent_body">O aplicativo consulta api.github.com uma vez por dia; nenhum dos seus dados é enviado.</string>
+    <string name="update_privacy_detail">O GitHub e sua CDN veem seu endereço IP e os cabeçalhos HTTP.</string>
+    <string name="update_allow">Buscar atualizações</string>
+    <string name="update_not_now">Agora não</string>
+    <string name="update_never">Ainda não foi verificado.</string>
+    <string name="update_current">Nenhuma versão compatível mais recente.</string>
+    <string name="update_found">Uma atualização foi encontrada.</string>
+    <string name="update_suppressed">Esta versão foi adiada ou ignorada.</string>
+    <string name="update_network_error">Não foi possível verificar. Tente novamente em 24 horas.</string>
+    <string name="update_rate_limit">O GitHub limitou as solicitações. Tente novamente em 24 horas.</string>
+    <string name="update_invalid_metadata">Não foi possível validar os dados da versão. Tente novamente em 24 horas.</string>
+    <string name="update_wrong_signer">Esta compilação tem outra assinatura. Não é possível oferecer uma atualização compatível.</string>
+    <string name="update_checking">Verificando…</string>
+    <string name="update_last_check">Última tentativa: %1$s</string>
+    <string name="update_recently_checked">Verificado há menos de um minuto. Tente novamente daqui a pouco.</string>
+    <string name="update_check_now">Verificar agora</string>
+    <string name="update_available">A versão %1$s está disponível</string>
+    <string name="update_download">Baixar</string>
+    <string name="update_later">Mais tarde</string>
+    <string name="update_skip">Ignorar esta versão</string>
+    <string name="update_browser_error">Nenhum navegador disponível. Instale ou ative um navegador.</string>
+</resources>

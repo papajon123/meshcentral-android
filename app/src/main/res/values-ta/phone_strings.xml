@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Android தொலைபேசி</string>
+    <string name="phone_view_only">தொலைபேசி முகவர் திரையை மட்டுமே பகிர்கிறது. தொலைவிலிருந்து இயக்கும் வசதி இன்னும் இல்லை. நகர்த்த இழுக்கவும்; பெரிதாக்க இரண்டு விரல்களைப் பயன்படுத்தவும்.</string>
+    <string name="phone_unknown">தெரியவில்லை</string>
+    <string name="phone_battery">மின்கலம்: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">மின்னேற்றம் நடைபெறுகிறது</string>
+    <string name="phone_on_battery">மின்கலத்தில் இயங்குகிறது</string>
+    <string name="phone_power_unknown">மின்னேற்ற நிலை தெரியவில்லை</string>
+    <string name="phone_find">தொலைபேசியைக் கண்டறிந்து உரிமையாளரைத் தொடர்புகொள்ளவும்</string>
+    <string name="phone_vibrate">5 வினாடிகள் அதிர்வு</string>
+    <string name="phone_flash">10 வினாடிகள் மின்விளக்கு</string>
+    <string name="phone_alert">தொலைபேசிக்குச் செய்தி</string>
+    <string name="phone_toast">சுருக்கமான அறிவிப்பு</string>
+    <string name="phone_open_url">இணைப்பைத் திறக்கவும்</string>
+    <string name="phone_dial">எண் அழைப்புத் திரையைத் திறக்கவும்</string>
+    <string name="phone_actions_unavailable">இந்தச் செயல்களுக்கு இணையத்தில் இணைந்த முகவரும் தொலைவிலிருந்து கட்டுப்படுத்தும் அனுமதியும் தேவை.</string>
+    <string name="phone_message_title">தலைப்பு</string>
+    <string name="phone_message_text">செய்தி</string>
+    <string name="phone_url">இணைப்பு</string>
+    <string name="phone_number">தொலைபேசி எண்</string>
+    <string name="phone_message_hint">செய்தி அதிகபட்சம் 1000 எழுத்துகள்; தலைப்பு 80 எழுத்துகள். சேவையகம் செய்தியைப் பதிவு செய்யலாம்.</string>
+    <string name="phone_url_hint">இடைவெளி அல்லது உள்நுழைவுத் தகவல் இல்லாத முழுமையான http அல்லது https இணைப்பைப் பயன்படுத்தவும்.</string>
+    <string name="phone_dial_hint">எண்கள், +, *, # மட்டும்; அதிகபட்சம் 40 எழுத்துகள். தொலைபேசியில் உள்ள நபரே அழைப்பைத் தொடங்குவார்.</string>
+    <string name="phone_quotes_hint">நேரான இரட்டை மேற்கோள் குறிகளை முகவரால் அப்படியே வைத்திருக்க முடியாததால் அவை வளைந்த குறிகளாக மாற்றப்படும்.</string>
+    <string name="phone_confirm">தேர்ந்தெடுத்த தொலைபேசிக்கு இந்தக் கட்டளையை அனுப்பவா?</string>
+    <string name="phone_send">கட்டளையை அனுப்பவும்</string>
+    <string name="phone_review">சரிபார்க்கவும்</string>
+    <string name="phone_edit">திருத்தவும்</string>
+    <string name="phone_cancel">ரத்து</string>
+    <string name="phone_command_sent">கட்டளை அனுப்பப்பட்டது. தொலைபேசியில் செயல்படுத்தப்பட்டது உறுதிப்படுத்தப்படவில்லை.</string>
+    <string name="phone_send_failed">கட்டளை அனுப்பப்படவில்லை. இணைப்பையும் தொலைவிலிருந்து கட்டுப்படுத்தும் அனுமதியையும் சரிபார்க்கவும்.</string>
+    <string name="phone_files_limits">தொலைபேசி முகவர் கோப்புறைகளையும் கோப்புகளையும் உருவாக்கவோ மறுபெயரிடவோ ஆதரிக்காது. Android தொலைபேசியில் அனுமதி கேட்கலாம்.</string>
+</resources>

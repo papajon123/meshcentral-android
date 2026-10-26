@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">फोनवर दूरस्थ नियंत्रणाची अ‍ॅक्सेसिबिलिटी सेवा बंद आहे</string>
+    <string name="phone_control_unsupported">या फोनवरील Android दूरस्थ इनपुटला समर्थन देत नाही</string>
+    <string name="phone_control_unknown">एजंट इनपुट समर्थनाची माहिती देत नाही</string>
+    <string name="phone_control_no_permission">तुमच्या परवानग्या फक्त पाहण्यासाठी आहेत</string>
+    <string name="phone_control_back">मागे</string>
+    <string name="phone_control_home">होम</string>
+    <string name="phone_control_recents">अलीकडील</string>
+    <string name="phone_control_notifications">सूचना</string>
+    <string name="phone_control_quick_settings">झटपट सेटिंग्ज</string>
+    <string name="phone_control_text">मजकूर टाका</string>
+    <string name="phone_control_text_hint">मजकूर निवडलेल्या फील्डच्या शेवटी जोडला जातो. पासवर्ड फील्डमध्ये इनपुट अवरोधित आहे.</string>
+    <string name="phone_control_consent_hint">फोनच्या मालकाने नियंत्रण मंजूर करणे आवश्यक आहे. लॉक स्क्रीन आणि PIN इनपुट उपलब्ध नाहीत.</string>
+</resources>

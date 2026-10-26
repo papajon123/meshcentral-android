@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">گواهی سرور قابل اعتماد نیست. پیش از اعتماد، اثر انگشت آن را با گواهی موجود روی سرور تطبیق دهید.</string>
+    <string name="tls_error_changed">کلید سرور تغییر کرده است. اتصال مسدود شد: اثر انگشت جدید را با مدیر سرور بررسی کنید.</string>
+    <string name="tls_untrusted_title">گواهی سرور غیرقابل اعتماد</string>
+    <string name="tls_changed_title">گواهی سرور تغییر کرده است</string>
+    <string name="tls_fingerprint">اثر انگشت SHA-256 کلید عمومی (SPKI)</string>
+    <string name="tls_previous_fingerprint">کلید عمومی مورد اعتماد قبلی، SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">کلید عمومی جدید، SHA-256 (SPKI)</string>
+    <string name="tls_subject">دارندهٔ گواهی: %1$s</string>
+    <string name="tls_validity">معتبر از %1$s تا %2$s</string>
+    <string name="tls_server">سرور: %1$s</string>
+    <string name="tls_compare">این اثر انگشت را از طریق یک کانال ارتباطی جداگانه و قابل اعتماد با گواهی سرور تطبیق دهید.</string>
+    <string name="tls_trust">اعتماد به این سرور</string>
+    <string name="tls_replace">جایگزینی اثر انگشت…</string>
+    <string name="tls_replace_title">کلید مورد اعتماد جایگزین شود؟</string>
+    <string name="tls_replace_warning">تغییر کلید ممکن است نشانهٔ جعل هویت سرور شما باشد. تنها پس از بررسی مستقل اثر انگشت جدید ادامه دهید. کلید قبلی دیگر قابل اعتماد نخواهد بود.</string>
+    <string name="tls_confirm_replace">تأیید جایگزینی</string>
+    <string name="tls_pinned_key">کلید مورد اعتماد سرور</string>
+    <string name="tls_forget">فراموش کردن</string>
+    <string name="tls_forget_title">کلید مورد اعتماد فراموش شود؟</string>
+    <string name="tls_forget_warning">اتصال فعلی بسته خواهد شد. اگر Android به گواهی سرور اعتماد نداشته باشد، باید این سرور را دوباره بررسی کنید.</string>
+    <string name="tls_certificate_fingerprint">SHA-256 گواهی — نمایش‌داده‌شده در مرورگر</string>
+    <string name="tls_error_validity">گواهی منقضی شده یا هنوز معتبر نیست. تاریخ و ساعت تلفن و بازهٔ اعتبار گواهی سرور را بررسی کنید. تأیید اعتماد این خطا را دور نمی‌زند.</string>
+    <string name="tls_error_chain">گواهی یا زنجیرهٔ آن امضای نامعتبر، کلید یا الگوریتم ضعیف، یا هدف یا محدودیت نامعتبر مرجع صدور گواهی دارد. مدیر باید گواهی را اصلاح کند؛ تأیید این گواهی ممکن نیست.</string>
+    <string name="tls_error_hostname">گواهی با نشانی سرور مطابقت ندارد. نشانی را بررسی کنید و از مدیر بخواهید نام‌های گواهی را اصلاح کند.</string>
+    <string name="tls_hostname_warning">هشدار: نام در گواهی با نشانی سرور مطابقت ندارد. فقط پس از بررسی مستقل، کلید را تأیید کنید.</string>
+    <string name="tls_blocked_title">گواهی سرور رد شد</string>
+    <string name="tls_verify_instructions">مدیر می‌تواند اثر انگشت SPKI را با فرمان زیر محاسبه کند. برای TLS مستقیم از meshcentral-data/webserver-cert-public.crt و در صورت پایان TLS در پراکسی معکوس از گواهی پراکسی استفاده کنید. cert.pem را با آن فایل جایگزین کنید. مرورگر اثر انگشت جداگانهٔ گواهی را نشان می‌دهد.</string>
+    <string name="tls_independent_warning">از طریق کانالی مستقل و قابل اعتماد بررسی کنید. اثر انگشتی که از همین اتصال تأییدنشده دریافت شود، در برابر حملهٔ واسطه محافظت نمی‌کند.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">صادرکنندهٔ گواهی خود را ریشهٔ MeshCentral معرفی می‌کند.</string>
+    <string name="tls_issuer_unknown">این گواهی توسط یک مرجع صدور گواهی ناشناخته امضا شده است. اگر سرور از گواهی عمومی استفاده می‌کند، ممکن است زنجیرهٔ آن ناقص باشد؛ بهتر است سرور اصلاح شود.</string>
+</resources>

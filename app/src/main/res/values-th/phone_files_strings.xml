@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">การส่งข้อความ การเปิดลิงก์ และการโทรออกต้องใช้สิทธิ์คอนโซลนอกเหนือจากสิทธิ์ควบคุมระยะไกล</string>
+    <string name="phone_url_format">ใช้ http:// หรือ https:// เป็นตัวพิมพ์เล็ก ไม่อนุญาตให้มีช่องว่างและเครื่องหมายคำพูดคู่ ให้ใช้การเข้ารหัสแบบเปอร์เซ็นต์</string>
+    <string name="phone_files_choose_category">เลือกหมวดหมู่หรือโฟลเดอร์ของโทรศัพท์ก่อนอัปโหลด</string>
+    <string name="phone_files_ambiguous_name">ไฟล์มีเดียหลายไฟล์ใช้ชื่อนี้ร่วมกัน เปิดไฟล์จากโฟลเดอร์ของไฟล์นั้นใน Sdcard เพื่อดาวน์โหลดหรือลบไฟล์ที่ถูกต้อง</string>
+    <string name="phone_files_directory_too_large">หมวดหมู่นี้มีไฟล์มากเกินกว่าจะแสดงรายการ เปิดโฟลเดอร์ที่เล็กกว่าใน Sdcard</string>
+</resources>

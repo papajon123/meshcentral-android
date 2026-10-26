@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_title">Android phone</string>
+    <string name="phone_view_only">The phone agent shares its screen only. Remote input is not available yet. Drag to pan; pinch to zoom.</string>
+    <string name="phone_unknown">Unknown</string>
+    <string name="phone_battery">Battery: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">Charging</string>
+    <string name="phone_on_battery">On battery</string>
+    <string name="phone_power_unknown">Charging state unknown</string>
+    <string name="phone_find">Find and contact this phone</string>
+    <string name="phone_vibrate">Vibrate for 5 seconds</string>
+    <string name="phone_flash">Flashlight for 10 seconds</string>
+    <string name="phone_alert">Message on phone</string>
+    <string name="phone_toast">Brief notification</string>
+    <string name="phone_open_url">Open link</string>
+    <string name="phone_dial">Open dial pad</string>
+    <string name="phone_actions_unavailable">Phone actions require an online agent and remote-control permission.</string>
+    <string name="phone_message_title">Title</string>
+    <string name="phone_message_text">Message</string>
+    <string name="phone_url">Link</string>
+    <string name="phone_number">Phone number</string>
+    <string name="phone_message_hint">Up to 1,000 characters; title up to 80. The server may record the message.</string>
+    <string name="phone_url_hint">Use a full http or https link without spaces or embedded credentials.</string>
+    <string name="phone_dial_hint">Use only digits, +, * and # (up to 40 characters). The person on the phone starts the call.</string>
+    <string name="phone_quotes_hint">Straight double quotes become typographic quotes because the phone agent cannot preserve them.</string>
+    <string name="phone_confirm">Send this command to the selected phone?</string>
+    <string name="phone_send">Send command</string>
+    <string name="phone_review">Review</string>
+    <string name="phone_edit">Edit</string>
+    <string name="phone_cancel">Cancel</string>
+    <string name="phone_command_sent">Command sent. Execution on the phone is not confirmed.</string>
+    <string name="phone_send_failed">Command was not sent. Check the connection and remote-control permission.</string>
+    <string name="phone_files_limits">The phone agent does not support creating or renaming folders and files. Android may require permission on the phone.</string>
+</resources>

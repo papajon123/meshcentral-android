@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="remember_device_for_days">
+        <item quantity="one">இந்தச் சாதனத்தை %1$d நாளுக்கு நினைவில் கொள்</item>
+        <item quantity="other">இந்தச் சாதனத்தை %1$d நாட்களுக்கு நினைவில் கொள்</item>
+    </plurals>
+    <string name="remember_device_until">இந்தச் சாதனம் %1$s வரை நினைவில் கொள்ளப்படும்</string>
+    <string name="remember_device_not_remembered">இந்தச் சாதனம் நினைவில் கொள்ளப்படவில்லை</string>
+    <string name="remember_device_forget">இந்தச் சாதனத்தை மறந்துவிடு</string>
+</resources>

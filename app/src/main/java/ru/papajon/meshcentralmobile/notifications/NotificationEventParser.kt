@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.notifications
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import org.json.JSONObject
 
 class NotificationProtocolException(message: String) : java.io.IOException(message)
@@ -51,14 +53,14 @@ object NotificationEventParser {
         if (array != null) {
             for (index in 0 until array.length()) {
                 val objectValue = array.optJSONObject(index) ?: continue
-                val id = objectValue.optString("id")
-                val kind = NotificationEventKind.fromWire(objectValue.optString("kind")) ?: continue
+                val id = objectValue.optText("id")
+                val kind = NotificationEventKind.fromWire(objectValue.optText("kind")) ?: continue
                 val time = objectValue.optLong("time", -1L)
                 val expiresAt = objectValue.optLong("expiresAt", -1L)
                 if (!EVENT_ID.matches(id) || time <= 0L || expiresAt <= 0L || expiresAt <= now) continue
-                val nodeId = objectValue.optString("nodeid")
+                val nodeId = objectValue.optText("nodeid")
                     .takeIf { !objectValue.isNull("nodeid") && IDENTIFIER.matches(it) }
-                val jobId = objectValue.optString("jobId")
+                val jobId = objectValue.optText("jobId")
                     .takeIf { !objectValue.isNull("jobId") && IDENTIFIER.matches(it) }
                 items += NotificationFeedItem(id, kind, nodeId, jobId, time, expiresAt)
             }

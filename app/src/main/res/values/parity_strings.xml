@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">Needs attention</string>
+    <string name="parity_security">Windows security</string>
+    <string name="parity_security_cached">Last reported status; it may be out of date.</string>
+    <string name="parity_antivirus">Antivirus</string>
+    <string name="parity_updates">Automatic updates</string>
+    <string name="parity_firewall">Firewall</string>
+    <string name="parity_enabled">Enabled</string>
+    <string name="parity_updated">Up to date</string>
+    <string name="parity_unknown">Unknown</string>
+    <string name="parity_ok">OK</string>
+    <string name="parity_message">Message to computer user</string>
+    <string name="parity_message_title">Title</string>
+    <string name="parity_message_confirm">Send this message?</string>
+    <string name="parity_message_sent">Sent. Delivery is not confirmed.</string>
+    <string name="parity_shortcuts">My shortcuts</string>
+    <string name="parity_remove_shortcut">Remove %1$s</string>
+    <string name="parity_add_shortcut">Add shortcut</string>
+    <string name="parity_suggestions">Suggestions</string>
+    <string name="parity_shortcut_label">Label</string>
+    <string name="parity_shortcut_key">Key: %1$s</string>
+    <string name="parity_review">Review</string>
+    <string name="parity_save">Save</string>
+    <string name="parity_history">History</string>
+    <string name="parity_events">Device events (up to 50)</string>
+    <string name="parity_power_history">Power history</string>
+    <string name="parity_history_error">Could not load. Use Refresh to try again.</string>
+    <string name="parity_history_empty">No records reported.</string>
+    <string name="parity_power_on">Powered on</string>
+    <string name="parity_hibernating">Hibernating</string>
+    <string name="parity_power_off">Powered off</string>
+    <string name="parity_yes">Yes</string>
+    <string name="parity_no">No</string>
+</resources>

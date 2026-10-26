@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Android فون</string>
+    <string name="phone_view_only">فون ایجنٹ صرف اسکرین شیئر کرتا ہے۔ ریموٹ کنٹرول ابھی دستیاب نہیں۔ حرکت دینے کے لیے کھینچیں اور زوم کے لیے دو انگلیاں استعمال کریں۔</string>
+    <string name="phone_unknown">نامعلوم</string>
+    <string name="phone_battery">بیٹری: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">چارج ہو رہا ہے</string>
+    <string name="phone_on_battery">بیٹری پر چل رہا ہے</string>
+    <string name="phone_power_unknown">چارج کی حالت نامعلوم ہے</string>
+    <string name="phone_find">فون تلاش کریں اور مالک سے رابطہ کریں</string>
+    <string name="phone_vibrate">5 سیکنڈ تک وائبریشن</string>
+    <string name="phone_flash">10 سیکنڈ کے لیے ٹارچ</string>
+    <string name="phone_alert">فون پر پیغام</string>
+    <string name="phone_toast">مختصر اطلاع</string>
+    <string name="phone_open_url">لنک کھولیں</string>
+    <string name="phone_dial">ڈائل پیڈ کھولیں</string>
+    <string name="phone_actions_unavailable">ان کارروائیوں کے لیے ایجنٹ کا آن لائن ہونا اور ریموٹ کنٹرول کی اجازت ضروری ہے۔</string>
+    <string name="phone_message_title">عنوان</string>
+    <string name="phone_message_text">پیغام</string>
+    <string name="phone_url">لنک</string>
+    <string name="phone_number">فون نمبر</string>
+    <string name="phone_message_hint">پیغام زیادہ سے زیادہ 1000، عنوان 80 حروف۔ سرور پیغام ریکارڈ کر سکتا ہے۔</string>
+    <string name="phone_url_hint">خالی جگہ یا شامل لاگ ان معلومات کے بغیر مکمل http یا https لنک دیں۔</string>
+    <string name="phone_dial_hint">صرف ہندسے، +، * اور #، زیادہ سے زیادہ 40 حروف۔ فون پر موجود شخص کال شروع کرے گا۔</string>
+    <string name="phone_quotes_hint">سیدھے دوہرے اقتباسی نشانات خمیدہ نشانات میں بدل دیے جاتے ہیں کیونکہ فون ایجنٹ انہیں برقرار نہیں رکھ سکتا۔</string>
+    <string name="phone_confirm">منتخب فون پر یہ حکم بھیجیں؟</string>
+    <string name="phone_send">حکم بھیجیں</string>
+    <string name="phone_review">جائزہ لیں</string>
+    <string name="phone_edit">ترمیم</string>
+    <string name="phone_cancel">منسوخ</string>
+    <string name="phone_command_sent">حکم بھیج دیا گیا۔ فون پر اس کے چلنے کی تصدیق نہیں ہوئی۔</string>
+    <string name="phone_send_failed">حکم نہیں بھیجا گیا۔ کنکشن اور ریموٹ کنٹرول کی اجازت چیک کریں۔</string>
+    <string name="phone_files_limits">فون ایجنٹ فولڈر اور فائل بنانے یا نام بدلنے کی سہولت نہیں دیتا۔ Android فون پر اجازت مانگ سکتا ہے۔</string>
+</resources>

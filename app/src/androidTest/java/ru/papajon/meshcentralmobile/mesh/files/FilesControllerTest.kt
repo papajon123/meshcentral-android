@@ -1,6 +1,7 @@
 package ru.papajon.meshcentralmobile.mesh.files
 
 import android.net.Uri
+import kotlinx.coroutines.async
 import androidx.test.platform.app.InstrumentationRegistry
 import java.io.File
 import kotlinx.coroutines.CoroutineScope
@@ -49,6 +50,89 @@ class FilesControllerTest {
         controller.close()
         scope.cancel()
         files.forEach { it.delete() }
+    }
+
+    @Test fun choosingDownloadDocumentKeepsTransferActiveUntilPickerCancellation() = runBlocking {
+        controller.refresh()
+        listing(nextJson().getInt("reqid"), """[{"n":"hello.txt","t":3,"s":26}]""")
+        waitFor { !controller.state.value.busy }
+        val entry = controller.state.value.entries.single()
+        assertTrue(controller.prepareDownload(entry))
+        // This public state keeps the existing foreground transfer service alive while SAF
+        // covers the Activity. No remote download must start until a document is chosen.
+        assertTrue("Choosing a destination is an active transfer", controller.state.value.busy)
+        assertEquals("hello.txt", controller.state.value.transferName)
+        assertFalse(controller.prepareDownload(entry))
+        assertNull(withTimeoutOrNull(100) { relay.sent.receive() })
+        controller.downloadChosen(null)
+        assertFalse(controller.state.value.busy)
+        assertNull(controller.state.value.transferName)
+        assertTrue(controller.state.value.connected)
+        assertNull(withTimeoutOrNull(100) { relay.sent.receive() })
+    }
+
+    @Test fun disconnectRacingPickerPreparationCannotRestoreBusyState() = runBlocking {
+        controller.refresh()
+        listing(nextJson().getInt("reqid"), """[{"n":"hello.txt","t":3,"s":26}]""")
+        waitFor { !controller.state.value.busy }
+        val selected = controller.state.value.entries.single()
+        val preparation = kotlinx.coroutines.CoroutineScope(Dispatchers.IO).async { controller.prepareDownload(selected) }
+        relay.close()
+        preparation.await()
+        waitFor { !controller.state.value.connected && !controller.state.value.busy }
+        controller.downloadPreparationFailed()
+        controller.downloadChosen(null)
+        assertFalse(controller.prepareDownload(selected))
+        assertFalse(controller.state.value.busy)
+        assertNull(controller.state.value.transferName)
+    }
+
+    @Test fun ownerCancellationReleasesPendingPickerReservation() = runBlocking {
+        controller.refresh()
+        listing(nextJson().getInt("reqid"), """[{"n":"hello.txt","t":3,"s":26}]""")
+        waitFor { !controller.state.value.busy }
+        assertTrue(controller.prepareDownload(controller.state.value.entries.single()))
+        scope.cancel()
+        waitFor { !controller.state.value.busy }
+        assertNull(controller.state.value.transferName)
+        assertFalse(controller.state.value.connected)
+    }
+
+    @Test fun chosenDocumentDownloadsTheSelectedFileAndReleasesTransferState() = runBlocking {
+        controller.refresh()
+        listing(nextJson().getInt("reqid"), """[{"n":"hello.txt","t":3,"s":26}]""")
+        waitFor { !controller.state.value.busy }
+        val destination = cacheFile()
+        assertTrue(controller.prepareDownload(controller.state.value.entries.single()))
+        assertTrue("Protect the connection before opening the document picker", controller.state.value.busy)
+        controller.downloadChosen(Uri.fromFile(destination))
+        listing(nextJson().getInt("reqid"), """[{"n":"hello.txt","t":3,"s":26}]""")
+        val request = nextJson()
+        assertEquals("/tmp/hello.txt", request.getString("path"))
+        relay.frames.send(RelayFrame.Text("""{"action":"download","sub":"start","id":${request.getInt("id")}}"""))
+        assertEquals("startack", nextJson().getString("sub"))
+        val contents = "Synthetic livebench file.\n".toByteArray(Charsets.UTF_8)
+        relay.frames.send(RelayFrame.Binary(byteArrayOf(1, 0, 0, 1) + contents))
+        waitFor { !controller.state.value.busy }
+        assertEquals(UiText.resource(R.string.files_download_complete), controller.state.value.message)
+        assertArrayEquals(contents, destination.readBytes())
+        assertNull(controller.state.value.transferName)
+    }
+
+    @Test fun failedPickerPreparationReleasesReservationWithoutOpeningTheDestination() = runBlocking {
+        controller.refresh()
+        listing(nextJson().getInt("reqid"), """[{"n":"hello.txt","t":3,"s":26}]""")
+        waitFor { !controller.state.value.busy }
+        assertTrue(controller.prepareDownload(controller.state.value.entries.single()))
+        controller.downloadPreparationFailed()
+        assertFalse(controller.state.value.busy)
+        assertNull(controller.state.value.transferName)
+        assertTrue(controller.state.value.connected)
+        assertEquals(UiText.resource(R.string.workspace_background_unavailable), controller.state.value.message)
+        val destination = cacheFile().apply { writeBytes(byteArrayOf(1, 2, 3)) }
+        controller.downloadChosen(Uri.fromFile(destination))
+        assertArrayEquals(byteArrayOf(1, 2, 3), destination.readBytes())
+        assertNull(withTimeoutOrNull(100) { relay.sent.receive() })
     }
 
     @Test fun mkdirWaitsForMatchingReadbackAndReportsMissingResult() = runBlocking {
@@ -157,7 +241,7 @@ class FilesControllerTest {
     @Test fun cancelSentRenameIsUnverifiedRatherThanCancelled() = runBlocking { cancelMutation(FileChange.Rename) }
     @Test fun cancelSentDeleteIsUnverifiedRatherThanCancelled() = runBlocking { cancelMutation(FileChange.Delete) }
 
-    @Test fun documentReturnedAfterCloseIsReportedAndNeverOpenedOrDeleted() = runBlocking {
+    @Test fun nonContentDocumentReturnedAfterCloseIsNeverDeleted() = runBlocking {
         controller.refresh()
         listing(nextJson().getInt("reqid"), """[{"n":"source.bin","t":3,"s":1}]""")
         waitFor { !controller.state.value.busy }

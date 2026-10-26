@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.mesh.files
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
@@ -57,6 +59,7 @@ data class FilesState(
     val sftp: Boolean = false,
     val authRequired: Boolean = false,
     val askKeyPass: Boolean = false,
+    val androidPhone: Boolean = false,
 )
 
 /** One operation and one chunk in flight. Every retry requires a new explicit user action.
@@ -65,35 +68,45 @@ data class FilesState(
 class FilesController(connection: RelayConnection, scope: CoroutineScope, context: Context) {
     private val connection = connection
     private val sftp = connection.protocol == RelayProtocol.SshFiles
+    private val androidPhone = connection.androidFiles
     private val resolver = context.applicationContext.contentResolver
+    private val documentCleanup = DownloadDocumentCleanup(context)
     private val worker = CoroutineScope(scope.coroutineContext + SupervisorJob(scope.coroutineContext[Job]) + Dispatchers.IO)
     private val mutex = Mutex()
     private val started = AtomicBoolean(false)
     private val closed = AtomicBoolean(false)
-    private val mutable = MutableStateFlow(FilesState(sftp = sftp))
+    private val mutable = MutableStateFlow(FilesState(sftp = sftp, androidPhone = androidPhone))
     val state: StateFlow<FilesState> = mutable.asStateFlow()
     private var sequence = 0
     private var listingId: Int? = null
     private var listingPath = ""
+    private var androidDeleteId: String? = null
+    private var androidDeletePath: String = ""
     private var verification: ((List<RemoteFile>) -> Boolean)? = null
     private var listingHandler: ((List<RemoteFile>) -> Unit)? = null
     private var timeout: Job? = null
     private var transfer: Transfer? = null
     private var pendingCancel: PendingCancel? = null
     private val selectedDownload = AtomicReference<Pair<String, RemoteFile>?>(null)
-    private val lateDocumentWarning = AtomicBoolean(false)
+    private val pendingPicker = AtomicBoolean(false)
+    private val lateDocumentMessage = AtomicReference<UiText?>(null)
 
     init {
         worker.coroutineContext[Job]?.invokeOnCompletion {
-            // Also release streams and an awaiting queued caller if the owning scope is cancelled.
-            completeQueued(TransferOutcome.Cancelled(partialRemote = transferTouchedRemote()))
-            pendingCancel?.completion?.complete(TransferOutcome.Cancelled(partialRemote = true))
-            pendingCancel = null
-            connection.close()
-            runCatching { transfer?.input?.close() }
-            runCatching { transfer?.output?.close() }
-            transfer = null
-            selectedDownload.set(null)
+            // Completion may race a picker callback on the UI scope. Serialize even final
+            // cleanup, and release the foreground reservation after owner cancellation too.
+            scope.launch(NonCancellable + Dispatchers.IO) {
+                mutex.withLock {
+                    closed.set(true)
+                    completeQueued(TransferOutcome.Cancelled(partialRemote = transferTouchedRemote()))
+                    pendingCancel?.completion?.complete(TransferOutcome.Cancelled(partialRemote = true))
+                    pendingCancel = null
+                    connection.close()
+                    val removed = cleanup()
+                    mutable.value = mutable.value.copy(connected = false, busy = false, confirmation = null,
+                        message = removed?.let { downloadCleanupMessage(text(R.string.files_cancelled), it) } ?: mutable.value.message)
+                }
+            }
         }
     }
 
@@ -115,6 +128,7 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
         val progress: ((Long) -> Unit)? = null,
         var remoteTouched: Boolean = false,
         var cancelRequested: Boolean = false,
+        var mediaSizeChecks: Int = 0,
     )
     private class PendingCancel(val completion: CompletableDeferred<TransferOutcome>)
     private enum class Stage { DownloadPreflight, DownloadStart, DownloadData, DownloadPostflight, UploadStart, UploadAck, UploadDone, UploadCancel }
@@ -202,25 +216,46 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
     }
 
     /** The selection stays with the session across Activity recreation, never in a Bundle. */
-    fun prepareDownload(entry: RemoteFile): Boolean {
+    suspend fun prepareDownload(entry: RemoteFile): Boolean = mutex.withLock {
         val snapshot = state.value
-        if (!snapshot.connected || snapshot.busy || entry.directory || !entry.actionable || entry !in snapshot.entries) return false
+        if (closed.get() || !worker.coroutineContext[Job]!!.isActive || !snapshot.connected || snapshot.busy ||
+            entry.directory || !entry.actionable || entry !in snapshot.entries) return@withLock false
         selectedDownload.set(snapshot.path to entry)
-        return true
+        pendingPicker.set(true)
+        // The picker covers our Activity. Reserve the operation now so the foreground
+        // transfer service protects the sockets before a destination URI exists.
+        mutable.value = snapshot.copy(busy = true, transferName = entry.name, transferred = null, message = null)
+        true
     }
 
-    fun downloadChosen(destination: Uri?) {
+    suspend fun downloadPreparationFailed() = withContext(NonCancellable) { mutex.withLock {
+        pendingPicker.set(false)
+        if (selectedDownload.getAndSet(null) == null || closed.get()) return@withLock
+        mutable.value = mutable.value.copy(busy = false, transferName = null, transferred = null,
+            message = text(R.string.workspace_background_unavailable))
+    } }
+
+    suspend fun downloadChosen(destination: Uri?) = withContext(Dispatchers.IO + NonCancellable) { mutex.withLock {
+        val ownedPicker = pendingPicker.getAndSet(false)
         val selected = selectedDownload.getAndSet(null)
-        if (destination == null) return
-        if (closed.get() || selected == null) {
-            // SAF may have created a document after this controller was closed (or its selection lost).
-            // Never open, truncate, or delete that document automatically.
-            if (closed.get()) lateDocumentWarning.set(true)
-            mutable.value = mutable.value.copy(message = text(R.string.files_local_partial))
-            return
+        if (destination == null) {
+            if (selected != null && !closed.get()) {
+                mutable.value = mutable.value.copy(busy = false, transferName = null, transferred = null)
+            }
+            return@withLock
         }
-        download(AgentFilesProtocol.join(selected.first, selected.second.name), selected.second.name, destination)
-    }
+        if (closed.get() || selected == null) {
+            // Only this controller's outstanding ACTION_CREATE_DOCUMENT callback owns the URI.
+            // An unsolicited callback or non-content URI must never delete an unrelated file.
+            val removed = if (ownedPicker) documentCleanup.discard(destination) else null
+            val message = removed?.let { downloadCleanupMessage(text(R.string.files_disconnected), it) }
+                ?: text(R.string.files_local_partial)
+            if (closed.get()) lateDocumentMessage.set(message)
+            mutable.value = mutable.value.copy(message = message)
+            return@withLock
+        }
+        guarded { beginDownload(AgentFilesProtocol.join(selected.first, selected.second.name), selected.second.name, destination, fromPicker = true) }
+    } }
 
     /**
      * Explicitly confirmed batch upload with no dependency on [FilesState.confirmation].
@@ -258,6 +293,10 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
             }
             if (!mutable.value.connected) {
                 completion.complete(TransferOutcome.Failed(text(R.string.files_disconnected)))
+                return@withLock
+            }
+            if (androidPhone && directory.isEmpty()) {
+                completion.complete(TransferOutcome.Failed(text(R.string.phone_files_choose_category)))
                 return@withLock
             }
             if (mutable.value.busy || transfer != null || listingId != null || verification != null ||
@@ -312,6 +351,8 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
     }
 
     fun propose(change: FileChange, entry: RemoteFile? = null) = action {
+        if (androidPhone && (change == FileChange.CreateDirectory || change == FileChange.Rename ||
+            (change == FileChange.Delete && mutable.value.path.isEmpty()))) return@action
         if (!available() || (change == FileChange.Upload)) return@action
         if ((change == FileChange.Rename || change == FileChange.Delete) &&
             (entry == null || entry.type == 1 || !entry.actionable || entry !in mutable.value.entries)) return@action
@@ -323,6 +364,7 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
 
     fun proposeUpload(uri: Uri) = action {
         if (!available()) return@action
+        if (androidPhone && mutable.value.path.isEmpty()) return@action
         var name = ""
         resolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
             if (cursor.moveToFirst()) name = cursor.getString(0).orEmpty()
@@ -362,9 +404,15 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
             }
             FileChange.Delete -> {
                 verification = { entries -> entries.none { it.name == request.name } }
-                send(JSONObject().put("action", "rm").put("path", request.path)
-                    .put("delfiles", JSONArray().put(request.name)).put("rec", request.directory))
-                list(request.path)
+                val message = JSONObject().put("action", "rm").put("path", request.path)
+                    .put("delfiles", JSONArray().put(request.name)).put("rec", request.directory)
+                if (androidPhone) {
+                    androidDeleteId = (++sequence).toString()
+                    androidDeletePath = request.path
+                    message.put("reqid", androidDeleteId)
+                }
+                send(message)
+                if (androidPhone) armTimeout() else list(request.path)
             }
             FileChange.Upload -> {
                 val stream = requireNotNull(resolver.openInputStream(requireNotNull(request.source)))
@@ -381,18 +429,29 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
 
     /** destination must be a new document returned by ACTION_CREATE_DOCUMENT. */
     fun download(remotePath: String, name: String, destination: Uri) = action {
-        if (!available()) {
-            // The picker may return after a disconnect; its empty newly-created document remains visible.
-            mutable.value = mutable.value.copy(message = text(R.string.files_local_partial))
-            return@action
+        beginDownload(remotePath, name, destination, fromPicker = false)
+    }
+
+    private fun beginDownload(remotePath: String, name: String, destination: Uri, fromPicker: Boolean) {
+        val snapshot = mutable.value
+        val ready = if (fromPicker) snapshot.connected && snapshot.busy && snapshot.transferName == name &&
+            snapshot.confirmation == null && transfer == null else available()
+        if (!ready) {
+            val message = documentCleanup.discard(destination)?.let {
+                downloadCleanupMessage(text(R.string.files_disconnected), it)
+            } ?: text(R.string.files_local_partial)
+            mutable.value = if (fromPicker && transfer == null) mutable.value.copy(busy = false, transferName = null,
+                transferred = null, message = message)
+            else mutable.value.copy(message = message)
+            return
         }
         require(AgentFilesProtocol.usableExistingName(name, 3))
-        val stream = requireNotNull(resolver.openOutputStream(destination, "wt"))
         val id = ++sequence
-        val current = Transfer(id, name, output = stream, destination = destination,
+        val current = Transfer(id, name, destination = destination,
             stage = Stage.DownloadPreflight,
             remotePath = remotePath, remoteParent = AgentFilesProtocol.parent(remotePath))
         transfer = current
+        current.output = requireNotNull(resolver.openOutputStream(destination, "wt"))
         mutable.value = mutable.value.copy(busy = true, transferred = 0L, transferName = name, message = null)
         prepareRemoteDownload(current)
     }
@@ -406,7 +465,8 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
                 // The upload itself is already complete and is being read back. There is no safe
                 // remote cancel for that phase; report an honest partial result and end the session.
                 completeQueued(TransferOutcome.Cancelled(partialRemote = true))
-                fail(if (verification != null) R.string.files_change_unverified
+                fail(if (current.destination != null) R.string.files_cancelled
+                    else if (verification != null) R.string.files_change_unverified
                     else if (sftp) R.string.files_sftp_unverified else R.string.files_local_partial)
             }
             pendingCancel != null -> Unit
@@ -425,10 +485,11 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
             mutex.withLock {
                 val partial = transfer != null
                 val changed = verification != null || transfer?.expectedDigest != null
-                cleanup()
+                val removed = cleanup()
+                val reason = text(if (changed) R.string.files_change_unverified else if (partial) R.string.files_cancelled else R.string.files_disconnected)
                 mutable.value = mutable.value.copy(connected = false, busy = false, confirmation = null,
-                    message = text(if (lateDocumentWarning.get()) R.string.files_local_partial
-                        else if (changed) R.string.files_change_unverified else if (partial) R.string.files_partial else R.string.files_disconnected))
+                    message = lateDocumentMessage.get() ?: removed?.let { downloadCleanupMessage(reason, it) }
+                        ?: text(if (changed) R.string.files_change_unverified else if (partial) R.string.files_partial else R.string.files_disconnected))
             }
             worker.cancel()
         }
@@ -473,11 +534,17 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
 
     private fun receiveJson(raw: String) {
         if (!AgentFilesProtocol.jsonWithinLimit(raw)) {
-            fail(R.string.files_directory_failed, preferReason = true)
+            if (androidPhone && AgentFilesProtocol.isMediaCategory(listingPath) && listingId != null) mediaListingTooLarge()
+            else fail(R.string.files_directory_failed, preferReason = true)
             return
         }
         val message = JSONObject(raw)
-        if (sftp) when (message.optString("action")) {
+        if (androidPhone && message.optText("error") == "directory-too-large" && listingId != null &&
+            message.optInt("reqid", -1) == listingId && message.optText("path") == listingPath) {
+            mediaListingTooLarge()
+            return
+        }
+        if (sftp) when (message.optText("action")) {
             "sshauth" -> {
                 check(!mutable.value.connected)
                 timeout?.cancel()
@@ -493,7 +560,8 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
         if (message.has("dir")) {
             if (listingId == null || message.optInt("reqid", -1) != listingId) return
             val entries = try {
-                if (sftp) SftpFilesAdapter.entries(message) else AgentFilesProtocol.entries(message)
+                if (sftp) SftpFilesAdapter.entries(message) else AgentFilesProtocol.entries(message,
+                    phoneMedia = androidPhone && AgentFilesProtocol.isMediaCategory(listingPath))
             } catch (_: Exception) {
                 if (listingHandler != null) { fail(if (sftp) R.string.files_sftp_unverified else R.string.files_operation_failed); return }
                 timeout?.cancel()
@@ -511,7 +579,7 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
             val after = listingHandler
             listingHandler = null
             if (after != null) {
-                mutable.value = mutable.value.copy(path = message.optString("path", listingPath), entries = entries)
+                mutable.value = mutable.value.copy(path = message.optText("path", listingPath), entries = entries)
                 after(entries)
                 return
             }
@@ -519,17 +587,24 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
             verification = null
             pendingCancel?.completion?.complete(TransferOutcome.Cancelled(partialRemote = result != true))
             pendingCancel = null
-            mutable.value = mutable.value.copy(busy = false, path = message.optString("path", listingPath), entries = entries,
+            mutable.value = mutable.value.copy(busy = false, path = message.optText("path", listingPath), entries = entries,
                 message = result?.let { text(if (it) R.string.files_change_verified else R.string.files_change_unverified) })
             return
         }
-        if (message.optString("ctrlChannel") == "102938") return
+        if (message.optText("ctrlChannel") == "102938") return
+        if (androidPhone && message.optText("action") == "rm" && androidDeleteId != null &&
+            message.optText("reqid") == androidDeleteId) {
+            androidDeleteId = null
+            // A response alone is not proof: reread even after an agent-reported failure.
+            list(androidDeletePath)
+            return
+        }
         val current = transfer ?: return
-        when (message.optString("action")) {
+        when (message.optText("action")) {
             "download" -> {
                 if (message.optInt("id", -1) != current.id ||
                     (current.output == null && current.expectedDigest == null)) return
-                when (message.optString("sub")) {
+                when (message.optText("sub")) {
                     "start" -> {
                         check(current.stage == Stage.DownloadStart)
                         current.stage = Stage.DownloadData
@@ -540,14 +615,16 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
                         send(JSONObject().put("action", "download").put("sub", "startack").put("id", current.id).put("ack", 1))
                         armTimeout()
                     }
-                    "cancel" -> fail(R.string.files_operation_failed)
+                    "cancel" -> fail(if (!androidPhone) R.string.files_operation_failed
+                        else if (message.optText("error") == "transport") R.string.final_fixes_download_transport_failed
+                        else R.string.final_fixes_download_invalid)
                 }
             }
             "uploaderror" -> if (!message.has("reqid") || message.optInt("reqid", -1) == current.id) fail(R.string.files_operation_failed)
             "uploadstart", "uploadack" -> {
                 if (message.optInt("reqid", -1) != current.id) return
                 if (current.stage == Stage.UploadCancel) return
-                val start = message.optString("action") == "uploadstart"
+                val start = message.optText("action") == "uploadstart"
                 check(current.stage == if (start) Stage.UploadStart else Stage.UploadAck)
                 if (!start) current.bytes += current.outstanding
                 mutable.value = mutable.value.copy(transferred = current.bytes)
@@ -577,6 +654,20 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
                 list(current.remoteParent)
             }
         }
+    }
+
+    private fun mediaListingTooLarge() {
+        if (transfer != null || listingHandler != null) {
+            fail(R.string.phone_files_directory_too_large, preferReason = true)
+            return
+        }
+        timeout?.cancel()
+        listingId = null
+        verification = null
+        pendingCancel?.completion?.complete(TransferOutcome.Cancelled(partialRemote = true))
+        pendingCancel = null
+        mutable.value = mutable.value.copy(busy = false, path = listingPath, entries = emptyList(),
+            message = text(R.string.phone_files_directory_too_large))
     }
 
     private fun uploadNext(current: Transfer) {
@@ -612,12 +703,12 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
         mutable.value = mutable.value.copy(transferred = current.bytes)
         if (sftp && sizeReached) {
             finishVerifiedDownload(current)
-        } else if (final && current.expectedDigest != null) {
+        } else if (final && (current.expectedDigest != null || androidPhone)) {
             finishVerifiedDownload(current)
         } else if (final) {
             current.output?.close()
             current.output = null
-            cleanupTransfer()
+            cleanupTransfer(keepDownload = true)
             mutable.value = mutable.value.copy(busy = false,
                 message = text(R.string.files_download_complete))
         } else {
@@ -629,6 +720,22 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
     private fun prepareRemoteDownload(current: Transfer) {
         list(current.remoteParent) { entries ->
             val entry = entries.singleOrNull { it.name == current.name && !it.directory && it.actionable && it.sizeKnown }
+            if (entry != null && androidPhone && AgentFilesProtocol.isMediaCategory(current.remoteParent) &&
+                current.expectedDigest != null && current.expectedSize != entry.size && current.mediaSizeChecks < 5) {
+                // MediaStore publishes the new length asynchronously after uploaddone.
+                // Only re-read metadata (at most five times); never repeat the upload or
+                // accept a stale size. The subsequent p10 SHA-256 check remains mandatory.
+                current.mediaSizeChecks++
+                worker.launch {
+                    delay(1_000)
+                    mutex.withLock {
+                        if (!closed.get() && transfer === current && current.stage == Stage.DownloadPreflight) {
+                            guarded { prepareRemoteDownload(current) }
+                        }
+                    }
+                }
+                return@list
+            }
             if (entry == null || (current.expectedSize != null && current.expectedSize != entry.size)) {
                 fail(if (sftp) R.string.files_sftp_unverified else R.string.files_operation_failed)
             } else {
@@ -640,7 +747,8 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
 
     private fun startDownload(current: Transfer) {
         current.stage = Stage.DownloadStart
-        send(JSONObject().put("action", "download").put("sub", "start").put("path", current.remotePath).put("id", current.id))
+        send(JSONObject().put("action", "download").put("sub", "start").put("path", current.remotePath).put("id", current.id)
+            .apply { if (androidPhone) put("size", current.expectedSize) })
         armTimeout()
     }
 
@@ -656,13 +764,14 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
         }
         current.stage = Stage.DownloadPostflight
         list(current.remoteParent) { entries ->
-            val unchangedSize = entries.any { it.name == current.name && !it.directory && it.sizeKnown && it.size == current.expectedSize }
+            val unchangedSize = entries.singleOrNull { it.name == current.name && !it.directory && it.actionable &&
+                it.sizeKnown && it.size == current.expectedSize } != null
             if (!unchangedSize) fail(if (sftp) R.string.files_sftp_unverified else R.string.files_change_unverified)
             else {
                 val verifiedUpload = current.expectedDigest != null
                 val bytes = current.expectedSize ?: current.bytes
                 reportProgress(current, bytes)
-                cleanupTransfer()
+                cleanupTransfer(keepDownload = true)
                 current.queued?.complete(TransferOutcome.Success(bytes))
                 mutable.value = mutable.value.copy(busy = false, message = text(
                     if (verifiedUpload) R.string.files_sftp_upload_verified else R.string.files_download_complete))
@@ -670,41 +779,56 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
         }
     }
 
-    private fun cleanupTransfer() {
+    private fun cleanupTransfer(keepDownload: Boolean = false): DownloadDocumentCleanup.Result? {
         timeout?.cancel()
+        var removed: DownloadDocumentCleanup.Result? = null
         transfer?.let { current ->
             runCatching { current.input?.close() }
             runCatching { current.output?.close() }
+            if (!keepDownload) removed = current.destination?.let(documentCleanup::discard)
         }
         transfer = null
         mutable.value = mutable.value.copy(transferred = null, transferName = null)
+        return removed
     }
-    private fun cleanup() {
-        cleanupTransfer()
+    private fun cleanup(): DownloadDocumentCleanup.Result? {
+        selectedDownload.set(null)
+        val removed = cleanupTransfer()
         listingId = null
+        androidDeleteId = null
         verification = null
         listingHandler = null
+        return removed
     }
     private fun fail(reason: Int, preferReason: Boolean = false) {
+        val failedTransfer = transfer
         val partial = transfer != null
         val changed = verification != null || transfer?.expectedDigest != null
         val unverifiedSftp = sftp && transfer != null
-        val message = text(if (lateDocumentWarning.get()) R.string.files_local_partial else if (preferReason) reason
+        val removed = cleanup()
+        val message = lateDocumentMessage.get() ?: if (removed != null) downloadCleanupMessage(text(reason), removed)
+            else text(if (preferReason) reason
             else if (unverifiedSftp) R.string.files_sftp_unverified else if (changed) R.string.files_change_unverified else if (partial) R.string.files_partial else reason)
-        if (transfer?.cancelRequested == true) {
-            completeQueued(TransferOutcome.Cancelled(partialRemote = true))
+        if (failedTransfer?.cancelRequested == true) {
+            failedTransfer.queued?.complete(TransferOutcome.Cancelled(partialRemote = true))
         } else {
-            completeQueued(TransferOutcome.Failed(message))
+            failedTransfer?.queued?.complete(TransferOutcome.Failed(message))
         }
         pendingCancel?.completion?.complete(TransferOutcome.Cancelled(partialRemote = true))
         pendingCancel = null
-        cleanup()
         connection.close()
         closed.set(true)
         mutable.value = mutable.value.copy(connected = false, busy = false, confirmation = null, authRequired = false,
             message = message)
         worker.cancel()
     }
+
+    private fun downloadCleanupMessage(reason: UiText, result: DownloadDocumentCleanup.Result): UiText =
+        UiText.resource(when (result) {
+            DownloadDocumentCleanup.Result.Deleted -> R.string.final_fixes_download_removed
+            DownloadDocumentCleanup.Result.Marked -> R.string.final_fixes_download_marked
+            DownloadDocumentCleanup.Result.Retained -> R.string.final_fixes_download_retained
+        }, reason)
 
     /** Returns true when an uploadcancel request is now awaiting its acknowledgement. */
     private fun beginUploadCancel(current: Transfer): Boolean {

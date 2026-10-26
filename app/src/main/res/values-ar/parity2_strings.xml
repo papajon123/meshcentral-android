@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">إلغاء تثبيت الوكيل</string>
+    <string name="parity2_remove">إزالة الجهاز</string>
+    <string name="parity2_uninstall_warning">سيتوقف الوصول عن بُعد. سيبقى سجل الجهاز. تتطلب إعادة التثبيت الوصول إلى الكمبيوتر.</string>
+    <string name="parity2_remove_warning">سيُحذف سجل الجهاز وتاريخه. سيبقى الوكيل مثبتًا وقد يسجّل نفسه مجددًا.</string>
+    <string name="parity2_confirm_name">اكتب اسم الجهاز بدقة</string>
+    <string name="parity2_removal_pending">أُرسل الطلب. جارٍ فحص قائمة الأجهزة؛ لم يتأكد التنفيذ.</string>
+    <string name="parity2_removal_absent">الجهاز غير موجود في القائمة المحدّثة. قد يكون السبب حذفه أو تغيّر صلاحيات الوصول.</string>
+    <string name="parity2_removal_disconnected">الوكيل غير متصل. لم يتأكد إلغاء التثبيت.</string>
+    <string name="parity2_removal_unknown">النتيجة غير معروفة. افحص الجهاز قبل تكرار الإجراء.</string>
+    <string name="parity2_software">البرامج المثبتة</string>
+    <string name="parity2_software_hint">القراءة من وكيل متصل. حتى 1000 برنامج؛ تظل القيم المفقودة غير معروفة.</string>
+    <string name="parity2_software_error">لم تُستلم قائمة البرامج. افحص الوكيل والصلاحيات؛ أعد الاتصال قبل إعادة المحاولة بعد انتهاء المهلة.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">اللوحة الأم</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">الشركة المصنّعة</string>
+    <string name="parity2_bios_date">تاريخ البرنامج الثابت</string>
+    <string name="parity2_mode">الوضع</string>
+    <string name="parity2_spec">المواصفات</string>
+    <string name="parity2_activated">تم التنشيط</string>
+    <string name="parity2_owned">تم تعيين المالك</string>
+    <string name="parity2_last_boot">آخر إقلاع مُبلّغ عنه</string>
+    <string name="parity2_uptime">وقت التشغيل التقديري (س:دد:ثث)</string>
+    <string name="parity2_metrics">استخدام المعالج والذاكرة</string>
+    <string name="parity2_sample_time">استُلم القياس: %1$s</string>
+    <string name="parity2_run">تنفيذ أمر</string>
+    <string name="parity2_command">الأمر</string>
+    <string name="parity2_run_warning">يُنفّذ بحساب الوكيل، عادةً SYSTEM أو root. قد يغيّر الكمبيوتر ويسجّله الخادم. لا يتوفر إلغاء أو رمز خروج. لا تدخل معلومات سرية.</string>
+    <string name="parity2_run_uncertain">لم تتأكد النتيجة. ربما لا يزال الأمر قيد التنفيذ. افحصه في الطرفية قبل تكراره.</string>
+    <string name="parity2_output">خرج الأمر</string>
+    <string name="parity2_output_note">حتى 65536 حرفًا. الخرج لا يثبت النجاح؛ تحقّق من التغيير المطلوب.</string>
+    <string name="parity2_seven_days">آخر 7 أيام</string>
+    <string name="parity2_history_note">سجل الطاقة والاتصالات المُبلّغ عنه. الفجوات تعني بيانات مجهولة، وليس توقفًا. تظهر أدناه آخر 100 انتقال كحد أقصى.</string>
+    <string name="parity2_favorites">الأوامر المفضلة</string>
+    <string name="parity2_favorites_hint">حتى 20 لكل ملف تعريف. اختر لتحرير المسودة، ثم أدرج دون Enter. سطر واحد فقط؛ لا تحفظ أسرارًا.</string>
+    <string name="parity2_insert">إدراج دون Enter</string>
+</resources>

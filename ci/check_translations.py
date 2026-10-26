@@ -10,6 +10,7 @@ RES = ROOT / 'app/src/main/res'
 TOKEN = re.compile(r'%(?:(\d+)\$)?[-#+ 0,(<]*\d*(?:\.\d+)?(?:[tT][HIklMSLNpzZsQBbhAaCYyjmdeRTrDFc]|[bBhHsScCdoxXeEfgGaA%n])')
 ANDROID = '{http://schemas.android.com/apk/res/android}'
 EXPECTED_LOCALES = frozenset('en ru zh-Hans zh-Hant es fr pt de ar hi bn ur ja ko id tr vi th it fa ta te mr'.split())
+PLURAL_QUANTITIES = frozenset('zero one two few many other'.split())
 
 
 def resource_directory(tag):
@@ -24,12 +25,26 @@ def read_catalog(directory):
     result, shared, literal = {}, set(), set()
     for path in sorted(directory.glob('*.xml')):
         for element in ET.parse(path).getroot():
-            if element.tag != 'string':
+            if element.tag not in ('string', 'plurals'):
                 continue
             name = element.attrib['name']
             if name in result:
-                raise ValueError(f'{path}: duplicate string {name}')
-            result[name] = ''.join(element.itertext())
+                raise ValueError(f'{path}: duplicate resource {name}')
+            if element.tag == 'plurals':
+                forms = {}
+                for item in element:
+                    quantity = item.attrib.get('quantity')
+                    if item.tag != 'item' or quantity not in PLURAL_QUANTITIES or quantity in forms:
+                        raise ValueError(f'{path}/{name}: invalid or duplicate plural quantity {quantity}')
+                    forms[quantity] = ''.join(item.itertext())
+                if 'other' not in forms:
+                    raise ValueError(f'{path}/{name}: missing other plural form')
+                for quantity, text in forms.items():
+                    if not text.strip() or check_format(forms['other'], text, False, False):
+                        raise ValueError(f'{path}/{name}/{quantity}: empty text or inconsistent format placeholders')
+                result[name] = forms
+            else:
+                result[name] = ''.join(element.itertext())
             if element.attrib.get('translatable') == 'false':
                 shared.add(name)
             if element.attrib.get('formatted') == 'false':
@@ -76,19 +91,25 @@ def main():
         if localized_shared:
             errors.append(f'{tag}: non-translatable strings must be inherited from the default')
         for key in expected & set(localized):
-            text = localized[key]
-            if not text.strip():
-                errors.append(f'{tag}/{key}: empty translation')
-            try:
-                problem = check_format(base[key], text, key in literal, key in localized_literal)
-                if problem:
-                    errors.append(f'{tag}/{key}: {problem}')
-            except ValueError as error:
-                errors.append(f'{tag}/{key}: {error}')
-            if tag != 'ru' and re.search('[А-Яа-яЁё]', text):
-                errors.append(f'{tag}/{key}: Russian text leaked into another locale')
-            if '\ufffd' in text:
-                errors.append(f'{tag}/{key}: Unicode replacement character')
+            if isinstance(base[key], dict) != isinstance(localized[key], dict):
+                errors.append(f'{tag}/{key}: resource type differs (string/plurals)')
+                continue
+            source = base[key]['other'] if isinstance(base[key], dict) else base[key]
+            forms = localized[key] if isinstance(localized[key], dict) else {'string': localized[key]}
+            for quantity, text in forms.items():
+                label = f'{tag}/{key}/{quantity}'
+                if not text.strip():
+                    errors.append(f'{label}: empty translation')
+                try:
+                    problem = check_format(source, text, key in literal, key in localized_literal)
+                    if problem:
+                        errors.append(f'{label}: {problem}')
+                except ValueError as error:
+                    errors.append(f'{label}: {error}')
+                if tag != 'ru' and re.search('[А-Яа-яЁё]', text):
+                    errors.append(f'{label}: Russian text leaked into another locale')
+                if '\ufffd' in text:
+                    errors.append(f'{label}: Unicode replacement character')
     # Do not let newly introduced app-authored Russian messages bypass Android resources.
     for path in (ROOT / 'app/src/main/java').rglob('*.kt'):
         for number, line in enumerate(path.read_text(encoding='utf-8').splitlines(), 1):
@@ -99,7 +120,8 @@ def main():
     if errors:
         print('\n'.join(errors))
         return 1
-    print(f'Translations verified: {len(tags)} locales, {len(expected)} translated strings each, {len(shared)} shared strings')
+    plurals = sum(isinstance(base[key], dict) for key in expected)
+    print(f'Translations verified: {len(tags)} locales, {len(expected) - plurals} strings and {plurals} plurals each, {len(shared)} shared strings')
     return 0
 
 

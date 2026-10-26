@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="remember_device_for_days">
+        <item quantity="other">Ingat perangkat ini selama %1$d hari</item>
+    </plurals>
+    <string name="remember_device_until">Perangkat ini diingat hingga %1$s</string>
+    <string name="remember_device_not_remembered">Perangkat ini tidak diingat</string>
+    <string name="remember_device_forget">Lupakan perangkat ini</string>
+</resources>

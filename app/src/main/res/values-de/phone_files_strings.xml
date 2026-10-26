@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">Nachrichten, Links und das Wählen erfordern zusätzlich zur Fernsteuerung die Konsolenberechtigung.</string>
+    <string name="phone_url_format">Verwenden Sie http:// oder https:// in Kleinbuchstaben. Leerzeichen und doppelte Anführungszeichen sind nicht zulässig; verwenden Sie Prozentkodierung.</string>
+    <string name="phone_files_choose_category">Wählen Sie vor dem Hochladen eine Kategorie oder einen Ordner des Telefons.</string>
+    <string name="phone_files_ambiguous_name">Mehrere Mediendateien haben denselben Namen. Öffnen Sie die Datei aus ihrem Ordner in Sdcard, um die richtige herunterzuladen oder zu löschen.</string>
+    <string name="phone_files_directory_too_large">Diese Kategorie enthält zu viele Dateien zum Auflisten. Öffnen Sie einen kleineren Ordner in Sdcard.</string>
+</resources>

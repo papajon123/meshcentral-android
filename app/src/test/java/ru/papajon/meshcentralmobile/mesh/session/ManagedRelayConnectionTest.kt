@@ -26,6 +26,22 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
 
 class ManagedRelayConnectionTest {
+    @Test fun androidDownloadUsesP10HandshakeAndDrainsBeforeEof() = fixture(RelayProtocol.AgentFileDownload) { f ->
+        f.connection.connect(); f.open(); f.text("c")
+        assertEquals("10", f.factory.socket.request().url.queryParameter("p"))
+        assertEquals(10, f.control.single().getInt("usage"))
+        assertEquals("options", JSONObject(f.factory.socket.sentText[0]).getString("type"))
+        assertEquals("10", f.factory.socket.sentText[1])
+        f.text("""{"op":"ok","size":3}""")
+        f.factory.listener.onMessage(f.factory.socket, byteArrayOf(123, 0, 42).toByteString())
+        f.factory.listener.onClosing(f.factory.socket, 1000, "")
+        val frames = mutableListOf<RelayFrame>()
+        runBlocking { withTimeout(2000) { f.connection.incoming.collect { frames += it } } }
+        assertEquals(2, frames.size)
+        assertArrayEquals(byteArrayOf(123, 0, 42), (frames.last() as RelayFrame.Binary).value)
+        assertEquals(RelayPhase.Closed, f.connection.state.value.phase)
+    }
+
     @Test fun agentHandshakeOrdersOptionsBeforeProtocolAndReportsRecording() = fixture { f ->
         f.connection.connect()
         assertEquals("5", f.factory.socket.request().url.queryParameter("p"))
@@ -69,7 +85,7 @@ class ManagedRelayConnectionTest {
         f.connection.close(); f.connection.close(); f.connection.connect(); f.open(); f.text("c")
         assertEquals(RelayPhase.Closed, f.connection.state.value.phase)
         assertEquals(1, f.factory.created)
-        assertEquals(1, f.factory.socket.sentText.count { it == "one-operation" })
+        assertEquals(1, f.factory.socket.sentBinary.count { it.utf8() == "one-operation" })
         assertFalse(f.connection.sendText("do-not-send"))
         assertFalse(f.connection.sendBinary(byteArrayOf(1)))
         assertEquals(1, f.finished)
@@ -225,12 +241,13 @@ class ManagedRelayConnectionTest {
 
     private class FakeSocket(private val request: Request) : WebSocket {
         val sentText = mutableListOf<String>()
+        val sentBinary = mutableListOf<ByteString>()
         var cancelled = false
         var queued = 0L
         override fun request() = request
         override fun queueSize() = queued
         override fun send(text: String): Boolean { if (cancelled) return false; sentText.add(text); return true }
-        override fun send(bytes: ByteString) = !cancelled
+        override fun send(bytes: ByteString): Boolean { if (cancelled) return false; sentBinary.add(bytes); return true }
         override fun close(code: Int, reason: String?): Boolean { cancelled = true; return true }
         override fun cancel() { cancelled = true }
     }

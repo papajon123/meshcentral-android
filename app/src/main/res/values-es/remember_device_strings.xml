@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="remember_device_for_days">
+        <item quantity="one">Recordar este dispositivo durante %1$d día</item>
+        <item quantity="many">Recordar este dispositivo durante %1$d días</item>
+        <item quantity="other">Recordar este dispositivo durante %1$d días</item>
+    </plurals>
+    <string name="remember_device_until">Este dispositivo se recordará hasta %1$s</string>
+    <string name="remember_device_not_remembered">Este dispositivo no está recordado</string>
+    <string name="remember_device_forget">Olvidar este dispositivo</string>
+</resources>

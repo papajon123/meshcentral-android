@@ -31,6 +31,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.CloudOff
 import androidx.compose.material.icons.outlined.DesktopWindows
+import androidx.compose.material.icons.outlined.Smartphone
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Search
@@ -69,6 +70,7 @@ import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.discovery.DeviceSearch
+import ru.papajon.meshcentralmobile.discovery.NeedsAttentionFilter
 import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
 import ru.papajon.meshcentralmobile.mesh.MeshClientState
@@ -89,6 +91,7 @@ private enum class DeviceFilter(@StringRes val labelRes: Int) {
     Online(R.string.devices_filter_online),
     Favorites(R.string.devices_filter_favorites),
     Recent(R.string.browser_filter_recent),
+    NeedsAttention(R.string.parity_needs_attention),
 }
 
 private const val MAX_SEARCH_LENGTH = 200
@@ -111,6 +114,7 @@ fun DevicesScreen(
     recentDeviceIds: List<String> = emptyList(),
     onClearRecents: () -> Unit = {},
     onConnectDevice: ((MeshDevice) -> Unit)? = null,
+    updateBanner: (@Composable () -> Unit)? = null,
 ) {
     val clientState by meshClient.clientState.collectAsState()
     DevicesContent(
@@ -121,6 +125,7 @@ fun DevicesScreen(
         onOpenDevice = onOpenDevice,
         recentDeviceIds = recentDeviceIds,
         onClearRecents = onClearRecents,
+        updateBanner = updateBanner,
     )
 }
 
@@ -138,6 +143,7 @@ internal fun DevicesContent(
     onOpenDevice: ((MeshDevice) -> Unit)? = null,
     recentDeviceIds: List<String> = emptyList(),
     onClearRecents: () -> Unit = {},
+    updateBanner: (@Composable () -> Unit)? = null,
 ) {
     var filter by rememberSaveable { mutableStateOf(DeviceFilter.All) }
     var query by rememberSaveable { mutableStateOf("") }
@@ -168,6 +174,7 @@ internal fun DevicesContent(
                 DeviceFilter.Online -> device.online
                 DeviceFilter.Favorites -> device.nodeId in favoriteIds
                 DeviceFilter.Recent -> device.nodeId in recentOrder
+                DeviceFilter.NeedsAttention -> NeedsAttentionFilter.matches(device)
             }
         }
         .let { devices -> DeviceSearch.filter(devices, query, clientState.groups) }
@@ -202,6 +209,8 @@ internal fun DevicesContent(
             onSettings = onOpenSettings,
         )
 
+        if (clientState.devices.isEmpty() || !signedIn && clientState.requiresSignIn) updateBanner?.invoke()
+
         when {
             !signedIn && clientState.requiresSignIn -> EmptyState(
                 icon = Icons.Outlined.CloudOff,
@@ -214,7 +223,11 @@ internal fun DevicesContent(
 
             clientState.devices.isEmpty() && clientState.connectionState in setOf(ConnectionState.Connecting, ConnectionState.Reconnecting) ->
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    MeshLoadingIndicator()
+                    Column(horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        MeshLoadingIndicator()
+                        clientState.message?.let { Text(it.asString(), modifier = Modifier.padding(horizontal = 20.dp)) }
+                    }
                 }
 
             clientState.devices.isEmpty() -> EmptyState(
@@ -234,6 +247,7 @@ internal fun DevicesContent(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(top = 2.dp, bottom = 24.dp),
                 ) {
+                    if (updateBanner != null) item(key = "devices-update") { updateBanner() }
                     item(key = "devices-search") {
                         DeviceSearchField(query = query, onQueryChange = { query = it })
                     }
@@ -246,6 +260,7 @@ internal fun DevicesContent(
                             current = current,
                             favoritesCount = clientState.devices.count { it.nodeId in favoriteIds },
                             recentCount = recentCount,
+                            attentionCount = clientState.devices.count(NeedsAttentionFilter::matches),
                         )
                     }
                     if (effectiveFilter == DeviceFilter.Recent && recentDeviceIds.isNotEmpty()) {
@@ -265,7 +280,7 @@ internal fun DevicesContent(
                             ConnectionNotice(
                                 message = if (signedIn) stringResource(R.string.devices_syncing) else
                                     listOfNotNull(
-                                        clientState.lastError?.asString(),
+                                        (clientState.message ?: clientState.lastError)?.asString(),
                                         stringResource(R.string.devices_stale),
                                     ).joinToString("\n"),
                                 modifier = Modifier.padding(horizontal = 20.dp, vertical = 6.dp),
@@ -437,6 +452,7 @@ private fun FilterRow(
     current: Boolean,
     favoritesCount: Int,
     recentCount: Int,
+    attentionCount: Int,
 ) {
     Row(
         modifier = Modifier
@@ -451,8 +467,10 @@ private fun FilterRow(
                 DeviceFilter.Online -> onlineCount
                 DeviceFilter.Favorites -> favoritesCount
                 DeviceFilter.Recent -> recentCount
+                DeviceFilter.NeedsAttention -> attentionCount
             }
             FilterChip(
+                modifier = Modifier.testTag("device_filter_${entry.name}"),
                 selected = filter == entry,
                 enabled = current || entry != DeviceFilter.Online,
                 onClick = { onFilterChange(entry) },
@@ -546,7 +564,7 @@ private fun DeviceRow(
             ) {
                 Box(Modifier.size(44.dp), contentAlignment = Alignment.Center) {
                     IconBadge(
-                        icon = Icons.Outlined.DesktopWindows,
+                        icon = if (device.isAndroidAgent) Icons.Outlined.Smartphone else Icons.Outlined.DesktopWindows,
                         tint = if (online) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurfaceVariant,
                         container = if (online) MaterialTheme.colorScheme.primaryContainer else MeshTheme.colors.offlineContainer,
                         size = 40.dp,

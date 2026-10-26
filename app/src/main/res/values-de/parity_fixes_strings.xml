@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">Warnung</string>
+    <string name="parity_fixes_server_rejected">Serverantwort: %1$s</string>
+    <string name="parity_fixes_output_truncated">Die Ausgabe wurde auf 65.536 Zeichen gekürzt.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: Durchschnitt seit der letzten Messung, einschließlich der von anderen Sitzungen angeforderten Messungen.</string>
+    <string name="parity_fixes_run_warning">Führt einen Befehl auf diesem Gerät aus. Prüfen Sie ihn sorgfältig. Alle Benutzer mit Zugriff auf dieses Gerät können die Befehlsausgabe sehen. Keine Geheimnisse eingeben.</string>
+</resources>

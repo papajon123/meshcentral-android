@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s Das unvollständige Dokument wurde gelöscht.</string>
+    <string name="final_fixes_download_marked">%1$s Das unvollständige Dokument wurde mit dem Suffix .partial gekennzeichnet. Löschen Sie es vor einem neuen Versuch in der Android-App „Dateien“.</string>
+    <string name="final_fixes_download_retained">%1$s Android konnte das unvollständige Dokument weder löschen noch mit .partial kennzeichnen. Verwenden Sie es nicht; löschen Sie es in der Android-App „Dateien“.</string>
+    <string name="final_fixes_download_transport_failed">Die Verbindung wurde während des Downloads unterbrochen. Öffnen Sie eine neue Dateisitzung und versuchen Sie es erneut.</string>
+    <string name="final_fixes_download_invalid">Die heruntergeladenen Daten stimmten nicht mit der erwarteten Datei überein. Öffnen Sie eine neue Dateisitzung und versuchen Sie es erneut.</string>
+</resources>

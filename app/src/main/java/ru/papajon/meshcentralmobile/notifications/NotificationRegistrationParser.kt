@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.notifications
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import org.json.JSONObject
 
 /**
@@ -14,9 +16,9 @@ object NotificationRegistrationParser {
         userId: String,
         now: Long,
     ): NotificationToken {
-        val token = data.optString("token")
-        val tokenId = data.optString("tokenId")
-        val endpoint = data.optString("endpoint")
+        val token = data.optText("token")
+        val tokenId = data.optText("tokenId")
+        val endpoint = data.optText("endpoint")
         val expiresAt = data.optLong("expiresAt", -1L)
         if (token.length != 43 || !token.matches(Regex("[A-Za-z0-9_-]{43}"))) {
             throw NotificationProtocolException("invalid token")

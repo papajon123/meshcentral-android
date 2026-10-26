@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">Aracı, UTF-8 olmayan Windows çıktısını göndermeden önce bozabilir. PowerShell komutları için UTF-8 modunu seçin: konsol girişini ve çıktısını UTF-8 olarak ayarlar. Bu mod cmd.exe sözdizimini değil, PowerShell sözdizimini kullanır. Kendi çıktı kodlamasına sahip programlar yine de farklı davranabilir.</string>
+    <string name="windows_polish_default_shell">Varsayılan komut kabuğu (değişmedi)</string>
+</resources>

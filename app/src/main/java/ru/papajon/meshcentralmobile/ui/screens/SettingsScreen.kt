@@ -88,9 +88,6 @@ import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 import ru.papajon.meshcentralmobile.ui.theme.PillShape
 import ru.papajon.meshcentralmobile.ui.web.MeshWebViewSurface
 
-/** The only update channel of the public build: signed APKs published with GitHub releases. */
-private const val RELEASES_URL = "https://github.com/papajon123/meshcentral-android/releases"
-
 /** Auto-lock choices, identical to the ones the original screen offered. */
 private val LockTimeoutOptions = listOf(
     15L to R.string.settings_auto_lock_option_15,
@@ -115,14 +112,13 @@ fun SettingsScreen(
     onPinSaved: (String) -> Unit,
     onPinCleared: () -> Unit,
     onLockNow: () -> Unit,
-    onCredentialsCleared: () -> Unit,
-    onMeshSessionCleared: () -> Unit,
-    onWebViewSessionCleared: () -> Unit,
+    onClearSession: () -> Unit,
     modifier: Modifier = Modifier,
     activeProfileName: String? = null,
     onManageProfiles: (() -> Unit)? = null,
     onEditServer: (() -> Unit)? = null,
     onNotifications: (() -> Unit)? = null,
+    updates: @Composable () -> Unit = {},
 ) {
     var newPin by rememberSaveable { mutableStateOf("") }
     var message by remember {
@@ -133,9 +129,9 @@ fun SettingsScreen(
     var showDebugWebView by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
 
-    BackHandler(enabled = showDebugWebView) { showDebugWebView = false }
+    BackHandler(enabled = BuildConfig.DEBUG && showDebugWebView) { showDebugWebView = false }
 
-    if (showDebugWebView) {
+    if (BuildConfig.DEBUG && showDebugWebView) {
         DebugWebViewOverlay(
             serverUrl = serverUrl,
             onClose = { showDebugWebView = false },
@@ -379,76 +375,12 @@ fun SettingsScreen(
                     supporting = stringResource(R.string.settings_clear_session_supporting),
                     actionLabel = stringResource(R.string.settings_clear_session_action),
                     destructive = true,
-                    onClick = {
-                        onCredentialsCleared()
-                        onMeshSessionCleared()
-                        onWebViewSessionCleared()
-                        message = UiText.resource(R.string.settings_session_cleared)
-                    },
+                    onClick = onClearSession,
                 )
             }
         }
 
-        SettingsSection(
-            title = stringResource(R.string.settings_section_updates),
-            subtitle = stringResource(R.string.settings_section_updates_subtitle),
-        ) {
-            MeshCard(shape = MaterialTheme.shapes.large) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = spacing.lg, vertical = spacing.md),
-                    verticalArrangement = Arrangement.spacedBy(spacing.sm),
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(spacing.md),
-                    ) {
-                        IconBadge(
-                            icon = Icons.Outlined.SystemUpdateAlt,
-                            container = MaterialTheme.colorScheme.primaryContainer,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = stringResource(R.string.settings_update_title),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.onSurface,
-                            )
-                            Text(
-                                text = stringResource(R.string.settings_update_supporting),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                    TextButton(
-                        onClick = {
-                            val releases = Intent(Intent.ACTION_VIEW, Uri.parse(RELEASES_URL))
-                                .addCategory(Intent.CATEGORY_BROWSABLE)
-                            val opened = try {
-                                context.startActivity(releases)
-                                true
-                            } catch (_: ActivityNotFoundException) {
-                                false
-                            }
-                            if (!opened) {
-                                message = UiText.resource(R.string.settings_update_unavailable)
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = 48.dp),
-                        shape = PillShape,
-                    ) {
-                        Text(
-                            text = stringResource(R.string.settings_update_action),
-                            style = MaterialTheme.typography.labelLarge,
-                        )
-                    }
-                }
-            }
-        }
+        updates()
 
         SettingsSection(
             title = stringResource(R.string.settings_section_about),
@@ -487,15 +419,16 @@ fun SettingsScreen(
                         }
                     }
 
-                    SettingsDivider()
-
-                    SettingsActionRow(
-                        icon = Icons.Outlined.BugReport,
-                        title = stringResource(R.string.settings_debug_webview),
-                        supporting = stringResource(R.string.settings_debug_webview_supporting),
-                        actionLabel = stringResource(R.string.settings_debug_webview_action),
-                        onClick = { showDebugWebView = true },
-                    )
+                    if (BuildConfig.DEBUG) {
+                        SettingsDivider()
+                        SettingsActionRow(
+                            icon = Icons.Outlined.BugReport,
+                            title = stringResource(R.string.settings_debug_webview),
+                            supporting = stringResource(R.string.settings_debug_webview_supporting),
+                            actionLabel = stringResource(R.string.settings_debug_webview_action),
+                            onClick = { showDebugWebView = true },
+                        )
+                    }
                 }
             }
         }

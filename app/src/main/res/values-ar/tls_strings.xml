@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">شهادة الخادم غير موثوقة. قارن بصمتها بشهادة الخادم قبل الوثوق بها.</string>
+    <string name="tls_error_changed">تغيّر مفتاح الخادم. حُظر الاتصال: تحقّق من البصمة الجديدة مع مسؤول الخادم.</string>
+    <string name="tls_untrusted_title">شهادة خادم غير موثوقة</string>
+    <string name="tls_changed_title">تغيّرت شهادة الخادم</string>
+    <string name="tls_fingerprint">بصمة المفتاح العام SHA-256 (SPKI)</string>
+    <string name="tls_previous_fingerprint">المفتاح العام الموثوق سابقًا، SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">المفتاح العام الجديد، SHA-256 (SPKI)</string>
+    <string name="tls_subject">صاحب الشهادة: %1$s</string>
+    <string name="tls_validity">صالحة من %1$s إلى %2$s</string>
+    <string name="tls_server">الخادم: %1$s</string>
+    <string name="tls_compare">قارن هذه البصمة بشهادة الخادم عبر قناة اتصال منفصلة وموثوقة.</string>
+    <string name="tls_trust">الوثوق بهذا الخادم</string>
+    <string name="tls_replace">استبدال البصمة…</string>
+    <string name="tls_replace_title">استبدال المفتاح الموثوق؟</string>
+    <string name="tls_replace_warning">قد يعني تغيّر المفتاح أن شخصًا ينتحل هوية خادمك. لا تتابع إلا بعد التحقّق المستقل من البصمة الجديدة. لن يعود المفتاح السابق موثوقًا.</string>
+    <string name="tls_confirm_replace">تأكيد الاستبدال</string>
+    <string name="tls_pinned_key">مفتاح الخادم الموثوق</string>
+    <string name="tls_forget">نسيان</string>
+    <string name="tls_forget_title">نسيان المفتاح الموثوق؟</string>
+    <string name="tls_forget_warning">سيُغلق الاتصال الحالي. ستحتاج إلى التحقّق من هذا الخادم مجددًا إذا لم يثق Android بشهادته.</string>
+    <string name="tls_certificate_fingerprint">SHA-256 للشهادة — كما يظهر في المتصفح</string>
+    <string name="tls_error_validity">انتهت صلاحية الشهادة أو لم تبدأ بعد. تحقق من تاريخ الهاتف ووقته وفترة صلاحية شهادة الخادم. لا يمكن تجاوز هذا الخطأ بتأكيد الثقة.</string>
+    <string name="tls_error_chain">تحتوي الشهادة أو سلسلتها على توقيع غير صالح، أو مفتاح أو خوارزمية ضعيفة، أو غرض أو قيود غير صالحة لجهة إصدار الشهادات. على المسؤول إصلاح الشهادة؛ لا يمكن الموافقة عليها.</string>
+    <string name="tls_error_hostname">الشهادة لا تطابق عنوان الخادم. تحقق من العنوان واطلب من المسؤول تصحيح الأسماء في الشهادة.</string>
+    <string name="tls_hostname_warning">تحذير: الاسم في الشهادة لا يطابق عنوان الخادم. لا توافق على المفتاح إلا بعد تحقق مستقل.</string>
+    <string name="tls_blocked_title">تم رفض شهادة الخادم</string>
+    <string name="tls_verify_instructions">يمكن للمسؤول حساب بصمة SPKI بالأمر أدناه. لاتصال TLS مباشر، استخدم meshcentral-data/webserver-cert-public.crt؛ وإذا كان TLS ينتهي عند وكيل عكسي، فاستخدم شهادة الوكيل. استبدل cert.pem بذلك الملف. يعرض المتصفح بصمة منفصلة للشهادة.</string>
+    <string name="tls_independent_warning">تحقق عبر قناة مستقلة وموثوقة. البصمة المأخوذة عبر الاتصال غير المتحقق منه نفسه لا تحمي من وسيط مهاجم.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">يُعرّف مُصدر الشهادة نفسه بأنه جذر MeshCentral.</string>
+    <string name="tls_issuer_unknown">الشهادة موقّعة من جهة إصدار شهادات غير معروفة. إذا كان الخادم يستخدم شهادة عامة، فقد تكون سلسلتها غير مكتملة؛ يُنصح بإصلاح الخادم.</string>
+</resources>

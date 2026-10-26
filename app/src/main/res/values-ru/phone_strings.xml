@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Телефон Android</string>
+    <string name="phone_view_only">Агент телефона показывает только экран; управление пока недоступно. Перемещайте изображение пальцем, меняйте масштаб двумя пальцами.</string>
+    <string name="phone_unknown">Неизвестно</string>
+    <string name="phone_battery">Батарея: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">Заряжается</string>
+    <string name="phone_on_battery">Работает от батареи</string>
+    <string name="phone_power_unknown">Состояние зарядки неизвестно</string>
+    <string name="phone_find">Найти телефон и связаться с владельцем</string>
+    <string name="phone_vibrate">Вибрация на 5 секунд</string>
+    <string name="phone_flash">Фонарик на 10 секунд</string>
+    <string name="phone_alert">Сообщение на телефон</string>
+    <string name="phone_toast">Краткое уведомление</string>
+    <string name="phone_open_url">Открыть ссылку</string>
+    <string name="phone_dial">Набрать номер</string>
+    <string name="phone_actions_unavailable">Для действий нужны подключённый агент и право удалённого управления.</string>
+    <string name="phone_message_title">Заголовок</string>
+    <string name="phone_message_text">Сообщение</string>
+    <string name="phone_url">Ссылка</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="phone_message_hint">До 1000 символов; заголовок — до 80. Сервер может записать сообщение в журнал.</string>
+    <string name="phone_url_hint">Полная ссылка http или https без пробелов и встроенных учётных данных.</string>
+    <string name="phone_dial_hint">Только цифры, +, * и #, до 40 символов. Звонок начинает человек на телефоне.</string>
+    <string name="phone_quotes_hint">Прямые двойные кавычки заменяются типографскими: агент телефона не умеет сохранять их.</string>
+    <string name="phone_confirm">Отправить эту команду на выбранный телефон?</string>
+    <string name="phone_send">Отправить команду</string>
+    <string name="phone_review">Проверить</string>
+    <string name="phone_edit">Изменить</string>
+    <string name="phone_cancel">Отмена</string>
+    <string name="phone_command_sent">Команда отправлена. Выполнение на телефоне не подтверждено.</string>
+    <string name="phone_send_failed">Команда не отправлена. Проверьте подключение и право удалённого управления.</string>
+    <string name="phone_files_limits">Агент телефона не поддерживает создание и переименование папок и файлов. Android может запросить разрешение на телефоне.</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">Cảnh báo</string>
+    <string name="parity_fixes_server_rejected">Phản hồi của máy chủ: %1$s</string>
+    <string name="parity_fixes_output_truncated">Đầu ra đã bị cắt bớt còn 65.536 ký tự.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: mức trung bình từ lần đo trước, bao gồm cả các phép đo do phiên khác yêu cầu.</string>
+    <string name="parity_fixes_run_warning">Chạy lệnh trên thiết bị này. Hãy xem xét kỹ. Mọi người dùng có quyền truy cập thiết bị này đều có thể xem đầu ra của lệnh. Không đưa thông tin bí mật vào.</string>
+</resources>

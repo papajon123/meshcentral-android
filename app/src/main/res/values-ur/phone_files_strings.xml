@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">پیغامات، لنکس اور نمبر ملانے کے لیے ریموٹ کنٹرول کے علاوہ کنسول کی اجازت بھی ضروری ہے۔</string>
+    <string name="phone_url_format">http:// یا https:// چھوٹے حروف میں استعمال کریں۔ خالی جگہوں اور دوہرے اقتباسی نشانات کی اجازت نہیں؛ فیصدی انکوڈنگ استعمال کریں۔</string>
+    <string name="phone_files_choose_category">اپ لوڈ کرنے سے پہلے فون کی کوئی قسم یا فولڈر منتخب کریں۔</string>
+    <string name="phone_files_ambiguous_name">کئی میڈیا فائلوں کا نام ایک ہی ہے۔ درست فائل ڈاؤن لوڈ یا حذف کرنے کے لیے اسے Sdcard میں اس کے فولڈر سے کھولیں۔</string>
+    <string name="phone_files_directory_too_large">اس قسم میں فائلیں اتنی زیادہ ہیں کہ فہرست نہیں بن سکتی۔ Sdcard میں کوئی چھوٹا فولڈر کھولیں۔</string>
+</resources>

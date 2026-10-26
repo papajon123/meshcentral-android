@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Telefone Android</string>
+    <string name="phone_view_only">O agente do telefone apenas partilha o ecrã. O controlo remoto ainda não está disponível. Arraste para deslocar e use dois dedos para ampliar.</string>
+    <string name="phone_unknown">Desconhecido</string>
+    <string name="phone_battery">Bateria: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">A carregar</string>
+    <string name="phone_on_battery">A usar bateria</string>
+    <string name="phone_power_unknown">Estado de carregamento desconhecido</string>
+    <string name="phone_find">Encontrar este telefone e contactar o proprietário</string>
+    <string name="phone_vibrate">Vibrar durante 5 segundos</string>
+    <string name="phone_flash">Lanterna durante 10 segundos</string>
+    <string name="phone_alert">Mensagem no telefone</string>
+    <string name="phone_toast">Notificação breve</string>
+    <string name="phone_open_url">Abrir ligação</string>
+    <string name="phone_dial">Abrir marcador</string>
+    <string name="phone_actions_unavailable">As ações exigem um agente ligado e permissão de controlo remoto.</string>
+    <string name="phone_message_title">Título</string>
+    <string name="phone_message_text">Mensagem</string>
+    <string name="phone_url">Ligação</string>
+    <string name="phone_number">Número de telefone</string>
+    <string name="phone_message_hint">Até 1000 caracteres; título até 80. O servidor pode registar a mensagem.</string>
+    <string name="phone_url_hint">Ligação http ou https completa, sem espaços nem credenciais incorporadas.</string>
+    <string name="phone_dial_hint">Apenas dígitos, +, * e #, até 40 caracteres. A pessoa no telefone inicia a chamada.</string>
+    <string name="phone_quotes_hint">As aspas duplas retas são substituídas por aspas tipográficas porque o agente não as consegue preservar.</string>
+    <string name="phone_confirm">Enviar este comando para o telefone selecionado?</string>
+    <string name="phone_send">Enviar comando</string>
+    <string name="phone_review">Rever</string>
+    <string name="phone_edit">Editar</string>
+    <string name="phone_cancel">Cancelar</string>
+    <string name="phone_command_sent">Comando enviado. A execução no telefone não foi confirmada.</string>
+    <string name="phone_send_failed">Comando não enviado. Verifique a ligação e a permissão de controlo remoto.</string>
+    <string name="phone_files_limits">O agente não permite criar nem mudar o nome de pastas e ficheiros. O Android pode pedir autorização no telefone.</string>
+</resources>

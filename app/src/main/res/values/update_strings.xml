@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">App updates</string>
+    <string name="update_consent_title">Check for new versions on GitHub?</string>
+    <string name="update_consent_body">The app contacts api.github.com once a day; none of your data is sent.</string>
+    <string name="update_privacy_detail">GitHub and its asset CDN see your IP address and HTTP headers.</string>
+    <string name="update_allow">Check for updates</string>
+    <string name="update_not_now">Not now</string>
+    <string name="update_never">Not checked yet.</string>
+    <string name="update_current">No newer compatible release found.</string>
+    <string name="update_found">An update was found.</string>
+    <string name="update_suppressed">This release was postponed or skipped.</string>
+    <string name="update_network_error">Could not check. Try again after 24 hours.</string>
+    <string name="update_rate_limit">GitHub has limited requests. Try again after 24 hours.</string>
+    <string name="update_invalid_metadata">Release details could not be verified. Try again after 24 hours.</string>
+    <string name="update_wrong_signer">This build has a different signing identity. No compatible update can be offered.</string>
+    <string name="update_checking">Checking…</string>
+    <string name="update_last_check">Last attempt: %1$s</string>
+    <string name="update_recently_checked">Checked less than a minute ago. Try again shortly.</string>
+    <string name="update_check_now">Check now</string>
+    <string name="update_available">Version %1$s is available</string>
+    <string name="update_download">Download</string>
+    <string name="update_later">Later</string>
+    <string name="update_skip">Skip this version</string>
+    <string name="update_browser_error">No browser is available. Install or enable a browser.</string>
+</resources>

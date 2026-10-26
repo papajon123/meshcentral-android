@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">বার্তা, লিঙ্ক ও নম্বর ডায়াল করতে রিমোট কন্ট্রোলের পাশাপাশি কনসোল অনুমতিও প্রয়োজন।</string>
+    <string name="phone_url_format">http:// বা https:// ছোট হাতের অক্ষরে ব্যবহার করুন। স্পেস ও দ্বৈত উদ্ধৃতিচিহ্ন ব্যবহার করা যাবে না; শতাংশ এনকোডিং ব্যবহার করুন।</string>
+    <string name="phone_files_choose_category">আপলোড করার আগে ফোনের একটি ক্যাটাগরি বা ফোল্ডার বেছে নিন।</string>
+    <string name="phone_files_ambiguous_name">একাধিক মিডিয়া ফাইলের নাম একই। সঠিক ফাইলটি ডাউনলোড বা মুছতে Sdcard-এ থাকা তার ফোল্ডার থেকে ফাইলটি খুলুন।</string>
+    <string name="phone_files_directory_too_large">এই ক্যাটাগরিতে তালিকাভুক্ত করার জন্য অনেক বেশি ফাইল আছে। Sdcard-এ একটি ছোট ফোল্ডার খুলুন।</string>
+</resources>

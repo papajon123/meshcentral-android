@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">توجہ درکار ہے</string>
+    <string name="parity_security">Windows کی سیکیورٹی</string>
+    <string name="parity_security_cached">آخری موصولہ حالت؛ یہ پرانی ہو سکتی ہے۔</string>
+    <string name="parity_antivirus">اینٹی وائرس</string>
+    <string name="parity_updates">خودکار اپ ڈیٹس</string>
+    <string name="parity_firewall">فائر وال</string>
+    <string name="parity_enabled">فعال</string>
+    <string name="parity_updated">تازہ ترین</string>
+    <string name="parity_unknown">نامعلوم</string>
+    <string name="parity_ok">درست</string>
+    <string name="parity_message">کمپیوٹر کے صارف کو پیغام</string>
+    <string name="parity_message_title">عنوان</string>
+    <string name="parity_message_confirm">یہ پیغام بھیجیں؟</string>
+    <string name="parity_message_sent">بھیج دیا گیا۔ وصولی کی تصدیق نہیں ہوئی۔</string>
+    <string name="parity_shortcuts">میرے شارٹ کٹس</string>
+    <string name="parity_remove_shortcut">%1$s ہٹائیں</string>
+    <string name="parity_add_shortcut">شارٹ کٹ شامل کریں</string>
+    <string name="parity_suggestions">تجاویز</string>
+    <string name="parity_shortcut_label">نام</string>
+    <string name="parity_shortcut_key">کلید: %1$s</string>
+    <string name="parity_review">جائزہ لیں</string>
+    <string name="parity_save">محفوظ کریں</string>
+    <string name="parity_history">تاریخ</string>
+    <string name="parity_events">آلے کے واقعات (زیادہ سے زیادہ 50)</string>
+    <string name="parity_power_history">پاور کی تاریخ</string>
+    <string name="parity_history_error">لوڈ نہیں ہو سکا۔ دوبارہ کوشش کے لیے ریفریش کریں۔</string>
+    <string name="parity_history_empty">کوئی ریکارڈ موصول نہیں ہوا۔</string>
+    <string name="parity_power_on">چالو</string>
+    <string name="parity_hibernating">ہائبرنیشن میں</string>
+    <string name="parity_power_off">بند</string>
+    <string name="parity_yes">ہاں</string>
+    <string name="parity_no">نہیں</string>
+</resources>

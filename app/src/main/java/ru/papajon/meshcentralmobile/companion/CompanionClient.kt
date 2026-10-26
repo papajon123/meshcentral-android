@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.companion
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import java.util.UUID
 import kotlinx.coroutines.CancellationException
 import org.json.JSONObject
@@ -113,15 +115,15 @@ class CompanionClient(
         } catch (cancelled: CancellationException) {
             throw cancelled
         }
-        if (response.optString("action") != ACTION_PLUGIN ||
-            response.optString("plugin") != COMPANION_PLUGIN_ID
+        if (response.optText("action") != ACTION_PLUGIN ||
+            response.optText("plugin") != COMPANION_PLUGIN_ID
         ) {
             throw CompanionException(CompanionErrorCode.PROTOCOL)
         }
         if (!response.optBoolean("ok", false)) {
             val errorObject = response.optJSONObject("error")
             if (errorObject == null) throw CompanionException(CompanionErrorCode.PROTOCOL)
-            val code = errorObject.optString("code").takeIf { it.isNotBlank() }
+            val code = errorObject.optText("code").takeIf { it.isNotBlank() }
             // The server `message` is intentionally ignored.
             throw CompanionException(CompanionErrorCode.fromWire(code))
         }

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Android फोन</string>
+    <string name="phone_view_only">फोन एजंट फक्त स्क्रीन शेअर करतो. दूरस्थ नियंत्रण अद्याप उपलब्ध नाही. हलवण्यासाठी ओढा, झूम करण्यासाठी दोन बोटे वापरा.</string>
+    <string name="phone_unknown">अज्ञात</string>
+    <string name="phone_battery">बॅटरी: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">चार्ज होत आहे</string>
+    <string name="phone_on_battery">बॅटरीवर चालू आहे</string>
+    <string name="phone_power_unknown">चार्जची स्थिती अज्ञात आहे</string>
+    <string name="phone_find">फोन शोधा आणि मालकाशी संपर्क साधा</string>
+    <string name="phone_vibrate">5 सेकंद कंपन</string>
+    <string name="phone_flash">10 सेकंद टॉर्च</string>
+    <string name="phone_alert">फोनवर संदेश</string>
+    <string name="phone_toast">थोडक्यात सूचना</string>
+    <string name="phone_open_url">दुवा उघडा</string>
+    <string name="phone_dial">डायल पॅड उघडा</string>
+    <string name="phone_actions_unavailable">या कृतींसाठी एजंट ऑनलाइन असणे आणि दूरस्थ नियंत्रणाची परवानगी आवश्यक आहे.</string>
+    <string name="phone_message_title">शीर्षक</string>
+    <string name="phone_message_text">संदेश</string>
+    <string name="phone_url">दुवा</string>
+    <string name="phone_number">फोन क्रमांक</string>
+    <string name="phone_message_hint">संदेश जास्तीत जास्त 1000 अक्षरे; शीर्षक 80 अक्षरे. सर्व्हर संदेश नोंदवू शकतो.</string>
+    <string name="phone_url_hint">मोकळ्या जागा किंवा समाविष्ट लॉगिन माहिती नसलेला पूर्ण http किंवा https दुवा द्या.</string>
+    <string name="phone_dial_hint">फक्त अंक, +, * आणि #, जास्तीत जास्त 40 अक्षरे. फोनवरील व्यक्ती कॉल सुरू करेल.</string>
+    <string name="phone_quotes_hint">सरळ दुहेरी अवतरणचिन्हे वक्र चिन्हांनी बदलली जातात, कारण फोन एजंट ती तशीच ठेवू शकत नाही.</string>
+    <string name="phone_confirm">निवडलेल्या फोनवर ही आज्ञा पाठवायची?</string>
+    <string name="phone_send">आज्ञा पाठवा</string>
+    <string name="phone_review">तपासा</string>
+    <string name="phone_edit">संपादित करा</string>
+    <string name="phone_cancel">रद्द करा</string>
+    <string name="phone_command_sent">आज्ञा पाठवली. फोनवर ती चालल्याची पुष्टी झालेली नाही.</string>
+    <string name="phone_send_failed">आज्ञा पाठवली नाही. जोडणी आणि दूरस्थ नियंत्रणाची परवानगी तपासा.</string>
+    <string name="phone_files_limits">फोन एजंट फोल्डर व फाइल तयार करणे किंवा नाव बदलणे समर्थित करत नाही. Android फोनवर परवानगी मागू शकतो.</string>
+</resources>

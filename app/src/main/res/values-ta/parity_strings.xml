@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">கவனம் தேவை</string>
+    <string name="parity_security">Windows பாதுகாப்பு</string>
+    <string name="parity_security_cached">கடைசியாகப் பெறப்பட்ட நிலை; இது பழையதாக இருக்கலாம்.</string>
+    <string name="parity_antivirus">வைரஸ் தடுப்பு</string>
+    <string name="parity_updates">தானியங்கு புதுப்பிப்புகள்</string>
+    <string name="parity_firewall">ஃபயர்வால்</string>
+    <string name="parity_enabled">இயக்கப்பட்டது</string>
+    <string name="parity_updated">புதுப்பிக்கப்பட்டது</string>
+    <string name="parity_unknown">தெரியவில்லை</string>
+    <string name="parity_ok">சரி</string>
+    <string name="parity_message">கணினிப் பயனருக்கான செய்தி</string>
+    <string name="parity_message_title">தலைப்பு</string>
+    <string name="parity_message_confirm">இந்தச் செய்தியை அனுப்பவா?</string>
+    <string name="parity_message_sent">அனுப்பப்பட்டது. சென்றடைந்தது உறுதிப்படுத்தப்படவில்லை.</string>
+    <string name="parity_shortcuts">எனது குறுக்குவழிகள்</string>
+    <string name="parity_remove_shortcut">%1$s ஐ அகற்று</string>
+    <string name="parity_add_shortcut">குறுக்குவழியைச் சேர்</string>
+    <string name="parity_suggestions">பரிந்துரைகள்</string>
+    <string name="parity_shortcut_label">பெயர்</string>
+    <string name="parity_shortcut_key">விசை: %1$s</string>
+    <string name="parity_review">சரிபார்</string>
+    <string name="parity_save">சேமி</string>
+    <string name="parity_history">வரலாறு</string>
+    <string name="parity_events">சாதன நிகழ்வுகள் (அதிகபட்சம் 50)</string>
+    <string name="parity_power_history">மின்நிலை வரலாறு</string>
+    <string name="parity_history_error">ஏற்ற முடியவில்லை. மீண்டும் முயற்சிக்கப் புதுப்பிக்கவும்.</string>
+    <string name="parity_history_empty">பதிவுகள் எதுவும் பெறப்படவில்லை.</string>
+    <string name="parity_power_on">இயக்கத்தில்</string>
+    <string name="parity_hibernating">உறக்கநிலையில்</string>
+    <string name="parity_power_off">அணைக்கப்பட்டது</string>
+    <string name="parity_yes">ஆம்</string>
+    <string name="parity_no">இல்லை</string>
+</resources>

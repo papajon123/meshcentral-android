@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">سرویس دسترس‌پذیری کنترل از راه دور روی تلفن خاموش است</string>
+    <string name="phone_control_unsupported">Android روی این تلفن از ورودی از راه دور پشتیبانی نمی‌کند</string>
+    <string name="phone_control_unknown">عامل از پشتیبانی ورودی خبر نمی‌دهد</string>
+    <string name="phone_control_no_permission">مجوزهای شما فقط اجازهٔ مشاهده می‌دهند</string>
+    <string name="phone_control_back">بازگشت</string>
+    <string name="phone_control_home">صفحه اصلی</string>
+    <string name="phone_control_recents">اخیر</string>
+    <string name="phone_control_notifications">اعلان‌ها</string>
+    <string name="phone_control_quick_settings">تنظیمات سریع</string>
+    <string name="phone_control_text">وارد کردن متن</string>
+    <string name="phone_control_text_hint">متن به انتهای فیلد انتخاب‌شده افزوده می‌شود. در فیلدهای گذرواژه ورودی مسدود است.</string>
+    <string name="phone_control_consent_hint">مالک تلفن باید کنترل را تأیید کند. صفحهٔ قفل و وارد کردن PIN در دسترس نیست.</string>
+</resources>

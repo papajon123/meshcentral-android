@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">ถอนการติดตั้งเอเจนต์</string>
+    <string name="parity2_remove">ลบอุปกรณ์</string>
+    <string name="parity2_uninstall_warning">การเข้าถึงระยะไกลจะหยุดลง ระเบียนอุปกรณ์ยังอยู่ การติดตั้งใหม่ต้องเข้าถึงคอมพิวเตอร์ได้</string>
+    <string name="parity2_remove_warning">ระเบียนและประวัติอุปกรณ์จะถูกลบ เอเจนต์ยังติดตั้งอยู่และอาจลงทะเบียนใหม่</string>
+    <string name="parity2_confirm_name">พิมพ์ชื่ออุปกรณ์ให้ตรงทุกตัว</string>
+    <string name="parity2_removal_pending">ส่งคำขอแล้ว กำลังตรวจสอบรายการอุปกรณ์ ยังไม่ยืนยันการดำเนินการ</string>
+    <string name="parity2_removal_absent">ไม่พบอุปกรณ์ในรายการที่รีเฟรช อาจเกิดจากการลบหรือการเปลี่ยนสิทธิ์เข้าถึง</string>
+    <string name="parity2_removal_disconnected">เอเจนต์ตัดการเชื่อมต่อแล้ว ยังไม่ยืนยันการถอนการติดตั้ง</string>
+    <string name="parity2_removal_unknown">ไม่ทราบผล ตรวจสอบอุปกรณ์ก่อนทำซ้ำ</string>
+    <string name="parity2_software">โปรแกรมที่ติดตั้ง</string>
+    <string name="parity2_software_hint">อ่านจากเอเจนต์ที่เชื่อมต่อ สูงสุด 1000 โปรแกรม ค่าที่ไม่มีจะยังแสดงว่าไม่ทราบ</string>
+    <string name="parity2_software_error">ไม่ได้รับรายการโปรแกรม ตรวจสอบเอเจนต์และสิทธิ์ หากหมดเวลารอ ให้เชื่อมต่อใหม่ก่อนลองอีกครั้ง</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">เมนบอร์ด</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">ผู้ผลิต</string>
+    <string name="parity2_bios_date">วันที่เฟิร์มแวร์</string>
+    <string name="parity2_mode">โหมด</string>
+    <string name="parity2_spec">ข้อกำหนด</string>
+    <string name="parity2_activated">เปิดใช้งานแล้ว</string>
+    <string name="parity2_owned">กำหนดเจ้าของแล้ว</string>
+    <string name="parity2_last_boot">การบูตล่าสุดที่รายงาน</string>
+    <string name="parity2_uptime">เวลาทำงานโดยประมาณ (ช:นน:วว)</string>
+    <string name="parity2_metrics">การใช้ CPU และหน่วยความจำ</string>
+    <string name="parity2_sample_time">ได้รับค่าที่วัด: %1$s</string>
+    <string name="parity2_run">เรียกใช้คำสั่ง</string>
+    <string name="parity2_command">คำสั่ง</string>
+    <string name="parity2_run_warning">ทำงานด้วยบัญชีเอเจนต์ ซึ่งมักเป็น SYSTEM หรือ root อาจเปลี่ยนแปลงคอมพิวเตอร์และถูกบันทึกโดยเซิร์ฟเวอร์ ไม่มีการยกเลิกหรือรหัสออก อย่าป้อนข้อมูลลับ</string>
+    <string name="parity2_run_uncertain">ยังไม่ยืนยันผล คำสั่งอาจยังทำงานอยู่ ตรวจสอบในเทอร์มินัลก่อนทำซ้ำ</string>
+    <string name="parity2_output">ผลลัพธ์คำสั่ง</string>
+    <string name="parity2_output_note">สูงสุด 65536 อักขระ ผลลัพธ์ไม่ยืนยันความสำเร็จ ให้ตรวจสอบการเปลี่ยนแปลงที่ต้องการ</string>
+    <string name="parity2_seven_days">7 วันที่ผ่านมา</string>
+    <string name="parity2_history_note">ประวัติพลังงานและการเชื่อมต่อที่รายงาน ช่องว่างหมายถึงไม่ทราบ ไม่ใช่หยุดทำงาน ด้านล่างแสดงการเปลี่ยนแปลงล่าสุดสูงสุด 100 รายการ</string>
+    <string name="parity2_favorites">คำสั่งโปรด</string>
+    <string name="parity2_favorites_hint">สูงสุด 20 คำสั่งต่อโปรไฟล์ เลือกเพื่อแก้ไขร่าง แล้วแทรกโดยไม่ส่ง Enter ใช้บรรทัดเดียวและอย่าบันทึกข้อมูลลับ</string>
+    <string name="parity2_insert">แทรกโดยไม่ส่ง Enter</string>
+</resources>

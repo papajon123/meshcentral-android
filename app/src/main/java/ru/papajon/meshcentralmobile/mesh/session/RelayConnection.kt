@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 import ru.papajon.meshcentralmobile.localization.UiText
 
 enum class RelayProtocol(val usage: Int) {
-    AgentTerminal(1), AgentFiles(5), SshTerminal(11), SshFiles(13),
+    AgentTerminal(1), AgentFiles(5), AgentFileDownload(10), SshTerminal(11), SshFiles(13),
 }
 
 enum class RelayPhase { Idle, Connecting, Waiting, Connected, Closed, Failed }
@@ -23,10 +23,12 @@ sealed interface RelayFrame {
 
 /** A single-consumer, bounded connection. A new session never replays previous input. */
 interface RelayConnection {
+    val androidFiles: Boolean get() = false
     val protocol: RelayProtocol
     val state: StateFlow<RelayStatus>
     val incoming: Flow<RelayFrame>
     fun connect()
+    /** A protocol string: Agent files encode it as binary UTF-8; SSH/SFTP use WebSocket text. */
     fun sendText(value: String): Boolean
     fun sendBinary(value: ByteArray): Boolean
     fun close()

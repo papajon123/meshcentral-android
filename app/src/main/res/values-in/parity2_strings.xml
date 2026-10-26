@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">Copot agen</string>
+    <string name="parity2_remove">Hapus perangkat</string>
+    <string name="parity2_uninstall_warning">Akses jarak jauh akan berhenti. Catatan perangkat tetap ada. Pemasangan ulang memerlukan akses ke komputer.</string>
+    <string name="parity2_remove_warning">Catatan dan riwayat perangkat akan dihapus. Agen tetap terpasang dan dapat mendaftar kembali.</string>
+    <string name="parity2_confirm_name">Ketik nama perangkat dengan tepat</string>
+    <string name="parity2_removal_pending">Permintaan dikirim. Memeriksa daftar perangkat; pelaksanaan belum dikonfirmasi.</string>
+    <string name="parity2_removal_absent">Perangkat tidak ada di daftar terbaru. Penyebabnya dapat berupa penghapusan atau perubahan akses.</string>
+    <string name="parity2_removal_disconnected">Agen terputus. Pencopotan belum dikonfirmasi.</string>
+    <string name="parity2_removal_unknown">Hasil tidak diketahui. Periksa perangkat sebelum mengulangi tindakan.</string>
+    <string name="parity2_software">Program terpasang</string>
+    <string name="parity2_software_hint">Dibaca dari agen yang terhubung. Hingga 1000 program; nilai yang tidak tersedia tetap tidak diketahui.</string>
+    <string name="parity2_software_error">Daftar program tidak diterima. Periksa agen dan izin; setelah waktu habis, sambungkan ulang sebelum mencoba lagi.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">Papan induk</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">Produsen</string>
+    <string name="parity2_bios_date">Tanggal firmware</string>
+    <string name="parity2_mode">Mode</string>
+    <string name="parity2_spec">Spesifikasi</string>
+    <string name="parity2_activated">Diaktifkan</string>
+    <string name="parity2_owned">Pemilik ditetapkan</string>
+    <string name="parity2_last_boot">Boot terakhir yang dilaporkan</string>
+    <string name="parity2_uptime">Perkiraan waktu aktif (j:mm:dd)</string>
+    <string name="parity2_metrics">Penggunaan CPU dan memori</string>
+    <string name="parity2_sample_time">Pengukuran diterima: %1$s</string>
+    <string name="parity2_run">Jalankan perintah</string>
+    <string name="parity2_command">Perintah</string>
+    <string name="parity2_run_warning">Dijalankan sebagai akun agen, biasanya SYSTEM atau root. Dapat mengubah komputer dan dicatat oleh server. Pembatalan dan kode keluar tidak tersedia. Jangan masukkan rahasia.</string>
+    <string name="parity2_run_uncertain">Hasil belum dikonfirmasi. Perintah mungkin masih berjalan. Periksa di terminal sebelum mengulang.</string>
+    <string name="parity2_output">Keluaran perintah</string>
+    <string name="parity2_output_note">Hingga 65536 karakter. Keluaran tidak membuktikan keberhasilan; periksa perubahan yang diinginkan.</string>
+    <string name="parity2_seven_days">7 hari terakhir</string>
+    <string name="parity2_history_note">Riwayat daya dan koneksi yang dilaporkan. Celah berarti data tidak diketahui, bukan waktu mati. Hingga 100 perubahan terbaru ditampilkan di bawah.</string>
+    <string name="parity2_favorites">Perintah favorit</string>
+    <string name="parity2_favorites_hint">Hingga 20 per profil. Pilih untuk mengedit draf lokal, lalu sisipkan tanpa Enter. Hanya satu baris; jangan simpan rahasia.</string>
+    <string name="parity2_insert">Sisipkan tanpa Enter</string>
+</resources>

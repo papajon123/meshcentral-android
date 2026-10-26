@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s سند ناقص حذف شد.</string>
+    <string name="final_fixes_download_marked">%1$s پسوند .partial به سند ناقص اضافه شد. پیش از تلاش دوباره، آن را در برنامه فایلها در Android حذف کنید.</string>
+    <string name="final_fixes_download_retained">%1$s Android نتوانست سند ناقص را حذف کند یا پسوند .partial را به آن اضافه کند. از آن استفاده نکنید؛ آن را در برنامه فایل‌ها در Android حذف کنید.</string>
+    <string name="final_fixes_download_transport_failed">اتصال در حین دانلود قطع شد. یک نشست فایل جدید باز کنید و دوباره تلاش کنید.</string>
+    <string name="final_fixes_download_invalid">داده‌های دانلودشده با فایل مورد انتظار مطابقت نداشت. یک نشست فایل جدید باز کنید و دوباره تلاش کنید.</string>
+</resources>

@@ -2,9 +2,10 @@ package ru.papajon.meshcentralmobile.mesh.files
 
 import org.json.JSONObject
 
-data class RemoteFile(val name: String, val type: Int, val size: Long = 0, val sizeKnown: Boolean = true) {
+data class RemoteFile(val name: String, val type: Int, val size: Long = 0, val sizeKnown: Boolean = true,
+    val listingIndex: Int? = null, val ambiguousName: Boolean = false) {
     val directory: Boolean get() = type == 1 || type == 2
-    val actionable: Boolean get() = AgentFilesProtocol.usableExistingName(name, type) && (directory || sizeKnown)
+    val actionable: Boolean get() = !ambiguousName && AgentFilesProtocol.usableExistingName(name, type) && (directory || sizeKnown)
     /** Escape control/format characters so an unsupported entry cannot forge lines or bidi labels. */
     val displayName: String get() = buildString {
         name.take(1024).forEach { character ->
@@ -40,7 +41,7 @@ internal object AgentFilesProtocol {
             name.none { it == '/' || it == '\\' || unsafeControl(it) })
 
     fun join(parent: String, name: String): String = when {
-        parent.isEmpty() -> if (Regex("^[A-Za-z]:[/\\\\]?$").matches(name)) name.trimEnd('/', '\\') + "/" else "/$name"
+        parent.isEmpty() -> if (Regex("^[A-Za-z]:[/\\\\]?$").matches(name)) name.trimEnd('/', '\\') + "/" else name
         else -> parent.trimEnd('/', '\\') + "/" + name
     }
 
@@ -48,31 +49,39 @@ internal object AgentFilesProtocol {
         val normalized = path.replace('\\', '/').trimEnd('/')
         if (normalized.isEmpty() || Regex("^[A-Za-z]:$").matches(normalized)) return ""
         val index = normalized.lastIndexOf('/')
+        if (index < 0) return "" // Android virtual categories (Images, Sdcard, Audio, Videos).
         return if (index <= 0) "/" else normalized.substring(0, index).let {
             if (Regex("^[A-Za-z]:$").matches(it)) "$it/" else it
         }
     }
 
-    fun entries(message: JSONObject): List<RemoteFile> {
+    fun isMediaCategory(path: String): Boolean = path in setOf("Images", "Audio", "Videos")
+
+    fun entries(message: JSONObject, phoneMedia: Boolean = false): List<RemoteFile> {
         val array = requireNotNull(message.optJSONArray("dir")) { "Directory unavailable" }
         require(array.length() <= MAX_LIST_ENTRIES) { "Directory limit" }
         val entries = ArrayList<RemoteFile>(array.length())
         val names = HashSet<String>()
         for (i in 0 until array.length()) {
             val item = array.getJSONObject(i)
-            val name = item.getString("n")
+            // Android getString also coerces JSON null to "null". A missing filename cannot
+            // identify a remote file; reject it rather than offering actions on a fake name.
+            val name = requireNotNull(item.opt("n") as? String) { "Missing filename" }
             if (name == "." || name == "..") continue
             val type = item.getInt("t")
             val validDrive = driveName(name, type)
             // Slash/NUL are not real filename components, and duplicate names make identity ambiguous.
             // Backslash and other controls can exist on POSIX: keep them visible but inoperable.
-            require(name.isNotEmpty() && '\u0000' !in name && (validDrive || '/' !in name) && names.add(name) && type in 1..3)
+            require(name.isNotEmpty() && '\u0000' !in name && (validDrive || '/' !in name) &&
+                (names.add(name) || phoneMedia) && type in 1..3)
             val rawSize = item.opt("s")
             val size = (rawSize as? Number)?.toLong() ?: 0
             val sizeKnown = rawSize is Number && size in 0..9_007_199_254_740_991L && rawSize.toString() == size.toString()
-            entries += RemoteFile(name, type, if (sizeKnown) size else 0, sizeKnown)
+            entries += RemoteFile(name, type, if (sizeKnown) size else 0, sizeKnown, if (phoneMedia) i else null)
         }
-        return entries.sortedWith(compareBy<RemoteFile> { !it.directory }.thenBy { it.name.lowercase() })
+        val duplicates = if (phoneMedia) entries.groupingBy { it.name }.eachCount().filterValues { it > 1 }.keys else emptySet()
+        return entries.map { if (it.name in duplicates) it.copy(ambiguousName = true) else it }
+            .sortedWith(compareBy<RemoteFile> { !it.directory }.thenBy { it.name.lowercase() })
     }
 
     /** Always escape; the receiver strips exactly one zero, including for zero or '{' payloads. */

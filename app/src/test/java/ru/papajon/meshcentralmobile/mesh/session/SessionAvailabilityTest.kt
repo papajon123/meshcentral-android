@@ -74,7 +74,7 @@ class SessionAvailabilityTest {
         val resolved = MeshControlParser.resolveRights(listOf(node), listOf(group), user, false, setOf("ugrp//a")).single()
         assertEquals(8, resolved.rights)
         val removed = MeshControlParser.resolveRights(listOf(resolved), emptyList(), user, false).single()
-        assertNull(removed.rights)
+        assertEquals(MeshRights.NONE, removed.rights)
         val direct = MeshControlParser.resolveRights(listOf(node.copy(rightsByUser = mapOf(user to 8))), emptyList(), user, false).single()
         assertEquals(8, direct.rights)
     }

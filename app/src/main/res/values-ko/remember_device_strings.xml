@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="remember_device_for_days">
+        <item quantity="other">이 기기를 %1$d일 동안 기억</item>
+    </plurals>
+    <string name="remember_device_until">이 기기는 %1$s까지 기억됩니다</string>
+    <string name="remember_device_not_remembered">이 기기는 기억되지 않았습니다</string>
+    <string name="remember_device_forget">이 기기 잊기</string>
+</resources>

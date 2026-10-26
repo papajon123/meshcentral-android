@@ -376,7 +376,7 @@ class LiveNavigationAcceptanceTest {
         stage = "prepare a pending download before Activity recreation"
         val originalFiles = requireNotNull(model.filesController)
         val selected = originalFiles.state.value.entries.single { it.name == "fixture-юникод.txt" }
-        assertTrue("Could not prepare a fixture download", originalFiles.prepareDownload(selected))
+        assertTrue("Could not prepare a fixture download", kotlinx.coroutines.runBlocking { originalFiles.prepareDownload(selected) })
         recreate()
         compose.waitUntil(10_000) { model.deviceTab == DeviceTab.Files && model.filesController?.state?.value?.connected == true }
         compose.runOnIdle {
@@ -387,7 +387,7 @@ class LiveNavigationAcceptanceTest {
         stage = "continue the pending download after Activity recreation"
         val destination = File.createTempFile("live-recreated-download-", ".bin", context.cacheDir)
         try {
-            originalFiles.downloadChosen(Uri.fromFile(destination))
+            kotlinx.coroutines.runBlocking { originalFiles.downloadChosen(Uri.fromFile(destination)) }
             compose.waitUntil(30_000) {
                 originalFiles.state.value.let { it.connected && !it.busy && it.message == UiText.resource(R.string.files_download_complete) }
             }

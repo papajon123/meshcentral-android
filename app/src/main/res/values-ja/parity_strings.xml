@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">要確認</string>
+    <string name="parity_security">Windows セキュリティ</string>
+    <string name="parity_security_cached">最後に報告された状態です。古い情報の可能性があります。</string>
+    <string name="parity_antivirus">ウイルス対策</string>
+    <string name="parity_updates">自動更新</string>
+    <string name="parity_firewall">ファイアウォール</string>
+    <string name="parity_enabled">有効</string>
+    <string name="parity_updated">最新の状態</string>
+    <string name="parity_unknown">不明</string>
+    <string name="parity_ok">正常</string>
+    <string name="parity_message">コンピューターのユーザーへのメッセージ</string>
+    <string name="parity_message_title">タイトル</string>
+    <string name="parity_message_confirm">このメッセージを送信しますか？</string>
+    <string name="parity_message_sent">送信しました。到達は確認されていません。</string>
+    <string name="parity_shortcuts">マイショートカット</string>
+    <string name="parity_remove_shortcut">%1$s を削除</string>
+    <string name="parity_add_shortcut">ショートカットを追加</string>
+    <string name="parity_suggestions">候補</string>
+    <string name="parity_shortcut_label">名前</string>
+    <string name="parity_shortcut_key">キー：%1$s</string>
+    <string name="parity_review">確認</string>
+    <string name="parity_save">保存</string>
+    <string name="parity_history">履歴</string>
+    <string name="parity_events">デバイスのイベント（最大 50 件）</string>
+    <string name="parity_power_history">電源の履歴</string>
+    <string name="parity_history_error">読み込めませんでした。更新して再試行してください。</string>
+    <string name="parity_history_empty">記録は報告されていません。</string>
+    <string name="parity_power_on">電源オン</string>
+    <string name="parity_hibernating">休止状態</string>
+    <string name="parity_power_off">電源オフ</string>
+    <string name="parity_yes">はい</string>
+    <string name="parity_no">いいえ</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="remember_device_for_days">
+        <item quantity="other">記住此裝置 %1$d 天</item>
+    </plurals>
+    <string name="remember_device_until">此裝置將被記住，直到 %1$s</string>
+    <string name="remember_device_not_remembered">尚未記住此裝置</string>
+    <string name="remember_device_forget">忘記此裝置</string>
+</resources>

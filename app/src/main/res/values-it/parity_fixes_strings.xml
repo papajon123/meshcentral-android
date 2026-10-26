@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">Avviso</string>
+    <string name="parity_fixes_server_rejected">Risposta del server: %1$s</string>
+    <string name="parity_fixes_output_truncated">L’output è stato troncato a 65.536 caratteri.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: media dalla misurazione precedente, comprese le misurazioni richieste da altre sessioni.</string>
+    <string name="parity_fixes_run_warning">Esegue un comando su questo dispositivo. Verificalo con attenzione. Tutti gli utenti con accesso a questo dispositivo possono vedere l’output del comando. Non includere segreti.</string>
+</resources>

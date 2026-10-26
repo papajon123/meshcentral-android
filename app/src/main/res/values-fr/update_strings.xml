@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">Mises à jour de l’application</string>
+    <string name="update_consent_title">Rechercher de nouvelles versions sur GitHub ?</string>
+    <string name="update_consent_body">L’application contacte api.github.com une fois par jour ; aucune de vos données n’est envoyée.</string>
+    <string name="update_privacy_detail">GitHub et son CDN voient votre adresse IP et les en-têtes HTTP.</string>
+    <string name="update_allow">Rechercher</string>
+    <string name="update_not_now">Pas maintenant</string>
+    <string name="update_never">Aucune vérification effectuée.</string>
+    <string name="update_current">Aucune version compatible plus récente.</string>
+    <string name="update_found">Une mise à jour a été trouvée.</string>
+    <string name="update_suppressed">Cette version a été reportée ou ignorée.</string>
+    <string name="update_network_error">Vérification impossible. Réessayez dans 24 heures.</string>
+    <string name="update_rate_limit">GitHub a limité les requêtes. Réessayez dans 24 heures.</string>
+    <string name="update_invalid_metadata">Impossible de vérifier les informations de version. Réessayez dans 24 heures.</string>
+    <string name="update_wrong_signer">Cette application porte une autre signature. Aucune mise à jour compatible ne peut être proposée.</string>
+    <string name="update_checking">Vérification…</string>
+    <string name="update_last_check">Dernière tentative : %1$s</string>
+    <string name="update_recently_checked">Vérifié il y a moins d’une minute. Réessayez dans un instant.</string>
+    <string name="update_check_now">Vérifier maintenant</string>
+    <string name="update_available">La version %1$s est disponible</string>
+    <string name="update_download">Télécharger</string>
+    <string name="update_later">Plus tard</string>
+    <string name="update_skip">Ignorer cette version</string>
+    <string name="update_browser_error">Aucun navigateur disponible. Installez ou activez un navigateur.</string>
+</resources>

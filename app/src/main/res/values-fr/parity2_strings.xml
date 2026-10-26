@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">Désinstaller l’agent</string>
+    <string name="parity2_remove">Supprimer l’appareil</string>
+    <string name="parity2_uninstall_warning">L’accès distant sera interrompu. La fiche de l’appareil restera. La réinstallation nécessite un accès à l’ordinateur.</string>
+    <string name="parity2_remove_warning">La fiche et l’historique de l’appareil seront supprimés. L’agent restera installé et pourra se réenregistrer.</string>
+    <string name="parity2_confirm_name">Saisissez le nom exact de l’appareil</string>
+    <string name="parity2_removal_pending">Demande envoyée. Vérification de la liste ; exécution non confirmée.</string>
+    <string name="parity2_removal_absent">L’appareil est absent de la liste actualisée. Cela peut résulter d’une suppression ou d’un changement d’accès.</string>
+    <string name="parity2_removal_disconnected">L’agent est déconnecté. La désinstallation n’est pas confirmée.</string>
+    <string name="parity2_removal_unknown">Résultat inconnu. Vérifiez l’appareil avant de réessayer.</string>
+    <string name="parity2_software">Logiciels installés</string>
+    <string name="parity2_software_hint">Lecture depuis un agent connecté. Jusqu’à 1000 logiciels ; les valeurs absentes restent inconnues.</string>
+    <string name="parity2_software_error">Aucune liste reçue. Vérifiez l’agent et les droits ; après expiration du délai, reconnectez-vous avant de réessayer.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">Carte mère</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">Fabricant</string>
+    <string name="parity2_bios_date">Date du micrologiciel</string>
+    <string name="parity2_mode">Mode</string>
+    <string name="parity2_spec">Spécification</string>
+    <string name="parity2_activated">Activé</string>
+    <string name="parity2_owned">Propriétaire défini</string>
+    <string name="parity2_last_boot">Dernier démarrage signalé</string>
+    <string name="parity2_uptime">Durée de fonctionnement estimée (h:mm:ss)</string>
+    <string name="parity2_metrics">Utilisation du processeur et de la mémoire</string>
+    <string name="parity2_sample_time">Mesure reçue : %1$s</string>
+    <string name="parity2_run">Exécuter une commande</string>
+    <string name="parity2_command">Commande</string>
+    <string name="parity2_run_warning">Exécution sous le compte de l’agent, généralement SYSTEM ou root. La commande peut modifier l’ordinateur et être journalisée par le serveur. Annulation et code de sortie indisponibles. Ne saisissez pas de secrets.</string>
+    <string name="parity2_run_uncertain">Résultat non confirmé. La commande peut encore s’exécuter. Vérifiez dans le terminal avant de recommencer.</string>
+    <string name="parity2_output">Sortie de la commande</string>
+    <string name="parity2_output_note">Jusqu’à 65536 caractères. La sortie ne prouve pas la réussite ; vérifiez le changement voulu.</string>
+    <string name="parity2_seven_days">7 derniers jours</string>
+    <string name="parity2_history_note">Historique signalé de l’alimentation et des connexions. Les lacunes sont inconnues, pas des arrêts. Jusqu’à 100 transitions récentes ci-dessous.</string>
+    <string name="parity2_favorites">Commandes favorites</string>
+    <string name="parity2_favorites_hint">Jusqu’à 20 par profil. Sélectionnez pour modifier le brouillon, puis insérez sans Entrée. Une seule ligne ; ne conservez pas de secrets.</string>
+    <string name="parity2_insert">Insérer sans Entrée</string>
+</resources>

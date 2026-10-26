@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">Tin nhắn, liên kết và quay số yêu cầu quyền Bảng điều khiển ngoài quyền Điều khiển từ xa.</string>
+    <string name="phone_url_format">Dùng http:// hoặc https:// viết thường. Không được dùng dấu cách và dấu ngoặc kép; hãy dùng mã hóa phần trăm.</string>
+    <string name="phone_files_choose_category">Chọn một danh mục hoặc thư mục của điện thoại trước khi tải lên.</string>
+    <string name="phone_files_ambiguous_name">Nhiều tệp phương tiện trùng tên này. Mở tệp từ thư mục của nó trong Sdcard để tải xuống hoặc xóa đúng tệp.</string>
+    <string name="phone_files_directory_too_large">Danh mục này có quá nhiều tệp để liệt kê. Mở một thư mục nhỏ hơn trong Sdcard.</string>
+</resources>

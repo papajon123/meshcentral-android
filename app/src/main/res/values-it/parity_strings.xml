@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">Richiede attenzione</string>
+    <string name="parity_security">Sicurezza di Windows</string>
+    <string name="parity_security_cached">Ultimo stato ricevuto; potrebbe non essere aggiornato.</string>
+    <string name="parity_antivirus">Antivirus</string>
+    <string name="parity_updates">Aggiornamenti automatici</string>
+    <string name="parity_firewall">Firewall</string>
+    <string name="parity_enabled">Attivo</string>
+    <string name="parity_updated">Aggiornato</string>
+    <string name="parity_unknown">Sconosciuto</string>
+    <string name="parity_ok">Regolare</string>
+    <string name="parity_message">Messaggio all’utente del computer</string>
+    <string name="parity_message_title">Titolo</string>
+    <string name="parity_message_confirm">Inviare questo messaggio?</string>
+    <string name="parity_message_sent">Inviato. La consegna non è confermata.</string>
+    <string name="parity_shortcuts">Le mie scorciatoie</string>
+    <string name="parity_remove_shortcut">Rimuovi %1$s</string>
+    <string name="parity_add_shortcut">Aggiungi scorciatoia</string>
+    <string name="parity_suggestions">Suggerimenti</string>
+    <string name="parity_shortcut_label">Nome</string>
+    <string name="parity_shortcut_key">Tasto: %1$s</string>
+    <string name="parity_review">Rivedi</string>
+    <string name="parity_save">Salva</string>
+    <string name="parity_history">Cronologia</string>
+    <string name="parity_events">Eventi del dispositivo (fino a 50)</string>
+    <string name="parity_power_history">Cronologia alimentazione</string>
+    <string name="parity_history_error">Caricamento non riuscito. Tocca Aggiorna per riprovare.</string>
+    <string name="parity_history_empty">Nessun dato ricevuto.</string>
+    <string name="parity_power_on">Acceso</string>
+    <string name="parity_hibernating">In ibernazione</string>
+    <string name="parity_power_off">Spento</string>
+    <string name="parity_yes">Sì</string>
+    <string name="parity_no">No</string>
+</resources>

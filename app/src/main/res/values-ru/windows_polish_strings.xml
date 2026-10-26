@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">Агент может повредить вывод Windows не в UTF-8 ещё до отправки. Для команд PowerShell выберите режим UTF-8: он задаёт UTF-8 для ввода и вывода консоли. В этом режиме нужен синтаксис PowerShell, а не cmd.exe. Программы с собственной кодировкой вывода могут работать иначе.</string>
+    <string name="windows_polish_default_shell">Оболочка команд по умолчанию (без изменений)</string>
+</resources>

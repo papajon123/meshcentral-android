@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Android 手機</string>
+    <string name="phone_view_only">手機代理程式僅分享螢幕，尚不支援遠端操控。拖曳可平移，雙指捏合可縮放。</string>
+    <string name="phone_unknown">未知</string>
+    <string name="phone_battery">電池：%1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">充電中</string>
+    <string name="phone_on_battery">使用電池供電</string>
+    <string name="phone_power_unknown">充電狀態未知</string>
+    <string name="phone_find">尋找手機並聯絡擁有者</string>
+    <string name="phone_vibrate">震動 5 秒</string>
+    <string name="phone_flash">開啟手電筒 10 秒</string>
+    <string name="phone_alert">傳送訊息至手機</string>
+    <string name="phone_toast">簡短通知</string>
+    <string name="phone_open_url">開啟連結</string>
+    <string name="phone_dial">開啟撥號畫面</string>
+    <string name="phone_actions_unavailable">手機操作需要代理程式連線且具備遠端控制權限。</string>
+    <string name="phone_message_title">標題</string>
+    <string name="phone_message_text">訊息</string>
+    <string name="phone_url">連結</string>
+    <string name="phone_number">電話號碼</string>
+    <string name="phone_message_hint">訊息最多 1000 個字元，標題最多 80 個。伺服器可能會記錄訊息。</string>
+    <string name="phone_url_hint">請輸入完整的 http 或 https 連結，不含空格或內嵌憑證。</string>
+    <string name="phone_dial_hint">僅允許數字、+、* 和 #，最多 40 個字元。由手機使用者發起通話。</string>
+    <string name="phone_quotes_hint">直雙引號將替換為彎引號，因為手機代理程式無法保留直雙引號。</string>
+    <string name="phone_confirm">將此命令傳送至所選手機？</string>
+    <string name="phone_send">傳送命令</string>
+    <string name="phone_review">檢查</string>
+    <string name="phone_edit">編輯</string>
+    <string name="phone_cancel">取消</string>
+    <string name="phone_command_sent">命令已傳送，尚未確認手機是否執行。</string>
+    <string name="phone_send_failed">命令未傳送。請檢查連線和遠端控制權限。</string>
+    <string name="phone_files_limits">手機代理程式不支援建立或重新命名資料夾和檔案。Android 可能要求在手機上授權。</string>
+</resources>

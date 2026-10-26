@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">No network. Waiting to reconnect…</string>
+    <string name="reliability_clearing_session">Removing saved sign-in and session…</string>
+    <string name="reliability_clear_failed">Could not finish clearing the session. Try again.</string>
+</resources>

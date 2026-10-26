@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">Das Serverzertifikat ist nicht vertrauenswürdig. Vergleichen Sie den Fingerabdruck mit dem Zertifikat auf dem Server, bevor Sie ihm vertrauen.</string>
+    <string name="tls_error_changed">Der Serverschlüssel hat sich geändert. Verbindung blockiert: Prüfen Sie den neuen Fingerabdruck mit der Serveradministration.</string>
+    <string name="tls_untrusted_title">Nicht vertrauenswürdiges Serverzertifikat</string>
+    <string name="tls_changed_title">Serverzertifikat geändert</string>
+    <string name="tls_fingerprint">SHA-256-Fingerabdruck des öffentlichen Schlüssels (SPKI)</string>
+    <string name="tls_previous_fingerprint">Bisher vertrauenswürdiger öffentlicher Schlüssel, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">Neuer öffentlicher Schlüssel, SHA-256 (SPKI)</string>
+    <string name="tls_subject">Inhaber: %1$s</string>
+    <string name="tls_validity">Gültig von %1$s bis %2$s</string>
+    <string name="tls_server">Server: %1$s</string>
+    <string name="tls_compare">Vergleichen Sie diesen Fingerabdruck über einen separaten, vertrauenswürdigen Kanal mit dem Zertifikat auf dem Server.</string>
+    <string name="tls_trust">Diesem Server vertrauen</string>
+    <string name="tls_replace">Fingerabdruck ersetzen…</string>
+    <string name="tls_replace_title">Vertrauenswürdigen Schlüssel ersetzen?</string>
+    <string name="tls_replace_warning">Ein geänderter Schlüssel kann bedeuten, dass sich jemand als Ihr Server ausgibt. Fahren Sie erst fort, nachdem Sie den neuen Fingerabdruck unabhängig geprüft haben. Dem bisherigen Schlüssel wird nicht mehr vertraut.</string>
+    <string name="tls_confirm_replace">Ersetzen bestätigen</string>
+    <string name="tls_pinned_key">Vertrauenswürdiger Serverschlüssel</string>
+    <string name="tls_forget">Vergessen</string>
+    <string name="tls_forget_title">Vertrauenswürdigen Schlüssel vergessen?</string>
+    <string name="tls_forget_warning">Die aktuelle Verbindung wird geschlossen. Sie müssen diesen Server erneut prüfen, wenn Android seinem Zertifikat nicht vertraut.</string>
+    <string name="tls_certificate_fingerprint">SHA-256 des Zertifikats — im Browser angezeigt</string>
+    <string name="tls_error_validity">Das Zertifikat ist abgelaufen oder noch nicht gültig. Prüfen Sie Datum und Uhrzeit des Telefons sowie die Gültigkeit des Serverzertifikats. Vertrauen umgeht diesen Fehler nicht.</string>
+    <string name="tls_error_chain">Das Zertifikat oder seine Kette weist eine ungültige Signatur, einen schwachen Schlüssel oder Algorithmus oder einen ungültigen Verwendungszweck bzw. ungültige Einschränkungen der Zertifizierungsstelle auf. Der Administrator muss das Zertifikat korrigieren; es kann nicht bestätigt werden.</string>
+    <string name="tls_error_hostname">Das Zertifikat passt nicht zur Serveradresse. Prüfen Sie die Adresse und lassen Sie die Namen im Zertifikat korrigieren.</string>
+    <string name="tls_hostname_warning">Warnung: Der Name im Zertifikat stimmt nicht mit der Serveradresse überein. Bestätigen Sie den Schlüssel erst nach einer unabhängigen Prüfung.</string>
+    <string name="tls_blocked_title">Serverzertifikat abgelehnt</string>
+    <string name="tls_verify_instructions">Die Administration kann den SPKI-Fingerabdruck mit dem folgenden Befehl berechnen. Bei direktem TLS verwenden Sie meshcentral-data/webserver-cert-public.crt, bei TLS am Reverse-Proxy dessen Zertifikat. Ersetzen Sie cert.pem durch diese Datei. Browser zeigen den separaten Zertifikat-Fingerabdruck.</string>
+    <string name="tls_independent_warning">Vergleichen Sie über einen unabhängigen, vertrauenswürdigen Kanal. Ein Fingerabdruck aus derselben ungeprüften Verbindung schützt nicht vor einem Angreifer dazwischen.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">Der Aussteller des Zertifikats bezeichnet sich selbst als MeshCentral-Root.</string>
+    <string name="tls_issuer_unknown">Das Zertifikat ist von einer unbekannten Zertifizierungsstelle signiert. Falls der Server ein öffentliches Zertifikat verwendet, ist die Kette möglicherweise unvollständig. Eine Korrektur am Server wird empfohlen.</string>
+</resources>

@@ -13,6 +13,9 @@ import ru.papajon.meshcentralmobile.localization.UiText
  * `**email**`, `**sms**` and `**msg**` ask the server to send a fresh code before answering.
  */
 object MeshAuth {
+    fun isVerificationCode(token: String?): Boolean = !token.isNullOrBlank() &&
+        token !in setOf(REQUEST_EMAIL_TOKEN, REQUEST_SMS_TOKEN, REQUEST_PUSH_TOKEN)
+
     fun headerValue(username: String, password: String, twoFactorToken: String? = null): String {
         val parts = ArrayList<String>(3)
         parts.add(base64(username))

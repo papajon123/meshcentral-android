@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s تم حذف المستند غير المكتمل.</string>
+    <string name="final_fixes_download_marked">%1$s أُضيفت اللاحقة .partial إلى المستند غير المكتمل. احذفه من تطبيق «الملفات» على Android قبل إعادة المحاولة.</string>
+    <string name="final_fixes_download_retained">%1$s تعذّر على Android حذف المستند غير المكتمل أو إضافة اللاحقة .partial إليه. لا تستخدمه؛ احذفه من تطبيق «الملفات» على Android.</string>
+    <string name="final_fixes_download_transport_failed">انقطع الاتصال أثناء التنزيل. افتح جلسة ملفات جديدة وأعد المحاولة.</string>
+    <string name="final_fixes_download_invalid">لا تتطابق البيانات التي تم تنزيلها مع الملف المتوقع. افتح جلسة ملفات جديدة وأعد المحاولة.</string>
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">การอัปเดตแอป</string>
+    <string name="update_consent_title">ตรวจสอบเวอร์ชันใหม่บน GitHub หรือไม่?</string>
+    <string name="update_consent_body">แอปจะติดต่อ api.github.com วันละครั้ง โดยไม่ส่งข้อมูลของคุณ</string>
+    <string name="update_privacy_detail">GitHub และ CDN ของบริการจะเห็นที่อยู่ IP และส่วนหัว HTTP ของคุณ</string>
+    <string name="update_allow">ตรวจสอบการอัปเดต</string>
+    <string name="update_not_now">ไม่ใช่ตอนนี้</string>
+    <string name="update_never">ยังไม่ได้ตรวจสอบ</string>
+    <string name="update_current">ไม่พบรุ่นใหม่ที่เข้ากันได้</string>
+    <string name="update_found">พบการอัปเดต</string>
+    <string name="update_suppressed">เลื่อนหรือข้ามรุ่นนี้แล้ว</string>
+    <string name="update_network_error">ตรวจสอบไม่ได้ โปรดลองอีกครั้งหลังจาก 24 ชั่วโมง</string>
+    <string name="update_rate_limit">GitHub จำกัดคำขอ โปรดลองอีกครั้งหลังจาก 24 ชั่วโมง</string>
+    <string name="update_invalid_metadata">ยืนยันข้อมูลรุ่นไม่ได้ โปรดลองอีกครั้งหลังจาก 24 ชั่วโมง</string>
+    <string name="update_wrong_signer">แอปรุ่นนี้มีลายเซ็นต่างกัน จึงไม่สามารถเสนอการอัปเดตที่เข้ากันได้</string>
+    <string name="update_checking">กำลังตรวจสอบ…</string>
+    <string name="update_last_check">พยายามครั้งล่าสุด: %1$s</string>
+    <string name="update_recently_checked">ตรวจสอบไปเมื่อไม่ถึงหนึ่งนาทีที่แล้ว โปรดลองอีกครั้งในอีกสักครู่</string>
+    <string name="update_check_now">ตรวจสอบตอนนี้</string>
+    <string name="update_available">มีเวอร์ชัน %1$s พร้อมให้ใช้งาน</string>
+    <string name="update_download">ดาวน์โหลด</string>
+    <string name="update_later">ภายหลัง</string>
+    <string name="update_skip">ข้ามเวอร์ชันนี้</string>
+    <string name="update_browser_error">ไม่มีเบราว์เซอร์ โปรดติดตั้งหรือเปิดใช้เบราว์เซอร์</string>
+</resources>

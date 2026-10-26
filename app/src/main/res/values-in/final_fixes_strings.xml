@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s Dokumen yang belum selesai telah dihapus.</string>
+    <string name="final_fixes_download_marked">%1$s Dokumen yang belum selesai telah diberi akhiran .partial. Hapus dokumen tersebut di aplikasi File Android sebelum mencoba lagi.</string>
+    <string name="final_fixes_download_retained">%1$s Android tidak dapat menghapus atau menambahkan akhiran .partial pada dokumen yang belum selesai. Jangan gunakan dokumen tersebut; hapus dokumen itu di aplikasi File Android.</string>
+    <string name="final_fixes_download_transport_failed">Koneksi terputus selama unduhan. Buka sesi file baru dan coba lagi.</string>
+    <string name="final_fixes_download_invalid">Data yang diunduh tidak cocok dengan file yang diharapkan. Buka sesi file baru dan coba lagi.</string>
+</resources>

@@ -8,6 +8,11 @@ object RemoteKeyCodeMapper {
             KeyEvent.KEYCODE_ESCAPE -> 27
             KeyEvent.KEYCODE_TAB -> 9
             KeyEvent.KEYCODE_ENTER -> 13
+            KeyEvent.KEYCODE_SPACE -> 32
+            KeyEvent.KEYCODE_MOVE_HOME -> 36
+            KeyEvent.KEYCODE_MOVE_END -> 35
+            KeyEvent.KEYCODE_PAGE_UP -> 33
+            KeyEvent.KEYCODE_PAGE_DOWN -> 34
             KeyEvent.KEYCODE_DEL -> 8
             KeyEvent.KEYCODE_FORWARD_DEL -> 46
             KeyEvent.KEYCODE_DPAD_LEFT -> 37

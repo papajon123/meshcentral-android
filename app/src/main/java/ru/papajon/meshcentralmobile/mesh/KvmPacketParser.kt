@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets
  * that field as a 24-bit value at offset 5, which is equivalent for every payload below 16 MiB;
  * this decoder reads the full 32-bit value written by `intToStr()` in `agent-desktop-0.0.2.js`.
  */
-class KvmFrameDecoder {
+class KvmFrameDecoder(private val paddedMessages: Boolean = false) {
     private var buffer: ByteArray = EMPTY
 
     /** Bytes waiting for the remainder of a fragmented command. */
@@ -29,6 +29,9 @@ class KvmFrameDecoder {
     /** Feeds raw WebSocket payload bytes and returns every complete command found. */
     fun append(data: ByteArray): List<KvmPacket> {
         if (data.isEmpty()) return emptyList()
+        // Android MeshTunnel sends a standalone zero as a keepalive, including at startup.
+        // It is not a KVM header. Preserve zero bytes inside an already fragmented command.
+        if (buffer.isEmpty() && data.size == 1 && data[0] == 0.toByte()) return emptyList()
         buffer = if (buffer.isEmpty()) data.copyOf() else buffer + data
 
         val packets = ArrayList<KvmPacket>(2)
@@ -61,7 +64,7 @@ class KvmFrameDecoder {
             if (buffer.size < total) return null
             command = buffer.u16(JUMBO_WRAPPER_SIZE)
             val frame = buffer.copyOfRange(JUMBO_WRAPPER_SIZE, total)
-            buffer = buffer.copyOfRange(total, buffer.size)
+            consume(total)
             return Frame(command = command, size = realSize, bytes = frame)
         }
 
@@ -71,8 +74,17 @@ class KvmFrameDecoder {
         }
         if (buffer.size < size) return null
         val frame = buffer.copyOfRange(0, size)
-        buffer = buffer.copyOfRange(size, buffer.size)
+        consume(size)
         return Frame(command = command, size = size, bytes = frame)
+    }
+
+    private fun consume(size: Int) {
+        // A WebSocket message carries one Agent command, optionally padded to an
+        // 8-byte boundary (agent-redir-ws-0.1.1.js). Padding contents are unspecified.
+        // Generic byte streams retain concatenated commands and partial headers.
+        val paddedSize = (size + 7) and -8
+        buffer = if (paddedMessages && buffer.size == paddedSize && buffer.size > size) EMPTY
+        else buffer.copyOfRange(size, buffer.size)
     }
 
     private data class Frame(val command: Int, val size: Int, val bytes: ByteArray)

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">Der Bedienungshilfen-Dienst für die Fernsteuerung ist auf dem Telefon ausgeschaltet</string>
+    <string name="phone_control_unsupported">Android auf diesem Telefon unterstützt keine Eingaben aus der Ferne</string>
+    <string name="phone_control_unknown">Der Agent meldet keine Unterstützung für Eingaben</string>
+    <string name="phone_control_no_permission">Ihre Berechtigungen erlauben nur die Anzeige</string>
+    <string name="phone_control_back">Zurück</string>
+    <string name="phone_control_home">Startseite</string>
+    <string name="phone_control_recents">Übersicht</string>
+    <string name="phone_control_notifications">Benachrichtigungen</string>
+    <string name="phone_control_quick_settings">Schnelleinstellungen</string>
+    <string name="phone_control_text">Text eingeben</string>
+    <string name="phone_control_text_hint">Der Text wird an das fokussierte Feld angehängt. In Passwortfeldern ist die Eingabe gesperrt.</string>
+    <string name="phone_control_consent_hint">Der Besitzer des Telefons muss die Steuerung genehmigen. Sperrbildschirm und PIN-Eingabe sind nicht verfügbar.</string>
+</resources>

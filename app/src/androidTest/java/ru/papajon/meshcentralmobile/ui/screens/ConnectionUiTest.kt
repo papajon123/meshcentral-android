@@ -85,7 +85,7 @@ class ConnectionUiTest {
                 LoginContent(
                     clientState = MeshClientState(twoFactorChallenge = TwoFactorChallenge()),
                     serverUrl = "https://server.example/", storedUsername = "test-user",
-                    onSubmitCode = { submitted = it },
+                    onSubmitCode = { code, _ -> submitted = code },
                 )
             }
         }

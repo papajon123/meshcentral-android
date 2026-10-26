@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">Dịch vụ trợ năng điều khiển từ xa đang tắt trên điện thoại</string>
+    <string name="phone_control_unsupported">Android trên điện thoại này không hỗ trợ nhập từ xa</string>
+    <string name="phone_control_unknown">Tác nhân không báo cáo hỗ trợ nhập</string>
+    <string name="phone_control_no_permission">Quyền của bạn chỉ cho phép xem</string>
+    <string name="phone_control_back">Quay lại</string>
+    <string name="phone_control_home">Màn hình chính</string>
+    <string name="phone_control_recents">Gần đây</string>
+    <string name="phone_control_notifications">Thông báo</string>
+    <string name="phone_control_quick_settings">Cài đặt nhanh</string>
+    <string name="phone_control_text">Nhập văn bản</string>
+    <string name="phone_control_text_hint">Văn bản được thêm vào cuối trường đang chọn. Không thể nhập trong trường mật khẩu.</string>
+    <string name="phone_control_consent_hint">Chủ sở hữu điện thoại phải chấp thuận điều khiển. Màn hình khóa và nhập PIN không khả dụng.</string>
+</resources>

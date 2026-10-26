@@ -31,12 +31,14 @@ fun ShareDestinationPanel(workspace: ConnectionWorkspace, profileName: String, d
     val state by controller.state.collectAsState()
     var target by remember(controller) { mutableStateOf<TransferTarget?>(null) }
     if (workspace.sharedFiles.isEmpty()) return
+    val phoneRoot = state.androidPhone && state.path.isEmpty()
     Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 8.dp)) {
         Text(stringResource(R.string.workspace_choose_folder, workspace.sharedFiles.size), style = MaterialTheme.typography.bodyMedium)
         Button(onClick = { target = TransferTarget(workspace.profileId, profileName, device.nodeId, device.name, state.path, controller) },
-            enabled = state.connected && !state.busy && !workspace.transfers.hasPending && state.confirmation == null) {
+            enabled = !phoneRoot && state.connected && !state.busy && !workspace.transfers.hasPending && state.confirmation == null) {
             Text(stringResource(R.string.workspace_send_here))
         }
+        if (phoneRoot) Text(stringResource(R.string.phone_files_choose_category), style = MaterialTheme.typography.bodySmall)
     }
     target?.let { destination ->
         AlertDialog(

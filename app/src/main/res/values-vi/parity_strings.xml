@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">Cần chú ý</string>
+    <string name="parity_security">Bảo mật Windows</string>
+    <string name="parity_security_cached">Trạng thái được báo cáo gần nhất; có thể đã cũ.</string>
+    <string name="parity_antivirus">Chống vi-rút</string>
+    <string name="parity_updates">Cập nhật tự động</string>
+    <string name="parity_firewall">Tường lửa</string>
+    <string name="parity_enabled">Đã bật</string>
+    <string name="parity_updated">Đã cập nhật</string>
+    <string name="parity_unknown">Không rõ</string>
+    <string name="parity_ok">Bình thường</string>
+    <string name="parity_message">Tin nhắn cho người dùng máy tính</string>
+    <string name="parity_message_title">Tiêu đề</string>
+    <string name="parity_message_confirm">Gửi tin nhắn này?</string>
+    <string name="parity_message_sent">Đã gửi. Chưa xác nhận đã nhận.</string>
+    <string name="parity_shortcuts">Phím tắt của tôi</string>
+    <string name="parity_remove_shortcut">Xóa %1$s</string>
+    <string name="parity_add_shortcut">Thêm phím tắt</string>
+    <string name="parity_suggestions">Gợi ý</string>
+    <string name="parity_shortcut_label">Tên</string>
+    <string name="parity_shortcut_key">Phím: %1$s</string>
+    <string name="parity_review">Xem lại</string>
+    <string name="parity_save">Lưu</string>
+    <string name="parity_history">Lịch sử</string>
+    <string name="parity_events">Sự kiện thiết bị (tối đa 50)</string>
+    <string name="parity_power_history">Lịch sử nguồn</string>
+    <string name="parity_history_error">Không thể tải. Nhấn Làm mới để thử lại.</string>
+    <string name="parity_history_empty">Không có bản ghi được báo cáo.</string>
+    <string name="parity_power_on">Đang bật</string>
+    <string name="parity_hibernating">Đang ngủ đông</string>
+    <string name="parity_power_off">Đã tắt</string>
+    <string name="parity_yes">Có</string>
+    <string name="parity_no">Không</string>
+</resources>

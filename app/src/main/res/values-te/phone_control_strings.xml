@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">ఫోన్‌లో రిమోట్ నియంత్రణ ప్రాప్యత సేవ ఆఫ్ చేయబడింది</string>
+    <string name="phone_control_unsupported">ఈ ఫోన్‌లోని Android రిమోట్ ఇన్‌పుట్‌ను మద్దతు ఇవ్వదు</string>
+    <string name="phone_control_unknown">ఏజెంట్ ఇన్‌పుట్ మద్దతును నివేదించడం లేదు</string>
+    <string name="phone_control_no_permission">మీ అనుమతులు చూడటానికి మాత్రమే</string>
+    <string name="phone_control_back">వెనుకకు</string>
+    <string name="phone_control_home">హోమ్</string>
+    <string name="phone_control_recents">ఇటీవలి</string>
+    <string name="phone_control_notifications">నోటిఫికేషన్‌లు</string>
+    <string name="phone_control_quick_settings">త్వరిత సెట్టింగ్‌లు</string>
+    <string name="phone_control_text">వచనాన్ని నమోదు చేయండి</string>
+    <string name="phone_control_text_hint">వచనం ఎంచుకున్న ఫీల్డ్ చివరికి జోడించబడుతుంది. పాస్‌వర్డ్ ఫీల్డ్‌లలో ఇన్‌పుట్ నిరోధించబడుతుంది.</string>
+    <string name="phone_control_consent_hint">ఫోన్ యజమాని నియంత్రణను ఆమోదించాలి. లాక్ స్క్రీన్ మరియు PIN ఇన్‌పుట్ అందుబాటులో లేవు.</string>
+</resources>

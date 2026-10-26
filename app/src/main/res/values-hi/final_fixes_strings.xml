@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s अधूरा दस्तावेज़ हटा दिया गया है।</string>
+    <string name="final_fixes_download_marked">%1$s अधूरे दस्तावेज़ में .partial जोड़ दिया गया है। फिर से कोशिश करने से पहले उसे Android के फ़ाइलें ऐप में हटाएँ।</string>
+    <string name="final_fixes_download_retained">%1$s Android अधूरे दस्तावेज़ को हटा या उस पर .partial नहीं लगा सका। इसका उपयोग न करें; इसे Android के फ़ाइलें ऐप में हटाएँ।</string>
+    <string name="final_fixes_download_transport_failed">डाउनलोड के दौरान कनेक्शन टूट गया। नया फ़ाइल सेशन खोलकर फिर से कोशिश करें।</string>
+    <string name="final_fixes_download_invalid">डाउनलोड किया गया डेटा अपेक्षित फ़ाइल से मेल नहीं खाता। नया फ़ाइल सेशन खोलकर फिर से कोशिश करें।</string>
+</resources>

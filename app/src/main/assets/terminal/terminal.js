@@ -10,6 +10,9 @@
   terminal.open(document.getElementById('terminal'));
   let enabled = false;
   let control = false;
+  // A form dialog's IME belongs to the dialog, not the remote shell. Resizing the PTY while
+  // editing a favorite lets the shell move its prompt between the insert and the next paint.
+  let inputDialog = false;
   // Consume OSC clipboard commands. No clipboard addon or network-capable link addon is loaded.
   terminal.parser.registerOscHandler(52, () => true);
   terminal.parser.registerOscHandler(8, () => true);
@@ -72,6 +75,7 @@
     }
   });
   const resize = () => {
+    if (inputDialog) return;
     if (!document.documentElement.clientWidth || !document.documentElement.clientHeight) return;
     fit.fit();
     // Bound cell allocation even on pathological display sizes.
@@ -97,6 +101,7 @@
     },
     enable: value => { enabled = value; terminal.options.disableStdin = !value; if (!value) control = false; },
     control: value => { control = value; },
+    inputDialog: value => { inputDialog = value; if (!value) resize(); },
     key: value => {
       if (terminal.modes.applicationCursorKeysMode && /^\x1b\[[ABCD]$/.test(value)) value = '\x1bO' + value.slice(-1);
       if (enabled) terminal.input(value, true);

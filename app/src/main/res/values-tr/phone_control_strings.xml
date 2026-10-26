@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">Telefonda uzaktan kontrol erişilebilirlik hizmeti kapalı</string>
+    <string name="phone_control_unsupported">Bu telefondaki Android uzaktan girişi desteklemiyor</string>
+    <string name="phone_control_unknown">Aracı giriş desteğini bildirmiyor</string>
+    <string name="phone_control_no_permission">İzinleriniz yalnızca görüntülemeye izin veriyor</string>
+    <string name="phone_control_back">Geri</string>
+    <string name="phone_control_home">Ana ekran</string>
+    <string name="phone_control_recents">Son kullanılanlar</string>
+    <string name="phone_control_notifications">Bildirimler</string>
+    <string name="phone_control_quick_settings">Hızlı ayarlar</string>
+    <string name="phone_control_text">Metin gir</string>
+    <string name="phone_control_text_hint">Metin seçili alanın sonuna eklenir. Parola alanlarında giriş engellenir.</string>
+    <string name="phone_control_consent_hint">Telefonun sahibi kontrolü onaylamalı. Kilit ekranı ve PIN girişi kullanılamıyor.</string>
+</resources>

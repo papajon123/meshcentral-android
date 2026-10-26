@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.notifications
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import android.content.Context
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -209,7 +211,7 @@ class NotificationController(
             val token = try {
                 NotificationRegistrationParser.parse(data, profile.serverUrl, user, now)
             } catch (_: NotificationProtocolException) {
-                data.optString("tokenId")
+                data.optText("tokenId")
                     .takeIf { it.matches(Regex("mcn_[0-9a-f]{16}")) }
                     ?.let { revokeQuietly(it) }
                 setError(NotificationError.PROTOCOL)

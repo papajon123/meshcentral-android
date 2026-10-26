@@ -30,20 +30,23 @@ object SystemInfoParser {
             val linux = hardware?.optJSONObject("linux")
             val identifiers = hardware?.optJSONObject("identifiers")
             val osInfo = windows?.optJSONObject("osinfo")
+            val mobile = hardware?.optJSONObject("mobile")
 
             DeviceSystemSnapshot(
                 deviceName = node?.text("rname") ?: node?.text("name"),
-                osName = osInfo?.text("Caption") ?: node?.text("osdesc"),
-                osVersion = osInfo?.text("Version") ?: osInfo?.text("BuildNumber"),
+                osName = osInfo?.text("Caption") ?: node?.text("osdesc") ?: mobile?.let { "Android" },
+                osVersion = osInfo?.text("Version") ?: osInfo?.text("BuildNumber") ?: mobile?.text("androidrelease"),
                 architecture = osInfo?.text("OSArchitecture") ?: linux?.text("arch"),
                 kernelRelease = linux?.text("kernel_release"),
                 cpu = identifiers?.text("cpu_name") ?: windowsCpuName(windows),
                 model = identifiers?.text("product_name")
+                    ?: mobile?.text("model")
                     ?: identifiers?.text("board_name")
                     ?: linux?.text("board_name"),
                 memoryModules = memoryModules(windows, linux),
                 disks = disks(identifiers),
                 networkAddresses = networkAddresses(networkInfo),
+                hardwareDetails = HardwareDetails.parse(systemInfo),
             )
         } catch (_: Exception) {
             DeviceSystemSnapshot()

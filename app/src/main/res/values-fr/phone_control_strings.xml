@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">Le service d’accessibilité de contrôle à distance est désactivé sur le téléphone</string>
+    <string name="phone_control_unsupported">Android sur ce téléphone ne prend pas en charge la saisie à distance</string>
+    <string name="phone_control_unknown">L’agent ne signale pas la prise en charge de la saisie</string>
+    <string name="phone_control_no_permission">Vos autorisations permettent uniquement la consultation</string>
+    <string name="phone_control_back">Retour</string>
+    <string name="phone_control_home">Accueil</string>
+    <string name="phone_control_recents">Récents</string>
+    <string name="phone_control_notifications">Notifications</string>
+    <string name="phone_control_quick_settings">Paramètres rapides</string>
+    <string name="phone_control_text">Saisir du texte</string>
+    <string name="phone_control_text_hint">Le texte est ajouté à la fin du champ sélectionné. La saisie est bloquée dans les champs de mot de passe.</string>
+    <string name="phone_control_consent_hint">Le propriétaire du téléphone doit approuver le contrôle. L’écran de verrouillage et la saisie du PIN ne sont pas disponibles.</string>
+</resources>

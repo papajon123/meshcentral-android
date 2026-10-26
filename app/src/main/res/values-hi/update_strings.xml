@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">ऐप अपडेट</string>
+    <string name="update_consent_title">GitHub पर नए संस्करणों की जाँच करें?</string>
+    <string name="update_consent_body">ऐप दिन में एक बार api.github.com से संपर्क करता है; आपका कोई डेटा नहीं भेजा जाता।</string>
+    <string name="update_privacy_detail">GitHub और उसका CDN आपका IP पता और HTTP हेडर देख सकते हैं।</string>
+    <string name="update_allow">अपडेट जाँचें</string>
+    <string name="update_not_now">अभी नहीं</string>
+    <string name="update_never">अभी तक जाँच नहीं की गई।</string>
+    <string name="update_current">कोई नया संगत संस्करण नहीं मिला।</string>
+    <string name="update_found">अपडेट मिला है।</string>
+    <string name="update_suppressed">इस संस्करण को टाल दिया गया है या छोड़ दिया गया है।</string>
+    <string name="update_network_error">जाँच नहीं हो सकी। 24 घंटे बाद फिर कोशिश करें।</string>
+    <string name="update_rate_limit">GitHub ने अनुरोध सीमित कर दिए हैं। 24 घंटे बाद फिर कोशिश करें।</string>
+    <string name="update_invalid_metadata">संस्करण की जानकारी सत्यापित नहीं हो सकी। 24 घंटे बाद फिर कोशिश करें।</string>
+    <string name="update_wrong_signer">इस बिल्ड का हस्ताक्षर अलग है। संगत अपडेट उपलब्ध नहीं कराया जा सकता।</string>
+    <string name="update_checking">जाँच हो रही है…</string>
+    <string name="update_last_check">पिछला प्रयास: %1$s</string>
+    <string name="update_recently_checked">एक मिनट से कम समय पहले जाँच की गई। थोड़ी देर बाद फिर से कोशिश करें।</string>
+    <string name="update_check_now">अभी जाँचें</string>
+    <string name="update_available">संस्करण %1$s उपलब्ध है</string>
+    <string name="update_download">डाउनलोड करें</string>
+    <string name="update_later">बाद में</string>
+    <string name="update_skip">यह संस्करण छोड़ें</string>
+    <string name="update_browser_error">कोई ब्राउज़र उपलब्ध नहीं है। ब्राउज़र इंस्टॉल या चालू करें।</string>
+</resources>

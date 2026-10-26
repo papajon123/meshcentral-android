@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s Tài liệu chưa hoàn tất đã bị xóa.</string>
+    <string name="final_fixes_download_marked">%1$s Tài liệu chưa hoàn tất đã được thêm hậu tố .partial. Hãy xóa tài liệu đó trong ứng dụng Tệp trên Android trước khi thử lại.</string>
+    <string name="final_fixes_download_retained">%1$s Android không thể xóa hoặc thêm hậu tố .partial cho tài liệu chưa hoàn tất. Không sử dụng tài liệu đó; hãy xóa nó trong ứng dụng Tệp trên Android.</string>
+    <string name="final_fixes_download_transport_failed">Kết nối bị ngắt trong khi tải xuống. Hãy mở phiên tệp mới và thử lại.</string>
+    <string name="final_fixes_download_invalid">Dữ liệu đã tải xuống không khớp với tệp mong đợi. Hãy mở phiên tệp mới và thử lại.</string>
+</resources>

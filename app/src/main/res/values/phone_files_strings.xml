@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">Messages, links and dialing require Console permission in addition to Remote Control.</string>
+    <string name="phone_url_format">Use http:// or https:// in lowercase. Spaces and double quotes are not allowed; use percent encoding.</string>
+    <string name="phone_files_choose_category">Choose a phone category or folder before uploading.</string>
+    <string name="phone_files_ambiguous_name">Several media files share this name. Open the file from its folder in Sdcard to download or delete the correct one.</string>
+    <string name="phone_files_directory_too_large">This category contains too many files to list. Open a smaller folder in Sdcard.</string>
+</resources>

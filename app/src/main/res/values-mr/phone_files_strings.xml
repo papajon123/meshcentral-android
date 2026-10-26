@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">संदेश, दुवे आणि नंबर डायल करण्यासाठी दूरस्थ नियंत्रणाव्यतिरिक्त कन्सोल परवानगीही आवश्यक आहे.</string>
+    <string name="phone_url_format">http:// किंवा https:// लहान अक्षरांत वापरा. स्पेस आणि दुहेरी अवतरणचिन्हांना परवानगी नाही; टक्केवारी एन्कोडिंग वापरा.</string>
+    <string name="phone_files_choose_category">अपलोड करण्यापूर्वी फोनची श्रेणी किंवा फोल्डर निवडा.</string>
+    <string name="phone_files_ambiguous_name">अनेक मीडिया फाइलींचे नाव सारखे आहे. योग्य फाइल डाउनलोड किंवा हटवण्यासाठी ती Sdcard मधील तिच्या फोल्डरमधून उघडा.</string>
+    <string name="phone_files_directory_too_large">या श्रेणीत सूचीबद्ध करण्यासाठी खूप जास्त फाइल्स आहेत. Sdcard मध्ये लहान फोल्डर उघडा.</string>
+</resources>

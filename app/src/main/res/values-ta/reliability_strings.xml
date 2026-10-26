@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">நெட்வொர்க் இல்லை. மீண்டும் இணைவதற்காகக் காத்திருக்கிறது…</string>
+    <string name="reliability_clearing_session">சேமிக்கப்பட்ட உள்நுழைவு மற்றும் அமர்வு அகற்றப்படுகிறது…</string>
+    <string name="reliability_clear_failed">அமர்வை அழிப்பதை முடிக்க முடியவில்லை. மீண்டும் முயலவும்.</string>
+</resources>

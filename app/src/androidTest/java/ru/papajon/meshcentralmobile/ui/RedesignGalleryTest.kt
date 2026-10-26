@@ -335,7 +335,7 @@ class RedesignGalleryTest {
                                 clientState = loginState,
                                 serverUrl = DEMO_SERVER,
                                 onLogin = { _, _, _ -> },
-                                onSubmitCode = {},
+                                onSubmitCode = { _, _ -> },
                                 onStoredLogin = {},
                                 onRequestCode = {},
                                 onEditServer = {},
@@ -357,9 +357,7 @@ class RedesignGalleryTest {
                                 onPinSaved = {},
                                 onPinCleared = {},
                                 onLockNow = {},
-                                onCredentialsCleared = {},
-                                onMeshSessionCleared = {},
-                                onWebViewSessionCleared = {},
+                                onClearSession = {},
                                 modifier = insetModifier,
                             )
 

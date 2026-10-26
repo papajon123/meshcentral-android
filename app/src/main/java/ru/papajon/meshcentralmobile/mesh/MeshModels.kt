@@ -28,6 +28,11 @@ object MeshRights {
     const val NO_TERMINAL = 512
     const val NO_FILES = 1024
     const val DESKTOP_LIMITED_INPUT = 4096
+    const val CHAT_NOTIFY = 16384
+    const val UNINSTALL = 32768
+    const val DEVICE_DETAILS = 1048576
+    const val NO_SOFTWARE = 8388608
+    const val RESET_OFF = 262144
     const val NO_DESKTOP = 65536
     const val REMOTE_COMMAND = 0x20000
 
@@ -70,8 +75,15 @@ data class MeshDevice(
     /** Effective direct node grants, independent of the group grant. No credentials are retained. */
     val rightsByUser: Map<String, Int> = emptyMap(),
     val relayNodeId: String? = null,
-    /** False for an omitted conn field; never turn missing metadata into a known offline state. */
+    /** A nodes snapshot knows offline even without conn; partial changenode does not. */
     val connectivityKnown: Boolean = true,
+    val battery: PhoneBattery? = null,
+    /** Distinguishes an absent sessions field in changenode from an explicit empty sessions object. */
+    val sessionsKnown: Boolean = false,
+    val windowsSecurity: WindowsSecurity = WindowsSecurity(),
+    val lastBootMillis: Long? = null,
+    val lastBootKnown: Boolean = false,
+    val remoteInput: PhoneRemoteInput = PhoneRemoteInput.Unknown,
 ) {
     fun sessionAvailability(protocol: RelayProtocol, serverCapabilities: MeshServerCapabilities = MeshServerCapabilities()): SessionAvailability =
         availabilityFor(this, protocol, serverCapabilities)
@@ -82,6 +94,27 @@ data class MeshDevice(
     val online: Boolean get() = conn > 0
 
     val isMeshAgent: Boolean get() = agentId != null
+
+    val isAndroidAgent: Boolean get() = agentId == 14
+
+    val isWindows: Boolean get() = osDescription.contains("Windows", ignoreCase = true) ||
+        (osDescription.isBlank() && agentId in setOf(1, 2, 3, 4, 21, 22, 34, 42, 43, 10003, 10004))
+
+    // agenttypes.js 1.3.1; exclude legacy macOS/Android/OpenBSD entries even where platform says linux.
+    val isLinux: Boolean get() = osDescription.contains("Linux", ignoreCase = true) ||
+        agentId in setOf(5, 6, 7, 8, 9, 10, 13, 15, 18, 19, 20, 24, 25, 26, 27, 28, 32, 33, 35, 36, 40, 41, 45)
+
+    val supportsRemoteInput: Boolean get() = !isAndroidAgent || remoteInput == PhoneRemoteInput.Enabled
+
+    /** The phone agent rejects restricted/unknown grants even when capability is enabled. */
+    val phoneInputAllowed: Boolean
+        get() {
+            if (!isAndroidAgent || !connectivityKnown || conn and 1 == 0 || !supportsRemoteInput) return false
+            val value = rights ?: return false
+            if (value == MeshRights.FULL) return true
+            return value >= 0 && value and MeshRights.REMOTE_CONTROL != 0 &&
+                value and (MeshRights.REMOTE_VIEW or MeshRights.DESKTOP_LIMITED_INPUT or MeshRights.NO_DESKTOP) == 0
+        }
 
     /** 256 = view-only, unless the account also holds remote control (8) or full rights. */
     val viewOnly: Boolean
@@ -114,7 +147,8 @@ data class MeshDevice(
 
     /** View-only sessions still open a desktop, but the client must not send input. */
     val inputAllowed: Boolean
-        get() = canOpenNativeDesktop && !viewOnly
+        get() = if (isAndroidAgent) canOpenNativeDesktop && phoneInputAllowed
+            else canOpenNativeDesktop && !viewOnly && supportsRemoteInput
 
     val statusLabel: UiText
         get() = when {
@@ -143,6 +177,7 @@ enum class DesktopCapability(@StringRes private val labelRes: Int) {
 }
 
 data class TwoFactorChallenge(
+    val twoFactorCookieDays: Int = 30,
     val email: Boolean = false,
     val sms: Boolean = false,
     val push: Boolean = false,
@@ -176,6 +211,7 @@ data class MeshServerCapabilities(
     val consent: Int? = null,
     val linuxShell: String? = null,
     val domainSuffix: String? = null,
+    val manageAllDeviceGroups: Boolean = false,
 ) {
     val sshEnabled: Boolean? get() = features2?.let { it and 0x200L != 0L }
     val sftpEnabled: Boolean? get() = features2?.let { it and 0x200L != 0L && it and 0x800000L == 0L }
@@ -192,6 +228,8 @@ data class MeshClientState(
     val devices: List<MeshDevice> = emptyList(),
     val userId: String? = null,
     val twoFactorChallenge: TwoFactorChallenge? = null,
+    val rememberedDeviceExpiresAt: Long? = null,
+    val certificateFailure: ru.papajon.meshcentralmobile.mesh.tls.ServerCertificateFailure? = null,
     val socketConnected: Boolean = false,
     val requiresSignIn: Boolean = true,
     /** False until a fresh nodes snapshot arrives after reconnecting. */
@@ -255,6 +293,8 @@ data class RemoteDesktopState(
     val inputEnabled: Boolean
         get() = connectionState == ConnectionState.Connected &&
             handshakeComplete &&
+            device?.supportsRemoteInput != false &&
+            (device?.isAndroidAgent != true || device.phoneInputAllowed) &&
             !viewOnly &&
             !inputLocked
 
@@ -275,10 +315,14 @@ data class RemoteDesktopState(
 /** Events emitted by the control channel parser. */
 sealed interface MeshControlEvent {
     data class ServerInfo(val name: String?, val domain: String?, val capabilities: MeshServerCapabilities = MeshServerCapabilities()) : MeshControlEvent
-    data class UserInfo(val userId: String?, val name: String?, val siteAdmin: Boolean, val userGroupIds: Set<String> = emptySet()) : MeshControlEvent
+    data class UserInfo(val userId: String?, val name: String?, val siteAdmin: Boolean,
+        val userGroupIds: Set<String> = emptySet(), val removeRights: Int? = null) : MeshControlEvent
     data class Meshes(val groups: List<MeshGroup>) : MeshControlEvent
     data class Nodes(val devices: List<MeshDevice>) : MeshControlEvent
     data class AuthCookie(val cookie: String?, val relayCookie: String?) : MeshControlEvent
+    class TwoFactorCookie(val cookie: String?) : MeshControlEvent {
+        override fun toString(): String = "TwoFactorCookie(redacted)"
+    }
     data class NodeUpdated(val event: MeshNodeEvent) : MeshControlEvent
     data class ClipMessage(
         val type: String,
@@ -300,6 +344,7 @@ sealed interface MeshControlEvent {
 
 /** Server pushed node events (`{action:'event', event:{action:...}}`). */
 sealed interface MeshNodeEvent {
+    data class DeviceSessions(val nodeId: String, val battery: PhoneBattery?) : MeshNodeEvent
     data class NodeConnected(val nodeId: String, val conn: Int, val pwr: Int) : MeshNodeEvent
     data class NodeChanged(val device: MeshDevice) : MeshNodeEvent
     data class NodeAdded(val device: MeshDevice) : MeshNodeEvent

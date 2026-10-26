@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">నెట్‌వర్క్ లేదు. తిరిగి కనెక్ట్ కావడానికి వేచి ఉంది…</string>
+    <string name="reliability_clearing_session">సేవ్ చేసిన సైన్ ఇన్ మరియు సెషన్ తీసివేయబడుతోంది…</string>
+    <string name="reliability_clear_failed">సెషన్‌ను క్లియర్ చేయడం పూర్తి చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.</string>
+</resources>

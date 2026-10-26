@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">خدمة إمكانية الوصول للتحكم عن بُعد معطّلة على الهاتف</string>
+    <string name="phone_control_unsupported">Android على هذا الهاتف لا يدعم الإدخال عن بُعد</string>
+    <string name="phone_control_unknown">الوكيل لا يبلغ عن دعم الإدخال</string>
+    <string name="phone_control_no_permission">أذوناتك تسمح بالعرض فقط</string>
+    <string name="phone_control_back">رجوع</string>
+    <string name="phone_control_home">الرئيسية</string>
+    <string name="phone_control_recents">التطبيقات الحديثة</string>
+    <string name="phone_control_notifications">الإشعارات</string>
+    <string name="phone_control_quick_settings">الإعدادات السريعة</string>
+    <string name="phone_control_text">إدخال نص</string>
+    <string name="phone_control_text_hint">يُضاف النص إلى نهاية الحقل المحدد. الإدخال محظور في حقول كلمات المرور.</string>
+    <string name="phone_control_consent_hint">يجب أن يوافق مالك الهاتف على التحكم. شاشة القفل وإدخال PIN غير متاحين.</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">บริการการช่วยการเข้าถึงสำหรับการควบคุมระยะไกลถูกปิดอยู่บนโทรศัพท์</string>
+    <string name="phone_control_unsupported">Android บนโทรศัพท์นี้ไม่รองรับการป้อนข้อมูลระยะไกล</string>
+    <string name="phone_control_unknown">เอเจนต์ไม่ได้รายงานการรองรับการป้อนข้อมูล</string>
+    <string name="phone_control_no_permission">สิทธิ์ของคุณอนุญาตให้ดูเท่านั้น</string>
+    <string name="phone_control_back">ย้อนกลับ</string>
+    <string name="phone_control_home">หน้าหลัก</string>
+    <string name="phone_control_recents">ล่าสุด</string>
+    <string name="phone_control_notifications">การแจ้งเตือน</string>
+    <string name="phone_control_quick_settings">การตั้งค่าด่วน</string>
+    <string name="phone_control_text">ป้อนข้อความ</string>
+    <string name="phone_control_text_hint">ข้อความจะถูกต่อท้ายช่องที่เลือกไว้ การป้อนข้อมูลถูกบล็อกในช่องรหัสผ่าน</string>
+    <string name="phone_control_consent_hint">เจ้าของโทรศัพท์ต้องอนุมัติการควบคุม หน้าจอล็อกและการป้อน PIN ใช้งานไม่ได้</string>
+</resources>

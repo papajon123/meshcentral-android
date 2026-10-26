@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -32,6 +33,7 @@ import androidx.compose.material.icons.outlined.VerifiedUser
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -50,8 +52,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
@@ -66,6 +71,7 @@ import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
 import ru.papajon.meshcentralmobile.mesh.MeshClientState
 import ru.papajon.meshcentralmobile.mesh.TwoFactorChallenge
 import ru.papajon.meshcentralmobile.mesh.TwoFactorChannel
+import ru.papajon.meshcentralmobile.mesh.tls.ServerCertificateFailure
 import ru.papajon.meshcentralmobile.model.ConnectionState
 import ru.papajon.meshcentralmobile.security.SecureVault
 import ru.papajon.meshcentralmobile.ui.components.IconBadge
@@ -85,18 +91,31 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     onContinueWithoutSignIn: (() -> Unit)? = null,
     onEditServer: () -> Unit = {},
+    confirmingCertificateReplacement: Boolean = false,
+    onTrustCertificate: (ServerCertificateFailure) -> Unit = {},
+    onReplaceCertificate: (ServerCertificateFailure) -> Unit = {},
+    onDismissCertificate: () -> Unit = meshClient::dismissCertificateFailure,
 ) {
     val storedCredentials = remember(serverUrl) { secureVault.getCredentials(serverUrl) }
     val clientState by meshClient.clientState.collectAsState()
     LoginContent(
         clientState = clientState, serverUrl = serverUrl, storedUsername = storedCredentials?.username,
         onLogin = { user, password, token -> meshClient.login(serverUrl, user, password, token) },
-        onSubmitCode = meshClient::submitTwoFactorCode,
+        onSubmitCode = { code, rememberDevice -> meshClient.submitTwoFactorCode(code, rememberDevice) },
         onStoredLogin = { meshClient.loginWithStoredCredentials(serverUrl) },
         onRequestCode = meshClient::requestTwoFactorCode,
         onContinueWithoutSignIn = onContinueWithoutSignIn,
         onEditServer = onEditServer, modifier = modifier,
     )
+    clientState.certificateFailure?.let { failure ->
+        ServerCertificateDialog(
+            failure = failure,
+            confirmingReplacement = confirmingCertificateReplacement,
+            onTrust = { onTrustCertificate(failure) },
+            onRequestReplacement = { onReplaceCertificate(failure) },
+            onDismiss = onDismissCertificate,
+        )
+    }
 }
 
 @Composable
@@ -105,7 +124,7 @@ internal fun LoginContent(
     serverUrl: String,
     storedUsername: String? = null,
     onLogin: (String, String, String?) -> Unit = { _, _, _ -> },
-    onSubmitCode: (String) -> Unit = {},
+    onSubmitCode: (String, Boolean) -> Unit = { _, _ -> },
     onStoredLogin: () -> Unit = {},
     onRequestCode: (TwoFactorChannel) -> Unit = {},
     onContinueWithoutSignIn: (() -> Unit)? = null,
@@ -117,10 +136,12 @@ internal fun LoginContent(
     var password by remember(serverUrl) { mutableStateOf("") }
     var token by remember(serverUrl) { mutableStateOf("") }
     var passwordVisible by rememberSaveable(serverUrl) { mutableStateOf(false) }
+    var rememberDevice by rememberSaveable(serverUrl, storedUsername) { mutableStateOf(true) }
 
     val connecting = clientState.connectionState in setOf(ConnectionState.Connecting, ConnectionState.Reconnecting)
     val challenge = clientState.twoFactorChallenge
     val error = clientState.lastError
+    val connectionMessage = clientState.message
     val spacing = MeshTheme.spacing
 
     BoxWithConstraints(
@@ -163,7 +184,9 @@ internal fun LoginContent(
             ServerIdentityCard(serverUrl = serverUrl, onEditServer = onEditServer)
 
             // A single error surface: no second decorative pill repeating the same state.
-            if (error != null) {
+            if (connecting && connectionMessage != null) {
+                Text(text = connectionMessage.asString(), style = MaterialTheme.typography.bodyMedium)
+            } else if (error != null) {
                 LoginErrorCard(message = error.asString())
             } else if (clientState.connectionState == ConnectionState.Failed) {
                 LoginErrorCard(message = stringResource(R.string.login_status_failed))
@@ -185,12 +208,15 @@ internal fun LoginContent(
                     challenge = challenge,
                     onTokenChange = { token = it },
                     onRequestCode = onRequestCode,
+                    rememberDevice = rememberDevice,
+                    onRememberDeviceChange = { rememberDevice = it },
                 )
             }
 
             Button(
                 onClick = {
-                    if (challenge != null) onSubmitCode(token) else onLogin(username, password, null)
+                    if (challenge != null) onSubmitCode(token, rememberDevice && challenge.twoFactorCookieDays > 0)
+                    else onLogin(username, password, null)
                     password = ""
                     token = ""
                 },
@@ -406,6 +432,8 @@ private fun TwoFactorGroup(
     challenge: TwoFactorChallenge,
     onTokenChange: (String) -> Unit,
     onRequestCode: (TwoFactorChannel) -> Unit,
+    rememberDevice: Boolean,
+    onRememberDeviceChange: (Boolean) -> Unit,
 ) {
     val spacing = MeshTheme.spacing
     Surface(
@@ -445,7 +473,22 @@ private fun TwoFactorGroup(
                     keyboardType = KeyboardType.NumberPassword,
                     imeAction = ImeAction.Done,
                 ),
+                visualTransformation = PasswordVisualTransformation(),
             )
+
+            if (challenge.twoFactorCookieDays > 0) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 48.dp)
+                        .testTag("remember-device-checkbox")
+                        .toggleable(value = rememberDevice, role = Role.Checkbox, onValueChange = onRememberDeviceChange),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(spacing.sm),
+                ) {
+                    Checkbox(checked = rememberDevice, onCheckedChange = null)
+                    Text(pluralStringResource(R.plurals.remember_device_for_days, challenge.twoFactorCookieDays, challenge.twoFactorCookieDays),
+                        style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                }
+            }
 
             if (challenge.email || challenge.sms || challenge.push) {
                 Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {

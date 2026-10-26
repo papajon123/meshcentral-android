@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">चेतावनी</string>
+    <string name="parity_fixes_server_rejected">सर्वर प्रतिक्रिया: %1$s</string>
+    <string name="parity_fixes_output_truncated">आउटपुट 65,536 अक्षरों तक छोटा कर दिया गया।</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: पिछले माप के बाद से औसत, जिसमें अन्य सेशन के अनुरोध किए गए माप भी शामिल हैं।</string>
+    <string name="parity_fixes_run_warning">इस डिवाइस पर कमांड चलाया जाता है। इसे ध्यान से जाँचें। इस डिवाइस तक पहुँच वाले सभी उपयोगकर्ता कमांड का आउटपुट देख सकते हैं। गोपनीय जानकारी शामिल न करें।</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">ต้องตรวจสอบ</string>
+    <string name="parity_security">ความปลอดภัยของ Windows</string>
+    <string name="parity_security_cached">สถานะที่รายงานล่าสุด อาจเป็นข้อมูลเก่า</string>
+    <string name="parity_antivirus">โปรแกรมป้องกันไวรัส</string>
+    <string name="parity_updates">การอัปเดตอัตโนมัติ</string>
+    <string name="parity_firewall">ไฟร์วอลล์</string>
+    <string name="parity_enabled">เปิดใช้งาน</string>
+    <string name="parity_updated">เป็นปัจจุบัน</string>
+    <string name="parity_unknown">ไม่ทราบ</string>
+    <string name="parity_ok">ปกติ</string>
+    <string name="parity_message">ข้อความถึงผู้ใช้คอมพิวเตอร์</string>
+    <string name="parity_message_title">หัวข้อ</string>
+    <string name="parity_message_confirm">ส่งข้อความนี้หรือไม่?</string>
+    <string name="parity_message_sent">ส่งแล้ว ยังไม่ได้ยืนยันการรับ</string>
+    <string name="parity_shortcuts">ปุ่มลัดของฉัน</string>
+    <string name="parity_remove_shortcut">ลบ %1$s</string>
+    <string name="parity_add_shortcut">เพิ่มปุ่มลัด</string>
+    <string name="parity_suggestions">คำแนะนำ</string>
+    <string name="parity_shortcut_label">ชื่อ</string>
+    <string name="parity_shortcut_key">ปุ่ม: %1$s</string>
+    <string name="parity_review">ตรวจสอบ</string>
+    <string name="parity_save">บันทึก</string>
+    <string name="parity_history">ประวัติ</string>
+    <string name="parity_events">เหตุการณ์ของอุปกรณ์ (สูงสุด 50 รายการ)</string>
+    <string name="parity_power_history">ประวัติสถานะพลังงาน</string>
+    <string name="parity_history_error">โหลดไม่ได้ แตะรีเฟรชเพื่อลองอีกครั้ง</string>
+    <string name="parity_history_empty">ไม่มีบันทึกที่รายงาน</string>
+    <string name="parity_power_on">เปิดอยู่</string>
+    <string name="parity_hibernating">ไฮเบอร์เนต</string>
+    <string name="parity_power_off">ปิดอยู่</string>
+    <string name="parity_yes">ใช่</string>
+    <string name="parity_no">ไม่ใช่</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Android telefon</string>
+    <string name="phone_view_only">Telefon aracısı yalnızca ekranı paylaşır. Uzaktan giriş henüz kullanılamıyor. Kaydırmak için sürükleyin, yakınlaştırmak için iki parmağınızı kullanın.</string>
+    <string name="phone_unknown">Bilinmiyor</string>
+    <string name="phone_battery">Pil: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">Şarj oluyor</string>
+    <string name="phone_on_battery">Pil kullanılıyor</string>
+    <string name="phone_power_unknown">Şarj durumu bilinmiyor</string>
+    <string name="phone_find">Telefonu bul ve sahibiyle iletişim kur</string>
+    <string name="phone_vibrate">5 saniye titreştir</string>
+    <string name="phone_flash">El fenerini 10 saniye aç</string>
+    <string name="phone_alert">Telefona mesaj</string>
+    <string name="phone_toast">Kısa bildirim</string>
+    <string name="phone_open_url">Bağlantıyı aç</string>
+    <string name="phone_dial">Numara çevirme ekranını aç</string>
+    <string name="phone_actions_unavailable">Telefon işlemleri için çevrimiçi aracı ve uzaktan kontrol izni gerekir.</string>
+    <string name="phone_message_title">Başlık</string>
+    <string name="phone_message_text">Mesaj</string>
+    <string name="phone_url">Bağlantı</string>
+    <string name="phone_number">Telefon numarası</string>
+    <string name="phone_message_hint">Mesaj en fazla 1000, başlık 80 karakter olabilir. Sunucu mesajı kaydedebilir.</string>
+    <string name="phone_url_hint">Boşluk veya gömülü kimlik bilgileri içermeyen tam bir http ya da https bağlantısı kullanın.</string>
+    <string name="phone_dial_hint">Yalnızca rakamlar, +, * ve #; en fazla 40 karakter. Aramayı telefondaki kişi başlatır.</string>
+    <string name="phone_quotes_hint">Telefon aracısı düz çift tırnakları koruyamadığı için bunlar tipografik tırnaklarla değiştirilir.</string>
+    <string name="phone_confirm">Bu komut seçilen telefona gönderilsin mi?</string>
+    <string name="phone_send">Komutu gönder</string>
+    <string name="phone_review">İncele</string>
+    <string name="phone_edit">Düzenle</string>
+    <string name="phone_cancel">İptal</string>
+    <string name="phone_command_sent">Komut gönderildi. Telefonda yürütüldüğü doğrulanmadı.</string>
+    <string name="phone_send_failed">Komut gönderilemedi. Bağlantıyı ve uzaktan kontrol iznini denetleyin.</string>
+    <string name="phone_files_limits">Telefon aracısı klasör ve dosya oluşturmayı veya yeniden adlandırmayı desteklemiyor. Android telefonda izin isteyebilir.</string>
+</resources>

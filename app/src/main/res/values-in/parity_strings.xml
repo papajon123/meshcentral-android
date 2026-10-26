@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">Perlu perhatian</string>
+    <string name="parity_security">Keamanan Windows</string>
+    <string name="parity_security_cached">Status terakhir yang dilaporkan; mungkin sudah usang.</string>
+    <string name="parity_antivirus">Antivirus</string>
+    <string name="parity_updates">Pembaruan otomatis</string>
+    <string name="parity_firewall">Firewall</string>
+    <string name="parity_enabled">Diaktifkan</string>
+    <string name="parity_updated">Terbaru</string>
+    <string name="parity_unknown">Tidak diketahui</string>
+    <string name="parity_ok">Baik</string>
+    <string name="parity_message">Pesan kepada pengguna komputer</string>
+    <string name="parity_message_title">Judul</string>
+    <string name="parity_message_confirm">Kirim pesan ini?</string>
+    <string name="parity_message_sent">Terkirim. Penerimaan belum dikonfirmasi.</string>
+    <string name="parity_shortcuts">Pintasan saya</string>
+    <string name="parity_remove_shortcut">Hapus %1$s</string>
+    <string name="parity_add_shortcut">Tambah pintasan</string>
+    <string name="parity_suggestions">Saran</string>
+    <string name="parity_shortcut_label">Nama</string>
+    <string name="parity_shortcut_key">Tombol: %1$s</string>
+    <string name="parity_review">Tinjau</string>
+    <string name="parity_save">Simpan</string>
+    <string name="parity_history">Riwayat</string>
+    <string name="parity_events">Peristiwa perangkat (hingga 50)</string>
+    <string name="parity_power_history">Riwayat daya</string>
+    <string name="parity_history_error">Gagal memuat. Ketuk Segarkan untuk mencoba lagi.</string>
+    <string name="parity_history_empty">Tidak ada catatan yang dilaporkan.</string>
+    <string name="parity_power_on">Menyala</string>
+    <string name="parity_hibernating">Hibernasi</string>
+    <string name="parity_power_off">Mati</string>
+    <string name="parity_yes">Ya</string>
+    <string name="parity_no">Tidak</string>
+</resources>

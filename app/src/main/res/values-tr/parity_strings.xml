@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">Dikkat gerekiyor</string>
+    <string name="parity_security">Windows güvenliği</string>
+    <string name="parity_security_cached">Son bildirilen durum; güncelliğini yitirmiş olabilir.</string>
+    <string name="parity_antivirus">Antivirüs</string>
+    <string name="parity_updates">Otomatik güncellemeler</string>
+    <string name="parity_firewall">Güvenlik duvarı</string>
+    <string name="parity_enabled">Etkin</string>
+    <string name="parity_updated">Güncel</string>
+    <string name="parity_unknown">Bilinmiyor</string>
+    <string name="parity_ok">İyi</string>
+    <string name="parity_message">Bilgisayar kullanıcısına mesaj</string>
+    <string name="parity_message_title">Başlık</string>
+    <string name="parity_message_confirm">Bu mesaj gönderilsin mi?</string>
+    <string name="parity_message_sent">Gönderildi. Teslimat doğrulanmadı.</string>
+    <string name="parity_shortcuts">Kısayollarım</string>
+    <string name="parity_remove_shortcut">%1$s kaldır</string>
+    <string name="parity_add_shortcut">Kısayol ekle</string>
+    <string name="parity_suggestions">Öneriler</string>
+    <string name="parity_shortcut_label">Etiket</string>
+    <string name="parity_shortcut_key">Tuş: %1$s</string>
+    <string name="parity_review">Gözden geçir</string>
+    <string name="parity_save">Kaydet</string>
+    <string name="parity_history">Geçmiş</string>
+    <string name="parity_events">Cihaz olayları (en fazla 50)</string>
+    <string name="parity_power_history">Güç geçmişi</string>
+    <string name="parity_history_error">Yüklenemedi. Yeniden denemek için Yenile’ye dokunun.</string>
+    <string name="parity_history_empty">Kayıt bildirilmedi.</string>
+    <string name="parity_power_on">Açık</string>
+    <string name="parity_hibernating">Hazırda bekletiliyor</string>
+    <string name="parity_power_off">Kapalı</string>
+    <string name="parity_yes">Evet</string>
+    <string name="parity_no">Hayır</string>
+</resources>

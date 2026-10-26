@@ -1,10 +1,11 @@
 package ru.papajon.meshcentralmobile.management
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import org.json.JSONArray
 import org.json.JSONObject
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.companion.*
@@ -20,6 +21,18 @@ data class InspectorState(
     val companionAvailable: Boolean = false,
     val error: UiText? = null,
     val notice: UiText? = null,
+    val events: List<DeviceHistoryEvent>? = null,
+    val powerTimeline: List<PowerTransition>? = null,
+    val eventsError: Boolean = false,
+    val timelineError: Boolean = false,
+    val software: List<InstalledProgram>? = null,
+    val softwareError: Boolean = false,
+    val metrics: MetricsSample? = null,
+    val metricsError: Boolean = false,
+    val commandOutput: String? = null,
+    val commandUncertain: Boolean = false,
+    val commandOutputTruncated: Boolean = false,
+    val historyLoading: Boolean = false,
 )
 
 class DeviceInspectorController(private val client: MeshCentralClient, val nodeId: String, scope: CoroutineScope) : AutoCloseable {
@@ -29,21 +42,141 @@ class DeviceInspectorController(private val client: MeshCentralClient, val nodeI
     private val mutable = MutableStateFlow(InspectorState())
     val state = mutable.asStateFlow()
     private var operation: Job? = null
+    private var historyOperation: Job? = null
+    init {
+        worker.launch {
+            client.controlFailures.collect { failure ->
+                if (failure.nodeId == nodeId) mutable.update { it.copy(notice = null,
+                    error = inspectorFailureText(ru.papajon.meshcentralmobile.mesh.control.ControlRequestException("server_rejected", failure.reason))) }
+            }
+        }
+    }
     private val device get() = client.clientState.value.devices.firstOrNull { it.nodeId == nodeId }
 
     fun refresh() = perform {
-        val available = try { CompanionClient(client, timeoutMillis = 5_000).capabilities().operations.contains("startJob") }
+        val available = if (device?.isAndroidAgent == true) false else try { CompanionClient(client, timeoutMillis = 5_000).capabilities().operations.contains("startJob") }
             catch (_: TimeoutCancellationException) { false }
             catch (cancelled: CancellationException) { throw cancelled }
             catch (_: Exception) { false }
         mutable.update { it.copy(companionAvailable = available) }
         val system = client.requestControl(JSONObject().put("action", "getsysinfo").put("nodeid", nodeId).put("nodeinfo", true), "getsysinfo", nodeId)
-        if (system.optBoolean("noinfo")) throw MissingInfo()
+        if (system.optBoolean("noinfo") && device?.isAndroidAgent != true) throw MissingInfo()
         val network = client.requestControl(JSONObject().put("action", "getnetworkinfo").put("nodeid", nodeId), "getnetworkinfo", nodeId)
-        mutable.update { it.copy(snapshot = SystemInfoParser.parse(system, network), notice = UiText.resource(R.string.workspace_cached_info)) }
+        val parsed = SystemInfoParser.parse(system, network)
+        mutable.update { it.copy(snapshot = parsed.copy(deviceName = parsed.deviceName ?: device?.name),
+            notice = UiText.resource(R.string.workspace_cached_info)) }
     }
 
     fun loadServices() = perform { readServices() }
+
+    fun phoneCommand(request: ru.papajon.meshcentralmobile.mesh.PhoneRequest) = perform {
+        if (!client.sendPhoneCommand(nodeId, request)) {
+            throw InspectorJobException(UiText.resource(R.string.phone_send_failed))
+        }
+        mutable.update { it.copy(notice = UiText.resource(R.string.phone_command_sent)) }
+    }
+    fun loadHistory() {
+        if (historyOperation?.isActive == true) return
+        historyOperation = worker.launch {
+            mutable.update { it.copy(events = null, powerTimeline = null, eventsError = false, timelineError = false,
+                historyLoading = true, error = null, notice = null) }
+            try { coroutineScope {
+                launch {
+                    try {
+                        val reply = client.requestControl(ru.papajon.meshcentralmobile.mesh.MeshControlMessages.deviceEvents(nodeId), "events", nodeId)
+                        mutable.update { it.copy(events = DeviceHistoryParser.events(reply)) }
+                    } catch (_: TimeoutCancellationException) { mutable.update { it.copy(eventsError = true) } }
+                      catch (cancelled: CancellationException) { throw cancelled }
+                      catch (_: Exception) { mutable.update { it.copy(eventsError = true) } }
+                }
+                launch {
+                    try {
+                        val timeline = DeviceHistoryLoader.powerTimeline(
+                            request = { client.requestControl(ru.papajon.meshcentralmobile.mesh.MeshControlMessages.powerTimeline(nodeId), "powertimeline", nodeId) },
+                            freshOffline = {
+                                val current = client.clientState.value
+                                current.socketConnected && current.devicesCurrent && device?.let { it.connectivityKnown && it.conn == 0 } == true
+                            })
+                        mutable.update { it.copy(powerTimeline = timeline) }
+                    } catch (_: TimeoutCancellationException) { mutable.update { it.copy(timelineError = true) } }
+                      catch (cancelled: CancellationException) { throw cancelled }
+                      catch (_: Exception) { mutable.update { it.copy(timelineError = true) } }
+                }
+            } } finally { mutable.update { it.copy(historyLoading = false) } }
+        }
+    }
+    fun sendToast(title: String, message: String) = perform {
+        val target = device ?: throw MissingInfo()
+        val current = client.clientState.value
+        val command = ToastCommand.create(target, current.socketConnected && current.devicesCurrent, title, message)
+        val reply = client.requestControl(command, "toast", nodeId)
+        if (!reply.optText("result").equals("ok", ignoreCase = true)) throw MissingInfo()
+        mutable.update { if (it.error == null) it.copy(notice = UiText.resource(R.string.parity_message_sent)) else it }
+    }
+
+    fun loadSoftware() = perform {
+        mutable.update { it.copy(software = null, softwareError = false) }
+        try {
+            val current = client.clientState.value
+            val command = InstalledSoftware.command(device ?: throw MissingInfo(), current.socketConnected && current.devicesCurrent)
+            val reply = client.requestControl(command, "software", nodeId, 30_000)
+            mutable.update { it.copy(software = InstalledSoftware.parse(reply)) }
+        } catch (_: TimeoutCancellationException) { mutable.update { it.copy(softwareError = true) } }
+          catch (cancelled: CancellationException) { throw cancelled }
+          catch (_: Exception) { mutable.update { it.copy(softwareError = true) } }
+    }
+
+    fun loadMetrics() = perform {
+        mutable.update { it.copy(metrics = null, metricsError = false) }
+        try {
+            val current = client.clientState.value
+            val command = NativeMetrics.command(device ?: throw MissingInfo(), current.socketConnected && current.devicesCurrent)
+            val reply = client.requestControl(command, "msg", nodeId)
+            mutable.update { it.copy(metrics = NativeMetrics.parse(reply, System.currentTimeMillis())) }
+        } catch (_: TimeoutCancellationException) { mutable.update { it.copy(metricsError = true) } }
+          catch (cancelled: CancellationException) { throw cancelled }
+          catch (error: Exception) { mutable.update { it.copy(metricsError = true, error = inspectorFailureText(error)) } }
+    }
+
+    fun runCommand(command: String, powershellUtf8: Boolean = false) = perform {
+        mutable.update { it.copy(commandOutput = null, commandUncertain = false, commandOutputTruncated = false) }
+        try {
+            val current = client.clientState.value
+            val request = RunCommand.create(device ?: throw MissingInfo(), current.socketConnected && current.devicesCurrent, command, true, powershellUtf8)
+            val reply = client.requestControl(request, "msg", nodeId, 60_000)
+            mutable.update { it.copy(commandOutput = RunCommand.output(reply), commandOutputTruncated = RunCommand.outputTruncated(reply)) }
+        } catch (_: TimeoutCancellationException) { mutable.update { it.copy(commandUncertain = true) } }
+          catch (cancelled: CancellationException) { throw cancelled }
+          catch (error: Exception) { mutable.update { it.copy(commandUncertain = false, error = inspectorFailureText(error)) } }
+    }
+
+    fun remove(action: DeviceRemovalAction, typedName: String) = perform {
+        val current = client.clientState.value
+        val command = DeviceRemovalCommand.create(device ?: throw MissingInfo(), current.socketConnected && current.devicesCurrent, action, true, typedName)
+        if (action == DeviceRemovalAction.UninstallAgent) {
+            if (!client.requestAgentUninstall(nodeId, typedName)) throw MissingInfo()
+        } else {
+            val reply = client.requestControl(command, action.wire)
+            if (!reply.optText("result").equals("ok", ignoreCase = true)) throw MissingInfo()
+        }
+        mutable.update { it.copy(notice = UiText.resource(R.string.parity2_removal_pending)) }
+        var observation = RemovalObservation.Unknown
+        // Re-read nodes with a new correlation id. Cached list state never proves a removal.
+        repeat(6) {
+            delay(2_000)
+            try {
+                val reply = client.requestControl(JSONObject().put("action", "nodes"), "nodes", timeoutMillis = 5_000)
+                observation = DeviceRemovalCommand.observeReply(action, nodeId, reply, client.clientState.value.socketConnected)
+            } catch (_: TimeoutCancellationException) { observation = RemovalObservation.Unknown }
+              catch (cancelled: CancellationException) { throw cancelled }
+              catch (_: Exception) { observation = RemovalObservation.Unknown }
+        }
+        mutable.update { it.copy(notice = UiText.resource(when (observation) {
+            RemovalObservation.Absent -> R.string.parity2_removal_absent
+            RemovalObservation.Disconnected -> R.string.parity2_removal_disconnected
+            RemovalObservation.Unknown -> R.string.parity2_removal_unknown
+        })) }
+    }
     private suspend fun readServices() {
         val result = runTemplate("services") as? CompanionServices ?: throw MissingInfo()
         mutable.update { it.copy(services = result.items.map { s -> ManagedService(s.name, s.displayName ?: s.name, s.state.orEmpty(), s.startMode) }) }
@@ -69,15 +202,14 @@ class DeviceInspectorController(private val client: MeshCentralClient, val nodeI
 
     fun power(action: DevicePowerAction) = perform {
         val target = device ?: throw MissingInfo()
-        require(action in availablePowerActions(target, client.clientState.value.devicesCurrent))
-        val name = if (action == DevicePowerAction.Wake) "wakedevices" else "poweraction"
-        val command = JSONObject().put("action", name).put("nodeids", JSONArray().put(nodeId))
-        if (action != DevicePowerAction.Wake) command.put("actiontype", when (action) {
-            DevicePowerAction.Shutdown -> 2; DevicePowerAction.Restart -> 3; DevicePowerAction.Sleep -> 4; else -> error("unsupported")
-        })
-        client.requestControl(command, name)
+        val current = client.clientState.value
+        val command = DevicePowerCommand.create(target, current.socketConnected && current.devicesCurrent, action)
+        val reply = client.requestControl(command, command.getString("action"), nodeId)
+        ru.papajon.meshcentralmobile.mesh.control.ControlReplyPolicy.failure(command.getString("action"), reply)?.let {
+            throw ru.papajon.meshcentralmobile.mesh.control.ControlRequestException("server_rejected", it)
+        }
         mutable.update { it.copy(notice = UiText.resource(R.string.workspace_power_pending)) }
-        var sawOffline = !target.online
+        var sawOffline = target.conn and 1 == 0
         var observedReturn = false
         repeat(30) {
             delay(2_000)
@@ -111,13 +243,6 @@ class DeviceInspectorController(private val client: MeshCentralClient, val nodeI
     private class MissingInfo : Exception()
 
     companion object {
-        fun availablePowerActions(device: MeshDevice, current: Boolean): Set<DevicePowerAction> = buildSet {
-            val rights = device.rights ?: return@buildSet
-            if (!current || !device.isMeshAgent) return@buildSet
-            if (rights and 64 != 0 && device.conn and 1 == 0) add(DevicePowerAction.Wake)
-            if (rights and 0x40000 != 0 && device.conn and 1 != 0) {
-                add(DevicePowerAction.Restart); add(DevicePowerAction.Shutdown)
-            }
-        }
+        fun availablePowerActions(device: MeshDevice, current: Boolean): Set<DevicePowerAction> = DevicePowerCommand.available(device, current)
     }
 }

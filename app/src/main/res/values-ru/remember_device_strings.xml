@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="remember_device_for_days">
+        <item quantity="one">Запомнить это устройство на %1$d день</item>
+        <item quantity="few">Запомнить это устройство на %1$d дня</item>
+        <item quantity="many">Запомнить это устройство на %1$d дней</item>
+        <item quantity="other">Запомнить это устройство на %1$d дня</item>
+    </plurals>
+    <string name="remember_device_until">Устройство запомнено до %1$s</string>
+    <string name="remember_device_not_remembered">Это устройство не запомнено</string>
+    <string name="remember_device_forget">Забыть устройство</string>
+</resources>

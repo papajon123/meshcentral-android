@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.settings
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.compose.runtime.mutableStateOf
@@ -11,7 +13,10 @@ import ru.papajon.meshcentralmobile.model.DEFAULT_SERVER_URL
 import ru.papajon.meshcentralmobile.model.FavoriteLink
 import ru.papajon.meshcentralmobile.model.ProfileCatalog
 import ru.papajon.meshcentralmobile.model.ServerProfile
+import ru.papajon.meshcentralmobile.model.CustomShortcut
+import ru.papajon.meshcentralmobile.model.FavoriteCommand
 import ru.papajon.meshcentralmobile.security.CredentialScope
+import ru.papajon.meshcentralmobile.security.SecureVault
 import java.security.MessageDigest
 import java.util.UUID
 import java.util.Locale
@@ -53,6 +58,7 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
 
     fun activateProfile(id: String): Boolean {
         if (profilesState.value.none { it.id == id }) return false
+        if (id != activeProfileIdState.value) SecureVault(appContext, activeProfileIdState.value).rememberedDevice.clear()
         persistProfiles(profilesState.value, id)
         return true
     }
@@ -65,6 +71,7 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
 
     fun removeProfile(id: String): Boolean {
         if (profilesState.value.size <= 1 || profilesState.value.none { it.id == id }) return false
+        SecureVault(appContext, id).rememberedDevice.clear()
         val remaining = profilesState.value.filterNot { it.id == id }
         val active = activeProfileIdState.value.takeIf { it != id } ?: remaining.first().id
         val editor = prefs.edit()
@@ -76,8 +83,59 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
 
     fun getSettings(): AppSettings = settingsState.value
 
+    /** Read persisted policy, including changes made by another repository instance. */
+    fun currentProfile(id: String): ServerProfile? = loadProfiles().firstOrNull { it.id == id }
+
+    /** Keep the listener strongly referenced until the caller closes its in-flight operation. */
+    fun observeProfile(id: String, onChanged: (ServerProfile?) -> Unit): AutoCloseable {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+            if (key == KEY_PROFILES || key == null) onChanged(currentProfile(id))
+        }
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+        return AutoCloseable { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
+
+    fun addFavoriteCommand(profileId: String, command: FavoriteCommand): Boolean {
+        val profile = profilesState.value.firstOrNull { it.id == profileId } ?: return false
+        if (!command.valid || profile.favoriteCommands.size >= FavoriteCommand.LIMIT) return false
+        persistProfiles(profilesState.value.map {
+            if (it.id == profileId) it.copy(favoriteCommands = it.favoriteCommands + command) else it
+        }, activeProfileIdState.value)
+        return true
+    }
+
+    fun removeFavoriteCommand(profileId: String, index: Int) {
+        persistProfiles(profilesState.value.map {
+            if (it.id == profileId) it.copy(favoriteCommands = it.favoriteCommands.filterIndexed { i, _ -> i != index }) else it
+        }, activeProfileIdState.value)
+    }
+
+    fun addShortcut(profileId: String, shortcut: CustomShortcut): Boolean {
+        val profile = profilesState.value.firstOrNull { it.id == profileId } ?: return false
+        if (!shortcut.valid || profile.customShortcuts.size >= CustomShortcut.MAX_SHORTCUTS) return false
+        persistProfiles(profilesState.value.map {
+            if (it.id == profileId) it.copy(customShortcuts = it.customShortcuts + shortcut) else it
+        }, activeProfileIdState.value)
+        return true
+    }
+
+    fun removeShortcut(profileId: String, index: Int) {
+        persistProfiles(profilesState.value.map {
+            if (it.id == profileId) it.copy(customShortcuts = it.customShortcuts.filterIndexed { i, _ -> i != index }) else it
+        }, activeProfileIdState.value)
+    }
+
     fun updateServerUrl(url: String) {
-        updateActiveProfile { it.copy(serverUrl = url) }
+        if (!CredentialScope.matches(activeProfile.serverUrl, url)) {
+            SecureVault(appContext, activeProfile.id).rememberedDevice.clear()
+        }
+        updateActiveProfile { it.withServerUrl(url) }
+    }
+
+    fun updatePinnedServerKey(spkiSha256: String?) {
+        require(spkiSha256 == null || spkiSha256.matches(Regex("[0-9a-f]{64}")))
+        SecureVault(appContext, activeProfile.id).rememberedDevice.clear()
+        updateActiveProfile { it.copy(pinnedSpkiSha256 = spkiSha256) }
     }
 
     fun completeOnboarding() {
@@ -94,6 +152,9 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
     }
 
     fun updateTrustSelfSignedCertificates(enabled: Boolean) {
+        if (activeProfile.trustSelfSignedCertificates != enabled) {
+            SecureVault(appContext, activeProfile.id).rememberedDevice.clear()
+        }
         updateActiveProfile { it.copy(trustSelfSignedCertificates = enabled) }
     }
 
@@ -146,8 +207,8 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
         buildList {
             for (index in 0 until array.length()) {
                 val item = array.optJSONObject(index) ?: continue
-                val name = item.optString("name")
-                val url = item.optString("url")
+                val name = item.optText("name")
+                val url = item.optText("url")
                 if (name.isNotBlank() && url.isNotBlank()) {
                     add(FavoriteLink(name = name, url = url))
                 }
@@ -202,7 +263,14 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
         val old = prefs.getString(KEY_PROFILES, null)
         val favorites = loadFavorites(profile)
         val editor = prefs.edit()
-        val backup = ProfileCatalog.decode(old).filterNot { it.id == removedId }
+        val backup = ProfileCatalog.decode(old).filterNot { it.id == removedId }.map { previous ->
+            val current = profiles.firstOrNull { it.id == previous.id }
+            // Recovery may restore old display metadata, but never resurrect revoked trust or
+            // apply a new endpoint's key to the previous endpoint.
+            previous.copy(pinnedSpkiSha256 = current?.pinnedSpkiSha256?.takeIf {
+                CredentialScope.matches(previous.serverUrl, current.serverUrl)
+            })
+        }
         if (backup.isNotEmpty()) editor.putString(KEY_PROFILES_BACKUP, ProfileCatalog.encode(backup))
         editor.putString(KEY_PROFILES, ProfileCatalog.encode(profiles))
             .putString(KEY_ACTIVE_PROFILE, activeId)

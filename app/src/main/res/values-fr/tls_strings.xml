@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">Le certificat du serveur n’est pas reconnu comme fiable. Comparez son empreinte à celle du certificat sur le serveur avant de lui faire confiance.</string>
+    <string name="tls_error_changed">La clé du serveur a changé. Connexion bloquée : vérifiez la nouvelle empreinte auprès de l’administrateur du serveur.</string>
+    <string name="tls_untrusted_title">Certificat du serveur non fiable</string>
+    <string name="tls_changed_title">Le certificat du serveur a changé</string>
+    <string name="tls_fingerprint">Empreinte SHA-256 de la clé publique (SPKI)</string>
+    <string name="tls_previous_fingerprint">Ancienne clé publique de confiance, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">Nouvelle clé publique, SHA-256 (SPKI)</string>
+    <string name="tls_subject">Sujet : %1$s</string>
+    <string name="tls_validity">Valide du %1$s au %2$s</string>
+    <string name="tls_server">Serveur : %1$s</string>
+    <string name="tls_compare">Comparez cette empreinte à celle du certificat sur le serveur par un canal indépendant et fiable.</string>
+    <string name="tls_trust">Faire confiance à ce serveur</string>
+    <string name="tls_replace">Remplacer l’empreinte…</string>
+    <string name="tls_replace_title">Remplacer la clé de confiance ?</string>
+    <string name="tls_replace_warning">Un changement de clé peut signaler une usurpation de votre serveur. Ne continuez qu’après avoir vérifié la nouvelle empreinte par un moyen indépendant. L’ancienne clé ne sera plus considérée comme fiable.</string>
+    <string name="tls_confirm_replace">Confirmer le remplacement</string>
+    <string name="tls_pinned_key">Clé de confiance du serveur</string>
+    <string name="tls_forget">Oublier</string>
+    <string name="tls_forget_title">Oublier la clé de confiance ?</string>
+    <string name="tls_forget_warning">La connexion actuelle sera fermée. Vous devrez vérifier à nouveau ce serveur si Android ne reconnaît pas son certificat comme fiable.</string>
+    <string name="tls_certificate_fingerprint">SHA-256 du certificat — affiché dans le navigateur</string>
+    <string name="tls_error_validity">Le certificat a expiré ou n’est pas encore valide. Vérifiez la date et l’heure du téléphone et la validité du certificat du serveur. La confiance ne permet pas de contourner cette erreur.</string>
+    <string name="tls_error_chain">Le certificat ou sa chaîne présente une signature non valide, une clé ou un algorithme faible, ou un usage ou des contraintes d’autorité de certification non valides. L’administrateur doit corriger le certificat ; il ne peut pas être accepté.</string>
+    <string name="tls_error_hostname">Le certificat ne correspond pas à l’adresse du serveur. Vérifiez l’adresse et demandez à l’administrateur de corriger les noms du certificat.</string>
+    <string name="tls_hostname_warning">Avertissement : le nom du certificat ne correspond pas à l’adresse du serveur. Ne confirmez la clé qu’après une vérification indépendante.</string>
+    <string name="tls_blocked_title">Certificat du serveur refusé</string>
+    <string name="tls_verify_instructions">L’administrateur peut calculer l’empreinte SPKI avec la commande ci-dessous. Pour TLS direct, utilisez meshcentral-data/webserver-cert-public.crt ; si TLS se termine sur un proxy inverse, utilisez son certificat. Remplacez cert.pem par ce fichier. Les navigateurs affichent l’empreinte distincte du certificat.</string>
+    <string name="tls_independent_warning">Vérifiez par un canal indépendant et fiable. Une empreinte obtenue par cette même connexion non vérifiée ne protège pas contre un intermédiaire.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">L’émetteur du certificat se présente comme une racine MeshCentral.</string>
+    <string name="tls_issuer_unknown">Le certificat est signé par une autorité de certification inconnue. Si le serveur utilise un certificat public, sa chaîne peut être incomplète ; il est préférable de corriger le serveur.</string>
+</resources>

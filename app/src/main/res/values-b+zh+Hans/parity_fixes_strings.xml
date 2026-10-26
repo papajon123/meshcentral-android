@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">警告</string>
+    <string name="parity_fixes_server_rejected">服务器响应：%1$s</string>
+    <string name="parity_fixes_output_truncated">输出已截断为 65,536 个字符。</string>
+    <string name="parity_fixes_linux_cpu_average">CPU：自上次测量以来的平均值，包括其他会话请求的测量值。</string>
+    <string name="parity_fixes_run_warning">在此设备上运行命令。请仔细检查。所有有权访问此设备的用户都能看到命令输出。请勿包含机密信息。</string>
+</resources>

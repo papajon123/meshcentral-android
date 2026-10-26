@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.terminal
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import android.content.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineDispatcher
@@ -169,16 +171,16 @@ class TerminalController(
             return null
         }
         val control = if (text.startsWith("{")) runCatching { JSONObject(text) }.getOrNull() else null
-        if (control != null && control.optString("ctrlChannel") == "102938") {
-            when (control.optString("type")) {
+        if (control != null && control.optText("ctrlChannel") == "102938") {
+            when (control.optText("type")) {
                 "ping" -> connection.sendText(JSONObject().put("ctrlChannel", "102938").put("type", "pong").toString())
                 "console" -> mutableState.value = mutableState.value.copy(message =
-                    control.optString("msg").takeIf { it.isNotBlank() }?.let { UiText.Literal(it.take(2048)) })
+                    control.optText("msg").takeIf { it.isNotBlank() }?.let { UiText.Literal(it.take(2048)) })
             }
             return null
         }
         if (isSsh) {
-            when (control?.optString("action")) {
+            when (control?.optText("action")) {
                 "sshauth" -> {
                     // Human credential entry has no network deadline; resume it after submission.
                     sshHandshakeTimeoutJob?.cancel()
@@ -247,6 +249,10 @@ class TerminalController(
         if (!accepted) fail(R.string.terminal_send_failed)
         return accepted
     }
+
+    /** Favorites are literal single-line input, never local echo, a key chord or an implicit Enter. */
+    fun insertFavorite(text: String): Boolean =
+        ru.papajon.meshcentralmobile.model.FavoriteCommand.safeCommand(text) && sendInput(text)
 
     @Synchronized internal fun resize(cols: Int, rowCount: Int, width: Int, height: Int) {
         if (ended) return

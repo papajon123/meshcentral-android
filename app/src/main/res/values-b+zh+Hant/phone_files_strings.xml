@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">傳送訊息、開啟連結和撥號除了需要遠端控制權限，還需要主控台權限。</string>
+    <string name="phone_url_format">請使用小寫的 http:// 或 https://。不允許空格和雙引號；請改用百分比編碼。</string>
+    <string name="phone_files_choose_category">上傳前請選擇手機類別或資料夾。</string>
+    <string name="phone_files_ambiguous_name">多個媒體檔案同名。請從 Sdcard 中它們所在的資料夾開啟檔案，以下載或刪除正確的檔案。</string>
+    <string name="phone_files_directory_too_large">此類別包含的檔案過多，無法列出。請開啟 Sdcard 中較小的資料夾。</string>
+</resources>

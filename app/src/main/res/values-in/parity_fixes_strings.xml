@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">Peringatan</string>
+    <string name="parity_fixes_server_rejected">Respons server: %1$s</string>
+    <string name="parity_fixes_output_truncated">Keluaran dipotong menjadi 65.536 karakter.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: rata-rata sejak pengukuran sebelumnya, termasuk pengukuran yang diminta sesi lain.</string>
+    <string name="parity_fixes_run_warning">Menjalankan perintah di perangkat ini. Tinjau dengan saksama. Semua pengguna yang memiliki akses ke perangkat ini dapat melihat keluaran perintah. Jangan sertakan rahasia.</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s 불완전한 문서가 삭제되었습니다.</string>
+    <string name="final_fixes_download_marked">%1$s 불완전한 문서에 .partial 접미사가 붙었습니다. 다시 시도하기 전에 Android의 파일 앱에서 삭제하세요.</string>
+    <string name="final_fixes_download_retained">%1$s Android에서 불완전한 문서를 삭제하거나 .partial을 붙이지 못했습니다. 이 문서를 사용하지 말고 Android의 파일 앱에서 삭제하세요.</string>
+    <string name="final_fixes_download_transport_failed">다운로드 중 연결이 끊어졌습니다. 새 파일 세션을 열고 다시 시도하세요.</string>
+    <string name="final_fixes_download_invalid">다운로드한 데이터가 예상 파일과 일치하지 않습니다. 새 파일 세션을 열고 다시 시도하세요.</string>
+</resources>

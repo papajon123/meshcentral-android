@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">App-Updates</string>
+    <string name="update_consent_title">Auf GitHub nach neuen Versionen suchen?</string>
+    <string name="update_consent_body">Die App kontaktiert api.github.com einmal täglich; dabei werden keine deiner Daten gesendet.</string>
+    <string name="update_privacy_detail">GitHub und sein CDN sehen deine IP-Adresse und die HTTP-Header.</string>
+    <string name="update_allow">Nach Updates suchen</string>
+    <string name="update_not_now">Nicht jetzt</string>
+    <string name="update_never">Noch nicht geprüft.</string>
+    <string name="update_current">Keine neuere kompatible Version gefunden.</string>
+    <string name="update_found">Ein Update wurde gefunden.</string>
+    <string name="update_suppressed">Diese Version wurde zurückgestellt oder übersprungen.</string>
+    <string name="update_network_error">Prüfung fehlgeschlagen. Versuche es in 24 Stunden erneut.</string>
+    <string name="update_rate_limit">GitHub hat die Anfragen begrenzt. Versuche es in 24 Stunden erneut.</string>
+    <string name="update_invalid_metadata">Die Versionsdaten konnten nicht bestätigt werden. Versuche es in 24 Stunden erneut.</string>
+    <string name="update_wrong_signer">Diese App hat eine andere Signatur. Es kann kein kompatibles Update angeboten werden.</string>
+    <string name="update_checking">Wird geprüft…</string>
+    <string name="update_last_check">Letzter Versuch: %1$s</string>
+    <string name="update_recently_checked">Vor weniger als einer Minute geprüft. Bitte gleich noch einmal versuchen.</string>
+    <string name="update_check_now">Jetzt prüfen</string>
+    <string name="update_available">Version %1$s ist verfügbar</string>
+    <string name="update_download">Herunterladen</string>
+    <string name="update_later">Später</string>
+    <string name="update_skip">Diese Version überspringen</string>
+    <string name="update_browser_error">Kein Browser verfügbar. Installiere oder aktiviere einen Browser.</string>
+</resources>

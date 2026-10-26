@@ -1,23 +1,17 @@
 package ru.papajon.meshcentralmobile.mesh
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import android.util.Log
 import androidx.annotation.StringRes
 import java.io.Closeable
-import java.security.KeyStore
-import java.security.SecureRandom
-import java.security.cert.X509Certificate
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.ConcurrentHashMap
-import javax.net.ssl.HttpsURLConnection
-import javax.net.ssl.SSLContext
-import javax.net.ssl.TrustManager
-import javax.net.ssl.TrustManagerFactory
-import javax.net.ssl.X509TrustManager
-import kotlin.math.min
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +25,7 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
+import okio.ByteString
 import org.json.JSONObject
 import ru.papajon.meshcentralmobile.BuildConfig
 import ru.papajon.meshcentralmobile.R
@@ -47,11 +42,15 @@ import ru.papajon.meshcentralmobile.mesh.MeshControlEvent.ServerInfo
 import ru.papajon.meshcentralmobile.mesh.MeshControlEvent.UserInfo
 import ru.papajon.meshcentralmobile.model.ConnectionState
 import ru.papajon.meshcentralmobile.security.SecureVault
+import ru.papajon.meshcentralmobile.security.RememberedDeviceTrust
 import ru.papajon.meshcentralmobile.mesh.session.ManagedRelayConnection
 import ru.papajon.meshcentralmobile.mesh.session.RelayConnection
 import ru.papajon.meshcentralmobile.mesh.session.RelayCredentials
 import ru.papajon.meshcentralmobile.mesh.session.RelayProtocol
 import ru.papajon.meshcentralmobile.mesh.session.SessionAvailability
+import ru.papajon.meshcentralmobile.mesh.tls.ServerCertificateFailure
+import ru.papajon.meshcentralmobile.mesh.tls.ServerTls
+import ru.papajon.meshcentralmobile.mesh.tls.serverCertificateFailure
 
 /**
  * MeshCentral control channel (`/control.ashx`) plus the desktop relay it drives.
@@ -66,8 +65,28 @@ class MeshCentralClient(
     private val scope: CoroutineScope,
 ) : Closeable, NativeRemoteInputSink {
     private val cookieJar = MeshCookieJar()
-    private val allowSelfSignedCertificates = AtomicBoolean(false)
-    private val okHttpClient = OkHttpClient.Builder()
+    private class ControlCookieScope(val serverUrl: String, val username: String)
+    private var baseUrl: HttpUrl? = null
+    private var pinnedSpkiSha256: String? = null
+    private var allowSelfSignedCertificates = false
+    @Volatile private var certificateRejected = false
+    private val transportSockets = ConcurrentHashMap.newKeySet<WebSocket>()
+    private class TlsTransport(val client: OkHttpClient, val rememberedTrust: RememberedDeviceTrust?)
+    @Volatile private var tlsTransport = createTlsTransport()
+    private val okHttpClient: OkHttpClient get() = tlsTransport.client
+
+    private fun createTlsTransport(): TlsTransport {
+        val trust = when {
+            baseUrl == null -> null
+            baseUrl?.isHttps == false -> if (BuildConfig.DEBUG) RememberedDeviceTrust.DebugHttp else null
+            pinnedSpkiSha256 != null -> RememberedDeviceTrust.Pinned(requireNotNull(pinnedSpkiSha256))
+            BuildConfig.DEBUG && allowSelfSignedCertificates -> null // A bypass is never platform trust.
+            else -> RememberedDeviceTrust.Platform
+        }
+        return TlsTransport(createHttpClient(), trust)
+    }
+
+    private fun createHttpClient(): OkHttpClient = OkHttpClient.Builder()
         .cookieJar(cookieJar)
         .connectTimeout(20, TimeUnit.SECONDS)
         .readTimeout(0, TimeUnit.SECONDS)
@@ -75,13 +94,44 @@ class MeshCentralClient(
         // x-meshauth is a custom credential header: never forward it to a redirect target.
         .followRedirects(false)
         .followSslRedirects(false)
-        .apply(::applyDebugTlsSettings)
+        .apply { ServerTls(baseUrl, pinnedSpkiSha256, BuildConfig.DEBUG && allowSelfSignedCertificates).applyTo(this) }
         .build()
 
-    private var baseUrl: HttpUrl? = null
+    /** Desktop and all tool/file relays resolve the current immutable TLS policy at connect time. */
+    private val socketFactory = object : WebSocket.Factory {
+        override fun newWebSocket(request: Request, listener: WebSocketListener): WebSocket {
+            val transport = tlsTransport
+            val identity = request.tag(ControlCookieScope::class.java)
+            // A queued request retains its own identity even if the user switches accounts before
+            // OkHttp asks for cookies. Relays have no tag and use only the ordinary session jar.
+            val requestTransport = if (identity == null) transport.client else transport.client.newBuilder()
+                .cookieJar(cookieJar.forControlRequest { url ->
+                    secureVault.rememberedDevice.cookieForRequest(identity.serverUrl, identity.username, url,
+                        BuildConfig.DEBUG, transport.rememberedTrust)
+                }).build()
+            val socket = requestTransport.newWebSocket(request, object : WebSocketListener() {
+                override fun onOpen(webSocket: WebSocket, response: Response) = listener.onOpen(webSocket, response)
+                override fun onMessage(webSocket: WebSocket, text: String) = listener.onMessage(webSocket, text)
+                override fun onMessage(webSocket: WebSocket, bytes: ByteString) = listener.onMessage(webSocket, bytes)
+                override fun onClosing(webSocket: WebSocket, code: Int, reason: String) = listener.onClosing(webSocket, code, reason)
+                override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
+                    transportSockets.remove(webSocket)
+                    listener.onClosed(webSocket, code, reason)
+                }
+                override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
+                    transportSockets.remove(webSocket)
+                    listener.onFailure(webSocket, t, response)
+                }
+            })
+            transportSockets.add(socket)
+            return socket
+        }
+    }
     private var controlSocket: WebSocket? = null
     @Volatile private var controlConnected = false
-    private var controlAttempt = 0
+    private val controlRetry = ConnectionRetryPolicy()
+    private var networkAvailable = true
+    private var waitingForNetwork = false
     private var controlReconnectJob: Job? = null
     private var authCookieJob: Job? = null
     private var manualClose = false
@@ -92,11 +142,20 @@ class MeshCentralClient(
     private var sessionUsername: String? = null
     private var sessionPassword: String? = null
     private var sessionToken: String? = null
+    private var rememberDeviceRequested = false
+    private var awaitingRememberCookie = false
+    private var rememberCookieDays = 30
     @Volatile private var authCookie: String? = null
     @Volatile private var relayCookie: String? = null
     private val sessionGeneration = AtomicLong()
     private val additionalRelays = ConcurrentHashMap.newKeySet<ManagedRelayConnection>()
-    private val controlRequests = ru.papajon.meshcentralmobile.mesh.control.ControlRequestBroker(::sendControlJson)
+    private val _controlFailures = kotlinx.coroutines.flow.MutableSharedFlow<ru.papajon.meshcentralmobile.mesh.control.ControlRequestFailure>(extraBufferCapacity = 64)
+    val controlFailures: kotlinx.coroutines.flow.SharedFlow<ru.papajon.meshcentralmobile.mesh.control.ControlRequestFailure> = _controlFailures
+    private val controlRequests = ru.papajon.meshcentralmobile.mesh.control.ControlRequestBroker(
+        onLateFailure = { _controlFailures.tryEmit(it) }, send = ::sendControlJson)
+    private val phoneInfoRevision = AtomicLong()
+    private val phoneInfoRequests = ConcurrentHashMap<String, Long>()
+    private val phoneInfoLock = Any()
 
     suspend fun requestControl(
         command: JSONObject,
@@ -107,20 +166,90 @@ class MeshCentralClient(
         if (!controlConnected || _clientState.value.userId == null) {
             throw ru.papajon.meshcentralmobile.mesh.control.ControlRequestException("not_authenticated")
         }
-        return controlRequests.request(command, responseAction, nodeId, timeoutMillis)
+        val phoneInfo = responseAction == "getsysinfo" && nodeId != null &&
+            _clientState.value.devices.any { it.nodeId == nodeId && it.isAndroidAgent }
+        val revision = synchronized(phoneInfoLock) {
+            if (phoneInfo) phoneInfoRevision.incrementAndGet().also { phoneInfoRequests[nodeId!!] = it } else 0L
+        }
+        val generation = sessionGeneration.get()
+        val reply = controlRequests.request(command, responseAction, nodeId, timeoutMillis)
+        synchronized(phoneInfoLock) {
+            if (phoneInfo && controlConnected && generation == sessionGeneration.get() && phoneInfoRequests[nodeId] == revision) {
+                updatePhoneInput(nodeId!!, PhoneRemoteInput.fromSystemInfo(reply))
+            }
+        }
+        return reply
+    }
+
+    private fun updatePhoneInput(nodeId: String, capability: PhoneRemoteInput) {
+        _clientState.update { state -> state.copy(devices = state.devices.map {
+            if (it.nodeId == nodeId && it.isAndroidAgent) it.copy(remoteInput = capability) else it
+        }) }
+        syncPhoneDesktop()
+    }
+
+    private fun refreshPhoneInput(nodeId: String) {
+        if (!_clientState.value.devices.any { it.nodeId == nodeId && it.isAndroidAgent }) return
+        synchronized(phoneInfoLock) {
+            phoneInfoRequests[nodeId] = phoneInfoRevision.incrementAndGet()
+            updatePhoneInput(nodeId, PhoneRemoteInput.Unknown)
+        }
+        scope.launch {
+            try {
+                requestControl(JSONObject().put("action", "getsysinfo").put("nodeid", nodeId), "getsysinfo", nodeId)
+            } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                throw cancelled
+            } catch (_: Exception) {
+                // Unknown stays view-only. Never infer support from a version or cached UI.
+            }
+        }
+    }
+
+    private fun syncPhoneDesktop() {
+        val target = desktopState.value.device?.takeIf { it.isAndroidAgent } ?: return
+        val state = _clientState.value
+        relay.updatePhoneDevice(state.devices.firstOrNull { it.nodeId == target.nodeId }
+            ?.takeIf { controlConnected && state.devicesCurrent })
     }
 
     private var clipboardRequest: ClipboardRequest? = null
+
+    /** No server acknowledgement exists for uninstallagent in 1.3.1. Never imply completion. */
+    fun requestAgentUninstall(nodeId: String, typedName: String): Boolean {
+        val state = _clientState.value
+        val target = state.devices.firstOrNull { it.nodeId == nodeId } ?: return false
+        if (!controlConnected || state.userId == null || state.requiresSignIn) return false
+        val command = ru.papajon.meshcentralmobile.management.DeviceRemovalCommand.create(
+            target, state.socketConnected && state.devicesCurrent,
+            ru.papajon.meshcentralmobile.management.DeviceRemovalAction.UninstallAgent, true, typedName)
+        return sendControlJson(command)
+    }
+
+    /** Queue one audited phone command. True means sent locally, never executed remotely. */
+    fun sendPhoneCommand(nodeId: String, request: PhoneRequest): Boolean {
+        val state = _clientState.value
+        val target = state.devices.firstOrNull { it.nodeId == nodeId } ?: return false
+        if (!controlConnected || state.requiresSignIn || state.userId == null ||
+            !PhoneCommands.canSend(target, state.devicesCurrent, request.action)) return false
+        return sendControlJson(PhoneCommands.message(nodeId, request))
+    }
     private var clipboardTimeoutJob: Job? = null
 
     private val relay = MeshDesktopRelay(
-        okHttpClient = okHttpClient,
+        okHttpClient = socketFactory,
         scope = scope,
         sendControlMessage = ::sendControlJson,
+        onCertificateFailure = ::reportRelayCertificateFailure,
+        phoneInputAllowed = { device ->
+            val state = _clientState.value
+            controlConnected && state.devicesCurrent && !state.requiresSignIn &&
+                state.devices.firstOrNull { it.nodeId == device.nodeId }?.phoneInputAllowed == true
+        },
     )
 
     private val _clientState = MutableStateFlow(MeshClientState())
     val clientState: StateFlow<MeshClientState> = _clientState
+    val certificateTrustRequired: Boolean get() = certificateRejected
     val desktopState: StateFlow<RemoteDesktopState> = relay.desktopState
 
     private val _clipboardState = MutableStateFlow<ClipboardTransfer?>(null)
@@ -128,67 +257,136 @@ class MeshCentralClient(
 
     val remoteInputSink: NativeRemoteInputSink = this
 
-    /**
-     * Debug builds only: accepts self-signed certificates (for a local MeshCentral test server).
-     * Release builds never install this trust manager and always validate with the platform CAs.
-     */
+    private val phoneDesktopSyncJob = scope.launch {
+        clientState.collect { syncPhoneDesktop() }
+    }
+
+    /** Existing debug/test override only. Release builds always use platform trust or an explicit pin. */
     fun setAllowSelfSignedCertificates(enabled: Boolean) {
-        if (BuildConfig.DEBUG) allowSelfSignedCertificates.set(enabled)
+        if (!BuildConfig.DEBUG || allowSelfSignedCertificates == enabled) return
+        // Startup restores this flag before the saved pin. Clear only an already active policy;
+        // explicit preference changes also clear through SettingsRepository.
+        if (sessionUsername != null) forgetRememberedDevice()
+        allowSelfSignedCertificates = enabled
+        invalidateTlsConnections()
+        replaceTlsTransport()
     }
 
-    private fun applyDebugTlsSettings(builder: OkHttpClient.Builder) {
-        if (!BuildConfig.DEBUG) return
-        val platform = platformTrustManager()
-        val permissive = object : X509TrustManager {
-            override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {
-                platform.checkClientTrusted(chain, authType)
-            }
+    fun setPinnedServerKey(spkiSha256: String?) {
+        require(spkiSha256 == null || spkiSha256.matches(Regex("[0-9a-f]{64}")))
+        require(spkiSha256 == null || baseUrl != null) { "Configure the endpoint before its key" }
+        if (pinnedSpkiSha256 == spkiSha256) return
+        pinnedSpkiSha256 = spkiSha256
+        invalidateTlsConnections()
+        replaceTlsTransport()
+        secureVault.rememberedDevice.bindTrust(tlsTransport.rememberedTrust)
+        _clientState.update { it.copy(rememberedDeviceExpiresAt = null) }
+    }
 
-            override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
-                if (allowSelfSignedCertificates.get()) return
-                platform.checkServerTrusted(chain, authType)
-            }
+    /** Explicit confirmation reuses only the current attempt's in-memory credentials. */
+    fun retryAfterCertificateTrust() {
+        val failure = _clientState.value.certificateFailure ?: return
+        if (!failure.canApprove) return
+        if (pinnedSpkiSha256 != failure.spkiSha256 || baseUrl?.toString() != failure.serverAddress) return
+        login(baseUrl?.toString() ?: return, sessionUsername ?: return, sessionPassword ?: return, sessionToken, rememberDeviceRequested)
+    }
 
-            override fun getAcceptedIssuers(): Array<X509Certificate> = platform.acceptedIssuers
-        }
-        val sslContext = SSLContext.getInstance("TLS")
-        sslContext.init(null, arrayOf<TrustManager>(permissive), SecureRandom())
-        builder.sslSocketFactory(sslContext.socketFactory, permissive)
-        val defaultVerifier = HttpsURLConnection.getDefaultHostnameVerifier()
-        builder.hostnameVerifier { hostname, session ->
-            allowSelfSignedCertificates.get() || defaultVerifier.verify(hostname, session)
+    fun dismissCertificateFailure() {
+        // Keep certificateRejected set: dismissing a dialog is never a network retry.
+        forgetRememberedDevice()
+        _clientState.update { it.copy(certificateFailure = null) }
+    }
+
+    private fun invalidateTlsConnections() {
+        disconnectControl(manual = true)
+        relay.disconnect()
+        pendingDesktopResume = false
+        cookieJar.clear()
+        authCookie = null
+        relayCookie = null
+        relay.updateRelayCredentials(null, null)
+        transportSockets.toList().forEach { it.cancel() }
+        transportSockets.clear()
+        _clientState.update {
+            it.copy(connectionState = ConnectionState.Offline, userId = null,
+                requiresSignIn = true, socketConnected = false, devicesCurrent = false)
         }
     }
 
-    private fun platformTrustManager(): X509TrustManager {
-        val factory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm())
-        factory.init(null as KeyStore?)
-        return factory.trustManagers.filterIsInstance<X509TrustManager>().first()
+    private fun replaceTlsTransport() {
+        val previous = okHttpClient
+        transportSockets.toList().forEach { it.cancel() }
+        transportSockets.clear()
+        tlsTransport = createTlsTransport()
+        disposeTransport(previous)
+    }
+
+    private fun disposeTransport(transport: OkHttpClient) {
+        transport.dispatcher.cancelAll()
+        // Conscrypt may write TLS close_notify while evicting an idle connection.
+        // It must not run on the UI thread, including after the owning scope is cancelled.
+        scope.launch(Dispatchers.IO + NonCancellable) { transport.connectionPool.evictAll() }
+        transport.dispatcher.executorService.shutdown()
+    }
+
+    private fun rejectCertificate(failure: ServerCertificateFailure) {
+        forgetRememberedDevice()
+        certificateRejected = true
+        invalidateTlsConnections()
+        val reason = MeshConnectionError.describeCertificate(failure)
+        _clientState.update {
+            it.copy(connectionState = ConnectionState.Failed, certificateFailure = failure,
+                twoFactorChallenge = null, lastError = reason, message = reason)
+        }
+    }
+
+    /** Relay listeners call this only after checking their own current socket/session identity. */
+    private fun reportRelayCertificateFailure(failure: ServerCertificateFailure) {
+        val transport = okHttpClient
+        val generation = sessionGeneration.get()
+        scope.launch {
+            if (transport === okHttpClient && generation == sessionGeneration.get() && !manualClose) {
+                rejectCertificate(failure)
+            }
+        }
     }
 
     fun configureServer(serverUrl: String) {
         val parsed = serverUrl.toHttpUrlOrNullNormalized() ?: return
         if (baseUrl == parsed) return
+        secureVault.rememberedDevice.bind(parsed.toString())
+        // A different endpoint cannot inherit an earlier endpoint's trust decision.
+        if (baseUrl != null) {
+            pinnedSpkiSha256 = null
+            forgetRememberedDevice()
+        }
         disconnectControl(manual = true)
         relay.disconnect()
         cookieJar.clear()
         sessionUsername = null
         sessionPassword = null
         sessionToken = null
+        rememberCookieDays = 30
         authCookie = null
         relayCookie = null
         relay.updateRelayCredentials(null, null)
         isSiteAdmin = false
+        userRemoveRights = null
         userGroupIds = emptySet()
         baseUrl = parsed
+        certificateRejected = false
+        replaceTlsTransport()
         _clientState.value = MeshClientState(
             connectionState = ConnectionState.Offline,
             message = UiText.Resource(R.string.runtime_server_saved),
+            rememberedDeviceExpiresAt = secureVault.getCredentials(parsed.toString())?.let {
+                secureVault.rememberedDevice.get(parsed.toString(), it.username)?.expiresAt
+            },
         )
     }
 
     /** Signs in with `x-meshauth`. [token] carries a two-factor code, or a `**email**` request. */
-    fun login(serverUrl: String, username: String, password: String, token: String? = null) {
+    fun login(serverUrl: String, username: String, password: String, token: String? = null, rememberDevice: Boolean = true) {
         val parsed = serverUrl.toHttpUrlOrNullNormalized()
         if (parsed == null) {
             _clientState.value = MeshClientState(
@@ -207,20 +405,30 @@ class MeshCentralClient(
             return
         }
 
+        if (baseUrl != parsed) configureServer(serverUrl)
+        secureVault.rememberedDevice.bind(parsed.toString(), username.trim())
+        secureVault.rememberedDevice.bindTrust(tlsTransport.rememberedTrust)
         closeAdditionalRelays()
         if (baseUrl != parsed || sessionUsername != username.trim()) {
+            // Also compare saved credentials after process restart, before the in-memory user exists.
+            val previousUser = sessionUsername ?: secureVault.getCredentials(parsed.toString())?.username
+            if (previousUser != null && previousUser != username.trim()) forgetRememberedDevice()
+            rememberCookieDays = 30
             relay.disconnect()
             isSiteAdmin = false
+            userRemoveRights = null
             userGroupIds = emptySet()
             _clientState.value = MeshClientState()
         }
         manualClose = false
         authRejected = false
-        controlAttempt = 0
+        certificateRejected = false
+        controlRetry.reset()
         baseUrl = parsed
         sessionUsername = username.trim()
         sessionPassword = password
         sessionToken = token?.takeIf { it.isNotBlank() }
+        rememberDeviceRequested = rememberDevice && MeshAuth.isVerificationCode(sessionToken) && rememberCookieDays > 0
         cookieJar.clear()
         authCookie = null
         relayCookie = null
@@ -232,6 +440,8 @@ class MeshCentralClient(
                 message = UiText.Resource(R.string.runtime_connecting_server),
                 lastError = null,
                 twoFactorChallenge = null,
+                certificateFailure = null,
+                rememberedDeviceExpiresAt = secureVault.rememberedDevice.get(parsed.toString(), username.trim())?.expiresAt,
             )
         }
         openControlSocket()
@@ -248,10 +458,10 @@ class MeshCentralClient(
         )
     }
 
-    fun submitTwoFactorCode(code: String) {
+    fun submitTwoFactorCode(code: String, rememberDevice: Boolean = true) {
         val username = sessionUsername ?: return
         val password = sessionPassword ?: return
-        login(baseUrl?.toString() ?: return, username, password, code)
+        login(baseUrl?.toString() ?: return, username, password, code, rememberDevice)
     }
 
     fun loginWithStoredCredentials(serverUrl: String): Boolean {
@@ -270,16 +480,37 @@ class MeshCentralClient(
 
     /** A user retry starts a new attempt budget, even after automatic retries were exhausted. */
     fun retryConnection() {
-        if (sessionUsername == null || sessionPassword == null || authRejected) return
-        controlAttempt = 0
+        if (sessionUsername == null || sessionPassword == null || authRejected || certificateRejected) return
+        controlRetry.reset()
         manualClose = false
         openControlSocket()
     }
 
     fun onNetworkAvailable() {
-        if (!manualClose && !authRejected && !controlConnected &&
-            _clientState.value.connectionState != ConnectionState.Connecting
-        ) retryConnection()
+        networkAvailable = true
+        relay.onNetworkAvailable()
+        // A real network event may supersede an in-flight connect on the old network. It must
+        // never reset the server refusal budget or resubmit a rejected password/one-time code.
+        if (waitingForNetwork && !manualClose && !authRejected && !certificateRejected && !controlRetry.exhausted) {
+            openControlSocket()
+        }
+    }
+
+    fun onNetworkLost() {
+        networkAvailable = false
+        relay.onNetworkLost()
+        if (manualClose || authRejected || certificateRejected || controlRetry.exhausted || sessionUsername == null) return
+        val previous = controlSocket
+        disconnectControl(manual = false)
+        previous?.cancel()
+        waitForNetwork()
+    }
+
+    private fun waitForNetwork() {
+        waitingForNetwork = true
+        _clientState.update { it.copy(connectionState = ConnectionState.Reconnecting,
+            socketConnected = false, devicesCurrent = false,
+            message = UiText.Resource(R.string.reliability_waiting_network)) }
     }
 
     fun onAppBackground() {
@@ -289,7 +520,7 @@ class MeshCentralClient(
 
     fun onAppForeground() {
         appForeground = true
-        onNetworkAvailable()
+        if (networkAvailable && waitingForNetwork) onNetworkAvailable()
         if (relay.hasActiveSession()) {
             pendingDesktopResume = !controlConnected
             if (controlConnected) relay.resumeAfterBackground(controlReady = true)
@@ -310,7 +541,9 @@ class MeshCentralClient(
             }
             return
         }
-        relay.connect(url, device)
+        val target = _clientState.value.devices.firstOrNull { it.nodeId == device.nodeId } ?: device
+        relay.connect(url, if (target.isAndroidAgent) target.copy(remoteInput = PhoneRemoteInput.Unknown) else target)
+        if (target.isAndroidAgent) refreshPhoneInput(target.nodeId)
         pendingDesktopResume = false
         _clientState.update {
             it.copy(
@@ -327,7 +560,7 @@ class MeshCentralClient(
         val connection = ManagedRelayConnection(
             protocol = protocol,
             nodeId = device.nodeId,
-            socketFactory = okHttpClient,
+            socketFactory = socketFactory,
             scope = scope,
             credentials = {
                 val cookie = authCookie
@@ -345,12 +578,18 @@ class MeshCentralClient(
             },
             sendControl = ::sendControlJson,
             onFinished = { additionalRelays.remove(it) },
+            onCertificateFailure = ::reportRelayCertificateFailure,
             options = options,
+            androidFileListings = device.isAndroidAgent && protocol == RelayProtocol.AgentFiles,
         )
         additionalRelays.add(connection)
         // Also covers a concurrent logout during creation; the stale object can never connect.
         if (generation != sessionGeneration.get()) connection.close()
-        return connection
+        return if (device.isAndroidAgent && protocol == RelayProtocol.AgentFiles) {
+            ru.papajon.meshcentralmobile.mesh.files.AndroidFilesConnection(connection, scope) { path ->
+                createRelayConnection(device, RelayProtocol.AgentFileDownload, JSONObject().put("file", path))
+            }
+        } else connection
     }
 
     private fun closeAdditionalRelays() {
@@ -360,7 +599,10 @@ class MeshCentralClient(
         additionalRelays.toList().forEach { it.close() }
     }
 
-    fun reconnectDesktop() = relay.reconnect()
+    fun reconnectDesktop() {
+        desktopState.value.device?.takeIf { it.isAndroidAgent }?.let { refreshPhoneInput(it.nodeId) }
+        relay.reconnect()
+    }
 
     fun requestRemoteRefresh(): Boolean = relay.requestRefresh()
 
@@ -384,8 +626,12 @@ class MeshCentralClient(
         }
     }
 
-    fun logout(clearStoredCredentials: Boolean) {
+    fun logout(clearStoredCredentials: Boolean, clearRememberedDevice: Boolean = true) {
+        rememberDeviceRequested = false
+        awaitingRememberCookie = false
+        if (clearRememberedDevice) forgetRememberedDevice()
         isSiteAdmin = false
+        userRemoveRights = null
         userGroupIds = emptySet()
         relay.disconnect()
         disconnectControl(manual = true)
@@ -406,10 +652,21 @@ class MeshCentralClient(
         )
     }
 
+    /** Forget locally without ending an accepted session; a pending reply must not restore it. */
+    fun forgetRememberedDevice() {
+        rememberDeviceRequested = false
+        awaitingRememberCookie = false
+        secureVault.rememberedDevice.clear()
+        _clientState.update { it.copy(rememberedDeviceExpiresAt = null) }
+    }
+
     override fun close() {
+        phoneDesktopSyncJob.cancel()
         relay.disconnect()
         disconnectControl(manual = true)
-        okHttpClient.dispatcher.executorService.shutdown()
+        transportSockets.toList().forEach { it.cancel() }
+        transportSockets.clear()
+        disposeTransport(okHttpClient)
     }
 
     // region clipboard
@@ -602,22 +859,51 @@ class MeshCentralClient(
         val password = sessionPassword ?: return
         disconnectControl(manual = true)
         manualClose = false
+        if (!networkAvailable) { waitForNetwork(); return }
+        waitingForNetwork = false
         _clientState.update {
             it.copy(connectionState = ConnectionState.Connecting, message = UiText.Resource(R.string.runtime_opening_control_channel))
         }
         val request = Request.Builder()
             .url(url.toWebSocketUrl("/control.ashx"))
             .header(HEADER_MESH_AUTH, MeshAuth.headerValue(username, password, sessionToken))
+            .tag(ControlCookieScope::class.java, ControlCookieScope(url.toString(), username))
             .build()
-        controlSocket = okHttpClient.newWebSocket(request, ControlListener())
+        controlSocket = socketFactory.newWebSocket(request, controlListenerForCurrentSession())
+    }
+
+    /** Control callbacks and profile/trust changes share the owner's Main scope. A late TLS result
+     * must not authenticate, persist credentials or display a failure in a replacement session. */
+    private fun controlListenerForCurrentSession(): WebSocketListener {
+        val generation = sessionGeneration.get()
+        val transport = okHttpClient
+        val listener = ControlListener(tlsTransport.rememberedTrust)
+        fun dispatch(action: () -> Unit) {
+            scope.launch {
+                if (generation == sessionGeneration.get() && transport === okHttpClient) action()
+            }
+        }
+        return object : WebSocketListener() {
+            override fun onOpen(webSocket: WebSocket, response: Response) = dispatch { listener.onOpen(webSocket, response) }
+            override fun onMessage(webSocket: WebSocket, text: String) = dispatch { listener.onMessage(webSocket, text) }
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) = dispatch { listener.onFailure(webSocket, t, response) }
+            override fun onClosing(webSocket: WebSocket, code: Int, reason: String) = dispatch { listener.onClosing(webSocket, code, reason) }
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) = dispatch { listener.onClosed(webSocket, code, reason) }
+        }
     }
 
     private fun disconnectControl(manual: Boolean) {
+        awaitingRememberCookie = false
         controlRequests.disconnected()
         closeAdditionalRelays()
+        relay.onControlLost()
         if (manual) manualClose = true
-        controlConnected = false
-        _clientState.update { it.copy(socketConnected = false, devicesCurrent = false) }
+        synchronized(phoneInfoLock) {
+            controlConnected = false
+            _clientState.update { it.copy(socketConnected = false, devicesCurrent = false) }
+            phoneInfoRequests.clear()
+            syncPhoneDesktop()
+        }
         controlReconnectJob?.cancel()
         controlReconnectJob = null
         authCookieJob?.cancel()
@@ -638,9 +924,11 @@ class MeshCentralClient(
         return controlSocket?.send(json.toString()) == true
     }
 
-    private fun reconnectControl(@StringRes reasonRes: Int) {
-        if (manualClose || authRejected) return
-        if (controlAttempt >= MAX_CONTROL_ATTEMPTS) {
+    private fun reconnectControl(@StringRes reasonRes: Int, networkFailure: Boolean = false) {
+        if (manualClose || authRejected || certificateRejected) return
+        val backoff = controlRetry.nextDelay(networkFailure)
+        if (backoff == null) {
+            waitingForNetwork = false
             _clientState.update {
                 it.copy(
                     connectionState = ConnectionState.Failed,
@@ -649,23 +937,25 @@ class MeshCentralClient(
             }
             return
         }
-        controlAttempt++
-        val backoff = min(BASE_BACKOFF_MILLIS * (1L shl (controlAttempt - 1)), MAX_BACKOFF_MILLIS)
+        waitingForNetwork = networkFailure
         _clientState.update {
             it.copy(
                 connectionState = ConnectionState.Reconnecting,
-                message = UiText.resource(
+                message = if (networkFailure) UiText.Resource(R.string.reliability_waiting_network) else UiText.resource(
                     reasonRes,
                     backoff / 1000,
-                    controlAttempt,
-                    MAX_CONTROL_ATTEMPTS,
+                    controlRetry.serverRetries,
+                    ConnectionRetryPolicy.MAX_SERVER_RETRIES,
                 ),
             )
         }
         controlReconnectJob?.cancel()
+        // No polling when Android reports no default network. DNS/connect failures on an
+        // available network still get bounded backoff, since no new callback may arrive.
+        if (!networkAvailable) { controlReconnectJob = null; return }
         controlReconnectJob = scope.launch {
             delay(backoff)
-            if (manualClose || authRejected) return@launch
+            if (manualClose || authRejected || certificateRejected) return@launch
             openControlSocket()
         }
     }
@@ -691,6 +981,8 @@ class MeshCentralClient(
             userId = state.userId,
             siteAdmin = state.userId != null && isSiteAdmin,
             userGroupIds = userGroupIds,
+            manageAllDeviceGroups = _clientState.value.serverCapabilities.manageAllDeviceGroups,
+            removeRights = userRemoveRights,
         )
         return resolved.sortedWith(
             compareBy<MeshDevice> { !it.online }
@@ -700,6 +992,7 @@ class MeshCentralClient(
     }
 
     private var isSiteAdmin = false
+    private var userRemoveRights: Int? = null
     private var userGroupIds: Set<String> = emptySet()
 
     /** Keeps fields the server does not resend (for example `agent` on `changenode`). */
@@ -721,6 +1014,17 @@ class MeshCentralClient(
             relayNodeId = incoming.relayNodeId ?: existing.relayNodeId,
             conn = if (incoming.connectivityKnown) incoming.conn else existing.conn,
             connectivityKnown = incoming.connectivityKnown || existing.connectivityKnown,
+            battery = when {
+                incoming.connectivityKnown && incoming.conn and 1 == 0 -> null
+                incoming.sessionsKnown -> incoming.battery
+                else -> existing.battery
+            },
+            sessionsKnown = incoming.sessionsKnown || existing.sessionsKnown,
+            windowsSecurity = existing.windowsSecurity.updatedBy(incoming.windowsSecurity),
+            lastBootMillis = if (incoming.lastBootKnown) incoming.lastBootMillis else existing.lastBootMillis,
+            lastBootKnown = incoming.lastBootKnown || existing.lastBootKnown,
+            remoteInput = existing.remoteInput.takeUnless { incoming.connectivityKnown && incoming.conn and 1 == 0 }
+                ?: PhoneRemoteInput.Unknown,
         )
     }
 
@@ -734,6 +1038,8 @@ class MeshCentralClient(
             userId = state.userId,
             siteAdmin = isSiteAdmin,
             userGroupIds = userGroupIds,
+            manageAllDeviceGroups = _clientState.value.serverCapabilities.manageAllDeviceGroups,
+            removeRights = userRemoveRights,
         ).map { device ->
             device.copy(meshName = namesById[device.meshId]?.name ?: device.meshName)
         }.sortedWith(
@@ -742,13 +1048,25 @@ class MeshCentralClient(
                 .thenBy { it.name.lowercase(Locale.US) },
         )
         _clientState.update { it.copy(groups = named, devices = devices) }
+        syncPhoneDesktop()
     }
 
-    private fun handleNodeEvent(event: MeshNodeEvent) {
+    private fun handleNodeEvent(event: MeshNodeEvent) = synchronized(phoneInfoLock) {
         when (event) {
+            is MeshNodeEvent.DeviceSessions -> _clientState.update { state ->
+                state.copy(devices = state.devices.map { device ->
+                    if (device.nodeId == event.nodeId) device.copy(
+                        battery = event.battery.takeUnless { device.connectivityKnown && device.conn and 1 == 0 },
+                        sessionsKnown = true,
+                    ) else device
+                })
+            }
             is MeshNodeEvent.NodeConnected -> {
                 val devices = _clientState.value.devices.map { device ->
-                    if (device.nodeId == event.nodeId) device.copy(conn = event.conn, pwr = event.pwr, connectivityKnown = true) else device
+                    if (device.nodeId == event.nodeId) device.copy(conn = event.conn, pwr = event.pwr, connectivityKnown = true,
+                        remoteInput = device.remoteInput.takeIf { device.conn and 1 != 0 && event.conn and 1 != 0 }
+                            ?: PhoneRemoteInput.Unknown,
+                        battery = device.battery.takeIf { event.conn and 1 != 0 }) else device
                 }
                 _clientState.update { it.copy(devices = sortDevices(devices)) }
             }
@@ -764,6 +1082,19 @@ class MeshCentralClient(
                 if (event.meshId != null) requestControlSnapshot()
             }
         }
+        val invalidated = when (event) {
+            is MeshNodeEvent.NodeConnected -> event.nodeId
+            is MeshNodeEvent.NodeRemoved -> event.nodeId
+            is MeshNodeEvent.NodeChanged -> event.device.nodeId.takeIf { event.device.connectivityKnown && event.device.conn and 1 == 0 }
+            else -> null
+        }
+        if (invalidated != null) {
+            phoneInfoRequests.remove(invalidated)
+            updatePhoneInput(invalidated, PhoneRemoteInput.Unknown)
+            if (event is MeshNodeEvent.NodeConnected && event.conn and 1 != 0 &&
+                desktopState.value.device?.nodeId == invalidated) refreshPhoneInput(invalidated)
+        }
+        syncPhoneDesktop()
     }
 
     private fun upsertDevice(device: MeshDevice) {
@@ -776,6 +1107,8 @@ class MeshCentralClient(
                 userId = state.userId,
                 siteAdmin = isSiteAdmin,
                 userGroupIds = userGroupIds,
+                manageAllDeviceGroups = state.serverCapabilities.manageAllDeviceGroups,
+                removeRights = userRemoveRights,
             ).first().let { resolved ->
                 resolved.copy(meshName = state.groups.firstOrNull { it.id == resolved.meshId }?.name ?: resolved.meshName)
             }
@@ -792,9 +1125,11 @@ class MeshCentralClient(
         )
     }
 
-    private inner class ControlListener : WebSocketListener() {
+    private inner class ControlListener(private val rememberedTrust: RememberedDeviceTrust?) : WebSocketListener() {
+        private var opened = false
         override fun onOpen(webSocket: WebSocket, response: Response) {
             if (controlSocket !== webSocket) return
+            opened = true
             controlConnected = true
             // MeshCentral checks credentials only after the upgrade, so an open socket does not
             // restore the retry budget; `userinfo` does.
@@ -811,17 +1146,21 @@ class MeshCentralClient(
 
         override fun onMessage(webSocket: WebSocket, text: String) {
             if (controlSocket !== webSocket) return
-            if (controlRequests.pendingCount() > 0) {
-                runCatching { controlRequests.accept(JSONObject(text)) }
-            }
-            when (val event = MeshControlParser.parse(text)) {
-                is ServerInfo -> _clientState.update {
-                    it.copy(serverName = event.name ?: it.serverName, serverCapabilities = event.capabilities)
+            val frame = ru.papajon.meshcentralmobile.mesh.control.ControlFrameDecoder.decode(text) ?: return
+            val change = frame.takeIf { it.optText("action") == "event" }?.optJSONObject("event")
+            if (change?.optText("action") == "sysinfohash") refreshPhoneInput(change.optText("nodeid"))
+            val consumed = controlRequests.accept(frame)
+            when (val event = MeshControlParser.parse(frame, text.length)) {
+                is ServerInfo -> {
+                    _clientState.update { it.copy(serverName = event.name ?: it.serverName, serverCapabilities = event.capabilities) }
+                    applyGroups(_clientState.value.groups)
                 }
 
                 is UserInfo -> {
-                    controlAttempt = 0
+                    controlRetry.reset()
+                    waitingForNetwork = false
                     isSiteAdmin = event.siteAdmin
+                    userRemoveRights = event.removeRights
                     userGroupIds = event.userGroupIds
                     _clientState.update { state ->
                         state.copy(
@@ -830,19 +1169,29 @@ class MeshCentralClient(
                             serverName = state.serverName ?: event.name,
                         )
                     }
+                    applyGroups(_clientState.value.groups)
                     // Credentials are only persisted once the server accepted them.
                     sessionUsername?.let { user ->
                         sessionPassword?.let { pass ->
                             baseUrl?.let { server -> secureVault.saveCredentials(user, pass, server.toString()) }
                         }
                     }
+                    if (rememberDeviceRequested) {
+                        rememberDeviceRequested = false
+                        if (rememberedTrust != null && MeshAuth.isVerificationCode(sessionToken)) {
+                            awaitingRememberCookie = sendControlJson(MeshControlMessages.twoFactorCookie())
+                        }
+                    }
+                    // A one-time code must never be reused by a later automatic reconnect.
+                    sessionToken = null
                     sendControlJson(MeshControlMessages.meshes())
                     sendControlJson(MeshControlMessages.nodes(responseId = "android-nodes"))
                 }
 
                 is Meshes -> applyGroups(event.groups)
 
-                is Nodes -> {
+                is Nodes -> synchronized(phoneInfoLock) {
+                    phoneInfoRequests.clear()
                     val devices = mergeNodes(event.devices, replaceAll = true)
                     _clientState.update {
                         it.copy(
@@ -861,16 +1210,33 @@ class MeshCentralClient(
                             ),
                         )
                     }
+                    syncPhoneDesktop()
+                    desktopState.value.device?.takeIf { it.isAndroidAgent }?.let { refreshPhoneInput(it.nodeId) }
                 }
 
                 is AuthCookie -> {
                     authCookie = event.cookie
                     relayCookie = event.relayCookie
                     relay.updateRelayCredentials(event.cookie, event.relayCookie)
+                    relay.onControlAvailable()
                     scheduleAuthCookieRefresh()
                     if (appForeground && pendingDesktopResume && controlConnected) {
                         pendingDesktopResume = false
                         relay.resumeAfterBackground(controlReady = true)
+                    }
+                }
+
+                is MeshControlEvent.TwoFactorCookie -> {
+                    if (awaitingRememberCookie && !_clientState.value.requiresSignIn) {
+                        awaitingRememberCookie = false
+                        val server = baseUrl?.toString()
+                        val user = sessionUsername
+                        if (server != null && user != null && event.cookie != null && rememberedTrust != null &&
+                            secureVault.rememberedDevice.save(server, user, event.cookie, rememberCookieDays, rememberedTrust)) {
+                            _clientState.update { it.copy(
+                                rememberedDeviceExpiresAt = secureVault.rememberedDevice.get(server, user)?.expiresAt,
+                            ) }
+                        }
                     }
                 }
 
@@ -879,7 +1245,7 @@ class MeshCentralClient(
                 is ClipMessage -> handleClipboardMessage(event)
 
                 is RoutingResult -> {
-                    if (event.result != null && !event.result.equals("OK", ignoreCase = true)) {
+                    if (!consumed && event.result != null && !event.result.equals("OK", ignoreCase = true)) {
                         additionalRelays.firstOrNull { it.responseId == event.responseId }?.routingFailed()
                         _clientState.update {
                             it.copy(
@@ -900,6 +1266,7 @@ class MeshCentralClient(
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
             if (controlSocket !== webSocket) return
+            t.serverCertificateFailure()?.let { rejectCertificate(it); return }
             controlRequests.disconnected()
             closeAdditionalRelays()
             if (relay.hasActiveSession()) pendingDesktopResume = true
@@ -913,6 +1280,7 @@ class MeshCentralClient(
             }
             val reason = MeshConnectionError.describe(t, response?.code)
             authRejected = response?.code == 401 || response?.code == 403
+            if (authRejected) forgetRememberedDevice()
             _clientState.update {
                 it.copy(
                     connectionState = ConnectionState.Failed,
@@ -923,7 +1291,8 @@ class MeshCentralClient(
                     message = reason,
                 )
             }
-            reconnectControl(R.string.runtime_control_failure_reconnecting)
+            reconnectControl(R.string.runtime_control_failure_reconnecting,
+                ConnectionRetryPolicy.isNetworkFailure(t, response?.code, opened, networkAvailable))
         }
 
         override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
@@ -965,8 +1334,13 @@ class MeshCentralClient(
         closeAdditionalRelays()
         controlConnected = false
         val failure = MeshAuthDiagnostics.classify(event.cause, event.message)
+        if (failure == MeshAuthFailure.BadCredentials || failure == MeshAuthFailure.TwoFactorRequired) {
+            forgetRememberedDevice()
+            sessionToken = null
+        }
         authRejected = failure != MeshAuthFailure.Unknown || event.cause.equals("noauth", ignoreCase = true)
         val challenge = event.twoFactorChallenge
+        if (challenge != null) rememberCookieDays = challenge.twoFactorCookieDays
         val description = MeshAuthDiagnostics.describe(failure, challenge)
         Log.w(TAG, "Control channel rejected authentication: $failure")
         _clientState.update {
@@ -1024,9 +1398,6 @@ class MeshCentralClient(
         const val HEADER_MESH_AUTH = "x-meshauth"
         private const val TAG = "MeshCentralClient"
 
-        private const val BASE_BACKOFF_MILLIS = 1_000L
-        private const val MAX_BACKOFF_MILLIS = 20_000L
-        private const val MAX_CONTROL_ATTEMPTS = 5
         private const val CLIPBOARD_TIMEOUT_MILLIS = 15_000L
         private const val AUTH_COOKIE_REFRESH_MILLIS = 25 * 60 * 1000L
     }

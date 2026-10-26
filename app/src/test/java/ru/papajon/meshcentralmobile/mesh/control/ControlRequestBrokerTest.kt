@@ -9,6 +9,46 @@ import org.junit.Assert.*
 import org.junit.Test
 
 class ControlRequestBrokerTest {
+    @Test fun timedOutSoftwareDoesNotRequireReconnectAndIgnoresReplyWithoutPendingRequest() = runBlocking {
+        val sent = mutableListOf<JSONObject>()
+        val broker = ControlRequestBroker { sent.add(it); true }
+        assertTrue(runCatching { broker.request(JSONObject().put("action", "software"), "software", "node//a", 1) }.isFailure)
+        val retry = runCatching { broker.request(JSONObject().put("action", "software"), "software", "node//a", 1) }
+        assertTrue(retry.exceptionOrNull() is kotlinx.coroutines.TimeoutCancellationException)
+        assertEquals(2, sent.size)
+        assertFalse(broker.accept(JSONObject().put("action", "software").put("nodeid", "node//a").put("value", "[]")))
+        val fresh = async(start = CoroutineStart.UNDISPATCHED) { broker.request(JSONObject().put("action", "software"), "software", "node//a") }
+        assertTrue(broker.accept(JSONObject().put("action", "software").put("nodeid", "node//a").put("value", "[]")))
+        fresh.await()
+        Unit
+    }
+    @Test fun runCommandDenialIsAnErrorNotSuccessfulOutput() = runBlocking {
+        val sent = mutableListOf<JSONObject>()
+        val broker = ControlRequestBroker { sent.add(it); true }
+        val job = async(start = CoroutineStart.UNDISPATCHED) { runCatching { broker.request(JSONObject().put("action", "runcommands").put("reply", true), "msg", "node//a") } }
+        assertTrue(broker.accept(JSONObject().put("action", "runcommands").put("responseid", sent.single().getString("responseid")).put("result", "Access denied")))
+        assertEquals("Access denied", (job.await().exceptionOrNull() as ControlRequestException).serverReason)
+    }
+    @Test fun runCommandWaitsForTypedOutputAndRejectsWrongNode() = runBlocking {
+        val sent = mutableListOf<JSONObject>()
+        val broker = ControlRequestBroker { sent.add(it); true }
+        val job = async(start = CoroutineStart.UNDISPATCHED) { broker.request(JSONObject().put("action", "runcommands").put("reply", true), "msg", "node//a") }
+        val id = sent.single().getString("responseid")
+        assertFalse(broker.accept(JSONObject().put("action", "runcommands").put("responseid", id).put("result", "OK")))
+        assertFalse(broker.accept(JSONObject().put("action", "msg").put("type", "console").put("responseid", id).put("nodeid", "node//a")))
+        assertFalse(broker.accept(JSONObject().put("action", "msg").put("type", "runcommands").put("responseid", id).put("nodeid", "node//b")))
+        assertTrue(broker.accept(JSONObject().put("action", "msg").put("type", "runcommands").put("responseid", id).put("nodeid", "node//a").put("result", "hello")))
+        assertEquals("hello", job.await().getString("result"))
+    }
+    @Test fun softwareOmitsResponseIdAndMatchesOnlyTheRequestedNode() = runBlocking {
+        val sent = mutableListOf<JSONObject>()
+        val broker = ControlRequestBroker { sent.add(it); true }
+        val job = async(start = CoroutineStart.UNDISPATCHED) { broker.request(JSONObject().put("action", "software").put("type", "installedapps"), "software", "node//a") }
+        assertFalse(sent.single().has("responseid"))
+        assertFalse(broker.accept(JSONObject().put("action", "software").put("nodeid", "node//b").put("value", "[]")))
+        assertTrue(broker.accept(JSONObject().put("action", "software").put("nodeid", "node//a").put("value", "[]")))
+        assertEquals("[]", job.await().getString("value"))
+    }
     @Test fun reversedRepliesStayWithTheirDeviceAndWrongNodeCannotSatisfyARequest() = runBlocking {
         val sent = CopyOnWriteArrayList<JSONObject>()
         val broker = ControlRequestBroker { sent.add(it); true }

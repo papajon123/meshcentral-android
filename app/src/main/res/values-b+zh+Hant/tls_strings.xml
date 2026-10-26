@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">伺服器憑證不受信任。信任之前，請將指紋與伺服器上的憑證進行核對。</string>
+    <string name="tls_error_changed">伺服器金鑰已變更。連線已封鎖：請向伺服器管理員核實新指紋。</string>
+    <string name="tls_untrusted_title">不受信任的伺服器憑證</string>
+    <string name="tls_changed_title">伺服器憑證已變更</string>
+    <string name="tls_fingerprint">SHA-256 公開金鑰指紋 (SPKI)</string>
+    <string name="tls_previous_fingerprint">先前受信任的公開金鑰，SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">新公開金鑰，SHA-256 (SPKI)</string>
+    <string name="tls_subject">主體：%1$s</string>
+    <string name="tls_validity">有效期間：%1$s 至 %2$s</string>
+    <string name="tls_server">伺服器：%1$s</string>
+    <string name="tls_compare">請透過獨立的可信管道，將此指紋與伺服器上的憑證進行核對。</string>
+    <string name="tls_trust">信任此伺服器</string>
+    <string name="tls_replace">更換指紋…</string>
+    <string name="tls_replace_title">更換受信任的金鑰？</string>
+    <string name="tls_replace_warning">金鑰變更可能表示有人冒充您的伺服器。請獨立核實新指紋後再繼續。舊金鑰將不再受信任。</string>
+    <string name="tls_confirm_replace">確認更換</string>
+    <string name="tls_pinned_key">受信任的伺服器金鑰</string>
+    <string name="tls_forget">忘記</string>
+    <string name="tls_forget_title">忘記受信任的金鑰？</string>
+    <string name="tls_forget_warning">目前的連線將關閉。如果 Android 不信任伺服器憑證，您需要重新驗證此伺服器。</string>
+    <string name="tls_certificate_fingerprint">憑證 SHA-256 — 瀏覽器中顯示的指紋</string>
+    <string name="tls_error_validity">憑證已過期或尚未生效。請檢查手機日期和時間，以及伺服器憑證的有效期間。確認信任無法略過此錯誤。</string>
+    <string name="tls_error_chain">憑證或其鏈結存在無效簽章、弱金鑰或弱演算法，或憑證授權單位的用途或限制無效。管理員必須修復憑證；無法確認此憑證。</string>
+    <string name="tls_error_hostname">憑證與伺服器位址不符。請檢查位址，並請管理員修正憑證中的名稱。</string>
+    <string name="tls_hostname_warning">警告：憑證中的名稱與伺服器位址不符。請僅在獨立核實後確認金鑰。</string>
+    <string name="tls_blocked_title">伺服器憑證遭拒</string>
+    <string name="tls_verify_instructions">請管理員使用下方指令計算 SPKI 指紋。直接使用 TLS 時，請使用 meshcentral-data/webserver-cert-public.crt；若 TLS 在反向代理終止，請使用代理的憑證。將 cert.pem 替換為該檔案。瀏覽器顯示的是獨立的憑證指紋。</string>
+    <string name="tls_independent_warning">請透過獨立且可信的管道核對。透過同一條未經驗證的連線取得的指紋無法防範中間人攻擊。</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">憑證簽發者自稱是 MeshCentral 根憑證。</string>
+    <string name="tls_issuer_unknown">此憑證由未知的憑證授權單位簽署。如果伺服器使用公開憑證，其憑證鏈可能不完整，建議修復伺服器設定。</string>
+</resources>

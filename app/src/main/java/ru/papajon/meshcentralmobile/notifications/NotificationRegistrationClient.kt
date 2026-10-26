@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.notifications
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import org.json.JSONObject
 import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
 
@@ -29,13 +31,13 @@ internal class NotificationRegistrationClient(private val client: MeshCentralCli
             nodeId = null,
             timeoutMillis = TIMEOUT_MILLIS,
         )
-        if (response.optString("action") != ACTION_PLUGIN ||
-            response.optString("plugin") != NotificationContract.PLUGIN_ID
+        if (response.optText("action") != ACTION_PLUGIN ||
+            response.optText("plugin") != NotificationContract.PLUGIN_ID
         ) {
             throw NotificationPluginException("PROTOCOL")
         }
         if (!response.optBoolean("ok", false)) {
-            val code = response.optJSONObject("error")?.optString("code")
+            val code = response.optJSONObject("error")?.optText("code")
                 ?.takeIf { it.isNotBlank() } ?: "PROTOCOL"
             throw NotificationPluginException(code)
         }

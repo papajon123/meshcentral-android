@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">எச்சரிக்கை</string>
+    <string name="parity_fixes_server_rejected">சேவையகத்தின் பதில்: %1$s</string>
+    <string name="parity_fixes_output_truncated">வெளியீடு 65,536 எழுத்துகளாகச் சுருக்கப்பட்டது.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: முந்தைய அளவீட்டிலிருந்து சராசரி; பிற அமர்வுகள் கோரிய அளவீடுகளும் அடங்கும்.</string>
+    <string name="parity_fixes_run_warning">இந்தச் சாதனத்தில் ஒரு கட்டளை இயக்கப்படும். அதைக் கவனமாகச் சரிபார்க்கவும். இந்தச் சாதனத்திற்கு அணுகல் உள்ள அனைத்து பயனர்களும் கட்டளை வெளியீட்டைப் பார்க்கலாம். ரகசியத் தகவலைச் சேர்க்க வேண்டாம்.</string>
+</resources>

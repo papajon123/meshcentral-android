@@ -25,9 +25,12 @@ import org.junit.Rule
 import org.junit.Test
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.model.AppSettings
+import ru.papajon.meshcentralmobile.ui.components.UpdateSettings
 import ru.papajon.meshcentralmobile.ui.screens.LockScreen
 import ru.papajon.meshcentralmobile.ui.screens.SettingsScreen
 import ru.papajon.meshcentralmobile.ui.theme.MeshCentralMobileTheme
+import ru.papajon.meshcentralmobile.update.UpdateCandidate
+import ru.papajon.meshcentralmobile.update.UpdateUiState
 
 class LocaleFeedbackTest {
     @get:Rule val compose = createAndroidComposeRule<ComponentActivity>()
@@ -60,17 +63,27 @@ class LocaleFeedbackTest {
                         onPinSaved = {},
                         onPinCleared = {},
                         onLockNow = {},
-                        onCredentialsCleared = {},
-                        onMeshSessionCleared = {},
-                        onWebViewSessionCleared = {},
+                        onClearSession = {},
+                        updates = {
+                            // Settings receives its production update section from the app.
+                            // Supply a synthetic candidate; no release lookup or browser is used.
+                            UpdateSettings(
+                                state = UpdateUiState(candidate = UpdateCandidate(
+                                    packageName = "io.github.papajon123.meshcentral",
+                                    versionCode = 19, versionName = "0.7.4",
+                                    sha256 = "0".repeat(64), signerSha256 = "1".repeat(64),
+                                )),
+                                onEnabled = {}, onCheck = {}, onLater = {}, onSkip = {},
+                            )
+                        },
                     )
                 }
             }
         }
 
-        compose.onNodeWithText(contextFor("en").getString(R.string.settings_update_action))
+        compose.onNodeWithText(contextFor("en").getString(R.string.update_download))
             .performScrollTo().performClick()
-        assertFeedbackChangesLanguage(R.string.settings_update_unavailable) {
+        assertFeedbackChangesLanguage(R.string.update_browser_error) {
             language.value = "ru"
         }
         compose.runOnIdle { assertEquals(1, openAttempts) }

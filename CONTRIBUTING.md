@@ -64,10 +64,16 @@ GitHub `main` contains release snapshots rather than the private development his
 may therefore be integrated in GitLab and linked from its release instead of being merged directly
 into GitHub `main`. See [the release workflow](docs/GITLAB_RELEASES.md).
 
+In GitLab every change, including AI-assisted work, lands through a merge request from a protected
+`mr/<topic>` branch. Its pipeline runs the translation, script, JVM, lint and build checks; release
+signing and publication jobs run only on `main` and release tags. The maintainer reviews the code, the
+architecture and the behaviour, then merges.
+
 - Keep the change focused; describe the user-visible behaviour and the reason for it.
 - Include the commands you ran and their result. Screenshots of synthetic data are welcome; screenshots of a real desktop are not.
 - Do not bump `versionCode`/`versionName`, change signing configuration, or publish a release; the maintainer handles versioning and signing.
 - Do not commit generated APKs, build output, keystores, or local SDK paths.
+- Contributions made with AI tools are accepted if the pull request description says so and includes the commands you ran and their result. You are responsible for the licensing of the change, and it must not contain data from real servers. See the [AI policy](AI_POLICY.md).
 
 ## Security reports
 

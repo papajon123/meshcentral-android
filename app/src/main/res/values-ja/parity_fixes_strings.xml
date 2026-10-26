@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">警告</string>
+    <string name="parity_fixes_server_rejected">サーバーの応答：%1$s</string>
+    <string name="parity_fixes_output_truncated">出力は 65,536 文字に切り詰められました。</string>
+    <string name="parity_fixes_linux_cpu_average">CPU：前回の測定からの平均値（他のセッションが要求した測定値を含む）。</string>
+    <string name="parity_fixes_run_warning">このデバイスでコマンドを実行します。注意深く確認してください。このデバイスにアクセスできるすべてのユーザーがコマンドの出力を閲覧できます。機密情報を含めないでください。</string>
+</resources>

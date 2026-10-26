@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">Kein Netz. Warte auf erneute Verbindung…</string>
+    <string name="reliability_clearing_session">Gespeicherte Anmeldung und Sitzung werden entfernt…</string>
+    <string name="reliability_clear_failed">Die Sitzung konnte nicht vollständig gelöscht werden. Versuchen Sie es erneut.</string>
+</resources>

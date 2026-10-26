@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">サーバー証明書は信頼されていません。信頼する前に、フィンガープリントをサーバー上の証明書と照合してください。</string>
+    <string name="tls_error_changed">サーバーの鍵が変更されました。接続をブロックしました。新しいフィンガープリントをサーバー管理者に確認してください。</string>
+    <string name="tls_untrusted_title">信頼されていないサーバー証明書</string>
+    <string name="tls_changed_title">サーバー証明書が変更されました</string>
+    <string name="tls_fingerprint">公開鍵の SHA-256 フィンガープリント (SPKI)</string>
+    <string name="tls_previous_fingerprint">以前に信頼した公開鍵、SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">新しい公開鍵、SHA-256 (SPKI)</string>
+    <string name="tls_subject">証明書の主体: %1$s</string>
+    <string name="tls_validity">有効期間: %1$s ～ %2$s</string>
+    <string name="tls_server">サーバー: %1$s</string>
+    <string name="tls_compare">別の信頼できる連絡手段で、このフィンガープリントをサーバー上の証明書と照合してください。</string>
+    <string name="tls_trust">このサーバーを信頼する</string>
+    <string name="tls_replace">フィンガープリントを変更…</string>
+    <string name="tls_replace_title">信頼済みの鍵を変更しますか？</string>
+    <string name="tls_replace_warning">鍵の変更は、サーバーへのなりすましを意味する可能性があります。別の手段で新しいフィンガープリントを確認してから続行してください。以前の鍵は信頼されなくなります。</string>
+    <string name="tls_confirm_replace">変更を確定</string>
+    <string name="tls_pinned_key">信頼済みのサーバーの鍵</string>
+    <string name="tls_forget">削除</string>
+    <string name="tls_forget_title">信頼済みの鍵を削除しますか？</string>
+    <string name="tls_forget_warning">現在の接続は閉じられます。Android が証明書を信頼していない場合、このサーバーを再度確認する必要があります。</string>
+    <string name="tls_certificate_fingerprint">証明書の SHA-256 — ブラウザーに表示される値</string>
+    <string name="tls_error_validity">証明書は期限切れ、またはまだ有効ではありません。端末の日時とサーバー証明書の有効期間を確認してください。信頼を承認しても、このエラーは回避できません。</string>
+    <string name="tls_error_chain">証明書またはそのチェーンに、無効な署名、弱い鍵やアルゴリズム、または認証局の用途や制約の不備があります。管理者が証明書を修正する必要があり、承認することはできません。</string>
+    <string name="tls_error_hostname">証明書がサーバーのアドレスと一致しません。アドレスを確認し、証明書の名前の修正を管理者に依頼してください。</string>
+    <string name="tls_hostname_warning">警告: 証明書の名前がサーバーのアドレスと一致しません。独立した確認を行った後にのみ鍵を承認してください。</string>
+    <string name="tls_blocked_title">サーバー証明書を拒否しました</string>
+    <string name="tls_verify_instructions">管理者は次のコマンドで SPKI フィンガープリントを計算できます。直接 TLS 接続する場合は meshcentral-data/webserver-cert-public.crt、リバースプロキシで TLS を終端する場合はプロキシの証明書を使い、cert.pem をそのファイルに置き換えてください。ブラウザーには別の証明書フィンガープリントが表示されます。</string>
+    <string name="tls_independent_warning">独立した信頼できる経路で照合してください。この未検証の接続から取得したフィンガープリントでは、中間者による攻撃を防げません。</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">証明書の発行者は自らを MeshCentral のルートであると名乗っています。</string>
+    <string name="tls_issuer_unknown">この証明書は不明な認証局によって署名されています。サーバーが公開証明書を使用している場合、証明書チェーンが不完全な可能性があります。サーバーの設定を修正することをお勧めします。</string>
+</resources>

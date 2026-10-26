@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">செயலிப் புதுப்பிப்புகள்</string>
+    <string name="update_consent_title">GitHub-இல் புதிய பதிப்புகளைச் சரிபார்க்கவா?</string>
+    <string name="update_consent_body">செயலி தினமும் ஒருமுறை api.github.com-ஐ அணுகும்; உங்கள் தரவு எதுவும் அனுப்பப்படாது.</string>
+    <string name="update_privacy_detail">GitHub மற்றும் அதன் CDN உங்கள் IP முகவரியையும் HTTP தலைப்புகளையும் பார்க்கும்.</string>
+    <string name="update_allow">புதுப்பிப்புகளைச் சரிபார்</string>
+    <string name="update_not_now">இப்போது வேண்டாம்</string>
+    <string name="update_never">இன்னும் சரிபார்க்கவில்லை.</string>
+    <string name="update_current">இணக்கமான புதிய பதிப்பு எதுவும் இல்லை.</string>
+    <string name="update_found">புதுப்பிப்பு கிடைத்துள்ளது.</string>
+    <string name="update_suppressed">இந்தப் பதிப்பு ஒத்திவைக்கப்பட்டது அல்லது தவிர்க்கப்பட்டது.</string>
+    <string name="update_network_error">சரிபார்க்க முடியவில்லை. 24 மணிநேரத்திற்குப் பிறகு மீண்டும் முயலவும்.</string>
+    <string name="update_rate_limit">GitHub கோரிக்கைகளைக் கட்டுப்படுத்தியுள்ளது. 24 மணிநேரத்திற்குப் பிறகு மீண்டும் முயலவும்.</string>
+    <string name="update_invalid_metadata">பதிப்புத் தகவலை உறுதிப்படுத்த முடியவில்லை. 24 மணிநேரத்திற்குப் பிறகு மீண்டும் முயலவும்.</string>
+    <string name="update_wrong_signer">இந்தக் கட்டமைப்பின் கையொப்பம் வேறுபடுகிறது. இணக்கமான புதுப்பிப்பை வழங்க முடியாது.</string>
+    <string name="update_checking">சரிபார்க்கிறது…</string>
+    <string name="update_last_check">கடைசி முயற்சி: %1$s</string>
+    <string name="update_recently_checked">ஒரு நிமிடத்திற்குள் சரிபார்க்கப்பட்டது. சிறிது நேரம் கழித்து மீண்டும் முயலவும்.</string>
+    <string name="update_check_now">இப்போது சரிபார்</string>
+    <string name="update_available">பதிப்பு %1$s கிடைக்கிறது</string>
+    <string name="update_download">பதிவிறக்கு</string>
+    <string name="update_later">பிறகு</string>
+    <string name="update_skip">இந்தப் பதிப்பைத் தவிர்</string>
+    <string name="update_browser_error">உலாவி இல்லை. உலாவியை நிறுவவும் அல்லது இயக்கவும்.</string>
+</resources>

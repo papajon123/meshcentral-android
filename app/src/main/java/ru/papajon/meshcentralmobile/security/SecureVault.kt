@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.security
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -23,6 +25,12 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
         "$KEY_CREDENTIALS.$it"
     } ?: KEY_CREDENTIALS
 
+    val rememberedDevice = RememberedDeviceStore(
+        read = { getEncrypted("remembered.$credentialKey") },
+        write = { putEncrypted("remembered.$credentialKey", it) },
+        remove = { prefs.edit().remove("remembered.$credentialKey").apply() },
+    )
+
     /** Called only for the profile created from pre-profile settings. Migration and marker are atomic. */
     fun migrateLegacyCredentials(serverUrl: String) {
         require(credentialNamespace == "default") { "Only the legacy profile can claim legacy credentials" }
@@ -31,7 +39,7 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
         val editor = prefs.edit()
         if (!prefs.contains(credentialKey)) {
             val payload = runCatching { getEncrypted(KEY_CREDENTIALS) }.getOrElse { return }
-            val oldScope = payload?.let { JSONObject(it).optString("server").takeIf(String::isNotBlank) }
+            val oldScope = payload?.let { JSONObject(it).optText("server").takeIf(String::isNotBlank) }
             if (payload != null && CredentialScope.matches(oldScope, serverUrl)) {
                 editor.putString(credentialKey, encryptedValue(payload))
             }
@@ -53,14 +61,15 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
         val payload = getEncrypted(credentialKey) ?: return null
         val json = JSONObject(payload)
         // Older, unscoped payloads require an explicit sign-in. Never guess their server.
-        if (!CredentialScope.matches(json.optString("server").takeIf { it.isNotBlank() }, serverUrl)) return null
+        if (!CredentialScope.matches(json.optText("server").takeIf { it.isNotBlank() }, serverUrl)) return null
         return StoredCredentials(
-            username = json.optString("username"),
-            password = json.optString("password"),
+            username = json.optText("username"),
+            password = json.optText("password"),
         )
     }
 
     fun clearCredentials() {
+        rememberedDevice.clear()
         val editor = prefs.edit().remove(credentialKey)
         if (credentialNamespace != null) editor.putBoolean("migrated.$credentialKey", true)
         if (credentialNamespace == "default") editor.remove(KEY_CREDENTIALS)
@@ -76,7 +85,7 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
     fun getScopedSecret(label: String, serverUrl: String): String? {
         require(label.matches(Regex("[a-z_]{1,40}")))
         val json = getEncrypted("secret.$credentialKey.$label")?.let(::JSONObject) ?: return null
-        return if (CredentialScope.matches(json.optString("server"), serverUrl)) json.optString("value") else null
+        return if (CredentialScope.matches(json.optText("server"), serverUrl)) json.optText("value") else null
     }
     fun clearScopedSecret(label: String) {
         require(label.matches(Regex("[a-z_]{1,40}")))

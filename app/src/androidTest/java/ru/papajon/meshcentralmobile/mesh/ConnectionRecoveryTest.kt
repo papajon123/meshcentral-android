@@ -28,12 +28,12 @@ class ConnectionRecoveryTest {
         val vault = SecureVault(isolated)
         val client = MeshCentralClient(vault, scope)
         val server = MockWebServer()
-        var socket: WebSocket? = null
+        val socket = java.util.concurrent.atomic.AtomicReference<WebSocket?>()
         try {
             // Exhaust automatic retries quickly with explicit retries; the next user retry must work.
             repeat(6) { server.enqueue(MockResponse().setResponseCode(503)) }
             server.enqueue(MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
-                override fun onOpen(webSocket: WebSocket, response: Response) { socket = webSocket }
+                override fun onOpen(webSocket: WebSocket, response: Response) { socket.set(webSocket) }
             }))
             server.start()
             client.login(server.url("/").toString(), "test-user", "test-password")
@@ -45,14 +45,16 @@ class ConnectionRecoveryTest {
                 assertFalse(client.clientState.value.socketConnected)
                 client.refreshDevices()
             }
-            await { client.clientState.value.socketConnected }
+            // The client's onOpen can run before MockWebServer publishes its socket.
+            await { client.clientState.value.socketConnected && socket.get() != null }
+            val connectedSocket = requireNotNull(socket.get())
             assertNull(client.clientState.value.lastError)
             assertFalse(client.clientState.value.devicesCurrent)
-            socket!!.send("""{"action":"userinfo","userinfo":{"_id":"user/test/fixture"}}""")
-            socket!!.send("""{"action":"nodes","nodes":{}}""")
+            connectedSocket.send("""{"action":"userinfo","userinfo":{"_id":"user/test/fixture"}}""")
+            connectedSocket.send("""{"action":"nodes","nodes":{}}""")
             await { client.clientState.value.devicesCurrent && !client.clientState.value.requiresSignIn }
             // A dropped transport is not a rejected password and must not force the sign-in form.
-            socket!!.close(1001, "fixture disconnect")
+            connectedSocket.close(1001, "fixture disconnect")
             await { !client.clientState.value.socketConnected }
             assertFalse(client.clientState.value.devicesCurrent)
             assertFalse(client.clientState.value.requiresSignIn)

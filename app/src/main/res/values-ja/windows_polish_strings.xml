@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">エージェントは、UTF-8 でない Windows の出力を送信前に破損する可能性があります。PowerShell コマンドでは UTF-8 モードを選択してください。コンソールの入力と出力が UTF-8 に設定されます。このモードでは cmd.exe の構文ではなく PowerShell の構文を使用します。独自の出力エンコードを持つプログラムは、引き続き異なる動作をする場合があります。</string>
+    <string name="windows_polish_default_shell">既定のコマンドシェル（変更なし）</string>
+</resources>

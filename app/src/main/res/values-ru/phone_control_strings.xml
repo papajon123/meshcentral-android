@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">На телефоне выключена служба удалённого управления (Специальные возможности)</string>
+    <string name="phone_control_unsupported">Android на телефоне не поддерживает удалённый ввод</string>
+    <string name="phone_control_unknown">Агент не сообщает о поддержке ввода</string>
+    <string name="phone_control_no_permission">Ваши права разрешают только просмотр</string>
+    <string name="phone_control_back">Назад</string>
+    <string name="phone_control_home">Домой</string>
+    <string name="phone_control_recents">Недавние</string>
+    <string name="phone_control_notifications">Уведомления</string>
+    <string name="phone_control_quick_settings">Быстрые настройки</string>
+    <string name="phone_control_text">Ввод текста</string>
+    <string name="phone_control_text_hint">Текст добавляется в конец выбранного поля. В поле пароля ввод не пройдёт.</string>
+    <string name="phone_control_consent_hint">Владелец телефона должен разрешить управление. Экран блокировки и ввод PIN недоступны.</string>
+</resources>

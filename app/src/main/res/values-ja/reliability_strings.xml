@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">ネットワークがありません。再接続を待っています…</string>
+    <string name="reliability_clearing_session">保存されたサインインとセッションを削除しています…</string>
+    <string name="reliability_clear_failed">セッションの消去を完了できませんでした。もう一度お試しください。</string>
+</resources>

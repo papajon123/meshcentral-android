@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">فون پر ریموٹ کنٹرول کی رسائی سروس بند ہے</string>
+    <string name="phone_control_unsupported">اس فون پر Android ریموٹ ان پٹ کو سپورٹ نہیں کرتا</string>
+    <string name="phone_control_unknown">ایجنٹ ان پٹ کی سپورٹ کی اطلاع نہیں دیتا</string>
+    <string name="phone_control_no_permission">آپ کی اجازتیں صرف دیکھنے کی اجازت دیتی ہیں</string>
+    <string name="phone_control_back">واپس</string>
+    <string name="phone_control_home">ہوم</string>
+    <string name="phone_control_recents">حالیہ</string>
+    <string name="phone_control_notifications">اطلاعات</string>
+    <string name="phone_control_quick_settings">فوری ترتیبات</string>
+    <string name="phone_control_text">متن درج کریں</string>
+    <string name="phone_control_text_hint">متن منتخب فیلڈ کے آخر میں شامل ہوتا ہے۔ پاس ورڈ فیلڈز میں ان پٹ بلاک ہے۔</string>
+    <string name="phone_control_consent_hint">فون کے مالک کو کنٹرول کی منظوری دینی ہوگی۔ لاک اسکرین اور PIN ان پٹ دستیاب نہیں۔</string>
+</resources>

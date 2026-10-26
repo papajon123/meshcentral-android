@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s 未完成的文档已删除。</string>
+    <string name="final_fixes_download_marked">%1$s 未完成的文档已加上 .partial 后缀。重试前，请在 Android 的“文件”应用中将其删除。</string>
+    <string name="final_fixes_download_retained">%1$s Android 无法删除未完成的文档，也无法为其加上 .partial 后缀。请勿使用它；请在 Android 的“文件”应用中将其删除。</string>
+    <string name="final_fixes_download_transport_failed">下载过程中连接中断。请打开新的文件会话并重试。</string>
+    <string name="final_fixes_download_invalid">下载的数据与预期文件不匹配。请打开新的文件会话并重试。</string>
+</resources>

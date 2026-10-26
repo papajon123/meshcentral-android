@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">Pesan, tautan, dan panggilan memerlukan izin konsol selain izin kendali jarak jauh.</string>
+    <string name="phone_url_format">Gunakan http:// atau https:// dalam huruf kecil. Spasi dan tanda kutip ganda tidak diperbolehkan; gunakan pengodean persen.</string>
+    <string name="phone_files_choose_category">Pilih kategori atau folder ponsel sebelum mengunggah.</string>
+    <string name="phone_files_ambiguous_name">Beberapa berkas media memakai nama ini. Buka berkas dari foldernya di Sdcard untuk mengunduh atau menghapus berkas yang benar.</string>
+    <string name="phone_files_directory_too_large">Kategori ini memuat terlalu banyak berkas untuk didaftar. Buka folder yang lebih kecil di Sdcard.</string>
+</resources>

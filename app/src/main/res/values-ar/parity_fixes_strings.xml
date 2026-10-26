@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">تحذير</string>
+    <string name="parity_fixes_server_rejected">استجابة الخادم: %1$s</string>
+    <string name="parity_fixes_output_truncated">تم اقتطاع الخرج إلى 65,536 حرفًا.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: المتوسط منذ القياس السابق، بما في ذلك القياسات التي طلبتها جلسات أخرى.</string>
+    <string name="parity_fixes_run_warning">يتم تنفيذ أمر على هذا الجهاز. راجعه بعناية. يمكن لجميع المستخدمين الذين لديهم وصول إلى هذا الجهاز رؤية خرج الأمر. لا تُدرج معلومات سرية.</string>
+</resources>

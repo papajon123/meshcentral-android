@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">தொலைபேசியில் தொலைக் கட்டுப்பாட்டு அணுகல்தன்மை சேவை அணைக்கப்பட்டுள்ளது</string>
+    <string name="phone_control_unsupported">இந்தத் தொலைபேசியின் Android தொலைவிலிருந்து உள்ளீட்டை ஆதரிக்காது</string>
+    <string name="phone_control_unknown">முகவர் உள்ளீட்டு ஆதரவைத் தெரிவிக்கவில்லை</string>
+    <string name="phone_control_no_permission">உங்கள் அனுமதிகள் பார்ப்பதற்கு மட்டுமே</string>
+    <string name="phone_control_back">பின்செல்</string>
+    <string name="phone_control_home">முகப்பு</string>
+    <string name="phone_control_recents">சமீபத்தியவை</string>
+    <string name="phone_control_notifications">அறிவிப்புகள்</string>
+    <string name="phone_control_quick_settings">விரைவு அமைப்புகள்</string>
+    <string name="phone_control_text">உரையை உள்ளிடவும்</string>
+    <string name="phone_control_text_hint">உரை தேர்ந்தெடுக்கப்பட்ட புலத்தின் முடிவில் சேர்க்கப்படும். கடவுச்சொல் புலங்களில் உள்ளீடு தடுக்கப்படும்.</string>
+    <string name="phone_control_consent_hint">தொலைபேசி உரிமையாளர் கட்டுப்பாட்டை அனுமதிக்க வேண்டும். பூட்டுத் திரை மற்றும் PIN உள்ளீடு கிடைக்காது.</string>
+</resources>

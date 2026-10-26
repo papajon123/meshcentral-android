@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">Tác nhân có thể làm hỏng đầu ra Windows không phải UTF-8 trước khi gửi. Với lệnh PowerShell, hãy chọn chế độ UTF-8: chế độ này đặt đầu vào và đầu ra của bảng điều khiển thành UTF-8. Chế độ này dùng cú pháp PowerShell, không phải cú pháp cmd.exe. Các chương trình có cách mã hóa đầu ra riêng vẫn có thể hoạt động khác.</string>
+    <string name="windows_polish_default_shell">Shell lệnh mặc định (không thay đổi)</string>
+</resources>

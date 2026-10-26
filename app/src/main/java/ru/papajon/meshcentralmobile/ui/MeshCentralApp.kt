@@ -46,6 +46,8 @@ import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.model.AppDestination
 import ru.papajon.meshcentralmobile.security.SecureVault
 import ru.papajon.meshcentralmobile.settings.AppLockController
+import ru.papajon.meshcentralmobile.settings.ServerCertificateApproval
+import ru.papajon.meshcentralmobile.ui.screens.ForgetServerKeyDialog
 import ru.papajon.meshcentralmobile.settings.ServerUrlValidator
 import ru.papajon.meshcentralmobile.settings.SettingsRepository
 import ru.papajon.meshcentralmobile.ui.components.MeshNavigationRail
@@ -60,7 +62,6 @@ import ru.papajon.meshcentralmobile.ui.screens.OnboardingScreen
 import ru.papajon.meshcentralmobile.ui.screens.RemoteDesktopScreen
 import ru.papajon.meshcentralmobile.ui.screens.ServerSettingsScreen
 import ru.papajon.meshcentralmobile.ui.screens.SettingsScreen
-import ru.papajon.meshcentralmobile.web.MeshWebViewController
 import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 import ru.papajon.meshcentralmobile.ui.screens.profiles.ServerProfilesSheet
 import ru.papajon.meshcentralmobile.discovery.RecentDevicesStore
@@ -79,7 +80,11 @@ import androidx.core.content.ContextCompat
 import ru.papajon.meshcentralmobile.notifications.NotificationController
 import ru.papajon.meshcentralmobile.ui.screens.notifications.NotificationSettingsSheet
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeout
+import ru.papajon.meshcentralmobile.update.AppUpdateViewModel
+import ru.papajon.meshcentralmobile.ui.components.UpdateConsentDialog
+import ru.papajon.meshcentralmobile.ui.components.UpdateLifecycle
+import ru.papajon.meshcentralmobile.ui.components.UpdateNotice
+import ru.papajon.meshcentralmobile.ui.components.UpdateSettings
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,7 +104,6 @@ fun MeshCentralApp(
     var managingSessions by rememberSaveable { mutableStateOf(false) }
     var managingTransfers by rememberSaveable { mutableStateOf(false) }
     var managingNotifications by rememberSaveable { mutableStateOf(false) }
-    var endingSession by remember { mutableStateOf(false) }
     var profileError by remember { mutableStateOf<ru.papajon.meshcentralmobile.localization.UiText?>(null) }
     val settings by settingsRepository.settingsState
     val favorites by settingsRepository.favoritesState
@@ -107,27 +111,29 @@ fun MeshCentralApp(
     val activeProfileId by settingsRepository.activeProfileIdState
     val sessionViewModel: MeshSessionViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val meshClient = sessionViewModel.client
+    val activeProfile = profiles.first { it.id == activeProfileId }
+    val certificateApproval = remember(meshClient, activeProfileId, settings.serverUrl) {
+        ServerCertificateApproval(settingsRepository, appLockController)
+    }
     val workspace = sessionViewModel.workspace
+    if (workspace.clearingSession) {
+        // Keep every sign-in/profile action inaccessible until persisted cleanup has completed.
+        // The state/job belongs to the workspace and survives Activity recreation.
+        BackHandler { }
+        AlertDialog(onDismissRequest = {}, text = {
+            Text(stringResource(R.string.reliability_clearing_session))
+        }, confirmButton = {})
+        return
+    }
     LaunchedEffect(workspace.selectedDeviceId, workspace.deviceTab) { sessionViewModel.rememberSelection() }
     val transfers by workspace.transfers.state.collectAsState()
     val profileVault = sessionViewModel.credentialVault
     val clientState by meshClient.clientState.collectAsState()
     val context = LocalContext.current
+    val updateModel: AppUpdateViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
+    val updateState by updateModel.state.collectAsState()
     val notificationController = remember(activeProfileId, settings.serverUrl, clientState.userId, meshClient) {
         NotificationController(context, activeProfileId, settings.serverUrl, clientState.userId.orEmpty(), meshClient, workspace.scope)
-    }
-    fun endCurrentSession() {
-        if (endingSession) return
-        endingSession = true
-        sessionViewModel.closeTools(clearDevice = true)
-        workspace.scope.launch {
-            try { runCatching { withTimeout(25_000) { notificationController.disable() } } }
-            finally {
-                NotificationController.disableLocal(context, activeProfileId)
-                meshClient.logout(clearStoredCredentials = false)
-                endingSession = false
-            }
-        }
     }
     fun reopenSelectedTool() {
         val tab = sessionViewModel.deviceTab
@@ -203,9 +209,12 @@ fun MeshCentralApp(
             ) == null
     }
 
-    LaunchedEffect(meshClient, settings.serverUrl, settings.allowHttpInDebug) {
+    LaunchedEffect(meshClient, activeProfileId, settings.serverUrl, settings.allowHttpInDebug,
+        settings.trustSelfSignedCertificates, activeProfile.pinnedSpkiSha256) {
         if (serverUrlIsValid) {
             meshClient.configureServer(settings.serverUrl)
+            meshClient.setAllowSelfSignedCertificates(settings.trustSelfSignedCertificates)
+            meshClient.setPinnedServerKey(activeProfile.pinnedSpkiSha256)
         }
     }
 
@@ -213,14 +222,15 @@ fun MeshCentralApp(
     // credentials once, and fall back to the sign-in screen only if that fails.
     LaunchedEffect(meshClient, settings.serverUrl, settings.allowHttpInDebug, settings.onboardingCompleted) {
         if (settings.onboardingCompleted && serverUrlIsValid && !clientState.socketConnected &&
+            !meshClient.certificateTrustRequired &&
             profileVault.getCredentials(settings.serverUrl) != null
         ) {
+            // Install the active profile's complete trust policy before any stored-credential attempt.
+            meshClient.configureServer(settings.serverUrl)
+            meshClient.setAllowSelfSignedCertificates(settings.trustSelfSignedCertificates)
+            meshClient.setPinnedServerKey(activeProfile.pinnedSpkiSha256)
             meshClient.loginWithStoredCredentials(settings.serverUrl)
         }
-    }
-
-    LaunchedEffect(meshClient, settings.trustSelfSignedCertificates) {
-        meshClient.setAllowSelfSignedCertificates(settings.trustSelfSignedCertificates)
     }
 
     DisposableEffect(meshClient) {
@@ -267,6 +277,9 @@ fun MeshCentralApp(
         )
         return
     }
+
+    UpdateLifecycle(updateModel)
+    if (updateState.needsConsent) UpdateConsentDialog(updateModel::consent)
 
     LaunchedEffect(workspace.eventDestination, activeProfileId, clientState.devicesCurrent, clientState.userId) {
         val target = workspace.eventDestination ?: return@LaunchedEffect
@@ -343,7 +356,6 @@ fun MeshCentralApp(
         managingNotifications = false
         workspace.eventDestination = ru.papajon.meshcentralmobile.workspace.EventDestination(activeProfileId, it.nodeId, it.jobId)
     })
-    if (endingSession) AlertDialog(onDismissRequest = {}, text = { Text(stringResource(R.string.workspace_signing_out)) }, confirmButton = {})
     workspace.message?.let { message ->
         val sessionsAction = (message as? ru.papajon.meshcentralmobile.localization.UiText.Resource)?.id in
             setOf(R.string.workspace_capacity, R.string.workspace_desktop_limit)
@@ -375,6 +387,10 @@ fun MeshCentralApp(
         ModalBottomSheet(onDismissRequest = { editingServer = false }) {
             ServerSettingsScreen(
                 settings = settings,
+                pinnedSpkiSha256 = activeProfile.pinnedSpkiSha256,
+                onForgetServerKey = certificateApproval::requestForget,
+                rememberedDeviceExpiresAt = clientState.rememberedDeviceExpiresAt,
+                onForgetRememberedDevice = meshClient::forgetRememberedDevice,
                 onServerUrlSaved = { url ->
                     if (CredentialScope.normalize(url) != CredentialScope.normalize(settings.serverUrl)) NotificationController.disableLocal(context, activeProfileId)
                     settingsRepository.updateServerUrl(url); editingServer = false
@@ -385,6 +401,13 @@ fun MeshCentralApp(
         }
     }
 
+    if (certificateApproval.pendingForget) ForgetServerKeyDialog(
+        onConfirm = {
+            if (certificateApproval.confirmForget()) meshClient.setPinnedServerKey(null)
+        },
+        onDismiss = certificateApproval::dismiss,
+    )
+
     if (!loginDismissed && clientState.requiresSignIn && currentDestination != AppDestination.Settings) {
         key(activeProfileId) { LoginScreen(
             meshClient = meshClient,
@@ -392,6 +415,22 @@ fun MeshCentralApp(
             serverUrl = settings.serverUrl,
             onContinueWithoutSignIn = { loginDismissed = true },
             onEditServer = { managingProfiles = true },
+            confirmingCertificateReplacement = certificateApproval.pendingReplacement == clientState.certificateFailure &&
+                clientState.certificateFailure != null,
+            onTrustCertificate = { failure ->
+                // Reject a stale dialog or an attempt that changed while the app was locked.
+                if (meshClient.clientState.value.certificateFailure == failure && certificateApproval.approve(failure)) {
+                    meshClient.setPinnedServerKey(failure.spkiSha256)
+                    meshClient.retryAfterCertificateTrust()
+                }
+            },
+            onReplaceCertificate = { failure ->
+                if (meshClient.clientState.value.certificateFailure == failure) certificateApproval.requestReplacement(failure)
+            },
+            onDismissCertificate = {
+                certificateApproval.dismiss()
+                meshClient.dismissCertificateFailure()
+            },
         ) }
         return
     }
@@ -466,6 +505,9 @@ fun MeshCentralApp(
             ) {
                 key(activeProfileId) { when (destination) {
                     AppDestination.Devices -> if (sessionViewModel.selectedDeviceId == null) DevicesScreen(
+                        updateBanner = updateState.candidate?.let { candidate ->
+                            { UpdateNotice(candidate, updateModel::later, modifier = Modifier.padding(horizontal = MeshTheme.spacing.lg, vertical = MeshTheme.spacing.sm)) }
+                        },
                         meshClient = meshClient,
                         favorites = favorites,
                         onAddFavorite = settingsRepository::addFavorite,
@@ -491,8 +533,14 @@ fun MeshCentralApp(
                     ) else {
                         val device = clientState.devices.firstOrNull { it.nodeId == sessionViewModel.selectedDeviceId }
                         if (device == null) {
+                            val inspector = remember(meshClient, sessionViewModel.selectedDeviceId) {
+                                workspace.inspector(requireNotNull(sessionViewModel.selectedDeviceId))
+                            }
+                            val info by inspector.state.collectAsState()
                             Column(Modifier.padding(16.dp)) {
                                 Text(stringResource(R.string.device_missing))
+                                info.notice?.let { Text(it.asString()) }
+                                info.error?.let { Text(it.asString()) }
                                 TextButton(onClick = { sessionViewModel.browseDevices() }) {
                                     Text(stringResource(R.string.device_back))
                                 }
@@ -518,7 +566,10 @@ fun MeshCentralApp(
                                     if (sessionViewModel.connectDesktop(device)) currentDestination = AppDestination.Session
                                 }
                                 DeviceTab.Terminal, DeviceTab.Ssh -> sessionViewModel.terminalController?.let { controller ->
-                                    TerminalScreen(controller, onBack = sessionViewModel::showOverview, onReopen = ::reopenSelectedTool)
+                                    TerminalScreen(controller, onBack = sessionViewModel::showOverview, onReopen = ::reopenSelectedTool,
+                                        favoriteCommands = profiles.firstOrNull { it.id == activeProfileId }?.favoriteCommands.orEmpty(),
+                                        onAddFavorite = { settingsRepository.addFavoriteCommand(activeProfileId, it) },
+                                        onRemoveFavorite = { settingsRepository.removeFavoriteCommand(activeProfileId, it) }, profileId = activeProfileId)
                                 } ?: EndedSession { sessionViewModel.selectDeviceTab(sessionViewModel.deviceTab) }
                                 DeviceTab.Files, DeviceTab.Sftp -> sessionViewModel.filesController?.let { controller ->
                                     Column(Modifier.fillMaxSize()) {
@@ -531,6 +582,27 @@ fun MeshCentralApp(
                                     val info by inspector.state.collectAsState()
                                     LaunchedEffect(inspector) { if (info.snapshot == null) inspector.refresh() }
                                     DeviceInspectorScreen(
+                                        device = device,
+                                        canSendToast = ru.papajon.meshcentralmobile.management.ToastCommand.allowed(device, clientState.socketConnected && clientState.devicesCurrent),
+                                        onSendToast = inspector::sendToast,
+                                        events = info.events,
+                                        powerTimeline = info.powerTimeline,
+                                        eventsError = info.eventsError,
+                                        timelineError = info.timelineError,
+                                        onLoadHistory = inspector::loadHistory,
+                                        software = info.software,
+                                        softwareError = info.softwareError,
+                                        onLoadSoftware = inspector::loadSoftware,
+                                        metrics = info.metrics,
+                                        metricsError = info.metricsError,
+                                        onLoadMetrics = inspector::loadMetrics,
+                                        commandOutput = info.commandOutput,
+                                        commandUncertain = info.commandUncertain,
+                                        commandOutputTruncated = info.commandOutputTruncated,
+                                        historyLoading = info.historyLoading,
+                                        onRunCommand = inspector::runCommand,
+                                        onRemove = inspector::remove,
+                                        onOpenTerminal = { sessionViewModel.selectDeviceTab(DeviceTab.Terminal) },
                                         snapshot = info.snapshot ?: ru.papajon.meshcentralmobile.management.DeviceSystemSnapshot(deviceName = device.name, osName = device.osDescription.takeIf { it.isNotBlank() }),
                                         services = info.services,
                                         processes = info.processes,
@@ -547,6 +619,9 @@ fun MeshCentralApp(
                                         onServiceAction = inspector::serviceAction,
                                         onBack = sessionViewModel::showOverview,
                                         onOpenHelp = { sessionViewModel.selectDeviceTab(DeviceTab.Help) },
+                                        phoneDevice = device.takeIf { it.isAndroidAgent },
+                                        devicesCurrent = clientState.socketConnected && clientState.devicesCurrent,
+                                        onPhoneCommand = inspector::phoneCommand,
                                     )
                                 }
                                 DeviceTab.Help -> {
@@ -560,6 +635,10 @@ fun MeshCentralApp(
 
                     AppDestination.Session -> RemoteDesktopScreen(
                         meshClient = meshClient,
+                        customShortcuts = profiles.firstOrNull { it.id == activeProfileId }?.customShortcuts.orEmpty(),
+                        onAddShortcut = { settingsRepository.addShortcut(activeProfileId, it) },
+                        onRemoveShortcut = { settingsRepository.removeShortcut(activeProfileId, it) },
+                        shortcutProfileId = activeProfileId,
                         onFullscreenChanged = {
                             remoteFullscreen = it
                             onRemoteFullscreenChanged(it)
@@ -574,6 +653,7 @@ fun MeshCentralApp(
                     )
 
                     AppDestination.Settings -> SettingsScreen(
+                        updates = { UpdateSettings(updateState, updateModel::consent, { updateModel.check(manual = true) }, updateModel::later, updateModel::skip) },
                         settings = settings,
                         serverUrl = settings.serverUrl,
                         hasPin = secureVault.hasPin(),
@@ -595,11 +675,7 @@ fun MeshCentralApp(
                             appLockController.refreshLockRequirement()
                         },
                         onLockNow = appLockController::lockNow,
-                        onCredentialsCleared = { notificationController.disableAsync(); profileVault.clearCredentials() },
-                        onMeshSessionCleared = ::endCurrentSession,
-                        onWebViewSessionCleared = {
-                            MeshWebViewController.clearWebViewSession(settingsRepository.appContext)
-                        },
+                        onClearSession = { workspace.clearSavedSession(notificationController::disable) },
                         activeProfileName = settingsRepository.activeProfile.name,
                         onManageProfiles = { profileError = null; managingProfiles = true },
                         onEditServer = { editingServer = true },

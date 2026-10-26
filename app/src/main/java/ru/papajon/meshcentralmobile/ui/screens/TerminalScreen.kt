@@ -50,11 +50,23 @@ import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 import java.util.Locale
 
 @Composable
-fun TerminalScreen(controller: TerminalController, onBack: () -> Unit, modifier: Modifier = Modifier, onReopen: (() -> Unit)? = null) {
+fun TerminalScreen(controller: TerminalController, onBack: () -> Unit, modifier: Modifier = Modifier, onReopen: (() -> Unit)? = null,
+    favoriteCommands: List<ru.papajon.meshcentralmobile.model.FavoriteCommand> = emptyList(),
+    onAddFavorite: (ru.papajon.meshcentralmobile.model.FavoriteCommand) -> Boolean = { false },
+    onRemoveFavorite: (Int) -> Unit = {},
+    profileId: String = "",
+) {
     val state by controller.state.collectAsState()
     val context = LocalContext.current
     val renderer = remember(controller) { controller.renderer(context) }
     var control by remember(controller) { mutableStateOf(false) }
+    var favoritesOpen by remember(controller, profileId) { mutableStateOf(false) }
+    DisposableEffect(renderer, profileId) { onDispose { renderer?.inputDialog(false) } }
+    if (favoritesOpen) androidx.compose.runtime.key(controller, profileId) {
+        TerminalFavorites(favoriteCommands, state.ready, onAddFavorite, onRemoveFavorite,
+            controller::insertFavorite,
+            { favoritesOpen = false; renderer?.inputDialog(false) })
+    }
     val background = String.format(Locale.ROOT, "#%06x", MaterialTheme.colorScheme.background.toArgb() and 0xffffff)
     val foreground = String.format(Locale.ROOT, "#%06x", MaterialTheme.colorScheme.onBackground.toArgb() and 0xffffff)
     val inputLabel = stringResource(R.string.terminal_input_label)
@@ -173,6 +185,7 @@ fun TerminalScreen(controller: TerminalController, onBack: () -> Unit, modifier:
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+        TextButton(onClick = { renderer?.inputDialog(true); favoritesOpen = true }) { Text(stringResource(R.string.parity2_favorites)) }
         if (renderer != null) {
             AndroidView(
                 factory = renderer::createHost,

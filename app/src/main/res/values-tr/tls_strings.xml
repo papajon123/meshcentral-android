@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">Sunucu sertifikası güvenilir değil. Güvenmeden önce parmak izini sunucudaki sertifikayla karşılaştırın.</string>
+    <string name="tls_error_changed">Sunucunun anahtarı değişti. Bağlantı engellendi: yeni parmak izini sunucu yöneticisiyle doğrulayın.</string>
+    <string name="tls_untrusted_title">Güvenilmeyen sunucu sertifikası</string>
+    <string name="tls_changed_title">Sunucu sertifikası değişti</string>
+    <string name="tls_fingerprint">Açık anahtarın SHA-256 parmak izi (SPKI)</string>
+    <string name="tls_previous_fingerprint">Önceden güvenilen açık anahtar, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">Yeni açık anahtar, SHA-256 (SPKI)</string>
+    <string name="tls_subject">Sertifika sahibi: %1$s</string>
+    <string name="tls_validity">Geçerlilik: %1$s – %2$s</string>
+    <string name="tls_server">Sunucu: %1$s</string>
+    <string name="tls_compare">Bu parmak izini ayrı ve güvenilir bir iletişim kanalı üzerinden sunucudaki sertifikayla karşılaştırın.</string>
+    <string name="tls_trust">Bu sunucuya güven</string>
+    <string name="tls_replace">Parmak izini değiştir…</string>
+    <string name="tls_replace_title">Güvenilen anahtar değiştirilsin mi?</string>
+    <string name="tls_replace_warning">Anahtarın değişmesi, birinin sunucunuzun kimliğine büründüğü anlamına gelebilir. Yalnızca yeni parmak izini bağımsız olarak doğruladıktan sonra devam edin. Önceki anahtara artık güvenilmeyecektir.</string>
+    <string name="tls_confirm_replace">Değişikliği onayla</string>
+    <string name="tls_pinned_key">Güvenilen sunucu anahtarı</string>
+    <string name="tls_forget">Unut</string>
+    <string name="tls_forget_title">Güvenilen anahtar unutulsun mu?</string>
+    <string name="tls_forget_warning">Mevcut bağlantı kapatılacak. Android sertifikaya güvenmiyorsa bu sunucuyu yeniden doğrulamanız gerekecek.</string>
+    <string name="tls_certificate_fingerprint">Sertifikanın SHA-256 özeti — tarayıcıda gösterilir</string>
+    <string name="tls_error_validity">Sertifikanın süresi dolmuş veya henüz geçerli değil. Telefonun tarih ve saatini ve sunucu sertifikasının geçerliliğini kontrol edin. Güven onayı bu hatayı atlamaz.</string>
+    <string name="tls_error_chain">Sertifika veya zincirinde geçersiz bir imza, zayıf bir anahtar ya da algoritma veya geçersiz sertifika yetkilisi amacı ya da kısıtlaması var. Yönetici sertifikayı düzeltmelidir; bu sertifika onaylanamaz.</string>
+    <string name="tls_error_hostname">Sertifika sunucu adresiyle eşleşmiyor. Adresi kontrol edin ve yöneticiden sertifikadaki adları düzeltmesini isteyin.</string>
+    <string name="tls_hostname_warning">Uyarı: sertifikadaki ad sunucu adresiyle eşleşmiyor. Anahtarı yalnızca bağımsız doğrulamadan sonra onaylayın.</string>
+    <string name="tls_blocked_title">Sunucu sertifikası reddedildi</string>
+    <string name="tls_verify_instructions">Yönetici, SPKI parmak izini aşağıdaki komutla hesaplayabilir. Doğrudan TLS için meshcentral-data/webserver-cert-public.crt, TLS ters vekilde sonlanıyorsa vekilin sertifikasını kullanın. cert.pem yerine bu dosyayı yazın. Tarayıcılar ayrı sertifika parmak izini gösterir.</string>
+    <string name="tls_independent_warning">Bağımsız ve güvenilir bir kanaldan doğrulayın. Aynı doğrulanmamış bağlantıdan alınan parmak izi araya giren bir saldırgana karşı koruma sağlamaz.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">Sertifika vericisi kendisini bir MeshCentral kökü olarak tanımlıyor.</string>
+    <string name="tls_issuer_unknown">Sertifika, bilinmeyen bir sertifika yetkilisi tarafından imzalanmıştır. Sunucu genel bir sertifika kullanıyorsa zinciri eksik olabilir; sunucunun düzeltilmesi önerilir.</string>
+</resources>

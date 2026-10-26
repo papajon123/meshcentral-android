@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">卸载代理</string>
+    <string name="parity2_remove">移除设备</string>
+    <string name="parity2_uninstall_warning">远程访问将停止。设备记录会保留。重新安装需要访问此计算机。</string>
+    <string name="parity2_remove_warning">设备记录及其历史将被删除。代理仍会保留，可能再次注册。</string>
+    <string name="parity2_confirm_name">准确输入设备名称</string>
+    <string name="parity2_removal_pending">请求已发送。正在检查设备列表，尚未确认执行。</string>
+    <string name="parity2_removal_absent">刷新后的列表中没有该设备。可能是设备已删除，也可能是访问权限发生了变化。</string>
+    <string name="parity2_removal_disconnected">代理已断开连接。尚未确认卸载。</string>
+    <string name="parity2_removal_unknown">结果未知。重复操作前请检查设备。</string>
+    <string name="parity2_software">已安装的软件</string>
+    <string name="parity2_software_hint">从在线代理读取。最多显示 1000 个程序；缺失值仍显示为未知。</string>
+    <string name="parity2_software_error">未收到软件列表。请检查代理及权限；请求超时后，请重新连接再重试。</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">主板</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">制造商</string>
+    <string name="parity2_bios_date">固件日期</string>
+    <string name="parity2_mode">模式</string>
+    <string name="parity2_spec">规范</string>
+    <string name="parity2_activated">已激活</string>
+    <string name="parity2_owned">已设置所有者</string>
+    <string name="parity2_last_boot">最近报告的启动时间</string>
+    <string name="parity2_uptime">估计运行时长（时:分:秒）</string>
+    <string name="parity2_metrics">CPU 和内存使用率</string>
+    <string name="parity2_sample_time">收到测量值：%1$s</string>
+    <string name="parity2_run">执行命令</string>
+    <string name="parity2_command">命令</string>
+    <string name="parity2_run_warning">以代理账户运行，通常为 SYSTEM 或 root。命令可能修改计算机并被服务器记录。不支持取消，也不提供退出代码。请勿输入机密信息。</string>
+    <string name="parity2_run_uncertain">尚未确认结果。命令可能仍在运行。再次执行前请在终端中检查。</string>
+    <string name="parity2_output">命令输出</string>
+    <string name="parity2_output_note">最多 65536 个字符。输出不代表成功；请验证预期更改。</string>
+    <string name="parity2_seven_days">最近 7 天</string>
+    <string name="parity2_history_note">报告的电源和连接历史。空白表示未知，并非停机。下方最多显示最近 100 次状态转换。</string>
+    <string name="parity2_favorites">收藏的命令</string>
+    <string name="parity2_favorites_hint">每个配置最多 20 条。选择后先编辑本地草稿，再插入且不发送 Enter。仅限单行；请勿保存机密信息。</string>
+    <string name="parity2_insert">插入但不发送 Enter</string>
+</resources>

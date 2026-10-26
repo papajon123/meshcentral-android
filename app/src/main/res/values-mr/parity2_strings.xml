@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">एजंट अनइन्स्टॉल करा</string>
+    <string name="parity2_remove">डिव्हाइस काढा</string>
+    <string name="parity2_uninstall_warning">दूरस्थ प्रवेश थांबेल. डिव्हाइसची नोंद राहील. पुन्हा इन्स्टॉल करण्यासाठी संगणकावर प्रवेश आवश्यक आहे.</string>
+    <string name="parity2_remove_warning">डिव्हाइसची नोंद आणि इतिहास हटवला जाईल. एजंट इन्स्टॉल राहील आणि पुन्हा नोंदणी करू शकतो.</string>
+    <string name="parity2_confirm_name">डिव्हाइसचे नाव तंतोतंत लिहा</string>
+    <string name="parity2_removal_pending">विनंती पाठवली. डिव्हाइस यादी तपासत आहे; अंमलबजावणीची पुष्टी नाही.</string>
+    <string name="parity2_removal_absent">अद्ययावत यादीत डिव्हाइस नाही. ते हटवलेले असू शकते किंवा प्रवेश बदलला असू शकतो.</string>
+    <string name="parity2_removal_disconnected">एजंटचा संपर्क तुटला. अनइन्स्टॉल झाल्याची पुष्टी नाही.</string>
+    <string name="parity2_removal_unknown">निकाल अज्ञात आहे. कृती पुन्हा करण्यापूर्वी डिव्हाइस तपासा.</string>
+    <string name="parity2_software">इन्स्टॉल केलेले प्रोग्राम</string>
+    <string name="parity2_software_hint">जोडलेल्या एजंटकडून वाचन. कमाल 1000 प्रोग्राम; नसलेली मूल्ये अज्ञात राहतात.</string>
+    <string name="parity2_software_error">प्रोग्राम यादी मिळाली नाही. एजंट आणि परवानग्या तपासा; वेळ संपल्यावर पुन्हा प्रयत्न करण्यापूर्वी पुन्हा जोडा.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">मदरबोर्ड</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">निर्माता</string>
+    <string name="parity2_bios_date">फर्मवेअर तारीख</string>
+    <string name="parity2_mode">मोड</string>
+    <string name="parity2_spec">तपशील</string>
+    <string name="parity2_activated">सक्रिय केलेले</string>
+    <string name="parity2_owned">मालक नियुक्त</string>
+    <string name="parity2_last_boot">शेवटचा नोंदवलेला बूट</string>
+    <string name="parity2_uptime">अंदाजे चालू वेळ (ता:मि:से)</string>
+    <string name="parity2_metrics">CPU आणि मेमरी वापर</string>
+    <string name="parity2_sample_time">मोजमाप मिळाले: %1$s</string>
+    <string name="parity2_run">आदेश चालवा</string>
+    <string name="parity2_command">आदेश</string>
+    <string name="parity2_run_warning">एजंट खात्याने चालतो, सहसा SYSTEM किंवा root. संगणक बदलू शकतो आणि सर्व्हरवर नोंदवला जाऊ शकतो. रद्द करणे किंवा निर्गमन कोड उपलब्ध नाही. गुप्त माहिती लिहू नका.</string>
+    <string name="parity2_run_uncertain">निकालाची पुष्टी नाही. आदेश अजून चालू असू शकतो. पुन्हा चालवण्यापूर्वी टर्मिनलमध्ये तपासा.</string>
+    <string name="parity2_output">आदेशाचे आउटपुट</string>
+    <string name="parity2_output_note">कमाल 65536 अक्षरे. आउटपुट म्हणजे यशाचा पुरावा नाही; अपेक्षित बदल तपासा.</string>
+    <string name="parity2_seven_days">मागील 7 दिवस</string>
+    <string name="parity2_history_note">नोंदवलेला वीज आणि संपर्क इतिहास. रिकामे भाग अज्ञात आहेत, बंद वेळ नव्हे. खाली कमाल 100 अलीकडील बदल आहेत.</string>
+    <string name="parity2_favorites">आवडते आदेश</string>
+    <string name="parity2_favorites_hint">प्रत्येक प्रोफाइलमध्ये कमाल 20. मसुदा बदलण्यासाठी निवडा, मग Enter शिवाय घाला. एकच ओळ; गुप्त माहिती साठवू नका.</string>
+    <string name="parity2_insert">Enter शिवाय घाला</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">সতর্কতা</string>
+    <string name="parity_fixes_server_rejected">সার্ভারের প্রতিক্রিয়া: %1$s</string>
+    <string name="parity_fixes_output_truncated">আউটপুট 65,536 অক্ষরে সংক্ষিপ্ত করা হয়েছে।</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: পূর্ববর্তী পরিমাপ থেকে গড়, অন্য সেশনগুলোর অনুরোধ করা পরিমাপসহ।</string>
+    <string name="parity_fixes_run_warning">এই ডিভাইসে একটি কমান্ড চালানো হয়। এটি ভালোভাবে পরীক্ষা করুন। এই ডিভাইসে অ্যাক্সেস আছে এমন সব ব্যবহারকারী কমান্ডের আউটপুট দেখতে পারেন। গোপন তথ্য অন্তর্ভুক্ত করবেন না।</string>
+</resources>

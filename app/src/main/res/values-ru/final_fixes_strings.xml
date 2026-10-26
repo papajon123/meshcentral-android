@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s Незавершённый документ удалён.</string>
+    <string name="final_fixes_download_marked">%1$s Незавершённый документ помечен суффиксом .partial. Удалите его в приложении «Файлы» на Android, прежде чем повторить попытку.</string>
+    <string name="final_fixes_download_retained">%1$s Android не смог удалить незавершённый документ или пометить его суффиксом .partial. Не используйте его; удалите его в приложении «Файлы» на Android.</string>
+    <string name="final_fixes_download_transport_failed">Соединение прервано во время скачивания. Откройте новый файловый сеанс и повторите попытку.</string>
+    <string name="final_fixes_download_invalid">Скачанные данные не совпали с ожидаемым файлом. Откройте новый файловый сеанс и повторите попытку.</string>
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">Удалить агент</string>
+    <string name="parity2_remove">Удалить устройство</string>
+    <string name="parity2_uninstall_warning">Удалённый доступ прекратится. Запись устройства сохранится. Для повторной установки потребуется доступ к компьютеру.</string>
+    <string name="parity2_remove_warning">Запись устройства и его история будут удалены. Агент останется установленным и может зарегистрироваться снова.</string>
+    <string name="parity2_confirm_name">Введите точное имя устройства</string>
+    <string name="parity2_removal_pending">Запрос отправлен. Проверяем список устройств; выполнение не подтверждено.</string>
+    <string name="parity2_removal_absent">Устройства нет в обновлённом списке. Причиной может быть удаление или изменение прав доступа.</string>
+    <string name="parity2_removal_disconnected">Агент отключён. Его удаление не подтверждено.</string>
+    <string name="parity2_removal_unknown">Результат неизвестен. Проверьте устройство перед повтором действия.</string>
+    <string name="parity2_software">Установленные программы</string>
+    <string name="parity2_software_hint">Чтение с подключённого агента. До 1000 программ; отсутствующие значения остаются неизвестными.</string>
+    <string name="parity2_software_error">Список программ не получен. Проверьте агент и права; после истечения ожидания переподключитесь перед повтором.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">Материнская плата</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">Производитель</string>
+    <string name="parity2_bios_date">Дата прошивки</string>
+    <string name="parity2_mode">Режим</string>
+    <string name="parity2_spec">Спецификация</string>
+    <string name="parity2_activated">Активирован</string>
+    <string name="parity2_owned">Владелец назначен</string>
+    <string name="parity2_last_boot">Последняя известная загрузка</string>
+    <string name="parity2_uptime">Время работы, оценка (ч:мм:сс)</string>
+    <string name="parity2_metrics">Загрузка процессора и памяти</string>
+    <string name="parity2_sample_time">Измерение получено: %1$s</string>
+    <string name="parity2_run">Выполнить команду</string>
+    <string name="parity2_command">Команда</string>
+    <string name="parity2_run_warning">Запуск от учётной записи агента, обычно SYSTEM или root. Команда может изменить компьютер и попасть в журнал сервера. Отмена и код завершения недоступны. Не вводите секреты.</string>
+    <string name="parity2_run_uncertain">Результат не подтверждён. Команда может ещё выполняться. Перед повтором проверьте её в терминале.</string>
+    <string name="parity2_output">Вывод команды</string>
+    <string name="parity2_output_note">До 65536 символов. Вывод не доказывает успех; проверьте нужное изменение.</string>
+    <string name="parity2_seven_days">Последние 7 дней</string>
+    <string name="parity2_history_note">Полученная история питания и подключений. Пробелы означают отсутствие данных, а не простой. Ниже — до 100 последних переходов.</string>
+    <string name="parity2_favorites">Избранные команды</string>
+    <string name="parity2_favorites_hint">До 20 на профиль. Выберите команду для правки строки, затем вставьте без Enter. Только одна строка; не сохраняйте секреты.</string>
+    <string name="parity2_insert">Вставить без Enter</string>
+</resources>

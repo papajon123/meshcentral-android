@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">ایپ کی اپ ڈیٹس</string>
+    <string name="update_consent_title">GitHub پر نئے ورژن تلاش کریں؟</string>
+    <string name="update_consent_body">ایپ روزانہ ایک بار api.github.com سے رابطہ کرتی ہے؛ آپ کا کوئی ڈیٹا نہیں بھیجا جاتا۔</string>
+    <string name="update_privacy_detail">GitHub اور اس کا CDN آپ کا IP پتہ اور HTTP ہیڈرز دیکھ سکتے ہیں۔</string>
+    <string name="update_allow">اپ ڈیٹس تلاش کریں</string>
+    <string name="update_not_now">ابھی نہیں</string>
+    <string name="update_never">ابھی تک جانچ نہیں ہوئی۔</string>
+    <string name="update_current">کوئی نیا موافق ورژن نہیں ملا۔</string>
+    <string name="update_found">ایک اپ ڈیٹ مل گئی۔</string>
+    <string name="update_suppressed">یہ ورژن مؤخر یا نظر انداز کر دیا گیا ہے۔</string>
+    <string name="update_network_error">جانچ نہ ہو سکی۔ 24 گھنٹے بعد دوبارہ کوشش کریں۔</string>
+    <string name="update_rate_limit">GitHub نے درخواستیں محدود کر دی ہیں۔ 24 گھنٹے بعد دوبارہ کوشش کریں۔</string>
+    <string name="update_invalid_metadata">ورژن کی معلومات کی تصدیق نہیں ہو سکی۔ 24 گھنٹے بعد دوبارہ کوشش کریں۔</string>
+    <string name="update_wrong_signer">اس بلڈ کا دستخط مختلف ہے۔ موافق اپ ڈیٹ پیش نہیں کی جا سکتی۔</string>
+    <string name="update_checking">جانچ جاری ہے…</string>
+    <string name="update_last_check">آخری کوشش: %1$s</string>
+    <string name="update_recently_checked">ایک منٹ سے کم پہلے جانچ کی گئی۔ تھوڑی دیر بعد دوبارہ کوشش کریں۔</string>
+    <string name="update_check_now">ابھی جانچیں</string>
+    <string name="update_available">ورژن %1$s دستیاب ہے</string>
+    <string name="update_download">ڈاؤن لوڈ کریں</string>
+    <string name="update_later">بعد میں</string>
+    <string name="update_skip">یہ ورژن چھوڑ دیں</string>
+    <string name="update_browser_error">کوئی براؤزر دستیاب نہیں۔ براؤزر انسٹال یا فعال کریں۔</string>
+</resources>

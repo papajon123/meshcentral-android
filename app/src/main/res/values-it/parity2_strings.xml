@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">Disinstalla agente</string>
+    <string name="parity2_remove">Rimuovi dispositivo</string>
+    <string name="parity2_uninstall_warning">L’accesso remoto terminerà. La scheda del dispositivo resterà. Per reinstallare serve l’accesso al computer.</string>
+    <string name="parity2_remove_warning">La scheda e la cronologia del dispositivo saranno eliminate. L’agente resterà installato e potrà registrarsi nuovamente.</string>
+    <string name="parity2_confirm_name">Digita il nome esatto del dispositivo</string>
+    <string name="parity2_removal_pending">Richiesta inviata. Verifica dell’elenco; esecuzione non confermata.</string>
+    <string name="parity2_removal_absent">Il dispositivo non è nell’elenco aggiornato. Potrebbe essere stato eliminato o potrebbero essere cambiati i permessi.</string>
+    <string name="parity2_removal_disconnected">L’agente è disconnesso. La disinstallazione non è confermata.</string>
+    <string name="parity2_removal_unknown">Risultato sconosciuto. Verifica il dispositivo prima di ripetere.</string>
+    <string name="parity2_software">Programmi installati</string>
+    <string name="parity2_software_hint">Lettura da un agente connesso. Fino a 1000 programmi; i valori mancanti restano sconosciuti.</string>
+    <string name="parity2_software_error">Elenco non ricevuto. Verifica agente e permessi; dopo un timeout riconnettiti prima di riprovare.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">Scheda madre</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">Produttore</string>
+    <string name="parity2_bios_date">Data del firmware</string>
+    <string name="parity2_mode">Modalità</string>
+    <string name="parity2_spec">Specifica</string>
+    <string name="parity2_activated">Attivato</string>
+    <string name="parity2_owned">Proprietario assegnato</string>
+    <string name="parity2_last_boot">Ultimo avvio segnalato</string>
+    <string name="parity2_uptime">Tempo di attività stimato (h:mm:ss)</string>
+    <string name="parity2_metrics">Utilizzo di CPU e memoria</string>
+    <string name="parity2_sample_time">Misurazione ricevuta: %1$s</string>
+    <string name="parity2_run">Esegui comando</string>
+    <string name="parity2_command">Comando</string>
+    <string name="parity2_run_warning">Esecuzione con l’account dell’agente, solitamente SYSTEM o root. Può modificare il computer ed essere registrata dal server. Annullamento e codice di uscita non disponibili. Non inserire segreti.</string>
+    <string name="parity2_run_uncertain">Risultato non confermato. Il comando potrebbe essere ancora in esecuzione. Verifica nel terminale prima di ripetere.</string>
+    <string name="parity2_output">Output del comando</string>
+    <string name="parity2_output_note">Fino a 65536 caratteri. L’output non dimostra il successo; verifica la modifica desiderata.</string>
+    <string name="parity2_seven_days">Ultimi 7 giorni</string>
+    <string name="parity2_history_note">Cronologia segnalata di alimentazione e connessioni. Le lacune sono sconosciute, non inattività. Sotto, fino a 100 transizioni recenti.</string>
+    <string name="parity2_favorites">Comandi preferiti</string>
+    <string name="parity2_favorites_hint">Fino a 20 per profilo. Seleziona per modificare la bozza, poi inserisci senza Invio. Una sola riga; non salvare segreti.</string>
+    <string name="parity2_insert">Inserisci senza Invio</string>
+</resources>

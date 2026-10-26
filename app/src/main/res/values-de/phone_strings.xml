@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Android-Telefon</string>
+    <string name="phone_view_only">Der Telefon-Agent überträgt nur den Bildschirm. Fernsteuerung ist noch nicht verfügbar. Zum Verschieben ziehen, zum Zoomen zwei Finger verwenden.</string>
+    <string name="phone_unknown">Unbekannt</string>
+    <string name="phone_battery">Akku: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">Wird geladen</string>
+    <string name="phone_on_battery">Akkubetrieb</string>
+    <string name="phone_power_unknown">Ladestatus unbekannt</string>
+    <string name="phone_find">Telefon finden und Kontakt aufnehmen</string>
+    <string name="phone_vibrate">5 Sekunden vibrieren</string>
+    <string name="phone_flash">Taschenlampe für 10 Sekunden</string>
+    <string name="phone_alert">Nachricht ans Telefon</string>
+    <string name="phone_toast">Kurze Benachrichtigung</string>
+    <string name="phone_open_url">Link öffnen</string>
+    <string name="phone_dial">Wählfeld öffnen</string>
+    <string name="phone_actions_unavailable">Telefonaktionen erfordern einen verbundenen Agenten und die Berechtigung zur Fernsteuerung.</string>
+    <string name="phone_message_title">Titel</string>
+    <string name="phone_message_text">Nachricht</string>
+    <string name="phone_url">Link</string>
+    <string name="phone_number">Telefonnummer</string>
+    <string name="phone_message_hint">Bis zu 1.000 Zeichen; Titel bis zu 80. Der Server kann die Nachricht protokollieren.</string>
+    <string name="phone_url_hint">Vollständiger http- oder https-Link ohne Leerzeichen oder eingebettete Zugangsdaten.</string>
+    <string name="phone_dial_hint">Nur Ziffern, +, * und #, maximal 40 Zeichen. Die Person am Telefon startet den Anruf.</string>
+    <string name="phone_quotes_hint">Gerade doppelte Anführungszeichen werden durch typografische ersetzt, da der Telefon-Agent sie nicht beibehalten kann.</string>
+    <string name="phone_confirm">Diesen Befehl an das ausgewählte Telefon senden?</string>
+    <string name="phone_send">Befehl senden</string>
+    <string name="phone_review">Prüfen</string>
+    <string name="phone_edit">Bearbeiten</string>
+    <string name="phone_cancel">Abbrechen</string>
+    <string name="phone_command_sent">Befehl gesendet. Die Ausführung auf dem Telefon ist nicht bestätigt.</string>
+    <string name="phone_send_failed">Befehl nicht gesendet. Verbindung und Fernsteuerungsberechtigung prüfen.</string>
+    <string name="phone_files_limits">Der Telefon-Agent unterstützt das Erstellen und Umbenennen von Ordnern und Dateien nicht. Android kann eine Bestätigung am Telefon verlangen.</string>
+</resources>

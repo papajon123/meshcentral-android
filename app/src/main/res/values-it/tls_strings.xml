@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">Il certificato del server non è attendibile. Confronta la sua impronta con il certificato sul server prima di considerarlo attendibile.</string>
+    <string name="tls_error_changed">La chiave del server è cambiata. Connessione bloccata: verifica la nuova impronta con l’amministratore del server.</string>
+    <string name="tls_untrusted_title">Certificato del server non attendibile</string>
+    <string name="tls_changed_title">Il certificato del server è cambiato</string>
+    <string name="tls_fingerprint">Impronta SHA-256 della chiave pubblica (SPKI)</string>
+    <string name="tls_previous_fingerprint">Chiave pubblica precedentemente attendibile, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">Nuova chiave pubblica, SHA-256 (SPKI)</string>
+    <string name="tls_subject">Soggetto: %1$s</string>
+    <string name="tls_validity">Valido dal %1$s al %2$s</string>
+    <string name="tls_server">Server: %1$s</string>
+    <string name="tls_compare">Confronta questa impronta con il certificato sul server tramite un canale separato e affidabile.</string>
+    <string name="tls_trust">Considera attendibile questo server</string>
+    <string name="tls_replace">Sostituisci impronta…</string>
+    <string name="tls_replace_title">Sostituire la chiave attendibile?</string>
+    <string name="tls_replace_warning">Una chiave diversa può indicare che qualcuno sta impersonando il tuo server. Continua solo dopo aver verificato la nuova impronta in modo indipendente. La vecchia chiave non sarà più considerata attendibile.</string>
+    <string name="tls_confirm_replace">Conferma sostituzione</string>
+    <string name="tls_pinned_key">Chiave attendibile del server</string>
+    <string name="tls_forget">Dimentica</string>
+    <string name="tls_forget_title">Dimenticare la chiave attendibile?</string>
+    <string name="tls_forget_warning">La connessione attuale verrà chiusa. Dovrai verificare di nuovo questo server se Android non considera attendibile il suo certificato.</string>
+    <string name="tls_certificate_fingerprint">SHA-256 del certificato — mostrato nel browser</string>
+    <string name="tls_error_validity">Il certificato è scaduto o non è ancora valido. Controlla data e ora del telefono e la validità del certificato del server. La conferma di fiducia non aggira questo errore.</string>
+    <string name="tls_error_chain">Il certificato o la sua catena presenta una firma non valida, una chiave o un algoritmo deboli, oppure uno scopo o vincoli dell’autorità di certificazione non validi. L’amministratore deve correggere il certificato; non è possibile approvarlo.</string>
+    <string name="tls_error_hostname">Il certificato non corrisponde all’indirizzo del server. Controlla l’indirizzo e chiedi all’amministratore di correggere i nomi nel certificato.</string>
+    <string name="tls_hostname_warning">Avviso: il nome nel certificato non corrisponde all’indirizzo del server. Conferma la chiave solo dopo una verifica indipendente.</string>
+    <string name="tls_blocked_title">Certificato del server rifiutato</string>
+    <string name="tls_verify_instructions">L’amministratore può calcolare l’impronta SPKI con il comando seguente. Per TLS diretto usa meshcentral-data/webserver-cert-public.crt; se TLS termina su un proxy inverso, usa il suo certificato. Sostituisci cert.pem con quel file. I browser mostrano l’impronta distinta del certificato.</string>
+    <string name="tls_independent_warning">Verifica tramite un canale indipendente e attendibile. Un’impronta ottenuta tramite questa stessa connessione non verificata non protegge da un intermediario.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">L’emittente del certificato si identifica come una radice MeshCentral.</string>
+    <string name="tls_issuer_unknown">Il certificato è firmato da un’autorità di certificazione sconosciuta. Se il server usa un certificato pubblico, la catena potrebbe essere incompleta: è preferibile correggere il server.</string>
+</resources>

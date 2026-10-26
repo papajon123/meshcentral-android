@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s अपूर्ण दस्तऐवज हटवला गेला आहे.</string>
+    <string name="final_fixes_download_marked">%1$s अपूर्ण दस्तऐवजाला .partial जोडले गेले आहे. पुन्हा प्रयत्न करण्यापूर्वी तो Android च्या फाइल्स ॲपमध्ये हटवा.</string>
+    <string name="final_fixes_download_retained">%1$s Android अपूर्ण दस्तऐवज हटवू शकले नाही किंवा त्याला .partial जोडू शकले नाही. त्याचा वापर करू नका; तो Android च्या फाइल्स ॲपमध्ये हटवा.</string>
+    <string name="final_fixes_download_transport_failed">डाउनलोड दरम्यान कनेक्शन तुटले. नवीन फाइल सत्र उघडा आणि पुन्हा प्रयत्न करा.</string>
+    <string name="final_fixes_download_invalid">डाउनलोड केलेला डेटा अपेक्षित फाइलशी जुळला नाही. नवीन फाइल सत्र उघडा आणि पुन्हा प्रयत्न करा.</string>
+</resources>

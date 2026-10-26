@@ -3,14 +3,15 @@
 This is a technical privacy note for the app, not legal advice. The app is a client: the person or
 organisation running the MeshCentral server decides what the server logs and who can access it.
 
-This note describes the prepared **0.7.0** release (`versionCode` 15). A public build and publication
-have not been performed at documentation time.
+This note describes the current source, including server-key approval and the opt-in update check
+under **Unreleased** in [CHANGELOG.md](CHANGELOG.md). Published releases may have different features.
 
 ## Summary
 
 - The app has no project account, advertising, analytics, telemetry, or crash-reporting SDK, and no
   project-operated backend.
-- It connects only to the MeshCentral server you configure. The native client uses `/control.ashx`,
+- It connects to the MeshCentral server you configure and, only after separate consent, to GitHub for
+  update metadata. The native client uses `/control.ashx`,
   `/meshrelay.ashx` (desktop, Agent terminal and Agent files), `/sshterminalrelay.ashx` (SSH) and
   `/sshfilesrelay.ashx` (SFTP). With the optional plugin it also uses
   `<your-server>/mobilecompanion/events` on the same origin.
@@ -35,14 +36,16 @@ have not been performed at documentation time.
 
 | Data | Storage | Protection |
 |---|---|---|
-| Server profiles (id, name, URL, onboarding and debug switches), favourites, app settings | App-private `SharedPreferences` | Not encrypted; configuration data, but a server URL can reveal an internal host name. |
+| Server profiles (id, name, URL, onboarding, debug switches and optional SHA-256 server public-key fingerprint), favourites, app settings | App-private `SharedPreferences` | Not encrypted; configuration data, but a server URL can reveal an internal host name. The fingerprint is public certificate metadata, not a credential. |
 | Recently opened devices | App-private `SharedPreferences` | Node ids and timestamps only, at most 20 per profile and account; the scope key is hashed. Device names and addresses are not stored. |
 | MeshCentral user name and password | App-private storage, scoped by profile and server | AES-GCM with a non-exportable Android Keystore key; written only after a successful login. |
+| Remembered-device 2FA cookie, account/endpoint scope and expiry | App-private `SecureVault`, one active account per profile | AES-GCM with the Android Keystore key; only after a successful code-based login with the remember-device option enabled. Deleted on expiry, server rejection, logout, credential clearing, profile switch/deletion, server/account change or **Forget this device** in server settings. No TOTP secret is stored. |
 | App PIN | App-private storage, global | Random salt, PBKDF2-HMAC-SHA256 (120,000 iterations, 256-bit), then AES-GCM with the Keystore key. |
 | SSH password, private key and passphrase | Process memory only | Used for the current authenticated SSH/SFTP session; new credentials use `keep=false`/`keep:0` where supported, saved-key unlock uses `sshkeyauth`; not persisted, logged, or put in a Bundle. |
 | MeshCentral session, relay and SSH viewer authentication cookies | Process memory | Not written to disk; cleared on logout, identity change, or process exit. SSH/SFTP viewer sockets use the same server-issued authentication cookie as the native relay. |
 | Background-notification token | App-private storage, scoped by profile and server | AES-GCM with the Android Keystore key; read-only bearer token with a 30-day TTL; revocable; never written to a URL or log. |
 | Notification settings, cursor and bounded event feed | App-private `SharedPreferences` | Non-secret event metadata and preferences; no bearer token, password, hostname, command output or address. |
+| Update consent, last attempt/result, skipped/deferred version and verified public release metadata | App-private `SharedPreferences` | No account or session data; consent is asked once per installed version. |
 | Transfer queue, selected source URIs, file names and progress | Process memory | Runtime only. A shared `content://` URI is not persisted; after process death the file must be shared again. |
 | Quick Help report before sharing | Process memory | Redacted model: no device name, server, IP, user, hostname, node/job id or raw output. It leaves the app only on an explicit share action. |
 | Terminal output and scrollback | Process memory | Not written to app files or preferences; discarded when the session is disposed or the process ends. |
@@ -60,7 +63,7 @@ the app removes its local data; it does not delete anything from your MeshCentra
 
 ## Network connections
 
-The native client opens HTTPS/WSS connections only to the MeshCentral base URL you configure:
+For remote control, the native client opens HTTPS/WSS connections to the MeshCentral base URL you configure:
 
 - `/control.ashx` for authentication, the control channel and optional plugin messages.
 - `/meshrelay.ashx` for the desktop, Agent terminal and Agent files relays.
@@ -80,8 +83,33 @@ The server operator can see the connecting IP address, account name, device list
 host selection, plugin job metadata and traffic passing through these relays. Server-side logging, SSH
 host-key policy, terminal recording, plugin installation and access control are outside the app.
 
-The app does not send data to a project-operated backend. Release APKs are obtained from GitHub outside
-the app; the app itself does not contact GitHub.
+The app does not send data to a project-operated backend.
+
+### Optional GitHub update checks
+
+Update checks are off until you agree in the consent dialog or enable them in Settings. The dialog is
+shown once after installation and once per installed version after an update; dismissing it leaves
+checks off. Settings lets you disable checks, check when due, postpone a release or skip a version.
+
+With consent, while the app is in the foreground it reads the ten most recent public releases from
+`https://api.github.com/repos/papajon123/meshcentral-android/releases?per_page=10`, including prereleases,
+then reads `release-info.json` and `SHA256SUMS` from their GitHub release assets. Asset requests may
+redirect to GitHub's `release-assets.githubusercontent.com` CDN. These are unauthenticated GET requests
+through a separate HTTP client with no cookies, tokens, MeshCentral server address, credentials,
+device inventory or other session data. GitHub and its CDN see the source IP address, requested public
+paths and ordinary HTTP headers, including the generic `MeshCentral-Android-UpdateCheck` User-Agent.
+The app does not send its installed version or signing fingerprint.
+
+Checks happen on foreground entry or the Settings button, at most once every 24 hours, including after
+failures or interrupted checks. There is no background update worker. Leaving the foreground or
+disabling checks cancels the in-flight check. The app saves the last result and public release metadata
+locally; diagnostic logs contain fixed rejection categories only, never URLs or response bodies.
+
+The app cross-checks the release's checksum and certificate metadata, and compares the signing identity
+with the installed app. It does not download or cryptographically verify the APK itself. **Download**
+opens the fixed GitHub release page in your external browser; that browser's privacy settings then
+apply. Android verifies the APK signature if you choose to install it yourself. No installation
+permission is requested by this app.
 
 The terminal renderer is local: it loads only bundled xterm assets through an intercepted reserved
 origin, with network and file access blocked. It receives no MeshCentral cookie or SSH secret. This is

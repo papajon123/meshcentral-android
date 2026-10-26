@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">Sin red. Esperando para reconectar…</string>
+    <string name="reliability_clearing_session">Eliminando el inicio de sesión y la sesión guardados…</string>
+    <string name="reliability_clear_failed">No se pudo terminar de borrar la sesión. Inténtalo de nuevo.</string>
+</resources>

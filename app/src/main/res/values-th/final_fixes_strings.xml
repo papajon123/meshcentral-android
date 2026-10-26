@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s เอกสารที่ดาวน์โหลดไม่ครบถูกลบแล้ว</string>
+    <string name="final_fixes_download_marked">%1$s เอกสารที่ดาวน์โหลดไม่ครบถูกเติมส่วนต่อท้าย .partial แล้ว ให้ลบเอกสารนั้นในแอปไฟล์ของ Android ก่อนลองใหม่</string>
+    <string name="final_fixes_download_retained">%1$s Android ไม่สามารถลบหรือเติมส่วนต่อท้าย .partial ให้เอกสารที่ดาวน์โหลดไม่ครบได้ อย่าใช้งานเอกสารนี้ ให้ลบในแอปไฟล์ของ Android</string>
+    <string name="final_fixes_download_transport_failed">การเชื่อมต่อขาดหายระหว่างดาวน์โหลด เปิดเซสชันไฟล์ใหม่แล้วลองอีกครั้ง</string>
+    <string name="final_fixes_download_invalid">ข้อมูลที่ดาวน์โหลดไม่ตรงกับไฟล์ที่คาดไว้ เปิดเซสชันไฟล์ใหม่แล้วลองอีกครั้ง</string>
+</resources>

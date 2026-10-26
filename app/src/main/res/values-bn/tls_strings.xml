@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">সার্ভারের শংসাপত্রটি বিশ্বস্ত নয়। বিশ্বাস করার আগে এর ফিঙ্গারপ্রিন্ট সার্ভারে থাকা শংসাপত্রের সঙ্গে মিলিয়ে নিন।</string>
+    <string name="tls_error_changed">সার্ভারের কী বদলে গেছে। সংযোগ আটকানো হয়েছে: সার্ভার প্রশাসকের সঙ্গে নতুন ফিঙ্গারপ্রিন্ট যাচাই করুন।</string>
+    <string name="tls_untrusted_title">সার্ভারের শংসাপত্র বিশ্বস্ত নয়</string>
+    <string name="tls_changed_title">সার্ভারের শংসাপত্র বদলে গেছে</string>
+    <string name="tls_fingerprint">পাবলিক কী-এর SHA-256 ফিঙ্গারপ্রিন্ট (SPKI)</string>
+    <string name="tls_previous_fingerprint">পূর্বে বিশ্বস্ত পাবলিক কী, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">নতুন পাবলিক কী, SHA-256 (SPKI)</string>
+    <string name="tls_subject">শংসাপত্রের ধারক: %1$s</string>
+    <string name="tls_validity">বৈধতা: %1$s থেকে %2$s পর্যন্ত</string>
+    <string name="tls_server">সার্ভার: %1$s</string>
+    <string name="tls_compare">আলাদা কোনো বিশ্বস্ত যোগাযোগমাধ্যমে এই ফিঙ্গারপ্রিন্ট সার্ভারের শংসাপত্রের সঙ্গে মিলিয়ে নিন।</string>
+    <string name="tls_trust">এই সার্ভারকে বিশ্বাস করুন</string>
+    <string name="tls_replace">ফিঙ্গারপ্রিন্ট বদলান…</string>
+    <string name="tls_replace_title">বিশ্বস্ত কী বদলাবেন?</string>
+    <string name="tls_replace_warning">কী বদলে যাওয়ার অর্থ হতে পারে কেউ আপনার সার্ভারের ছদ্মবেশ নিচ্ছে। নতুন ফিঙ্গারপ্রিন্ট স্বাধীনভাবে যাচাই করার পরেই এগিয়ে যান। পুরোনো কী আর বিশ্বস্ত হিসেবে গণ্য হবে না।</string>
+    <string name="tls_confirm_replace">বদল নিশ্চিত করুন</string>
+    <string name="tls_pinned_key">সার্ভারের বিশ্বস্ত কী</string>
+    <string name="tls_forget">ভুলে যান</string>
+    <string name="tls_forget_title">বিশ্বস্ত কী ভুলে যাবেন?</string>
+    <string name="tls_forget_warning">বর্তমান সংযোগ বন্ধ হবে। Android সার্ভারের শংসাপত্রকে বিশ্বাস না করলে আপনাকে সার্ভারটি আবার যাচাই করতে হবে।</string>
+    <string name="tls_certificate_fingerprint">সার্টিফিকেটের SHA-256 — ব্রাউজারে দেখানো মান</string>
+    <string name="tls_error_validity">সার্টিফিকেটের মেয়াদ শেষ হয়েছে বা এখনও শুরু হয়নি। ফোনের তারিখ ও সময় এবং সার্ভারের সার্টিফিকেটের মেয়াদ পরীক্ষা করুন। আস্থা নিশ্চিত করে এই ত্রুটি এড়ানো যায় না।</string>
+    <string name="tls_error_chain">শংসাপত্র বা তার শৃঙ্খলে অবৈধ স্বাক্ষর, দুর্বল কী বা অ্যালগরিদম, অথবা শংসাপত্র কর্তৃপক্ষের অবৈধ উদ্দেশ্য বা বিধিনিষেধ রয়েছে। প্রশাসককে শংসাপত্র ঠিক করতে হবে; এটি অনুমোদন করা যাবে না।</string>
+    <string name="tls_error_hostname">সার্টিফিকেট সার্ভারের ঠিকানার সঙ্গে মেলে না। ঠিকানা পরীক্ষা করুন এবং প্রশাসককে সার্টিফিকেটের নামগুলি ঠিক করতে বলুন।</string>
+    <string name="tls_hostname_warning">সতর্কতা: শংসাপত্রের নাম সার্ভারের ঠিকানার সাথে মেলে না। স্বাধীন যাচাইয়ের পরেই কী অনুমোদন করুন।</string>
+    <string name="tls_blocked_title">সার্ভারের সার্টিফিকেট প্রত্যাখ্যাত</string>
+    <string name="tls_verify_instructions">প্রশাসক নিচের কমান্ড দিয়ে SPKI ফিঙ্গারপ্রিন্ট হিসাব করতে পারেন। সরাসরি TLS-এর জন্য meshcentral-data/webserver-cert-public.crt ব্যবহার করুন; TLS রিভার্স প্রক্সিতে শেষ হলে প্রক্সির সার্টিফিকেট ব্যবহার করুন। cert.pem-এর জায়গায় সেই ফাইল দিন। ব্রাউজার সার্টিফিকেটের আলাদা ফিঙ্গারপ্রিন্ট দেখায়।</string>
+    <string name="tls_independent_warning">স্বাধীন ও বিশ্বস্ত মাধ্যমে যাচাই করুন। এই একই অযাচাইকৃত সংযোগ থেকে পাওয়া ফিঙ্গারপ্রিন্ট মাঝখানের আক্রমণকারী থেকে রক্ষা করে না।</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">শংসাপত্রের ইস্যুকারী নিজেকে MeshCentral রুট হিসেবে পরিচয় দেয়।</string>
+    <string name="tls_issuer_unknown">শংসাপত্রটি একটি অজানা শংসাপত্র কর্তৃপক্ষ দ্বারা স্বাক্ষরিত। সার্ভার সর্বজনীন শংসাপত্র ব্যবহার করলে তার শৃঙ্খল অসম্পূর্ণ হতে পারে — সার্ভারটি ঠিক করাই ভালো।</string>
+</resources>

@@ -16,6 +16,9 @@ import android.view.InputDevice
 import android.webkit.WebView
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -123,7 +126,19 @@ class TerminalRendererTest {
             controller.connect()
         }
         compose.setContent { AndroidView(factory = renderer::createHost, onRelease = renderer::releaseHost, modifier = Modifier.fillMaxSize()) }
-        compose.waitUntil(15000) { evaluate("typeof window.meshTerminal") == "object" }
+        awaitTerminalPage()
+    }
+
+    private fun awaitTerminalPage() {
+        compose.waitUntil(15000) {
+            var loaded = false
+            compose.runOnUiThread {
+                loaded = renderer.view.url == "https://terminal.meshcentral.invalid/index.html" && renderer.view.progress == 100
+            }
+            // A JS evaluation submitted during the initial navigation can be discarded.
+            // Keep the existing readiness deadline, but first wait for the real page load.
+            loaded && evaluate("typeof window.meshTerminal") == "object"
+        }
     }
 
     private fun evaluate(script: String): String {
@@ -284,6 +299,46 @@ class TerminalRendererTest {
         assertTrue(relay.texts.any { it.contains("termsize") })
     }
 
+    @Test fun favoriteDialogResizeKeepsPromptAndEchoOnTheSameLineWithoutEnter() {
+        requireHappyPathProvider()
+        var height by mutableStateOf(400.dp)
+        compose.runOnIdle {
+            controller = TerminalController(relay, scope)
+            renderer = requireNotNull(controller.renderer(compose.activity))
+            controller.connect()
+        }
+        compose.setContent { AndroidView(factory = renderer::createHost, onRelease = renderer::releaseHost,
+            modifier = Modifier.fillMaxWidth().height(height)) }
+        compose.waitUntil(15000) { evaluate("typeof window.meshTerminal") == "object" }
+        relay.frames.trySend(RelayFrame.Binary("\u001b[10;1Hbench$ ".toByteArray()))
+        compose.waitUntil(5000) { evaluate("window.meshTerminal.selectAll();window.meshTerminal.selection().trim()") == "bench$" }
+        val sizes = relay.texts.size
+        compose.runOnIdle { renderer.inputDialog(true) }
+        evaluate("true")
+        compose.runOnIdle { height = 100.dp }
+        compose.waitForIdle()
+        evaluate("new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))")
+        Thread.sleep(300) // Let ResizeObserver deliver the synthetic dialog IME size.
+        assertEquals("The dialog IME must not resize the remote grid", sizes, relay.texts.size)
+        compose.runOnIdle { assertTrue(controller.insertFavorite("echo fixture")); height = 400.dp }
+        compose.waitForIdle()
+        compose.runOnIdle { renderer.inputDialog(false) }
+        Thread.sleep(400)
+        // Windows console redraws at its remembered absolute cursor. It must still align with
+        // the prompt after a short dialog viewport, not appear on a separate line below it.
+        relay.frames.trySend(RelayFrame.Binary("\u001b[10;8Hecho fixture".toByteArray()))
+        compose.waitUntil(5000) { evaluate("window.meshTerminal.selectAll();window.meshTerminal.selection().trim()") == "bench$ echo fixture" }
+        assertEquals("echo fixture", relay.binary.flatMap { it.toList() }.toByteArray().toString(Charsets.UTF_8))
+        assertEquals(sizes, relay.texts.size)
+        compose.runOnIdle { renderer.key("\r") }
+        compose.waitUntil(5000) { relay.binary.sumOf { it.size } == "echo fixture\r".length }
+        assertEquals("echo fixture\r", relay.binary.flatMap { it.toList() }.toByteArray().toString(Charsets.UTF_8))
+        compose.runOnIdle { height = 300.dp }
+        compose.waitUntil(5000) { relay.texts.size > sizes }
+        assertEquals("Resizing must resume after the dialog; input must not be replayed", "echo fixture\r",
+            relay.binary.flatMap { it.toList() }.toByteArray().toString(Charsets.UTF_8))
+    }
+
     @Test fun actualInputConnectionCommitsCjkOnceAndDisconnectBlocksKeys() {
         setup()
         installImeEventProbe()
@@ -436,7 +491,7 @@ class TerminalRendererTest {
             controller.connect()
         }
         compose.setContent { if (visible) AndroidView(factory = renderer::createHost, onRelease = renderer::releaseHost, modifier = Modifier.fillMaxSize()) }
-        compose.waitUntil(15000) { evaluate("typeof window.meshTerminal") == "object" }
+        awaitTerminalPage()
         relay.frames.trySend(RelayFrame.Binary("retained".toByteArray()))
         compose.waitUntil(5000) { evaluate("window.meshTerminal.selectAll();window.meshTerminal.selection().trim()") == "retained" }
         compose.runOnIdle { controller.sendInput("once\r"); visible = false }

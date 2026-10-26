@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">Uninstall agent</string>
+    <string name="parity2_remove">Remove device</string>
+    <string name="parity2_uninstall_warning">Remote access will stop. The device record will remain. Reinstallation requires access to the computer.</string>
+    <string name="parity2_remove_warning">The device record and its history will be deleted. The agent is not uninstalled and may register again.</string>
+    <string name="parity2_confirm_name">Type the device name exactly</string>
+    <string name="parity2_removal_pending">Request sent. Checking the device list; execution is not confirmed.</string>
+    <string name="parity2_removal_absent">The device is absent from the refreshed list. Deletion or a change in access may cause this.</string>
+    <string name="parity2_removal_disconnected">The agent is disconnected. Uninstallation is not confirmed.</string>
+    <string name="parity2_removal_unknown">The result is unknown. Check the device before repeating the action.</string>
+    <string name="parity2_software">Installed software</string>
+    <string name="parity2_software_hint">Read from an online agent. Up to 1000 programs; unavailable values stay unknown.</string>
+    <string name="parity2_software_error">No software list received. Check the agent and permissions; reconnect before retrying a timed-out request.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">Motherboard</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">Manufacturer</string>
+    <string name="parity2_bios_date">Firmware date</string>
+    <string name="parity2_mode">Mode</string>
+    <string name="parity2_spec">Specification</string>
+    <string name="parity2_activated">Activated</string>
+    <string name="parity2_owned">Owned</string>
+    <string name="parity2_last_boot">Last reported boot</string>
+    <string name="parity2_uptime">Estimated uptime (h:mm:ss)</string>
+    <string name="parity2_metrics">CPU and memory usage</string>
+    <string name="parity2_sample_time">Sample received: %1$s</string>
+    <string name="parity2_run">Run command</string>
+    <string name="parity2_command">Command</string>
+    <string name="parity2_run_warning">Runs as the agent account, usually SYSTEM or root. Commands may change the computer and be logged by the server. No cancellation or exit code is available. Do not enter secrets.</string>
+    <string name="parity2_run_uncertain">No result confirmed. The command may still be running. Check in the terminal before repeating it.</string>
+    <string name="parity2_output">Command output</string>
+    <string name="parity2_output_note">Up to 65536 characters. Output does not prove success; verify the intended change.</string>
+    <string name="parity2_seven_days">Last 7 days</string>
+    <string name="parity2_history_note">Reported power and connectivity history. Gaps are unknown, not downtime. The list below shows up to 100 recent transitions.</string>
+    <string name="parity2_favorites">Favorite commands</string>
+    <string name="parity2_favorites_hint">Up to 20 per profile. Select to edit the local draft, then insert without Enter. Single line only; do not save secrets.</string>
+    <string name="parity2_insert">Insert without Enter</string>
+</resources>

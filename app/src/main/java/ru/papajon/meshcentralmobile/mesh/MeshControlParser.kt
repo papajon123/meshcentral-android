@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.mesh
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -12,22 +14,26 @@ import org.json.JSONObject
  */
 object MeshControlParser {
     fun parse(text: String): MeshControlEvent {
-        val json = runCatching { JSONObject(text) }.getOrElse {
-            return MeshControlEvent.Unknown(action = null, rawLength = text.length)
-        }
-        val action = json.optString("action").takeIf { it.isNotBlank() }
+        val json = ru.papajon.meshcentralmobile.mesh.control.ControlFrameDecoder.decode(text)
+            ?: return MeshControlEvent.Unknown(action = null, rawLength = text.length)
+        return parse(json, text.length)
+    }
+
+    fun parse(json: JSONObject, rawLength: Int = 0): MeshControlEvent {
+        val action = json.optText("action").takeIf { it.isNotBlank() }
         return when (action) {
             "serverinfo" -> {
                 val info = json.optJSONObject("serverinfo")
                 MeshControlEvent.ServerInfo(
-                    name = info?.optString("name")?.takeIf { it.isNotBlank() }
-                        ?: json.optString("name").takeIf { it.isNotBlank() },
-                    domain = info?.optString("domain")?.takeIf { it.isNotBlank() },
+                    name = info?.optText("name")?.takeIf { it.isNotBlank() }
+                        ?: json.optText("name").takeIf { it.isNotBlank() },
+                    domain = info?.optText("domain")?.takeIf { it.isNotBlank() },
                     capabilities = MeshServerCapabilities(
                         features2 = (info?.opt("features2") as? Number)?.toLong(),
                         consent = info?.optIntOrNull("consent"),
-                        linuxShell = info?.optString("linuxshell")?.takeIf { it.isNotBlank() },
-                        domainSuffix = info?.optString("domainsuffix")?.takeIf { it.isNotBlank() },
+                        linuxShell = info?.optText("linuxshell")?.takeIf { it.isNotBlank() },
+                        domainSuffix = info?.optText("domainsuffix")?.takeIf { it.isNotBlank() },
+                        manageAllDeviceGroups = info?.optBoolean("manageAllDeviceGroups", false) == true,
                     ),
                 )
             }
@@ -35,10 +41,11 @@ object MeshControlParser {
             "userinfo" -> {
                 val info = json.optJSONObject("userinfo")
                 MeshControlEvent.UserInfo(
-                    userId = info?.optString("_id")?.takeIf { it.isNotBlank() },
-                    name = info?.optString("name")?.takeIf { it.isNotBlank() },
+                    userId = info?.optText("_id")?.takeIf { it.isNotBlank() },
+                    name = info?.optText("name")?.takeIf { it.isNotBlank() },
                     siteAdmin = readSiteAdmin(info?.opt("siteadmin")),
                     userGroupIds = parseLinks(info?.optJSONObject("links")).keys.filter { it.startsWith("ugrp/") }.toSet(),
+                    removeRights = readRights(info?.opt("removeRights")),
                 )
             }
 
@@ -46,55 +53,62 @@ object MeshControlParser {
             "nodes" -> MeshControlEvent.Nodes(parseNodes(json.opt("nodes")))
 
             "authcookie" -> MeshControlEvent.AuthCookie(
-                cookie = json.optString("cookie").takeIf { it.isNotBlank() },
-                relayCookie = json.optString("rcookie").takeIf { it.isNotBlank() },
+                cookie = json.optText("cookie").takeIf { it.isNotBlank() },
+                relayCookie = json.optText("rcookie").takeIf { it.isNotBlank() },
+            )
+
+            "twoFactorCookie" -> MeshControlEvent.TwoFactorCookie(
+                (json.opt("cookie") as? String)?.takeIf {
+                    ru.papajon.meshcentralmobile.security.RememberedDeviceStore.validCookie(it)
+                },
             )
 
             "event" -> {
                 val event = json.optJSONObject("event")
                 if (event == null) {
-                    MeshControlEvent.Unknown(action, text.length)
+                    MeshControlEvent.Unknown(action, rawLength)
                 } else {
                     MeshControlEvent.NodeUpdated(parseNodeEvent(event))
                 }
             }
 
-            "msg" -> parseMessage(json, text.length)
+            "msg" -> parseMessage(json, rawLength)
             "close" -> MeshControlEvent.Close(
-                cause = json.optString("cause").takeIf { it.isNotBlank() },
-                message = json.optString("msg").takeIf { it.isNotBlank() },
+                cause = json.optText("cause").takeIf { it.isNotBlank() },
+                message = json.optText("msg").takeIf { it.isNotBlank() },
                 twoFactorChallenge = parseTwoFactor(json),
             )
 
-            else -> MeshControlEvent.Unknown(action = action, rawLength = text.length)
+            else -> MeshControlEvent.Unknown(action = action, rawLength = rawLength)
         }
     }
 
     /** `{action:'msg', type:'getclip'|'setclip', ...}` and `{action:'msg', result:'OK'|'Unable to route'}`. */
     private fun parseMessage(json: JSONObject, rawLength: Int): MeshControlEvent {
-        val type = json.optString("type")
+        val type = json.optText("type")
         if (type == "getclip" || type == "setclip") {
             return MeshControlEvent.ClipMessage(
                 type = type,
                 success = json.opt("success")?.let { if (it is Boolean) it else null },
-                data = json.optString("data").takeIf { json.has("data") && !json.isNull("data") },
-                tag = json.optString("tag").takeIf { it.isNotBlank() },
-                sessionId = json.optString("sessionid").takeIf { it.isNotBlank() },
+                data = json.optText("data").takeIf { json.has("data") && !json.isNull("data") },
+                tag = json.optText("tag").takeIf { it.isNotBlank() },
+                sessionId = json.optText("sessionid").takeIf { it.isNotBlank() },
             )
         }
-        if (json.has("result")) {
+        if (type.isBlank() && json.has("result")) {
             return MeshControlEvent.RoutingResult(
-                result = json.optString("result").takeIf { it.isNotBlank() },
-                tag = json.optString("tag").takeIf { it.isNotBlank() },
-                responseId = json.optString("responseid").takeIf { it.isNotBlank() },
+                result = json.optText("result").take(512).takeIf { it.isNotBlank() },
+                tag = json.optText("tag").takeIf { it.isNotBlank() },
+                responseId = json.optText("responseid").takeIf { it.isNotBlank() },
             )
         }
         return MeshControlEvent.Unknown(action = "msg", rawLength = rawLength)
     }
 
     private fun parseTwoFactor(json: JSONObject): TwoFactorChallenge? {
-        if (json.optString("msg") != "tokenrequired") return null
+        if (json.optText("msg") != "tokenrequired") return null
         return TwoFactorChallenge(
+            twoFactorCookieDays = ru.papajon.meshcentralmobile.security.RememberedDeviceStore.durationDays(json.opt("twoFactorCookieDays")),
             email = json.optBoolean("email2fa", false),
             sms = json.optBoolean("sms2fa", false),
             push = json.optBoolean("msg2fa", false),
@@ -105,9 +119,13 @@ object MeshControlParser {
     }
 
     private fun parseNodeEvent(event: JSONObject): MeshNodeEvent {
-        return when (event.optString("action")) {
+        return when (event.optText("action")) {
+            "devicesessions" -> MeshNodeEvent.DeviceSessions(
+                nodeId = event.optText("nodeid"),
+                battery = PhoneBattery.parse(event.optJSONObject("sessions")?.optJSONObject("battery")),
+            )
             "nodeconnect" -> MeshNodeEvent.NodeConnected(
-                nodeId = event.optString("nodeid"),
+                nodeId = event.optText("nodeid"),
                 conn = event.optInt("conn", 0),
                 pwr = event.optInt("pwr", 0),
             )
@@ -120,9 +138,9 @@ object MeshControlParser {
                 ?.let { MeshNodeEvent.NodeAdded(it) }
                 ?: MeshNodeEvent.MeshChanged(null)
 
-            "removenode" -> MeshNodeEvent.NodeRemoved(event.optString("nodeid"))
+            "removenode" -> MeshNodeEvent.NodeRemoved(event.optText("nodeid"))
             "nodemeshchange", "meshchange", "createmesh", "deletemesh" -> {
-                MeshNodeEvent.MeshChanged(event.optString("meshid").takeIf { it.isNotBlank() })
+                MeshNodeEvent.MeshChanged(event.optText("meshid").takeIf { it.isNotBlank() })
             }
 
             // Any other mesh level event only means the cached lists may be stale.
@@ -135,14 +153,14 @@ object MeshControlParser {
         return buildList {
             for (index in 0 until array.length()) {
                 val item = array.optJSONObject(index) ?: continue
-                val id = item.optString("_id").takeIf { it.isNotBlank() } ?: continue
+                val id = item.optText("_id").takeIf { it.isNotBlank() } ?: continue
                 add(
                     MeshGroup(
                         id = id,
-                        name = item.optString("name").ifBlank { id },
-                        description = item.optString("desc"),
+                        name = item.optText("name").ifBlank { id },
+                        description = item.optText("desc"),
                         rightsByUser = parseLinks(item.optJSONObject("links")),
-                        relayNodeId = item.optString("relayid").takeIf { it.isNotBlank() },
+                        relayNodeId = item.optText("relayid").takeIf { it.isNotBlank() },
                     ),
                 )
             }
@@ -177,7 +195,7 @@ object MeshControlParser {
                     val key = keys.next()
                     when (val entry = value.opt(key)) {
                         is JSONArray -> addAll(parseNodeArray(entry, fallbackMeshId = key))
-                        is JSONObject -> parseNode(entry, fallbackMeshId = key)?.let { add(it) }
+                        is JSONObject -> parseNode(entry, fallbackMeshId = key, fullSnapshot = true)?.let { add(it) }
                         else -> Unit
                     }
                 }
@@ -191,33 +209,39 @@ object MeshControlParser {
         return buildList {
             for (index in 0 until array.length()) {
                 val item = array.optJSONObject(index) ?: continue
-                val node = parseNode(item, fallbackMeshId) ?: continue
+                val node = parseNode(item, fallbackMeshId, fullSnapshot = true) ?: continue
                 add(node)
             }
         }
     }
 
-    fun parseNode(item: JSONObject?, fallbackMeshId: String): MeshDevice? {
+    fun parseNode(item: JSONObject?, fallbackMeshId: String, fullSnapshot: Boolean = false): MeshDevice? {
         if (item == null) return null
-        val nodeId = item.optString("_id").takeIf { it.isNotBlank() } ?: return null
+        val nodeId = item.optText("_id").takeIf { it.isNotBlank() } ?: return null
         val agent = item.optJSONObject("agent")
         return MeshDevice(
             nodeId = nodeId,
-            meshId = item.optString("meshid").ifBlank { fallbackMeshId },
-            name = item.optString("name").ifBlank { nodeId },
+            meshId = item.optText("meshid").ifBlank { fallbackMeshId },
+            name = item.optText("name").ifBlank { nodeId },
             icon = item.optInt("icon", 0),
             conn = item.optInt("conn", 0),
             pwr = item.optInt("pwr", 0),
-            osDescription = item.optString("osdesc"),
-            ipAddress = item.optString("ip"),
+            osDescription = item.optText("osdesc"),
+            ipAddress = item.optText("ip"),
             mtype = item.optInt("mtype", 0),
             agentId = agent?.optIntOrNull("id"),
-            agentVersion = agent?.optString("ver")?.takeIf { it.isNotBlank() },
+            agentVersion = agent?.optText("ver")?.takeIf { it.isNotBlank() },
             agentCaps = agent?.optIntOrNull("caps"),
-            host = item.optString("host").takeIf { it.isNotBlank() },
+            host = item.optText("host").takeIf { it.isNotBlank() },
             sshPort = item.optIntOrNull("sshport")?.takeIf { it in 1..65535 },
             rightsByUser = parseLinks(item.optJSONObject("links")),
-            connectivityKnown = item.has("conn") && !item.isNull("conn"),
+            connectivityKnown = fullSnapshot || (item.has("conn") && !item.isNull("conn")),
+            battery = PhoneBattery.parse(item.optJSONObject("sessions")?.optJSONObject("battery")),
+            sessionsKnown = item.has("sessions"),
+            windowsSecurity = WindowsSecurityParser.parse(item),
+            lastBootMillis = (item.opt("lastbootuptime") as? Number)?.toDouble()
+                ?.takeIf { it.isFinite() && it > 0 && it <= 4_102_444_800_000.0 && it % 1 == 0.0 }?.toLong(),
+            lastBootKnown = item.has("lastbootuptime"),
         )
     }
 
@@ -231,6 +255,8 @@ object MeshControlParser {
         userId: String?,
         siteAdmin: Boolean,
         userGroupIds: Set<String> = emptySet(),
+        manageAllDeviceGroups: Boolean = false,
+        removeRights: Int? = null,
     ): List<MeshDevice> {
         if (devices.isEmpty()) return devices
         val rightsByMesh = groups.mapNotNull { group ->
@@ -241,13 +267,24 @@ object MeshControlParser {
             val group = groups.firstOrNull { it.id == device.meshId }
             val grants = listOfNotNull(rightsByMesh[device.meshId], device.rightsByUser[userId]) +
                 userGroupIds.mapNotNull { group?.rightsByUser?.get(it) } + userGroupIds.mapNotNull { device.rightsByUser[it] }
-            val rights = if (siteAdmin) {
+            val rights = if (siteAdmin && manageAllDeviceGroups) {
                 MeshRights.FULL
             } else {
-                grants.reduceOrNull { accumulated, grant -> accumulated or grant }
+                grants.reduceOrNull { accumulated, grant -> accumulated or grant } ?: MeshRights.NONE
             }
-            device.copy(rights = rights, relayNodeId = group?.relayNodeId, meshName = group?.name ?: device.meshName)
+            device.copy(rights = restrictRights(rights, removeRights), relayNodeId = group?.relayNodeId, meshName = group?.name ?: device.meshName)
         }
+    }
+
+    /** MeshCentral 1.3.1 webserver.js removeUserRights, including FULL with an explicit mask of zero. */
+    private fun restrictRights(rights: Int, removeRights: Int?): Int {
+        if (removeRights == null) return rights
+        val add = removeRights and (0x10000 or 0x100 or 0x200 or 0x400 or 0x400000 or 0x800000)
+        val subtract = removeRights and (0x8 or 0x10 or 0x8000 or 0x20000 or 0x40 or 0x40000)
+        val base = if (rights == MeshRights.FULL) {
+            1 or 2 or 4 or 8 or 32 or 64 or 128 or 16384 or 32768 or 131072 or 262144 or 524288 or 1048576
+        } else rights
+        return (base or add) and subtract.inv()
     }
 
     private fun JSONObject.optIntOrNull(name: String): Int? {

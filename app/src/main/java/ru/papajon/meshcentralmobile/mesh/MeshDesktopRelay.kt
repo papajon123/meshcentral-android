@@ -1,7 +1,8 @@
 package ru.papajon.meshcentralmobile.mesh
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import java.security.SecureRandom
-import kotlin.math.min
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -10,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.WebSocket
@@ -21,6 +21,8 @@ import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.input.NativeRemoteInputSink
 import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.model.ConnectionState
+import ru.papajon.meshcentralmobile.mesh.tls.serverCertificateFailure
+import ru.papajon.meshcentralmobile.mesh.tls.ServerCertificateFailure
 
 /**
  * Native Mesh Agent desktop (KVM) session over `/meshrelay.ashx?p=2`.
@@ -32,18 +34,22 @@ import ru.papajon.meshcentralmobile.model.ConnectionState
  * `agent-desktop-0.0.2.js:202-256`.
  */
 class MeshDesktopRelay(
-    private val okHttpClient: OkHttpClient,
+    private val okHttpClient: WebSocket.Factory,
     private val scope: CoroutineScope,
+    private val onCertificateFailure: (ServerCertificateFailure) -> Unit = {},
+    private val phoneInputAllowed: (MeshDevice) -> Boolean = { true },
     private val sendControlMessage: (JSONObject) -> Boolean,
 ) : NativeRemoteInputSink {
     private val framebuffer = KvmFramebuffer()
-    private val decoder = KvmFrameDecoder()
+    private val decoder = KvmFrameDecoder(paddedMessages = true)
     private val random = SecureRandom()
 
     @Volatile private var relaySocket: WebSocket? = null
     private var tunnelId: String? = null
     private var currentBaseUrl: HttpUrl? = null
-    private var currentDevice: MeshDevice? = null
+    @Volatile private var currentDevice: MeshDevice? = null
+    private data class PhonePress(val socket: WebSocket, val x: Int, val y: Int)
+    private var phonePress: PhonePress? = null
     private var authCookie: String? = null
     private var relayCookie: String? = null
     @Volatile private var frameVersion = 0L
@@ -53,12 +59,25 @@ class MeshDesktopRelay(
     private var keepAliveJob: Job? = null
     private var resumeWatchdogJob: Job? = null
     private var quality = DesktopQuality()
-    private var attempt = 0
+    private val retry = ConnectionRetryPolicy()
+    private var networkAvailable = true
+    private var controlAvailable = true
+    private var waitingForNetwork = false
     @Volatile private var backgroundPaused = false
     private val initialisation = DesktopInitialisationTracker()
 
     private val _desktopState = MutableStateFlow(RemoteDesktopState())
     val desktopState: StateFlow<RemoteDesktopState> = _desktopState
+
+    /** Update capability/rights without reconnecting or replacing the framebuffer. */
+    @Synchronized fun updatePhoneDevice(device: MeshDevice?) {
+        val current = currentDevice?.takeIf { it.isAndroidAgent } ?: return
+        val updated = device?.takeIf { it.nodeId == current.nodeId }
+            ?: current.copy(remoteInput = PhoneRemoteInput.Unknown)
+        if (!updated.phoneInputAllowed) releasePhonePress()
+        currentDevice = updated
+        _desktopState.update { it.copy(device = updated, viewOnly = updated.viewOnly) }
+    }
 
     /** Supplies the relay cookies gathered by the control channel (see `authcookie`). */
     fun updateRelayCredentials(authCookie: String?, relayCookie: String?) {
@@ -67,6 +86,7 @@ class MeshDesktopRelay(
     }
 
     fun connect(baseUrl: HttpUrl, device: MeshDevice) {
+        synchronized(this) { releasePhonePress() }
         if (!device.canOpenNativeDesktop) {
             _desktopState.value = RemoteDesktopState(
                 connectionState = ConnectionState.Failed,
@@ -81,7 +101,7 @@ class MeshDesktopRelay(
         cancelReconnect()
         currentBaseUrl = baseUrl
         currentDevice = device
-        attempt = 0
+        retry.reset()
         _desktopState.value = RemoteDesktopState(
             connectionState = ConnectionState.LoadingRemoteDesktop,
             device = device,
@@ -91,7 +111,8 @@ class MeshDesktopRelay(
         openRelay()
     }
 
-    fun reconnect() {
+    fun reconnect(resetBudget: Boolean = true) {
+        if (!resetBudget && retry.exhausted) return
         val baseUrl = currentBaseUrl
         val device = currentDevice
         if (baseUrl == null || device == null) return
@@ -103,7 +124,7 @@ class MeshDesktopRelay(
         relaySocket = null
         sendControlClose(previousSocket)
         previousSocket?.close(CLOSE_NORMAL, "Reconnecting desktop")
-        attempt = 0
+        if (resetBudget) retry.reset()
         _desktopState.update {
             it.copy(connectionState = ConnectionState.Reconnecting, message = UiText.Resource(R.string.runtime_desktop_reconnecting_relay))
         }
@@ -112,9 +133,46 @@ class MeshDesktopRelay(
 
     fun hasActiveSession(): Boolean = currentBaseUrl != null && currentDevice != null && !manualClose
 
+    fun onNetworkLost() {
+        networkAvailable = false
+        onControlLost()
+    }
+
+    fun onNetworkAvailable() {
+        networkAvailable = true
+        // Wait for the control channel's fresh authcookie before opening the relay.
+    }
+
+    fun onControlLost() {
+        controlAvailable = false
+        if (!hasActiveSession() || retry.exhausted) return
+        cancelReconnect()
+        stopKeepAlive()
+        resumeWatchdogJob?.cancel()
+        val previous = relaySocket
+        relaySocket = null
+        previous?.cancel()
+        waitForNetwork()
+    }
+
+    fun onControlAvailable() {
+        controlAvailable = true
+        if (waitingForNetwork && hasActiveSession() && networkAvailable && !retry.exhausted) {
+            cancelReconnect()
+            openRelay()
+        }
+    }
+
+    private fun waitForNetwork() {
+        waitingForNetwork = true
+        _desktopState.update { it.copy(connectionState = ConnectionState.Reconnecting,
+            handshakeComplete = false, message = UiText.Resource(R.string.reliability_waiting_network)) }
+    }
+
     /** Restore the same session after backgrounding, or reopen its relay if it disappeared. */
     fun resumeAfterBackground(controlReady: Boolean): DesktopResumeAction {
         backgroundPaused = false
+        if (retry.exhausted) return DesktopResumeAction.None
         val state = _desktopState.value
         val action = DesktopResumePolicy.onForeground(
             hasSession = hasActiveSession(),
@@ -124,9 +182,9 @@ class MeshDesktopRelay(
         )
         when (action) {
             DesktopResumeAction.Refresh -> {
-                if (!setPaused(false) || !requestRefresh()) reconnect() else watchForFreshFrame()
+                if (!setPaused(false) || !requestRefresh()) reconnect(resetBudget = false) else watchForFreshFrame()
             }
-            DesktopResumeAction.Reconnect -> reconnect()
+            DesktopResumeAction.Reconnect -> reconnect(resetBudget = false)
             DesktopResumeAction.WaitForRelay -> watchForFreshFrame()
             DesktopResumeAction.None, DesktopResumeAction.WaitForControl -> Unit
         }
@@ -139,11 +197,12 @@ class MeshDesktopRelay(
         val previousVersion = frameVersion
         resumeWatchdogJob = scope.launch {
             delay(RESUME_FRAME_TIMEOUT_MILLIS)
-            if (!backgroundPaused && relaySocket === socket && frameVersion == previousVersion) reconnect()
+            if (!backgroundPaused && relaySocket === socket && frameVersion == previousVersion) reconnect(resetBudget = false)
         }
     }
 
     fun disconnect(resetState: Boolean = true) {
+        synchronized(this) { releasePhonePress() }
         manualClose = true
         cancelReconnect()
         resumeWatchdogJob?.cancel()
@@ -204,14 +263,31 @@ class MeshDesktopRelay(
         return sendBinary(KvmInputEncoder.ctrlAltDel())
     }
 
-    override fun sendMouseMove(x: Int, y: Int): Boolean {
+    @Synchronized override fun sendMouseMove(x: Int, y: Int): Boolean {
         if (!inputAllowed()) return false
-        return sendBinary(KvmInputEncoder.mouseMove(x, y))
+        val sent = sendBinary(KvmInputEncoder.mouseMove(x, y))
+        if (sent) phonePress?.takeIf { it.socket === relaySocket }?.let { phonePress = it.copy(x = x, y = y) }
+        return sent
     }
 
-    override fun sendMouseButton(x: Int, y: Int, button: MouseButton, down: Boolean): Boolean {
+    @Synchronized override fun sendMouseButton(x: Int, y: Int, button: MouseButton, down: Boolean): Boolean {
+        // A release cannot start input. Only release this relay's own successful phone press,
+        // at its last sent coordinates, even if permission/capability was revoked meanwhile.
+        if (!down && button == MouseButton.Left && phonePress != null) return releasePhonePress()
         if (!inputAllowed()) return false
-        return sendBinary(KvmInputEncoder.mouseButton(x, y, button, down))
+        val socket = relaySocket ?: return false
+        val sent = socket.send(ByteString.of(*KvmInputEncoder.mouseButton(x, y, button, down)))
+        if (sent && down && button == MouseButton.Left && currentDevice?.isAndroidAgent == true) {
+            phonePress = PhonePress(socket, x, y)
+        }
+        return sent
+    }
+
+    private fun releasePhonePress(): Boolean {
+        val press = phonePress ?: return false
+        phonePress = null
+        if (press.socket !== relaySocket) return false
+        return press.socket.send(ByteString.of(*KvmInputEncoder.mouseButton(press.x, press.y, MouseButton.Left, false)))
     }
 
     override fun sendMouseClick(x: Int, y: Int, button: MouseButton): Boolean {
@@ -241,7 +317,8 @@ class MeshDesktopRelay(
 
     private fun inputAllowed(): Boolean {
         val state = _desktopState.value
-        return relaySocket != null && state.handshakeComplete && !state.viewOnly && !state.inputLocked
+        return relaySocket != null && state.inputEnabled &&
+            (state.device?.isAndroidAgent != true || phoneInputAllowed(state.device))
     }
 
     private fun sendBinary(packet: ByteArray): Boolean {
@@ -251,6 +328,8 @@ class MeshDesktopRelay(
     private fun openRelay() {
         val baseUrl = currentBaseUrl ?: return
         val device = currentDevice ?: return
+        if (!networkAvailable || !controlAvailable) { waitForNetwork(); return }
+        waitingForNetwork = false
 
         decoder.reset()
         initialisation.onNewRelay()
@@ -278,12 +357,8 @@ class MeshDesktopRelay(
             ),
         )
         if (!requested) {
-            _desktopState.update {
-                it.copy(
-                    connectionState = ConnectionState.Failed,
-                    message = UiText.Resource(R.string.runtime_desktop_tunnel_requires_control),
-                )
-            }
+            controlAvailable = false
+            waitForNetwork()
             return
         }
 
@@ -296,20 +371,46 @@ class MeshDesktopRelay(
         )
         relaySocket = okHttpClient.newWebSocket(
             Request.Builder().url(relayUrl).build(),
-            RelayListener(device),
+            relayListener(device),
         )
+    }
+
+    /** Retire sockets on the owner's scope; preserve reader ordering for text and KVM frames. */
+    private fun relayListener(device: MeshDevice): WebSocketListener {
+        val listener = RelayListener(device)
+        fun dispatch(socket: WebSocket, action: () -> Unit) {
+            scope.launch { if (relaySocket === socket) action() }
+        }
+        return object : WebSocketListener() {
+            override fun onOpen(webSocket: WebSocket, response: Response) {
+                if (relaySocket === webSocket) listener.onOpen(webSocket, response)
+            }
+            override fun onMessage(webSocket: WebSocket, text: String) {
+                if (relaySocket === webSocket) listener.onMessage(webSocket, text)
+            }
+            // Bitmap decoding stays on OkHttp's reader thread, as before; large frames must not
+            // block input dispatch on Main. StateFlow safely publishes the resulting frame.
+            override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
+                if (relaySocket === webSocket) listener.onMessage(webSocket, bytes)
+            }
+            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) = dispatch(webSocket) { listener.onFailure(webSocket, t, response) }
+            override fun onClosing(webSocket: WebSocket, code: Int, reason: String) = dispatch(webSocket) { webSocket.close(CLOSE_NORMAL, null) }
+            override fun onClosed(webSocket: WebSocket, code: Int, reason: String) = dispatch(webSocket) { listener.onClosed(webSocket, code, reason) }
+        }
     }
 
     private inner class RelayListener(
         private val device: MeshDevice,
     ) : WebSocketListener() {
+        private var opened = false
         override fun onOpen(webSocket: WebSocket, response: Response) {
+            opened = true
             _desktopState.update {
                 it.copy(
                     connectionState = ConnectionState.LoadingRemoteDesktop,
-                    device = device,
+                    device = currentDevice?.takeIf { it.nodeId == device.nodeId } ?: device,
                     message = UiText.Resource(R.string.runtime_desktop_relay_waiting_agent),
-                    viewOnly = device.viewOnly,
+                    viewOnly = (currentDevice?.takeIf { it.nodeId == device.nodeId } ?: device).viewOnly,
                 )
             }
         }
@@ -319,7 +420,7 @@ class MeshDesktopRelay(
         }
 
         override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-            handleRelayBinary(bytes.toByteArray())
+            handleRelayBinary(webSocket, bytes.toByteArray())
         }
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
@@ -331,7 +432,15 @@ class MeshDesktopRelay(
                     message = MeshConnectionError.describe(t, response?.code),
                 )
             }
-            scheduleReconnect(MeshConnectionError.describe(t, response?.code))
+            val certificateFailure = t.serverCertificateFailure()
+            if (certificateFailure != null) {
+                manualClose = true
+                cancelReconnect()
+                onCertificateFailure(certificateFailure)
+            } else {
+                scheduleReconnect(MeshConnectionError.describe(t, response?.code),
+                    ConnectionRetryPolicy.isNetworkFailure(t, response?.code, opened, networkAvailable))
+            }
         }
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
@@ -379,7 +488,7 @@ class MeshDesktopRelay(
         }
     }
 
-    private fun handleRelayBinary(payload: ByteArray) {
+    private fun handleRelayBinary(socket: WebSocket, payload: ByteArray) {
         val packets = decoder.append(payload)
         if (packets.isEmpty()) return
 
@@ -411,7 +520,10 @@ class MeshDesktopRelay(
             }
         }
 
+        if (relaySocket !== socket) return
         val previousSize = _desktopState.value.remoteWidth to _desktopState.value.remoteHeight
+        // An upgrade or "c" can precede an immediate refusal. A real KVM frame proves recovery.
+        if (update != null || screenSize != null) retry.reset()
         if (update != null) frameVersion++
 
         _desktopState.update { state ->
@@ -466,7 +578,10 @@ class MeshDesktopRelay(
         KvmInputEncoder.initialisationSequence(
             jpegQuality = quality.jpegQuality,
             frameRate = quality.frameRate,
-        ).forEach(::sendBinary)
+        ).filter { packet ->
+            // Key-up and touch-init are also input packets; phone agents only expose a display.
+            _desktopState.value.device?.isAndroidAgent != true || packet[1].toInt() !in setOf(1, 14)
+        }.forEach(::sendBinary)
         sendBinary(KvmInputEncoder.getDisplays())
         if (backgroundPaused) sendBinary(KvmInputEncoder.pause(true)) else requestRefresh()
     }
@@ -474,7 +589,7 @@ class MeshDesktopRelay(
     private fun handleControlJson(webSocket: WebSocket, text: String) {
         val json = runCatching { JSONObject(text) }.getOrNull() ?: return
         if (json.optInt("ctrlChannel") != MeshControlMessages.CTRL_CHANNEL) return
-        when (json.optString("type")) {
+        when (json.optText("type")) {
             "ping" -> webSocket.send(
                 JSONObject()
                     .put("ctrlChannel", MeshControlMessages.CTRL_CHANNEL)
@@ -525,38 +640,40 @@ class MeshDesktopRelay(
         )
     }
 
-    private fun scheduleReconnect(reason: UiText) {
+    private fun scheduleReconnect(reason: UiText, networkFailure: Boolean = false) {
         if (manualClose) return
         val baseUrl = currentBaseUrl ?: return
         val device = currentDevice ?: return
-        if (attempt >= MAX_ATTEMPTS) {
+        val backoff = retry.nextDelay(networkFailure)
+        if (backoff == null) {
+            waitingForNetwork = false
             _desktopState.update {
                 it.copy(
                     connectionState = ConnectionState.Failed,
                     message = UiText.resource(
                         R.string.runtime_desktop_relay_stopped,
-                        MAX_ATTEMPTS,
+                        ConnectionRetryPolicy.MAX_SERVER_RETRIES,
                         reason,
                     ),
                 )
             }
             return
         }
-        attempt++
-        val backoff = min(BASE_BACKOFF_MILLIS * (1L shl (attempt - 1)), MAX_BACKOFF_MILLIS)
+        waitingForNetwork = networkFailure
         _desktopState.update {
             it.copy(
                 connectionState = ConnectionState.Reconnecting,
-                attempt = attempt,
-                message = UiText.resource(
+                attempt = retry.serverRetries,
+                message = if (networkFailure) UiText.Resource(R.string.reliability_waiting_network) else UiText.resource(
                     R.string.runtime_desktop_reconnecting_attempt,
                     backoff / 1000,
-                    attempt,
-                    MAX_ATTEMPTS,
+                    retry.serverRetries,
+                    ConnectionRetryPolicy.MAX_SERVER_RETRIES,
                 ),
             )
         }
         reconnectJob?.cancel()
+        if (!networkAvailable || !controlAvailable) { reconnectJob = null; return }
         reconnectJob = scope.launch {
             delay(backoff)
             if (manualClose) return@launch
@@ -576,9 +693,6 @@ class MeshDesktopRelay(
         const val CLOSE_NORMAL = 1000
         const val KEEP_ALIVE_INTERVAL_MILLIS = 10_000L
         const val RESUME_FRAME_TIMEOUT_MILLIS = 6_000L
-        const val BASE_BACKOFF_MILLIS = 1_000L
-        const val MAX_BACKOFF_MILLIS = 20_000L
-        const val MAX_ATTEMPTS = 5
         const val TUNNEL_RESPONSE_ID = "android-tunnel"
 
         fun now(): Long = System.currentTimeMillis()

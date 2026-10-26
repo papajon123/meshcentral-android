@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">Uygulama güncellemeleri</string>
+    <string name="update_consent_title">GitHub’da yeni sürümler denetlensin mi?</string>
+    <string name="update_consent_body">Uygulama günde bir kez api.github.com adresine bağlanır; verileriniz gönderilmez.</string>
+    <string name="update_privacy_detail">GitHub ve CDN hizmeti IP adresinizi ve HTTP başlıklarını görür.</string>
+    <string name="update_allow">Güncellemeleri denetle</string>
+    <string name="update_not_now">Şimdi değil</string>
+    <string name="update_never">Henüz denetlenmedi.</string>
+    <string name="update_current">Daha yeni uyumlu bir sürüm bulunamadı.</string>
+    <string name="update_found">Bir güncelleme bulundu.</string>
+    <string name="update_suppressed">Bu sürüm ertelendi veya atlandı.</string>
+    <string name="update_network_error">Denetlenemedi. 24 saat sonra yeniden deneyin.</string>
+    <string name="update_rate_limit">GitHub istekleri sınırladı. 24 saat sonra yeniden deneyin.</string>
+    <string name="update_invalid_metadata">Sürüm bilgileri doğrulanamadı. 24 saat sonra yeniden deneyin.</string>
+    <string name="update_wrong_signer">Bu derlemenin imzası farklı. Uyumlu bir güncelleme sunulamıyor.</string>
+    <string name="update_checking">Denetleniyor…</string>
+    <string name="update_last_check">Son deneme: %1$s</string>
+    <string name="update_recently_checked">Bir dakikadan kısa süre önce denetlendi. Biraz sonra yeniden deneyin.</string>
+    <string name="update_check_now">Şimdi denetle</string>
+    <string name="update_available">%1$s sürümü kullanılabilir</string>
+    <string name="update_download">İndir</string>
+    <string name="update_later">Daha sonra</string>
+    <string name="update_skip">Bu sürümü atla</string>
+    <string name="update_browser_error">Tarayıcı bulunamadı. Bir tarayıcı yükleyin veya etkinleştirin.</string>
+</resources>

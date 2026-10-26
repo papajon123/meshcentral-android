@@ -35,13 +35,18 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.LiveRegionMode
@@ -79,6 +84,10 @@ fun ServerSettingsScreen(
     onTrustSelfSignedChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     introductoryContent: (@Composable () -> Unit)? = null,
+    pinnedSpkiSha256: String? = null,
+    onForgetServerKey: () -> Unit = {},
+    rememberedDeviceExpiresAt: Long? = null,
+    onForgetRememberedDevice: () -> Unit = {},
 ) {
     var serverUrl by rememberSaveable(settings.serverUrl) { mutableStateOf(settings.serverUrl) }
     var validationMessageId by rememberSaveable { mutableStateOf<Int?>(null) }
@@ -148,6 +157,18 @@ fun ServerSettingsScreen(
                     SavedFeedback(message = confirmation.asString())
                 }
 
+                if (pinnedSpkiSha256 != null) {
+                    Column(verticalArrangement = Arrangement.spacedBy(spacing.sm)) {
+                        Text(stringResource(R.string.tls_pinned_key), style = MaterialTheme.typography.titleSmall)
+                        ServerKeyFingerprint(pinnedSpkiSha256)
+                        TextButton(onClick = onForgetServerKey, shape = PillShape) { Text(stringResource(R.string.tls_forget)) }
+                    }
+                }
+
+                if (introductoryContent == null) {
+                    RememberedDeviceStatus(rememberedDeviceExpiresAt, onForgetRememberedDevice)
+                }
+
                 if (BuildConfig.DEBUG) {
                     DebugOptions(
                         allowHttpInDebug = settings.allowHttpInDebug,
@@ -157,6 +178,31 @@ fun ServerSettingsScreen(
                     )
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun RememberedDeviceStatus(expiresAt: Long?, onForget: () -> Unit) {
+    val locale = LocalConfiguration.current.locales[0]
+    var active by remember(expiresAt) { mutableStateOf(expiresAt != null && expiresAt > System.currentTimeMillis()) }
+    LaunchedEffect(expiresAt) {
+        if (expiresAt != null && active) {
+            kotlinx.coroutines.delay((expiresAt - System.currentTimeMillis()).coerceAtLeast(0))
+            active = false
+        }
+    }
+    Column(modifier = Modifier.testTag("remember-device-status"),
+        verticalArrangement = Arrangement.spacedBy(MeshTheme.spacing.sm)) {
+        Text(
+            if (active && expiresAt != null) stringResource(R.string.remember_device_until,
+                java.text.DateFormat.getDateTimeInstance(java.text.DateFormat.MEDIUM, java.text.DateFormat.SHORT, locale)
+                    .format(java.util.Date(expiresAt)))
+            else stringResource(R.string.remember_device_not_remembered),
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        if (active) TextButton(onClick = onForget, shape = PillShape, modifier = Modifier.testTag("forget-remembered-device")) {
+            Text(stringResource(R.string.remember_device_forget))
         }
     }
 }

@@ -10,6 +10,11 @@ import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.localization.UiText
 
 object RemoteInputBridge {
+    fun sendCustomShortcut(nativeSink: NativeRemoteInputSink?, shortcut: ru.papajon.meshcentralmobile.model.CustomShortcut): RemoteInputResult {
+        if (!shortcut.valid) return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_unsupported_key))
+        return sendKeyToRemote(null, nativeSink, ru.papajon.meshcentralmobile.model.CustomShortcut.keys.getValue(shortcut.key),
+            shortcut.ctrl, shortcut.alt, shortcut.shift, shortcut.win)
+    }
     /** A labelled Ctrl shortcut always sends Ctrl, regardless of the modifier toggles in the sheet. */
     fun sendCtrlShortcutToRemote(nativeSink: NativeRemoteInputSink?, keyCode: Int): RemoteInputResult =
         sendKeyToRemote(webView = null, nativeSink = nativeSink, keyCode = keyCode, ctrl = true)
@@ -123,31 +128,24 @@ object RemoteInputBridge {
             if (meta) add(RemoteKeyCodeMapper.VK_META)
         }.filterNot { it == remoteKeyCode }
 
-        var events = 0
-        modifiers.forEach { modifier ->
-            if (!nativeSink.sendRemoteKey(modifier, down = true, extended = RemoteKeyCodeMapper.isExtended(modifier))) {
-                return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_native_not_connected))
+        val attempted = mutableListOf<Int>()
+        var success = true
+        try {
+            for (key in modifiers + remoteKeyCode) {
+                attempted += key
+                if (!nativeSink.sendRemoteKey(key, down = true, extended = RemoteKeyCodeMapper.isExtended(key))) {
+                    success = false
+                    break
+                }
             }
-            events++
-        }
-
-        val extended = RemoteKeyCodeMapper.isExtended(remoteKeyCode)
-        if (!nativeSink.sendRemoteKey(remoteKeyCode, down = true, extended = extended)) {
-            return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_native_not_connected))
-        }
-        if (!nativeSink.sendRemoteKey(remoteKeyCode, down = false, extended = extended)) {
-            return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_native_not_connected))
-        }
-        events += 2
-
-        modifiers.asReversed().forEach { modifier ->
-            if (!nativeSink.sendRemoteKey(modifier, down = false, extended = RemoteKeyCodeMapper.isExtended(modifier))) {
-                return RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_native_not_connected))
+        } finally {
+            // A partial chord must not leave modifiers held. Never replay failed key-downs.
+            attempted.asReversed().forEach { key ->
+                if (!nativeSink.sendRemoteKey(key, down = false, extended = RemoteKeyCodeMapper.isExtended(key))) success = false
             }
-            events++
         }
-
-        return RemoteInputResult.Sent(events)
+        return if (success) RemoteInputResult.Sent(attempted.size * 2)
+        else RemoteInputResult.Failed(UiText.Resource(R.string.runtime_input_native_not_connected))
     }
 }
 

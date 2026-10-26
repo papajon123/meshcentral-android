@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">代理程式可能在傳送前損毀非 UTF-8 的 Windows 輸出。對於 PowerShell 命令，請選擇 UTF-8 模式：此模式會將主控台的輸入與輸出設為 UTF-8。此模式使用 PowerShell 語法，而非 cmd.exe 語法。使用自身輸出編碼的程式仍可能有所不同。</string>
+    <string name="windows_polish_default_shell">預設命令 shell（未變更）</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">لا توجد شبكة. في انتظار إعادة الاتصال…</string>
+    <string name="reliability_clearing_session">جارٍ إزالة تسجيل الدخول والجلسة المحفوظين…</string>
+    <string name="reliability_clear_failed">تعذّر إكمال مسح الجلسة. حاول مرة أخرى.</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">کوئی نیٹ ورک نہیں۔ دوبارہ جڑنے کا انتظار ہے…</string>
+    <string name="reliability_clearing_session">محفوظ شدہ سائن اِن اور سیشن ہٹایا جا رہا ہے…</string>
+    <string name="reliability_clear_failed">سیشن صاف کرنا مکمل نہیں ہو سکا۔ دوبارہ کوشش کریں۔</string>
+</resources>

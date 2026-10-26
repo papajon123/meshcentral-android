@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">Gỡ tác nhân</string>
+    <string name="parity2_remove">Xóa thiết bị</string>
+    <string name="parity2_uninstall_warning">Truy cập từ xa sẽ dừng. Bản ghi thiết bị vẫn còn. Cần truy cập máy tính để cài đặt lại.</string>
+    <string name="parity2_remove_warning">Bản ghi và lịch sử thiết bị sẽ bị xóa. Tác nhân vẫn được cài đặt và có thể đăng ký lại.</string>
+    <string name="parity2_confirm_name">Nhập chính xác tên thiết bị</string>
+    <string name="parity2_removal_pending">Đã gửi yêu cầu. Đang kiểm tra danh sách; chưa xác nhận thực thi.</string>
+    <string name="parity2_removal_absent">Thiết bị không có trong danh sách đã làm mới. Có thể do bị xóa hoặc thay đổi quyền truy cập.</string>
+    <string name="parity2_removal_disconnected">Tác nhân đã ngắt kết nối. Chưa xác nhận gỡ cài đặt.</string>
+    <string name="parity2_removal_unknown">Chưa rõ kết quả. Kiểm tra thiết bị trước khi lặp lại thao tác.</string>
+    <string name="parity2_software">Phần mềm đã cài</string>
+    <string name="parity2_software_hint">Đọc từ tác nhân đang kết nối. Tối đa 1000 chương trình; giá trị thiếu vẫn là chưa rõ.</string>
+    <string name="parity2_software_error">Chưa nhận được danh sách. Kiểm tra tác nhân và quyền; sau khi hết thời gian chờ, hãy kết nối lại trước khi thử lại.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">Bo mạch chủ</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">Nhà sản xuất</string>
+    <string name="parity2_bios_date">Ngày phần sụn</string>
+    <string name="parity2_mode">Chế độ</string>
+    <string name="parity2_spec">Đặc tả</string>
+    <string name="parity2_activated">Đã kích hoạt</string>
+    <string name="parity2_owned">Đã đặt chủ sở hữu</string>
+    <string name="parity2_last_boot">Lần khởi động được báo gần nhất</string>
+    <string name="parity2_uptime">Thời gian hoạt động ước tính (g:pp:gg)</string>
+    <string name="parity2_metrics">Mức sử dụng CPU và bộ nhớ</string>
+    <string name="parity2_sample_time">Nhận số đo: %1$s</string>
+    <string name="parity2_run">Chạy lệnh</string>
+    <string name="parity2_command">Lệnh</string>
+    <string name="parity2_run_warning">Chạy bằng tài khoản tác nhân, thường là SYSTEM hoặc root. Lệnh có thể thay đổi máy tính và được máy chủ ghi lại. Không có hủy hoặc mã thoát. Không nhập bí mật.</string>
+    <string name="parity2_run_uncertain">Chưa xác nhận kết quả. Lệnh có thể vẫn đang chạy. Kiểm tra trong cửa sổ dòng lệnh trước khi lặp lại.</string>
+    <string name="parity2_output">Đầu ra lệnh</string>
+    <string name="parity2_output_note">Tối đa 65536 ký tự. Đầu ra không chứng minh thành công; hãy kiểm tra thay đổi mong muốn.</string>
+    <string name="parity2_seven_days">7 ngày qua</string>
+    <string name="parity2_history_note">Lịch sử nguồn và kết nối đã báo cáo. Khoảng trống là chưa rõ, không phải ngừng hoạt động. Bên dưới là tối đa 100 lần chuyển gần nhất.</string>
+    <string name="parity2_favorites">Lệnh yêu thích</string>
+    <string name="parity2_favorites_hint">Tối đa 20 mỗi hồ sơ. Chọn để sửa bản nháp, rồi chèn không kèm Enter. Chỉ một dòng; không lưu bí mật.</string>
+    <string name="parity2_insert">Chèn không kèm Enter</string>
+</resources>

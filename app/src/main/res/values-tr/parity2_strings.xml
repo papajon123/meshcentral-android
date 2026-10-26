@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">Aracıyı kaldır</string>
+    <string name="parity2_remove">Cihazı kaldır</string>
+    <string name="parity2_uninstall_warning">Uzaktan erişim durur. Cihaz kaydı korunur. Yeniden kurulum için bilgisayara erişim gerekir.</string>
+    <string name="parity2_remove_warning">Cihaz kaydı ve geçmişi silinir. Aracı kurulu kalır ve yeniden kaydolabilir.</string>
+    <string name="parity2_confirm_name">Cihaz adını tam olarak yazın</string>
+    <string name="parity2_removal_pending">İstek gönderildi. Cihaz listesi denetleniyor; yürütme doğrulanmadı.</string>
+    <string name="parity2_removal_absent">Cihaz yenilenen listede yok. Silinmiş veya erişim izinleri değişmiş olabilir.</string>
+    <string name="parity2_removal_disconnected">Aracı bağlantısı kesildi. Kaldırma doğrulanmadı.</string>
+    <string name="parity2_removal_unknown">Sonuç bilinmiyor. İşlemi tekrarlamadan önce cihazı denetleyin.</string>
+    <string name="parity2_software">Kurulu programlar</string>
+    <string name="parity2_software_hint">Bağlı aracıdan okunur. En fazla 1000 program; eksik değerler bilinmiyor olarak kalır.</string>
+    <string name="parity2_software_error">Program listesi alınamadı. Aracıyı ve izinleri denetleyin; zaman aşımından sonra tekrar denemeden önce yeniden bağlanın.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">Anakart</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">Üretici</string>
+    <string name="parity2_bios_date">Ürün yazılımı tarihi</string>
+    <string name="parity2_mode">Mod</string>
+    <string name="parity2_spec">Teknik özellik</string>
+    <string name="parity2_activated">Etkinleştirildi</string>
+    <string name="parity2_owned">Sahip atandı</string>
+    <string name="parity2_last_boot">Son bildirilen açılış</string>
+    <string name="parity2_uptime">Tahmini çalışma süresi (sa:dk:sn)</string>
+    <string name="parity2_metrics">İşlemci ve bellek kullanımı</string>
+    <string name="parity2_sample_time">Ölçüm alındı: %1$s</string>
+    <string name="parity2_run">Komut çalıştır</string>
+    <string name="parity2_command">Komut</string>
+    <string name="parity2_run_warning">Aracı hesabıyla, genellikle SYSTEM veya root olarak çalışır. Bilgisayarı değiştirebilir ve sunucu tarafından kaydedilebilir. İptal ve çıkış kodu yoktur. Gizli bilgi girmeyin.</string>
+    <string name="parity2_run_uncertain">Sonuç doğrulanmadı. Komut hâlâ çalışıyor olabilir. Tekrarlamadan önce terminalde denetleyin.</string>
+    <string name="parity2_output">Komut çıktısı</string>
+    <string name="parity2_output_note">En fazla 65536 karakter. Çıktı başarıyı kanıtlamaz; istenen değişikliği denetleyin.</string>
+    <string name="parity2_seven_days">Son 7 gün</string>
+    <string name="parity2_history_note">Bildirilen güç ve bağlantı geçmişi. Boşluklar bilinmeyen veridir, kesinti değildir. Aşağıda en fazla 100 son geçiş gösterilir.</string>
+    <string name="parity2_favorites">Favori komutlar</string>
+    <string name="parity2_favorites_hint">Profil başına en fazla 20. Yerel taslağı düzenlemek için seçin, ardından Enter olmadan ekleyin. Tek satır; gizli bilgi kaydetmeyin.</string>
+    <string name="parity2_insert">Enter olmadan ekle</string>
+</resources>

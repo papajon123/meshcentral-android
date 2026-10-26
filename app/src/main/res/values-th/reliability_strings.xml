@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">ไม่มีเครือข่าย กำลังรอการเชื่อมต่อใหม่…</string>
+    <string name="reliability_clearing_session">กำลังลบข้อมูลเข้าสู่ระบบและเซสชันที่บันทึกไว้…</string>
+    <string name="reliability_clear_failed">ไม่สามารถล้างเซสชันให้เสร็จสมบูรณ์ได้ โปรดลองอีกครั้ง</string>
+</resources>

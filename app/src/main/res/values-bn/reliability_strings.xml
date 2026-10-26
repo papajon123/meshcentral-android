@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">কোনো নেটওয়ার্ক নেই। পুনরায় সংযোগের অপেক্ষায়…</string>
+    <string name="reliability_clearing_session">সংরক্ষিত সাইন ইন ও সেশন সরানো হচ্ছে…</string>
+    <string name="reliability_clear_failed">সেশন মুছে ফেলা সম্পূর্ণ করা যায়নি। আবার চেষ্টা করুন।</string>
+</resources>

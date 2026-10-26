@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">Agent deinstallieren</string>
+    <string name="parity2_remove">Gerät entfernen</string>
+    <string name="parity2_uninstall_warning">Der Fernzugriff endet. Der Geräteeintrag bleibt erhalten. Für eine Neuinstallation ist Zugriff auf den Computer nötig.</string>
+    <string name="parity2_remove_warning">Der Geräteeintrag und sein Verlauf werden gelöscht. Der Agent bleibt installiert und kann sich erneut registrieren.</string>
+    <string name="parity2_confirm_name">Gerätenamen exakt eingeben</string>
+    <string name="parity2_removal_pending">Anfrage gesendet. Geräteliste wird geprüft; Ausführung nicht bestätigt.</string>
+    <string name="parity2_removal_absent">Das Gerät fehlt in der aktualisierten Liste. Ursache kann eine Löschung oder Änderung der Zugriffsrechte sein.</string>
+    <string name="parity2_removal_disconnected">Der Agent ist getrennt. Die Deinstallation ist nicht bestätigt.</string>
+    <string name="parity2_removal_unknown">Ergebnis unbekannt. Gerät vor einer Wiederholung prüfen.</string>
+    <string name="parity2_software">Installierte Programme</string>
+    <string name="parity2_software_hint">Abfrage eines verbundenen Agenten. Bis zu 1000 Programme; fehlende Werte bleiben unbekannt.</string>
+    <string name="parity2_software_error">Keine Programmliste erhalten. Agent und Rechte prüfen; nach einer Zeitüberschreitung vor dem Wiederholen neu verbinden.</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">Hauptplatine</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">Hersteller</string>
+    <string name="parity2_bios_date">Firmwaredatum</string>
+    <string name="parity2_mode">Modus</string>
+    <string name="parity2_spec">Spezifikation</string>
+    <string name="parity2_activated">Aktiviert</string>
+    <string name="parity2_owned">Besitzer festgelegt</string>
+    <string name="parity2_last_boot">Zuletzt gemeldeter Start</string>
+    <string name="parity2_uptime">Geschätzte Laufzeit (h:mm:ss)</string>
+    <string name="parity2_metrics">CPU- und Speicherauslastung</string>
+    <string name="parity2_sample_time">Messung empfangen: %1$s</string>
+    <string name="parity2_run">Befehl ausführen</string>
+    <string name="parity2_command">Befehl</string>
+    <string name="parity2_run_warning">Ausführung als Agentenkonto, meist SYSTEM oder root. Befehle können den Computer ändern und vom Server protokolliert werden. Abbruch und Exitcode sind nicht verfügbar. Keine Geheimnisse eingeben.</string>
+    <string name="parity2_run_uncertain">Kein Ergebnis bestätigt. Der Befehl läuft möglicherweise noch. Vor einer Wiederholung im Terminal prüfen.</string>
+    <string name="parity2_output">Befehlsausgabe</string>
+    <string name="parity2_output_note">Bis zu 65536 Zeichen. Die Ausgabe beweist keinen Erfolg; die gewünschte Änderung prüfen.</string>
+    <string name="parity2_seven_days">Letzte 7 Tage</string>
+    <string name="parity2_history_note">Gemeldeter Strom- und Verbindungsverlauf. Lücken sind unbekannt, keine Ausfallzeiten. Unten stehen bis zu 100 letzte Übergänge.</string>
+    <string name="parity2_favorites">Favoritenbefehle</string>
+    <string name="parity2_favorites_hint">Bis zu 20 je Profil. Auswahl bearbeitet den lokalen Entwurf; anschließend ohne Enter einfügen. Nur eine Zeile; keine Geheimnisse speichern.</string>
+    <string name="parity2_insert">Ohne Enter einfügen</string>
+</resources>

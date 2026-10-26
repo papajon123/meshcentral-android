@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">پیام‌ها، پیوندها و شماره‌گیری علاوه بر کنترل از راه دور به مجوز کنسول نیز نیاز دارند.</string>
+    <string name="phone_url_format">از http:// یا https:// با حروف کوچک استفاده کنید. فاصله‌ها و گیومه‌های دوتایی مجاز نیستند؛ از کدگذاری درصدی استفاده کنید.</string>
+    <string name="phone_files_choose_category">پیش از بارگذاری، یک دسته یا پوشه تلفن انتخاب کنید.</string>
+    <string name="phone_files_ambiguous_name">چند فایل رسانه این نام را دارند. برای بارگیری یا حذف فایل درست، آن را از پوشه‌اش در Sdcard باز کنید.</string>
+    <string name="phone_files_directory_too_large">این دسته فایل‌های بسیار زیادی برای فهرست کردن دارد. پوشه‌ای کوچک‌تر در Sdcard باز کنید.</string>
+</resources>

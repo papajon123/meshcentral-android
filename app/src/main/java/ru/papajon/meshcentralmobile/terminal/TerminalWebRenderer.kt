@@ -11,6 +11,7 @@ import android.util.Base64
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
+import android.view.ViewTreeObserver
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.webkit.JavascriptInterface
@@ -35,6 +36,10 @@ class TerminalWebRenderer internal constructor(context: Context, private val con
     private val startupTimeout = Runnable { if (!loaded && !destroyed) controller.rendererInitializationFailed() }
     private var copyGeneration = 0
     private var lastConfiguration: String? = null
+    private var inputDialogOpen = false
+    private var dialogResizeHeld = false
+    private var dialogSettle: Runnable? = null
+    private val windowFocusListener = ViewTreeObserver.OnWindowFocusChangeListener { settleInputDialog() }
     val view: WebView = WebView(appContext).apply {
         isSaveEnabled = false
         isFocusable = true
@@ -60,6 +65,10 @@ class TerminalWebRenderer internal constructor(context: Context, private val con
             mediaPlaybackRequiresUserGesture = true
         }
         addJavascriptInterface(Bridge(), "TerminalBridge")
+        addOnLayoutChangeListener { _, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            if (right - left != oldRight - oldLeft || bottom - top != oldBottom - oldTop) settleInputDialog()
+        }
+        viewTreeObserver.addOnWindowFocusChangeListener(windowFocusListener)
         webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?) = true
             @Suppress("DEPRECATION")
@@ -82,6 +91,7 @@ class TerminalWebRenderer internal constructor(context: Context, private val con
             }
             override fun onPageFinished(view: WebView?, url: String?) {
                 if (url == URL) {
+                    if (dialogResizeHeld) evaluate("window.meshTerminal?.inputDialog(true)")
                     lastConfiguration?.let { evaluate("window.meshTerminalConfiguration=$it;window.meshTerminal?.configure($it)") }
                     view?.evaluateJavascript("typeof window.meshTerminal === 'object'") {
                         if (!destroyed && it != "true") controller.rendererInitializationFailed()
@@ -144,6 +154,42 @@ class TerminalWebRenderer internal constructor(context: Context, private val con
     } } }
     fun selectAll() = evaluate("window.meshTerminal?.selectAll()")
     fun clearSelection() = evaluate("window.meshTerminal?.clearSelection()")
+    /** Keep the remote grid stable through the dialog's keyboard and dismissal animation.
+     * There is no delayed command queue here: input is still sent exactly once by the controller.
+     */
+    fun inputDialog(open: Boolean) {
+        if (destroyed || (!open && !dialogResizeHeld)) return
+        dialogSettle?.let(main::removeCallbacks)
+        dialogSettle = null
+        inputDialogOpen = open
+        if (open) {
+            dialogResizeHeld = true
+            evaluate("window.meshTerminal?.inputDialog(true)")
+            return
+        }
+        settleInputDialog()
+    }
+
+    private fun settleInputDialog() {
+        if (destroyed || inputDialogOpen || !dialogResizeHeld) return
+        dialogSettle?.let(main::removeCallbacks)
+        dialogSettle = null
+        // A detached view will be fitted again on attach. A background window waits for a
+        // focus/layout event, never a polling loop or a timeout that forces an intermediate fit.
+        if (!view.isAttachedToWindow) {
+            dialogResizeHeld = false
+            evaluate("window.meshTerminal?.inputDialog(false)")
+            return
+        }
+        if (!view.hasWindowFocus()) return
+        dialogSettle = Runnable {
+            dialogSettle = null
+            if (!destroyed && !inputDialogOpen && dialogResizeHeld && view.hasWindowFocus()) {
+                dialogResizeHeld = false
+                evaluate("window.meshTerminal?.inputDialog(false)")
+            }
+        }.also { main.postDelayed(it, 250) }
+    }
     fun setControl(enabled: Boolean) = evaluate("window.meshTerminal?.control($enabled)")
     fun key(value: String) = evaluate("window.meshTerminal?.key(${JSONObject.quote(value)})")
 
@@ -180,6 +226,7 @@ class TerminalWebRenderer internal constructor(context: Context, private val con
                 if (destroyed || view.parent !== host) return
                 view.onResume()
                 view.requestLayout()
+                settleInputDialog()
                 view.invalidate()
                 host.invalidate()
                 // A same-size reattachment need not trigger ResizeObserver. Reapply presentation
@@ -207,6 +254,9 @@ class TerminalWebRenderer internal constructor(context: Context, private val con
             if (!destroyed) {
                 destroyed = true; copyGeneration++
                 main.removeCallbacks(startupTimeout)
+                dialogSettle?.let(main::removeCallbacks)
+                dialogSettle = null
+                if (view.viewTreeObserver.isAlive) view.viewTreeObserver.removeOnWindowFocusChangeListener(windowFocusListener)
                 detach(); view.stopLoading(); view.removeJavascriptInterface("TerminalBridge"); view.destroy()
             }
         }

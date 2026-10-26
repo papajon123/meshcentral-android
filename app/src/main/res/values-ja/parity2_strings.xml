@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity2_uninstall">エージェントをアンインストール</string>
+    <string name="parity2_remove">デバイスを削除</string>
+    <string name="parity2_uninstall_warning">リモートアクセスが停止します。デバイスの記録は残ります。再インストールにはコンピューターへのアクセスが必要です。</string>
+    <string name="parity2_remove_warning">デバイスの記録と履歴を削除します。エージェントは残り、再登録される場合があります。</string>
+    <string name="parity2_confirm_name">デバイス名を正確に入力</string>
+    <string name="parity2_removal_pending">要求を送信しました。デバイス一覧を確認中です。実行は未確認です。</string>
+    <string name="parity2_removal_absent">更新した一覧にデバイスがありません。削除またはアクセス権の変更が原因の可能性があります。</string>
+    <string name="parity2_removal_disconnected">エージェントが切断されました。アンインストールは未確認です。</string>
+    <string name="parity2_removal_unknown">結果は不明です。再実行する前にデバイスを確認してください。</string>
+    <string name="parity2_software">インストール済みソフトウェア</string>
+    <string name="parity2_software_hint">接続中のエージェントから取得します。最大 1000 件。不足している値は不明のままです。</string>
+    <string name="parity2_software_error">一覧を受信できませんでした。エージェントと権限を確認し、タイムアウト後は再接続してから再試行してください。</string>
+    <string name="parity2_bios">BIOS</string>
+    <string name="parity2_board">マザーボード</string>
+    <string name="parity2_tpm">TPM</string>
+    <string name="parity2_vendor">メーカー</string>
+    <string name="parity2_bios_date">ファームウェアの日付</string>
+    <string name="parity2_mode">モード</string>
+    <string name="parity2_spec">仕様</string>
+    <string name="parity2_activated">アクティブ化済み</string>
+    <string name="parity2_owned">所有者設定済み</string>
+    <string name="parity2_last_boot">最後に報告された起動</string>
+    <string name="parity2_uptime">推定稼働時間（時:分:秒）</string>
+    <string name="parity2_metrics">CPU とメモリの使用率</string>
+    <string name="parity2_sample_time">測定値を受信：%1$s</string>
+    <string name="parity2_run">コマンドを実行</string>
+    <string name="parity2_command">コマンド</string>
+    <string name="parity2_run_warning">通常 SYSTEM または root であるエージェントのアカウントで実行します。コンピューターを変更し、サーバーに記録される場合があります。キャンセルと終了コードは利用できません。機密情報を入力しないでください。</string>
+    <string name="parity2_run_uncertain">結果は未確認です。コマンドが実行中の可能性があります。再実行前にターミナルで確認してください。</string>
+    <string name="parity2_output">コマンド出力</string>
+    <string name="parity2_output_note">最大 65536 文字。出力は成功の証明ではありません。意図した変更を確認してください。</string>
+    <string name="parity2_seven_days">過去 7 日間</string>
+    <string name="parity2_history_note">報告された電源と接続の履歴。空白は不明を意味し、停止ではありません。下に最近の遷移を最大 100 件表示します。</string>
+    <string name="parity2_favorites">お気に入りのコマンド</string>
+    <string name="parity2_favorites_hint">プロファイルごとに最大 20 件。選択して下書きを編集し、Enter なしで挿入します。1 行のみ。機密情報を保存しないでください。</string>
+    <string name="parity2_insert">Enter なしで挿入</string>
+</resources>

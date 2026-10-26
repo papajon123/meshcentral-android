@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">Предупреждение</string>
+    <string name="parity_fixes_server_rejected">Ответ сервера: %1$s</string>
+    <string name="parity_fixes_output_truncated">Вывод обрезан до 65 536 символов.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: среднее с прошлого замера, включая замеры из других сеансов.</string>
+    <string name="parity_fixes_run_warning">Команда будет выполнена на этом устройстве. Внимательно проверьте её. Вывод видят все пользователи с правами на устройство. Не указывайте секреты.</string>
+</resources>

@@ -121,6 +121,8 @@ import ru.papajon.meshcentralmobile.ui.screens.session.SessionConnectionControls
 import ru.papajon.meshcentralmobile.ui.screens.session.SessionConnectionStatus
 import ru.papajon.meshcentralmobile.ui.screens.session.SessionRefreshAction
 import ru.papajon.meshcentralmobile.ui.screens.session.TextSheet
+import ru.papajon.meshcentralmobile.ui.screens.session.PhoneControlPanel
+import ru.papajon.meshcentralmobile.ui.screens.session.PhoneSessionCanvas
 import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 import ru.papajon.meshcentralmobile.ui.theme.PillShape
 import ru.papajon.meshcentralmobile.ui.theme.SquircleShape
@@ -139,6 +141,10 @@ fun RemoteDesktopScreen(
     modifier: Modifier = Modifier,
     onMinimize: (() -> Unit)? = null,
     onCloseSession: (() -> Unit)? = null,
+    customShortcuts: List<ru.papajon.meshcentralmobile.model.CustomShortcut> = emptyList(),
+    onAddShortcut: ((ru.papajon.meshcentralmobile.model.CustomShortcut) -> Boolean)? = null,
+    onRemoveShortcut: (Int) -> Unit = {},
+    shortcutProfileId: String = "",
 ) {
     val desktopState by meshClient.desktopState.collectAsState()
     var fullscreen by rememberSaveable { mutableStateOf(false) }
@@ -186,6 +192,14 @@ fun RemoteDesktopScreen(
     }
 
     // Choose one monitor once the agent reports its displays, so the first frame is readable.
+    LaunchedEffect(device.nodeId, device.isAndroidAgent) {
+        if (device.isAndroidAgent) {
+            keyboardActive = false
+            dragArmed = false
+            hintVisible = false
+            sheet = SessionSheet.None
+        }
+    }
     var initialDisplaySelected by remember(device.nodeId, desktopState.attempt) { mutableStateOf(false) }
     LaunchedEffect(device.nodeId, desktopState.attempt, desktopState.displays) {
         if (!initialDisplaySelected && desktopState.displays.size > 1) {
@@ -201,9 +215,31 @@ fun RemoteDesktopScreen(
             .fillMaxSize()
             .background(MeshTheme.colors.canvas),
     ) {
-        SessionCanvas(
+        if (device.isAndroidAgent) {
+            Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
+                if (chromeVisible) SessionTopBar(desktopState, canvasSize, debugVisible,
+                    onBack = { if (onCloseSession != null) onCloseSession() else { meshClient.disconnectDesktop(); onBrowseDevices() } },
+                    onSelectDisplay = meshClient::selectRemoteDisplay,
+                    onRefresh = { meshClient.requestRemoteRefresh() }, onReconnect = meshClient::reconnectDesktop,
+                    onHideChrome = { chromeVisible = false })
+                else TextButton(onClick = { chromeVisible = true }) { Text(stringResource(R.string.session_action_show_controls)) }
+                ru.papajon.meshcentralmobile.ui.screens.session.PhoneViewOnlyNotice(device, Modifier.padding(8.dp))
+                PhoneSessionCanvas(desktopState, zoom, panX, panY,
+                    onViewportChanged = { z, x, y -> zoom = z; panX = x; panY = y },
+                    onCanvasSizeChanged = { canvasSize = it }, input = meshClient.remoteInputSink,
+                    modifier = Modifier.fillMaxWidth().weight(1f))
+                PhoneControlPanel(desktopState, meshClient.remoteInputSink,
+                    Modifier.heightIn(max = 176.dp).verticalScroll(rememberScrollState()))
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                    TextButton(onClick = { zoom = 1f; panX = 0f; panY = 0f }) {
+                        Text(stringResource(R.string.common_action_fit_to_screen))
+                    }
+                    TextButton(onClick = { sheet = SessionSheet.Options }) { Text(stringResource(R.string.session_dock_more)) }
+                }
+            }
+        } else SessionCanvas(
             desktopState = desktopState,
-            mode = mode,
+            mode = if (device.supportsRemoteInput) mode else RemoteControlMode.PanZoom,
             dragArmed = dragArmed,
             onDragConsumed = { dragArmed = false },
             zoom = zoom,
@@ -220,7 +256,7 @@ fun RemoteDesktopScreen(
             modifier = Modifier.fillMaxSize(),
         )
 
-        if (!desktopState.hasFrame) {
+        if (!desktopState.hasFrame || desktopState.connectionState == ConnectionState.Reconnecting) {
             ConnectionOverlay(
                 state = desktopState,
                 onRetry = meshClient::reconnectDesktop,
@@ -231,11 +267,12 @@ fun RemoteDesktopScreen(
             )
         }
 
-        Column(
+        if (!device.isAndroidAgent) Column(
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal)),
         ) {
+            ru.papajon.meshcentralmobile.ui.screens.session.PhoneViewOnlyNotice(device, Modifier.padding(8.dp))
             AnimatedVisibility(
                 visible = chromeVisible,
                 enter = fadeIn(animationSpec = MeshTheme.motion.effectDefault) +
@@ -278,7 +315,7 @@ fun RemoteDesktopScreen(
         }
 
         AnimatedVisibility(
-            visible = chromeVisible && dockVisible,
+            visible = !device.isAndroidAgent && chromeVisible && dockVisible,
             enter = fadeIn(animationSpec = MeshTheme.motion.effectDefault) +
                 slideInVertically(animationSpec = MeshTheme.motion.spatialDefault) { it / 2 },
             exit = fadeOut(animationSpec = MeshTheme.motion.effectFast) +
@@ -311,7 +348,7 @@ fun RemoteDesktopScreen(
             }
         }
 
-        if (chromeVisible && !dockVisible) {
+        if (!device.isAndroidAgent && chromeVisible && !dockVisible) {
             FilledTonalIconButton(
                 onClick = { dockVisible = true },
                 shape = PillShape,
@@ -336,7 +373,7 @@ fun RemoteDesktopScreen(
         // Invisible text field that turns the phone keyboard into remote key packets.
         NativeKeyboardCapture(
             input = meshClient.remoteInputSink,
-            active = keyboardActive && desktopState.inputEnabled,
+            active = !device.isAndroidAgent && keyboardActive && desktopState.inputEnabled,
             modifier = Modifier.align(Alignment.BottomStart),
         )
     }
@@ -362,11 +399,14 @@ fun RemoteDesktopScreen(
             onClose = { sheet = SessionSheet.None },
         )
 
-        SessionSheet.Keyboard -> KeyboardSheet(
+        SessionSheet.Keyboard -> androidx.compose.runtime.key(shortcutProfileId) { KeyboardSheet(
             input = meshClient.remoteInputSink,
             onClose = { sheet = SessionSheet.None },
             onOpenTextSheet = { sheet = SessionSheet.Text },
-        )
+            customShortcuts = customShortcuts,
+            onAddShortcut = onAddShortcut,
+            onRemoveShortcut = onRemoveShortcut,
+        ) }
 
         SessionSheet.Text -> TextSheet(
             input = meshClient.remoteInputSink,
@@ -633,7 +673,7 @@ private fun gestureLabel(name: String): String = when (name) {
 }
 
 @Composable
-private fun SessionDock(
+internal fun SessionDock(
     state: RemoteDesktopState,
     mode: RemoteControlMode,
     dragArmed: Boolean,
@@ -661,6 +701,7 @@ private fun SessionDock(
                 .padding(horizontal = 4.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            if (state.device?.isAndroidAgent != true) {
             DockAction(
                 icon = when (mode) {
                     RemoteControlMode.DirectTouch -> Icons.Outlined.TouchApp
@@ -697,6 +738,7 @@ private fun SessionDock(
                 onClipboard,
                 modifier = Modifier.weight(1f),
             )
+            }
             DockAction(Icons.Outlined.MoreHoriz, stringResource(R.string.session_dock_more), true, onOptions,
                 modifier = Modifier.weight(1f))
             DockAction(Icons.Outlined.ArrowDropDown, stringResource(R.string.session_dock_hide), true, onHideDock,
@@ -763,7 +805,7 @@ private fun DockAction(
 
 /** Connection progress with the real protocol stages, so waiting looks like progress, not a freeze. */
 @Composable
-private fun ConnectionOverlay(
+internal fun ConnectionOverlay(
     state: RemoteDesktopState,
     onRetry: () -> Unit,
     onCancel: () -> Unit,
@@ -838,7 +880,7 @@ private fun ConnectionOverlay(
             }
             if (state.connectionState == ConnectionState.Reconnecting) {
                 Text(
-                    text = stringResource(R.string.session_reconnect_attempt, state.attempt),
+                    text = state.message?.asString() ?: stringResource(R.string.session_reconnect_attempt, state.attempt),
                     style = MaterialTheme.typography.bodySmall,
                     color = MeshTheme.colors.warning,
                 )
@@ -872,6 +914,10 @@ internal fun SessionCanvas(
     inputSink: NativeRemoteInputSink,
     modifier: Modifier = Modifier,
 ) {
+    if (desktopState.device?.isAndroidAgent == true) {
+        PhoneSessionCanvas(desktopState, zoom, panX, panY, onViewportChanged, onCanvasSizeChanged, inputSink, modifier)
+        return
+    }
     var canvasSize by remember { mutableStateOf(IntSize.Zero) }
     var trackpadCursor by remember { mutableStateOf(Offset.Zero) }
     // Last remote pointer position we sent, drawn as a cursor because the agent does not paint one.
@@ -889,6 +935,7 @@ internal fun SessionCanvas(
         zoom = zoom,
         panX = panX,
         panY = panY,
+        fitWidth = desktopState.device?.supportsRemoteInput == false,
     )
     val currentViewport by rememberUpdatedState(viewport)
     val currentDragArmed by rememberUpdatedState(dragArmed)

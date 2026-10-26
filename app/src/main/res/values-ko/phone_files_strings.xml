@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">메시지, 링크, 전화 걸기는 원격 제어 외에도 콘솔 권한이 필요합니다.</string>
+    <string name="phone_url_format">http:// 또는 https://를 소문자로 사용하세요. 공백과 큰따옴표는 허용되지 않으며, 퍼센트 인코딩을 사용하세요.</string>
+    <string name="phone_files_choose_category">업로드하기 전에 휴대전화 카테고리나 폴더를 선택하세요.</string>
+    <string name="phone_files_ambiguous_name">여러 미디어 파일이 같은 이름을 사용합니다. 올바른 파일을 다운로드하거나 삭제하려면 Sdcard의 해당 폴더에서 파일을 여세요.</string>
+    <string name="phone_files_directory_too_large">이 카테고리에는 나열하기에 파일이 너무 많습니다. Sdcard에서 더 작은 폴더를 여세요.</string>
+</resources>

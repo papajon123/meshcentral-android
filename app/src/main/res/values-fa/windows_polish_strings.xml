@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">عامل ممکن است خروجی ویندوز را که UTF-8 نیست، پیش از ارسال خراب کند. برای فرمان‌های PowerShell حالت UTF-8 را انتخاب کنید: این حالت ورودی و خروجی کنسول را روی UTF-8 تنظیم می‌کند. در این حالت از نحو PowerShell استفاده می‌شود، نه نحو cmd.exe. برنامه‌هایی که کدگذاری خروجی خودشان را دارند همچنان می‌توانند متفاوت رفتار کنند.</string>
+    <string name="windows_polish_default_shell">پوسته فرمان پیش‌فرض (بدون تغییر)</string>
+</resources>

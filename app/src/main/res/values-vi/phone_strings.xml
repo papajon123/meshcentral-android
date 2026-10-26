@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Điện thoại Android</string>
+    <string name="phone_view_only">Tác nhân trên điện thoại chỉ chia sẻ màn hình. Chưa hỗ trợ điều khiển từ xa. Kéo để di chuyển, chụm hai ngón tay để thu phóng.</string>
+    <string name="phone_unknown">Không rõ</string>
+    <string name="phone_battery">Pin: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">Đang sạc</string>
+    <string name="phone_on_battery">Đang dùng pin</string>
+    <string name="phone_power_unknown">Không rõ trạng thái sạc</string>
+    <string name="phone_find">Tìm điện thoại và liên hệ chủ máy</string>
+    <string name="phone_vibrate">Rung trong 5 giây</string>
+    <string name="phone_flash">Bật đèn pin trong 10 giây</string>
+    <string name="phone_alert">Gửi tin nhắn đến điện thoại</string>
+    <string name="phone_toast">Thông báo ngắn</string>
+    <string name="phone_open_url">Mở liên kết</string>
+    <string name="phone_dial">Mở bàn phím quay số</string>
+    <string name="phone_actions_unavailable">Thao tác cần tác nhân trực tuyến và quyền điều khiển từ xa.</string>
+    <string name="phone_message_title">Tiêu đề</string>
+    <string name="phone_message_text">Tin nhắn</string>
+    <string name="phone_url">Liên kết</string>
+    <string name="phone_number">Số điện thoại</string>
+    <string name="phone_message_hint">Tối đa 1000 ký tự; tiêu đề tối đa 80. Máy chủ có thể ghi lại tin nhắn.</string>
+    <string name="phone_url_hint">Dùng liên kết http hoặc https đầy đủ, không có dấu cách hay thông tin đăng nhập nhúng.</string>
+    <string name="phone_dial_hint">Chỉ dùng chữ số, +, * và #, tối đa 40 ký tự. Người dùng điện thoại sẽ bắt đầu cuộc gọi.</string>
+    <string name="phone_quotes_hint">Dấu ngoặc kép thẳng được đổi thành dấu ngoặc kép cong vì tác nhân không thể giữ nguyên chúng.</string>
+    <string name="phone_confirm">Gửi lệnh này đến điện thoại đã chọn?</string>
+    <string name="phone_send">Gửi lệnh</string>
+    <string name="phone_review">Xem lại</string>
+    <string name="phone_edit">Sửa</string>
+    <string name="phone_cancel">Hủy</string>
+    <string name="phone_command_sent">Đã gửi lệnh. Chưa xác nhận việc thực thi trên điện thoại.</string>
+    <string name="phone_send_failed">Chưa gửi được lệnh. Kiểm tra kết nối và quyền điều khiển từ xa.</string>
+    <string name="phone_files_limits">Tác nhân không hỗ trợ tạo hoặc đổi tên thư mục và tệp. Android có thể yêu cầu cấp quyền trên điện thoại.</string>
+</resources>

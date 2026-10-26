@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">โทรศัพท์ Android</string>
+    <string name="phone_view_only">เอเจนต์โทรศัพท์แชร์ได้เฉพาะหน้าจอ ยังไม่รองรับการควบคุมระยะไกล ลากเพื่อเลื่อนและใช้สองนิ้วเพื่อซูม</string>
+    <string name="phone_unknown">ไม่ทราบ</string>
+    <string name="phone_battery">แบตเตอรี่: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">กำลังชาร์จ</string>
+    <string name="phone_on_battery">ใช้พลังงานแบตเตอรี่</string>
+    <string name="phone_power_unknown">ไม่ทราบสถานะการชาร์จ</string>
+    <string name="phone_find">ค้นหาโทรศัพท์และติดต่อเจ้าของ</string>
+    <string name="phone_vibrate">สั่นเป็นเวลา 5 วินาที</string>
+    <string name="phone_flash">เปิดไฟฉายเป็นเวลา 10 วินาที</string>
+    <string name="phone_alert">ส่งข้อความไปยังโทรศัพท์</string>
+    <string name="phone_toast">การแจ้งเตือนสั้น</string>
+    <string name="phone_open_url">เปิดลิงก์</string>
+    <string name="phone_dial">เปิดแป้นโทรออก</string>
+    <string name="phone_actions_unavailable">การดำเนินการต้องใช้เอเจนต์ที่ออนไลน์และสิทธิ์ควบคุมระยะไกล</string>
+    <string name="phone_message_title">หัวข้อ</string>
+    <string name="phone_message_text">ข้อความ</string>
+    <string name="phone_url">ลิงก์</string>
+    <string name="phone_number">หมายเลขโทรศัพท์</string>
+    <string name="phone_message_hint">ข้อความไม่เกิน 1000 อักขระ หัวข้อไม่เกิน 80 อักขระ เซิร์ฟเวอร์อาจบันทึกข้อความ</string>
+    <string name="phone_url_hint">ใช้ลิงก์ http หรือ https แบบเต็มโดยไม่มีช่องว่างหรือข้อมูลเข้าสู่ระบบที่ฝังไว้</string>
+    <string name="phone_dial_hint">ใช้เฉพาะตัวเลข + * และ # ไม่เกิน 40 อักขระ ผู้ใช้โทรศัพท์เป็นผู้เริ่มการโทร</string>
+    <string name="phone_quotes_hint">เครื่องหมายคำพูดคู่แบบตรงจะถูกแทนที่ด้วยแบบโค้ง เนื่องจากเอเจนต์ไม่สามารถคงแบบตรงไว้ได้</string>
+    <string name="phone_confirm">ส่งคำสั่งนี้ไปยังโทรศัพท์ที่เลือกหรือไม่</string>
+    <string name="phone_send">ส่งคำสั่ง</string>
+    <string name="phone_review">ตรวจสอบ</string>
+    <string name="phone_edit">แก้ไข</string>
+    <string name="phone_cancel">ยกเลิก</string>
+    <string name="phone_command_sent">ส่งคำสั่งแล้ว ยังไม่ได้ยืนยันการทำงานบนโทรศัพท์</string>
+    <string name="phone_send_failed">ไม่ได้ส่งคำสั่ง ตรวจสอบการเชื่อมต่อและสิทธิ์ควบคุมระยะไกล</string>
+    <string name="phone_files_limits">เอเจนต์โทรศัพท์ไม่รองรับการสร้างหรือเปลี่ยนชื่อโฟลเดอร์และไฟล์ Android อาจขออนุญาตบนโทรศัพท์</string>
+</resources>

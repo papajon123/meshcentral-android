@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">एजंट पाठवण्यापूर्वीच नॉन-UTF-8 Windows आउटपुट खराब करू शकतो. PowerShell कमांडसाठी UTF-8 मोड निवडा: तो कन्सोलचे इनपुट आणि आउटपुट UTF-8 वर सेट करतो. या मोडमध्ये PowerShell सिंटॅक्स वापरला जातो, cmd.exe सिंटॅक्स नाही. स्वतःचे आउटपुट एन्कोडिंग असलेले प्रोग्राम तरीही वेगळे वागू शकतात.</string>
+    <string name="windows_polish_default_shell">डीफॉल्ट कमांड शेल (अपरिवर्तित)</string>
+</resources>

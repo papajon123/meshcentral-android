@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">Không có mạng. Đang chờ kết nối lại…</string>
+    <string name="reliability_clearing_session">Đang xóa thông tin đăng nhập và phiên đã lưu…</string>
+    <string name="reliability_clear_failed">Không thể hoàn tất việc xóa phiên. Hãy thử lại.</string>
+</resources>

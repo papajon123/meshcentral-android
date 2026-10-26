@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">Ağ yok. Yeniden bağlanmak için bekleniyor…</string>
+    <string name="reliability_clearing_session">Kaydedilmiş oturum açma bilgileri ve oturum kaldırılıyor…</string>
+    <string name="reliability_clear_failed">Oturum temizliği tamamlanamadı. Tekrar deneyin.</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">Сертификат сервера не является доверенным. Перед подтверждением сверьте отпечаток с сертификатом на сервере.</string>
+    <string name="tls_error_changed">Ключ сервера изменился. Подключение заблокировано: сверьте новый отпечаток с администратором сервера.</string>
+    <string name="tls_untrusted_title">Недоверенный сертификат сервера</string>
+    <string name="tls_changed_title">Сертификат сервера изменился</string>
+    <string name="tls_fingerprint">Отпечаток открытого ключа SHA-256 (SPKI)</string>
+    <string name="tls_previous_fingerprint">Ранее доверенный открытый ключ, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">Новый открытый ключ, SHA-256 (SPKI)</string>
+    <string name="tls_subject">Субъект: %1$s</string>
+    <string name="tls_validity">Срок действия: с %1$s до %2$s</string>
+    <string name="tls_server">Сервер: %1$s</string>
+    <string name="tls_compare">Сверьте этот отпечаток с сертификатом на сервере по отдельному доверенному каналу связи.</string>
+    <string name="tls_trust">Доверять этому серверу</string>
+    <string name="tls_replace">Заменить отпечаток…</string>
+    <string name="tls_replace_title">Заменить доверенный ключ?</string>
+    <string name="tls_replace_warning">Изменение ключа может означать подмену сервера. Продолжайте только после независимой проверки нового отпечатка. Прежний ключ больше не будет доверенным.</string>
+    <string name="tls_confirm_replace">Подтвердить замену</string>
+    <string name="tls_pinned_key">Доверенный ключ сервера</string>
+    <string name="tls_forget">Забыть</string>
+    <string name="tls_forget_title">Забыть доверенный ключ?</string>
+    <string name="tls_forget_warning">Текущее подключение будет закрыто. Если Android не доверяет сертификату сервера, потребуется повторная проверка.</string>
+    <string name="tls_certificate_fingerprint">SHA-256 сертификата — отображается в браузере</string>
+    <string name="tls_error_validity">Сертификат просрочен или ещё не действует. Проверьте дату и время телефона и срок действия сертификата сервера. Подтверждение доверия не обходит эту ошибку.</string>
+    <string name="tls_error_chain">Сертификат или его цепочка имеют неверную подпись, слабый ключ или алгоритм либо недопустимое назначение или ограничения УЦ. Администратор должен исправить сертификат; подтвердить его невозможно.</string>
+    <string name="tls_error_hostname">Сертификат не соответствует адресу сервера. Проверьте адрес и попросите администратора исправить имена в сертификате.</string>
+    <string name="tls_hostname_warning">Предупреждение: имя в сертификате не совпадает с адресом сервера. Подтверждайте ключ только после независимой проверки.</string>
+    <string name="tls_blocked_title">Сертификат сервера отклонён</string>
+    <string name="tls_verify_instructions">Администратору: вычислите отпечаток SPKI командой ниже. Для прямого TLS используйте meshcentral-data/webserver-cert-public.crt, для TLS на обратном прокси — сертификат прокси; подставьте этот файл вместо cert.pem. Браузер показывает отдельный отпечаток сертификата.</string>
+    <string name="tls_independent_warning">Сверяйте по независимому доверенному каналу. Отпечаток, полученный через то же непроверенное соединение, не защищает от посредника.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">Издатель сертификата называет себя корнем MeshCentral.</string>
+    <string name="tls_issuer_unknown">Сертификат подписан неизвестным центром сертификации. Если сервер использует публичный сертификат, его цепочка может быть неполной — лучше исправить сервер.</string>
+</resources>

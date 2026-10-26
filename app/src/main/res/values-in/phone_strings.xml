@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Ponsel Android</string>
+    <string name="phone_view_only">Agen ponsel hanya membagikan layar. Kendali jarak jauh belum tersedia. Seret untuk menggeser, cubit untuk memperbesar.</string>
+    <string name="phone_unknown">Tidak diketahui</string>
+    <string name="phone_battery">Baterai: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">Mengisi daya</string>
+    <string name="phone_on_battery">Menggunakan baterai</string>
+    <string name="phone_power_unknown">Status pengisian tidak diketahui</string>
+    <string name="phone_find">Cari ponsel dan hubungi pemiliknya</string>
+    <string name="phone_vibrate">Getarkan selama 5 detik</string>
+    <string name="phone_flash">Nyalakan senter selama 10 detik</string>
+    <string name="phone_alert">Pesan ke ponsel</string>
+    <string name="phone_toast">Notifikasi singkat</string>
+    <string name="phone_open_url">Buka tautan</string>
+    <string name="phone_dial">Buka papan panggilan</string>
+    <string name="phone_actions_unavailable">Tindakan memerlukan agen daring dan izin kendali jarak jauh.</string>
+    <string name="phone_message_title">Judul</string>
+    <string name="phone_message_text">Pesan</string>
+    <string name="phone_url">Tautan</string>
+    <string name="phone_number">Nomor telepon</string>
+    <string name="phone_message_hint">Maksimal 1000 karakter; judul maksimal 80. Server dapat mencatat pesan.</string>
+    <string name="phone_url_hint">Gunakan tautan http atau https lengkap tanpa spasi atau kredensial di dalamnya.</string>
+    <string name="phone_dial_hint">Hanya angka, +, * dan #, maksimal 40 karakter. Pengguna ponsel yang memulai panggilan.</string>
+    <string name="phone_quotes_hint">Tanda kutip ganda lurus diganti dengan tanda kutip tipografis karena agen ponsel tidak dapat mempertahankannya.</string>
+    <string name="phone_confirm">Kirim perintah ini ke ponsel yang dipilih?</string>
+    <string name="phone_send">Kirim perintah</string>
+    <string name="phone_review">Tinjau</string>
+    <string name="phone_edit">Edit</string>
+    <string name="phone_cancel">Batal</string>
+    <string name="phone_command_sent">Perintah terkirim. Pelaksanaan di ponsel belum dikonfirmasi.</string>
+    <string name="phone_send_failed">Perintah tidak terkirim. Periksa koneksi dan izin kendali jarak jauh.</string>
+    <string name="phone_files_limits">Agen ponsel tidak mendukung pembuatan atau penggantian nama folder dan berkas. Android mungkin meminta izin di ponsel.</string>
+</resources>

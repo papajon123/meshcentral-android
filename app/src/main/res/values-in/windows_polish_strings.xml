@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="windows_polish_powershell_utf8">PowerShell 5+ (UTF-8)</string>
+    <string name="windows_polish_encoding_hint">Agen dapat merusak keluaran Windows yang bukan UTF-8 sebelum mengirimkannya. Untuk perintah PowerShell, pilih mode UTF-8: mode ini menyetel masukan dan keluaran konsol ke UTF-8. Mode ini memakai sintaks PowerShell, bukan sintaks cmd.exe. Program dengan pengodean keluaran sendiri masih dapat berperilaku berbeda.</string>
+    <string name="windows_polish_default_shell">Shell perintah default (tidak berubah)</string>
+</resources>

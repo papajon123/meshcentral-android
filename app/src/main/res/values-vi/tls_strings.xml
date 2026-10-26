@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">Chứng chỉ máy chủ không đáng tin cậy. Hãy đối chiếu dấu vân tay với chứng chỉ trên máy chủ trước khi tin cậy.</string>
+    <string name="tls_error_changed">Khóa máy chủ đã thay đổi. Kết nối bị chặn: hãy xác minh dấu vân tay mới với quản trị viên máy chủ.</string>
+    <string name="tls_untrusted_title">Chứng chỉ máy chủ không đáng tin cậy</string>
+    <string name="tls_changed_title">Chứng chỉ máy chủ đã thay đổi</string>
+    <string name="tls_fingerprint">Dấu vân tay SHA-256 của khóa công khai (SPKI)</string>
+    <string name="tls_previous_fingerprint">Khóa công khai được tin cậy trước đây, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">Khóa công khai mới, SHA-256 (SPKI)</string>
+    <string name="tls_subject">Chủ thể: %1$s</string>
+    <string name="tls_validity">Có hiệu lực từ %1$s đến %2$s</string>
+    <string name="tls_server">Máy chủ: %1$s</string>
+    <string name="tls_compare">Hãy đối chiếu dấu vân tay này với chứng chỉ trên máy chủ qua một kênh riêng đáng tin cậy.</string>
+    <string name="tls_trust">Tin cậy máy chủ này</string>
+    <string name="tls_replace">Thay dấu vân tay…</string>
+    <string name="tls_replace_title">Thay khóa đáng tin cậy?</string>
+    <string name="tls_replace_warning">Khóa thay đổi có thể là dấu hiệu ai đó đang giả mạo máy chủ của bạn. Chỉ tiếp tục sau khi xác minh độc lập dấu vân tay mới. Khóa cũ sẽ không còn được tin cậy.</string>
+    <string name="tls_confirm_replace">Xác nhận thay thế</string>
+    <string name="tls_pinned_key">Khóa máy chủ đáng tin cậy</string>
+    <string name="tls_forget">Quên</string>
+    <string name="tls_forget_title">Quên khóa đáng tin cậy?</string>
+    <string name="tls_forget_warning">Kết nối hiện tại sẽ đóng. Bạn sẽ cần xác minh lại máy chủ này nếu Android không tin cậy chứng chỉ của máy chủ.</string>
+    <string name="tls_certificate_fingerprint">SHA-256 của chứng chỉ — hiển thị trong trình duyệt</string>
+    <string name="tls_error_validity">Chứng chỉ đã hết hạn hoặc chưa có hiệu lực. Kiểm tra ngày giờ trên điện thoại và thời hạn chứng chỉ máy chủ. Xác nhận tin cậy không thể bỏ qua lỗi này.</string>
+    <string name="tls_error_chain">Chứng chỉ hoặc chuỗi chứng chỉ có chữ ký không hợp lệ, khóa hoặc thuật toán yếu, hoặc mục đích hay ràng buộc của cơ quan chứng thực không hợp lệ. Quản trị viên phải sửa chứng chỉ; không thể chấp thuận chứng chỉ này.</string>
+    <string name="tls_error_hostname">Chứng chỉ không khớp với địa chỉ máy chủ. Kiểm tra địa chỉ và yêu cầu quản trị viên sửa các tên trong chứng chỉ.</string>
+    <string name="tls_hostname_warning">Cảnh báo: tên trong chứng chỉ không khớp với địa chỉ máy chủ. Chỉ chấp thuận khóa sau khi xác minh độc lập.</string>
+    <string name="tls_blocked_title">Chứng chỉ máy chủ bị từ chối</string>
+    <string name="tls_verify_instructions">Quản trị viên có thể tính dấu vân tay SPKI bằng lệnh bên dưới. Với TLS trực tiếp, dùng meshcentral-data/webserver-cert-public.crt; nếu TLS kết thúc tại proxy ngược, dùng chứng chỉ của proxy. Thay cert.pem bằng tệp đó. Trình duyệt hiển thị dấu vân tay riêng của chứng chỉ.</string>
+    <string name="tls_independent_warning">Xác minh qua một kênh độc lập, đáng tin cậy. Dấu vân tay lấy từ chính kết nối chưa xác minh này không bảo vệ khỏi kẻ trung gian.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">Nhà phát hành chứng chỉ tự nhận là chứng chỉ gốc MeshCentral.</string>
+    <string name="tls_issuer_unknown">Chứng chỉ được ký bởi một cơ quan chứng thực không xác định. Nếu máy chủ sử dụng chứng chỉ công khai, chuỗi chứng chỉ có thể chưa đầy đủ — nên sửa cấu hình máy chủ.</string>
+</resources>

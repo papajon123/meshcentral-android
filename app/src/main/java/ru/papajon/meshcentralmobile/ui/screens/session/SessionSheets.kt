@@ -190,6 +190,9 @@ fun KeyboardSheet(
     input: NativeRemoteInputSink?,
     onClose: () -> Unit,
     onOpenTextSheet: (() -> Unit)? = null,
+    customShortcuts: List<ru.papajon.meshcentralmobile.model.CustomShortcut> = emptyList(),
+    onAddShortcut: ((ru.papajon.meshcentralmobile.model.CustomShortcut) -> Boolean)? = null,
+    onRemoveShortcut: (Int) -> Unit = {},
 ) {
     var ctrl by rememberSaveable { mutableStateOf(false) }
     var alt by rememberSaveable { mutableStateOf(false) }
@@ -277,6 +280,13 @@ fun KeyboardSheet(
                     } else {
                         UiText.Resource(R.string.common_not_connected)
                     }
+                }
+            }
+
+            if (onAddShortcut != null) CustomShortcutsContent(customShortcuts, input, onAddShortcut, onRemoveShortcut) { result ->
+                message = when (result) {
+                    is RemoteInputResult.Sent -> UiText.Resource(R.string.session_key_sent)
+                    is RemoteInputResult.Failed -> result.reason
                 }
             }
 
@@ -681,7 +691,7 @@ fun SessionOptionsSheet(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                OutlinedButton(onClick = onShowHelp, shape = PillShape) {
+                if (state.device?.isAndroidAgent != true) OutlinedButton(onClick = onShowHelp, shape = PillShape) {
                     Icon(Icons.AutoMirrored.Outlined.HelpOutline, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(stringResource(R.string.session_gesture_guide_title))

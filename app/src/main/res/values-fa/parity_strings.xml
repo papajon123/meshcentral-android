@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">نیاز به توجه</string>
+    <string name="parity_security">امنیت Windows</string>
+    <string name="parity_security_cached">آخرین وضعیت گزارش‌شده؛ ممکن است قدیمی باشد.</string>
+    <string name="parity_antivirus">ضدویروس</string>
+    <string name="parity_updates">به‌روزرسانی خودکار</string>
+    <string name="parity_firewall">دیوار آتش</string>
+    <string name="parity_enabled">فعال</string>
+    <string name="parity_updated">به‌روز</string>
+    <string name="parity_unknown">نامشخص</string>
+    <string name="parity_ok">سالم</string>
+    <string name="parity_message">پیام به کاربر رایانه</string>
+    <string name="parity_message_title">عنوان</string>
+    <string name="parity_message_confirm">این پیام ارسال شود؟</string>
+    <string name="parity_message_sent">ارسال شد. دریافت تأیید نشده است.</string>
+    <string name="parity_shortcuts">میانبرهای من</string>
+    <string name="parity_remove_shortcut">حذف %1$s</string>
+    <string name="parity_add_shortcut">افزودن میانبر</string>
+    <string name="parity_suggestions">پیشنهادها</string>
+    <string name="parity_shortcut_label">نام</string>
+    <string name="parity_shortcut_key">کلید: %1$s</string>
+    <string name="parity_review">بازبینی</string>
+    <string name="parity_save">ذخیره</string>
+    <string name="parity_history">تاریخچه</string>
+    <string name="parity_events">رویدادهای دستگاه (حداکثر 50)</string>
+    <string name="parity_power_history">تاریخچه وضعیت برق</string>
+    <string name="parity_history_error">بارگیری نشد. برای تلاش دوباره، تازه‌سازی را بزنید.</string>
+    <string name="parity_history_empty">هیچ رکوردی گزارش نشده است.</string>
+    <string name="parity_power_on">روشن</string>
+    <string name="parity_hibernating">در خواب زمستانی</string>
+    <string name="parity_power_off">خاموش</string>
+    <string name="parity_yes">بله</string>
+    <string name="parity_no">خیر</string>
+</resources>

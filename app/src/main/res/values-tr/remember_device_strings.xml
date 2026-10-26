@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="remember_device_for_days">
+        <item quantity="one">Bu cihazı %1$d gün hatırla</item>
+        <item quantity="other">Bu cihazı %1$d gün hatırla</item>
+    </plurals>
+    <string name="remember_device_until">Bu cihaz %1$s tarihine kadar hatırlanacak</string>
+    <string name="remember_device_not_remembered">Bu cihaz hatırlanmıyor</string>
+    <string name="remember_device_forget">Bu cihazı unut</string>
+</resources>

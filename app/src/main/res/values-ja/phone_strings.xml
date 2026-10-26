@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Android スマートフォン</string>
+    <string name="phone_view_only">スマートフォンのエージェントは画面の共有のみ対応しています。遠隔操作はまだ利用できません。ドラッグで移動、ピンチで拡大・縮小できます。</string>
+    <string name="phone_unknown">不明</string>
+    <string name="phone_battery">バッテリー：%1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">充電中</string>
+    <string name="phone_on_battery">バッテリー駆動</string>
+    <string name="phone_power_unknown">充電状態は不明</string>
+    <string name="phone_find">スマートフォンを探して連絡する</string>
+    <string name="phone_vibrate">5 秒間振動</string>
+    <string name="phone_flash">ライトを 10 秒間点灯</string>
+    <string name="phone_alert">スマートフォンにメッセージ</string>
+    <string name="phone_toast">短い通知</string>
+    <string name="phone_open_url">リンクを開く</string>
+    <string name="phone_dial">ダイヤル画面を開く</string>
+    <string name="phone_actions_unavailable">操作にはオンラインのエージェントと遠隔操作の権限が必要です。</string>
+    <string name="phone_message_title">件名</string>
+    <string name="phone_message_text">メッセージ</string>
+    <string name="phone_url">リンク</string>
+    <string name="phone_number">電話番号</string>
+    <string name="phone_message_hint">本文は 1000 文字、件名は 80 文字まで。サーバーに記録される場合があります。</string>
+    <string name="phone_url_hint">空白や認証情報を含まない完全な http または https リンクを入力してください。</string>
+    <string name="phone_dial_hint">数字、+、*、# のみ、40 文字まで。発信はスマートフォンの利用者が行います。</string>
+    <string name="phone_quotes_hint">エージェントが保持できないため、直線の二重引用符は曲線の引用符に置き換えられます。</string>
+    <string name="phone_confirm">選択したスマートフォンにこのコマンドを送信しますか？</string>
+    <string name="phone_send">コマンドを送信</string>
+    <string name="phone_review">確認</string>
+    <string name="phone_edit">編集</string>
+    <string name="phone_cancel">キャンセル</string>
+    <string name="phone_command_sent">コマンドを送信しました。スマートフォンでの実行は未確認です。</string>
+    <string name="phone_send_failed">送信できませんでした。接続と遠隔操作の権限を確認してください。</string>
+    <string name="phone_files_limits">エージェントはフォルダーやファイルの作成・名前変更に対応していません。スマートフォン上で Android の許可が必要な場合があります。</string>
+</resources>

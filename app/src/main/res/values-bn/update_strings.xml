@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">অ্যাপের আপডেট</string>
+    <string name="update_consent_title">GitHub-এ নতুন সংস্করণ খুঁজবেন?</string>
+    <string name="update_consent_body">অ্যাপটি দিনে একবার api.github.com-এ সংযোগ করে; আপনার কোনো তথ্য পাঠানো হয় না।</string>
+    <string name="update_privacy_detail">GitHub ও তার CDN আপনার IP ঠিকানা এবং HTTP হেডার দেখতে পায়।</string>
+    <string name="update_allow">আপডেট খুঁজুন</string>
+    <string name="update_not_now">এখন নয়</string>
+    <string name="update_never">এখনও পরীক্ষা করা হয়নি।</string>
+    <string name="update_current">নতুন কোনো সামঞ্জস্যপূর্ণ সংস্করণ পাওয়া যায়নি।</string>
+    <string name="update_found">একটি আপডেট পাওয়া গেছে।</string>
+    <string name="update_suppressed">এই সংস্করণটি পিছিয়ে দেওয়া হয়েছে বা বাদ দেওয়া হয়েছে।</string>
+    <string name="update_network_error">পরীক্ষা করা যায়নি। ২৪ ঘণ্টা পরে আবার চেষ্টা করুন।</string>
+    <string name="update_rate_limit">GitHub অনুরোধ সীমিত করেছে। ২৪ ঘণ্টা পরে আবার চেষ্টা করুন।</string>
+    <string name="update_invalid_metadata">সংস্করণের তথ্য যাচাই করা যায়নি। ২৪ ঘণ্টা পরে আবার চেষ্টা করুন।</string>
+    <string name="update_wrong_signer">এই বিল্ডের স্বাক্ষর আলাদা। সামঞ্জস্যপূর্ণ আপডেট দেওয়া সম্ভব নয়।</string>
+    <string name="update_checking">পরীক্ষা করা হচ্ছে…</string>
+    <string name="update_last_check">শেষ চেষ্টা: %1$s</string>
+    <string name="update_recently_checked">এক মিনিটেরও কম আগে পরীক্ষা করা হয়েছে। একটু পরে আবার চেষ্টা করুন।</string>
+    <string name="update_check_now">এখনই পরীক্ষা করুন</string>
+    <string name="update_available">সংস্করণ %1$s পাওয়া যাচ্ছে</string>
+    <string name="update_download">ডাউনলোড করুন</string>
+    <string name="update_later">পরে</string>
+    <string name="update_skip">এই সংস্করণ বাদ দিন</string>
+    <string name="update_browser_error">কোনো ব্রাউজার নেই। একটি ব্রাউজার ইনস্টল বা চালু করুন।</string>
+</resources>

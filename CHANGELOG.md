@@ -1,3 +1,82 @@
+# 0.8.0 — 2026-10-26
+
+## Connection reliability
+
+- Wait for network availability after a lost connection, with bounded exponential backoff up to 30 seconds for DNS and connection failures. Keep the five automatic retries for server refusals; network and foreground callbacks do not renew that budget.
+- Restore desktop relays after fresh control-channel credentials arrive, without spending server retries while offline. Keep authentication, two-factor and certificate rejection protections.
+- Clear saved sign-in and WebView data in one operation that survives rotation, blocks competing sign-in, waits for cookie removal and moves cookie persistence/cache deletion off the UI thread. Enable disk and network StrictMode diagnostics in debug builds.
+
+## Phones
+
+- Recognize official Android agents as phones, with live battery state and cached system/network information.
+- Show the official Android agent's desktop after screen-capture consent by ignoring its standalone keepalive outside KVM commands.
+- Keep the official Android agent view-only. Touch, navigation and text input require a modified agent with input support, an explicitly enabled accessibility service and unrestricted control rights. That agent support is not yet in the upstream project.
+- Add phone touch, hold and swipe gestures, labelled Android navigation buttons, and UTF-16 text entry with password-field guidance in all 23 locales. Two-finger gestures only zoom/pan the local picture; computer gestures remain unchanged.
+- Add confirmed vibration, flashlight, message, link and dial-pad actions for online phones with Remote Control permission; messages, links and dial-pad commands also require Console permission. Report commands as sent, never as confirmed execution.
+- Send phone links through the audited console command, require both Remote Control and Console permissions for console actions, and preserve `#` in dial strings.
+- Adapt Android file listings/uploads/deletion to binary p5 messages and downloads to p10, retaining size/SHA-256 verification; hide unsupported create/rename operations.
+- Load the Android agent's file categories and open their relative paths using the same binary UTF-8 commands as the web viewer.
+- Fix phone downloads and verified uploads with both released Android agent 1.0.23 (headerless p10) and main; ignore keepalives and relay metadata without treating metadata as file contents, and handle control-socket loss without crashing. An isolated one-byte zero data frame is ambiguous and fails size verification; it is not silently repaired.
+- Wait briefly for MediaStore to publish the final uploaded size before SHA-256 readback, without repeating the upload or accepting stale metadata.
+- Keep duplicate media names visible with safe action restrictions, recover from oversized media lists, and disable queued uploads at the virtual phone root with a category hint.
+- Add phone strings in all 23 locales. Straight quotes in messages are visibly converted to typographic quotes because the agent has no escaping syntax.
+
+## Computers
+
+- Display recognized BIOS CIM_DATETIME values as a date in the user's locale, preserving unknown formats.
+- Show last reported Windows Security Center and antivirus product status in the device inspector, with a Needs attention filter. Missing or unrecognised data remains unknown.
+- Correct Windows security health values, antivirus aggregation and Windows-only visibility.
+- Send a bounded message to an online computer user after preview and confirmation, requiring Chat/Notify permission. Report submission without claiming delivery.
+- Save up to 12 named keyboard shortcuts per server profile, with five suggestions and the existing fixed shortcuts retained. Release all attempted keys after a partial input failure.
+- Read up to 50 device events and the latest 100 power transitions in the inspector. Show empty results separately from failed requests.
+- Add a seven-day power/connectivity chart with unknown gaps, retaining up to 10,000 transitions for the chart and 100 for the recent list. Retain sleep requests and device events.
+- Show unavailable offline power history as no data, omit unchanged-state transitions, and align seven-day rows to local midnight including today and DST.
+- Enable confirmed Sleep requests for online computer agents with Reset/Off permission, and observe subsequent connectivity without claiming the power action completed.
+- Add agent uninstall and device removal with current permission checks, two confirmations and exact device-name entry. Re-read the device list and distinguish absence/disconnection from proven execution; exclude Android agents.
+- Show cached BIOS, motherboard, TPM and last-boot details; estimate uptime only for connected agents. Read installed software and CPU/memory samples through audited native MeshCentral 1.3.1 commands, without Mobile Companion.
+- Restore offline Wake and agent-disconnection observation from real `nodes` snapshots; apply server device-group and per-user restrictions before offering actions.
+- Preserve late notification denials and actual command/Wake/CPU refusal reasons; allow software refresh after timeout.
+- Separate message preview from one-shot Send and label Linux CPU as an average since the previous sample. Add all new text in 23 locales.
+
+## Sign-in and security
+
+- Support explicitly approved self-signed server keys in all builds, with a separate SHA-256 SPKI fingerprint per profile.
+- Enforce saved keys even for platform-trusted chains. Reject expired/not-yet-valid certificates, explain server-chain errors, and block all recovery retries after a trust refusal.
+- Bind trust to the profile and normalized endpoint. Require confirmation and fresh app unlock when enabled for replacement or removal; cancel active requests and close control, desktop and tool sockets on trust changes.
+- Show both SHA-256 SPKI and certificate fingerprints, independent-channel verification instructions and an OpenSSL command in all 23 locale variants. Background notifications use the same profile pin policy, including explicitly approved private-server keys.
+- Show previously trusted and new public-key fingerprints when confirming a server key change, and match the OpenSSL fingerprint format to the app.
+- Apply profile TLS pins to background notifications and stop polling on certificate rejection before sending the bearer token.
+- Restrict Debug WebView to debug builds. Delegate unpinned public-chain path building to Android, including redundant, reordered and expired alternate intermediates.
+- Reject weak private-server keys, MD5/SHA-1 leaf signatures and incompatible server EKU. Clarify issuer claims and warn about approvable hostname mismatches in all 23 locales; align the security documentation with explicit private-CA approval.
+- Remember this device after a two-factor sign-in using MeshCentral's native `twofactor` cookie, stored with Android Keystore encryption and bound to the profile, server and username.
+- Show the server's remember-device duration on the code step and the expiry/forget action in server settings, in all 23 locales. Forget on logout, profile/server/account changes or authentication rejection; fall back to the code step without reconnect loops.
+- Bind remembered-device cookies to their issuing TLS trust mode and pinned server key; discard them on explicit trust changes or certificate rejection while preserving a matching saved pin across app restarts.
+- Document MeshCentral 1.3.1 remembered-cookie revocation limits and lost-phone recovery; use correct day plurals in all 23 locales.
+
+## Terminal and files
+
+- Add an explicit Windows PowerShell 5+ UTF-8 command mode; keep the default shell and command unchanged, and explain agent-side encoding loss in all 23 locales.
+- Keep the terminal grid stable while editing favorite commands and dismissing the dialog keyboard; insert literal text once without Enter.
+- Save up to 20 single-line terminal favorites per profile; selection edits a local draft and insertion never adds Enter. Add a separately confirmed Run command screen with bounded output, agent-account warning and uncertain-result handling.
+- Bound large command output before JSON decoding, display truncation, and keep output out of connection status. Warn that all users with device access can see command output.
+- Keep file sessions alive while Android's save-document picker covers the app, so Linux downloads reach the chosen document; release the pending operation on picker cancellation or launch failure.
+- Delete newly created SAF download documents after transfer failure, cancellation or session closure; if deletion is refused, try marking the document `.partial` and report the actual cleanup result. Preserve successfully verified downloads and identify phone transport failures separately from invalid file data.
+- Replay large Android p10 streams and interrupted 19-block streams in socket tests. Keep TLS integrity checks strict; document the emulator network-path failure separately from the application protocol.
+- Serialize document-picker state and release foreground-transfer reservations on every outcome. Trim KVM packet padding without consuming the next command.
+
+## Quality
+
+- Treat JSON null as missing throughout text parsing, including device addresses, cookies, saved profiles and file paths.
+- Prevent a crash when changing servers or closing the client by moving TLS pool cleanup off the main thread.
+- Keep form dialog actions above the keyboard on phones while the form content scrolls.
+- Add phone/file error and permission hints in all 23 locales and socket, controller, command and UI regression tests.
+- Add 36 strings in all 23 locales and regression coverage for command permissions, response correlation, parsers, favorite storage, confirmations and existing two-finger right click. Linux CPU/RAM, history and confirmed command output were checked live; destructive power/removal actions remain unverified on real devices.
+- Add the new strings in all 23 locale variants. Live Linux checks are recorded in [parity validation](docs/PARITY_FIXES_VALIDATION.md); Windows and destructive-action acceptance must be assessed separately.
+- Add opt-in update checks against public GitHub Releases, including prereleases: automatically once a day, and from Settings at any time with a one-minute cooldown. The consent question is asked once.
+- Validate release metadata, APK name/size, SHA-256 checksums and the public signing identity before offering a newer compatible version.
+- Show updates in Settings and the computer list, with browser download, postpone and skip actions; no APK download or installation inside the app.
+- Add consent, update preferences and results in all 23 supported locales.
+
 # 0.7.3 — 2026-10-25
 
 - Fix sign-in on servers that require a second factor ([#10](https://github.com/papajon123/meshcentral-android/issues/10)): the verification-code step stays on screen instead of reconnecting endlessly with "Connection to the server was lost" and a disabled button.

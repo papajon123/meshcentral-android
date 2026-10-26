@@ -16,6 +16,7 @@ data class RemoteViewport(
     val zoom: Float = 1f,
     val panX: Float = 0f,
     val panY: Float = 0f,
+    val fitWidth: Boolean = false,
 ) {
     val remoteValid: Boolean get() = remoteWidth > 0 && remoteHeight > 0
     val canvasValid: Boolean get() = canvasWidth > 0 && canvasHeight > 0
@@ -24,6 +25,7 @@ data class RemoteViewport(
     val fitScale: Float
         get() {
             if (!remoteValid || !canvasValid) return 1f
+            if (fitWidth && remoteHeight > remoteWidth) return canvasWidth.toFloat() / remoteWidth
             return min(canvasWidth.toFloat() / remoteWidth, canvasHeight.toFloat() / remoteHeight)
         }
 
@@ -89,15 +91,10 @@ data class RemoteViewport(
         val baseTop = (canvasHeight - remoteHeight * newScale) / 2f
         val newPanX = focusX - remoteX * newScale - baseLeft
         val newPanY = focusY - remoteY * newScale - baseTop
-        val clampedX = clampPanFor(newZoom, newPanX)
-        val clampedY = clampPanFor(newZoom, newPanY)
+        val clamped = copy(zoom = newZoom).clampPan(newPanX, newPanY)
+        val clampedX = clamped.first
+        val clampedY = clamped.second
         return ZoomResult(newZoom, clampedX, clampedY)
-    }
-
-    private fun clampPanFor(targetZoom: Float, value: Float): Float {
-        val targetScale = fitScale * targetZoom
-        val max = (((remoteWidth * targetScale) - canvasWidth) / 2f).coerceAtLeast(canvasWidth * FREE_PAN_FRACTION)
-        return value.coerceIn(-max, max)
     }
 
     /** Percentage of the remote width that is currently visible, for the zoom indicator. */

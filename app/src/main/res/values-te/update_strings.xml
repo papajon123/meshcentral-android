@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">యాప్ అప్‌డేట్‌లు</string>
+    <string name="update_consent_title">GitHubలో కొత్త వెర్షన్‌ల కోసం తనిఖీ చేయాలా?</string>
+    <string name="update_consent_body">యాప్ రోజుకు ఒకసారి api.github.comను సంప్రదిస్తుంది; మీ డేటా ఏదీ పంపబడదు.</string>
+    <string name="update_privacy_detail">GitHub, దాని CDN మీ IP చిరునామా, HTTP హెడర్‌లను చూడగలవు.</string>
+    <string name="update_allow">అప్‌డేట్‌ల కోసం తనిఖీ చేయి</string>
+    <string name="update_not_now">ఇప్పుడు వద్దు</string>
+    <string name="update_never">ఇంకా తనిఖీ చేయలేదు.</string>
+    <string name="update_current">కొత్త అనుకూల వెర్షన్ ఏదీ లేదు.</string>
+    <string name="update_found">అప్‌డేట్ కనుగొనబడింది.</string>
+    <string name="update_suppressed">ఈ వెర్షన్ వాయిదా వేయబడింది లేదా దాటవేయబడింది.</string>
+    <string name="update_network_error">తనిఖీ చేయలేకపోయాము. 24 గంటల తర్వాత మళ్లీ ప్రయత్నించండి.</string>
+    <string name="update_rate_limit">GitHub అభ్యర్థనలను పరిమితం చేసింది. 24 గంటల తర్వాత మళ్లీ ప్రయత్నించండి.</string>
+    <string name="update_invalid_metadata">వెర్షన్ వివరాలను ధృవీకరించలేకపోయాము. 24 గంటల తర్వాత మళ్లీ ప్రయత్నించండి.</string>
+    <string name="update_wrong_signer">ఈ బిల్డ్ సంతకం వేరుగా ఉంది. అనుకూల అప్‌డేట్‌ను అందించలేము.</string>
+    <string name="update_checking">తనిఖీ చేస్తోంది…</string>
+    <string name="update_last_check">చివరి ప్రయత్నం: %1$s</string>
+    <string name="update_recently_checked">ఒక నిమిషం కంటే తక్కువ సమయం క్రితం తనిఖీ చేయబడింది. కొద్దిసేపటి తర్వాత మళ్లీ ప్రయత్నించండి.</string>
+    <string name="update_check_now">ఇప్పుడు తనిఖీ చేయి</string>
+    <string name="update_available">వెర్షన్ %1$s అందుబాటులో ఉంది</string>
+    <string name="update_download">డౌన్‌లోడ్ చేయి</string>
+    <string name="update_later">తర్వాత</string>
+    <string name="update_skip">ఈ వెర్షన్‌ను దాటవేయి</string>
+    <string name="update_browser_error">బ్రౌజర్ అందుబాటులో లేదు. బ్రౌజర్‌ను ఇన్‌స్టాల్ చేయండి లేదా ప్రారంభించండి.</string>
+</resources>

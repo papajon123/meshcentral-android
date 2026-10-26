@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">Pas de réseau. En attente de reconnexion…</string>
+    <string name="reliability_clearing_session">Suppression de la connexion et de la session enregistrées…</string>
+    <string name="reliability_clear_failed">Impossible de terminer la suppression de la session. Réessayez.</string>
+</resources>

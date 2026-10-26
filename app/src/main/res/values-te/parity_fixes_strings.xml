@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">హెచ్చరిక</string>
+    <string name="parity_fixes_server_rejected">సర్వర్ ప్రతిస్పందన: %1$s</string>
+    <string name="parity_fixes_output_truncated">అవుట్‌పుట్ 65,536 అక్షరాలకు కుదించబడింది.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: మునుపటి కొలత నుండి సగటు, ఇతర సెషన్లు అభ్యర్థించిన కొలతలతో సహా.</string>
+    <string name="parity_fixes_run_warning">ఈ పరికరంలో కమాండ్ అమలవుతుంది. దాన్ని జాగ్రత్తగా సమీక్షించండి. ఈ పరికరానికి యాక్సెస్ ఉన్న అందరు వినియోగదారులు కమాండ్ అవుట్‌పుట్‌ను చూడగలరు. రహస్య సమాచారం చేర్చవద్దు.</string>
+</resources>

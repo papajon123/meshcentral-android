@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">تحديثات التطبيق</string>
+    <string name="update_consent_title">هل تريد البحث عن إصدارات جديدة على GitHub؟</string>
+    <string name="update_consent_body">يتصل التطبيق بـ api.github.com مرة يوميًا؛ ولا يرسل أيًا من بياناتك.</string>
+    <string name="update_privacy_detail">يرى GitHub وشبكة CDN التابعة له عنوان IP وترويسات HTTP الخاصة بك.</string>
+    <string name="update_allow">البحث عن تحديثات</string>
+    <string name="update_not_now">ليس الآن</string>
+    <string name="update_never">لم يُجرَ فحص بعد.</string>
+    <string name="update_current">لا يوجد إصدار أحدث متوافق.</string>
+    <string name="update_found">عُثر على تحديث.</string>
+    <string name="update_suppressed">تم تأجيل هذا الإصدار أو تخطيه.</string>
+    <string name="update_network_error">تعذّر الفحص. حاول مجددًا بعد 24 ساعة.</string>
+    <string name="update_rate_limit">قيّد GitHub الطلبات. حاول مجددًا بعد 24 ساعة.</string>
+    <string name="update_invalid_metadata">تعذّر التحقق من بيانات الإصدار. حاول مجددًا بعد 24 ساعة.</string>
+    <string name="update_wrong_signer">لهذه النسخة توقيع مختلف. لا يمكن اقتراح تحديث متوافق.</string>
+    <string name="update_checking">جارٍ الفحص…</string>
+    <string name="update_last_check">آخر محاولة: %1$s</string>
+    <string name="update_recently_checked">تم التحقق قبل أقل من دقيقة. حاول مرة أخرى بعد قليل.</string>
+    <string name="update_check_now">الفحص الآن</string>
+    <string name="update_available">الإصدار %1$s متاح</string>
+    <string name="update_download">تنزيل</string>
+    <string name="update_later">لاحقًا</string>
+    <string name="update_skip">تخطي هذا الإصدار</string>
+    <string name="update_browser_error">لا يتوفر متصفح. ثبّت متصفحًا أو فعّله.</string>
+</resources>

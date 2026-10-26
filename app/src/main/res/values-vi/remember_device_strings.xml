@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="remember_device_for_days">
+        <item quantity="other">Ghi nhớ thiết bị này trong %1$d ngày</item>
+    </plurals>
+    <string name="remember_device_until">Thiết bị này được ghi nhớ đến %1$s</string>
+    <string name="remember_device_not_remembered">Thiết bị này chưa được ghi nhớ</string>
+    <string name="remember_device_forget">Quên thiết bị này</string>
+</resources>

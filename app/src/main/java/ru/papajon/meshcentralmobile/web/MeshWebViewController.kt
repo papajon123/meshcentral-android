@@ -148,11 +148,19 @@ object MeshWebViewController {
         }
     }
 
-    fun clearWebViewSession(context: Context) {
-        CookieManager.getInstance().removeAllCookies(null)
-        CookieManager.getInstance().flush()
-        WebStorage.getInstance().deleteAllData()
-        context.cacheDir.deleteRecursively()
+    suspend fun clearWebViewSession(context: Context) {
+        val cookies = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) { CookieManager.getInstance() }
+        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+            kotlinx.coroutines.suspendCancellableCoroutine<Unit> { continuation ->
+                cookies.removeAllCookies { continuation.resumeWith(Result.success(Unit)) }
+            }
+            WebStorage.getInstance().deleteAllData()
+        }
+        kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            // flush blocks until Chromium writes its cookie store. Wait for removeAllCookies first.
+            cookies.flush()
+            check(!context.cacheDir.exists() || context.cacheDir.deleteRecursively()) { "Cache cleanup failed" }
+        }
     }
 
     private fun openExternalBrowser(context: Context, uri: Uri) {

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">يتطلب الانتباه</string>
+    <string name="parity_security">أمان Windows</string>
+    <string name="parity_security_cached">آخر حالة مُبلّغ عنها؛ قد تكون قديمة.</string>
+    <string name="parity_antivirus">مكافحة الفيروسات</string>
+    <string name="parity_updates">التحديثات التلقائية</string>
+    <string name="parity_firewall">جدار الحماية</string>
+    <string name="parity_enabled">مفعّل</string>
+    <string name="parity_updated">محدّث</string>
+    <string name="parity_unknown">غير معروف</string>
+    <string name="parity_ok">سليم</string>
+    <string name="parity_message">رسالة إلى مستخدم الكمبيوتر</string>
+    <string name="parity_message_title">العنوان</string>
+    <string name="parity_message_confirm">هل تريد إرسال هذه الرسالة؟</string>
+    <string name="parity_message_sent">تم الإرسال. لم يتم تأكيد التسليم.</string>
+    <string name="parity_shortcuts">اختصاراتي</string>
+    <string name="parity_remove_shortcut">إزالة %1$s</string>
+    <string name="parity_add_shortcut">إضافة اختصار</string>
+    <string name="parity_suggestions">اقتراحات</string>
+    <string name="parity_shortcut_label">التسمية</string>
+    <string name="parity_shortcut_key">المفتاح: %1$s</string>
+    <string name="parity_review">مراجعة</string>
+    <string name="parity_save">حفظ</string>
+    <string name="parity_history">السجل</string>
+    <string name="parity_events">أحداث الجهاز (حتى 50)</string>
+    <string name="parity_power_history">سجل الطاقة</string>
+    <string name="parity_history_error">تعذر التحميل. اضغط على تحديث للمحاولة مجددًا.</string>
+    <string name="parity_history_empty">لم يتم الإبلاغ عن سجلات.</string>
+    <string name="parity_power_on">قيد التشغيل</string>
+    <string name="parity_hibernating">في وضع الإسبات</string>
+    <string name="parity_power_off">متوقف</string>
+    <string name="parity_yes">نعم</string>
+    <string name="parity_no">لا</string>
+</resources>

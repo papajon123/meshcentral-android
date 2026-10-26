@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">अ‍ॅपची अद्यतने</string>
+    <string name="update_consent_title">GitHub वर नवीन आवृत्त्या तपासायच्या?</string>
+    <string name="update_consent_body">अ‍ॅप दिवसातून एकदा api.github.com शी संपर्क साधते; तुमचा कोणताही डेटा पाठवला जात नाही.</string>
+    <string name="update_privacy_detail">GitHub आणि त्याचे CDN तुमचा IP पत्ता आणि HTTP हेडर पाहू शकतात.</string>
+    <string name="update_allow">अद्यतने तपासा</string>
+    <string name="update_not_now">आता नको</string>
+    <string name="update_never">अजून तपासलेले नाही.</string>
+    <string name="update_current">नवीन सुसंगत आवृत्ती आढळली नाही.</string>
+    <string name="update_found">अद्यतन आढळले.</string>
+    <string name="update_suppressed">ही आवृत्ती पुढे ढकलली किंवा वगळली आहे.</string>
+    <string name="update_network_error">तपासता आले नाही. २४ तासांनंतर पुन्हा प्रयत्न करा.</string>
+    <string name="update_rate_limit">GitHub ने विनंत्यांवर मर्यादा घातली आहे. २४ तासांनंतर पुन्हा प्रयत्न करा.</string>
+    <string name="update_invalid_metadata">आवृत्तीची माहिती पडताळता आली नाही. २४ तासांनंतर पुन्हा प्रयत्न करा.</string>
+    <string name="update_wrong_signer">या बिल्डची स्वाक्षरी वेगळी आहे. सुसंगत अद्यतन सुचवता येत नाही.</string>
+    <string name="update_checking">तपासत आहे…</string>
+    <string name="update_last_check">शेवटचा प्रयत्न: %1$s</string>
+    <string name="update_recently_checked">एका मिनिटापेक्षा कमी वेळापूर्वी तपासले. थोड्या वेळाने पुन्हा प्रयत्न करा.</string>
+    <string name="update_check_now">आता तपासा</string>
+    <string name="update_available">आवृत्ती %1$s उपलब्ध आहे</string>
+    <string name="update_download">डाउनलोड करा</string>
+    <string name="update_later">नंतर</string>
+    <string name="update_skip">ही आवृत्ती वगळा</string>
+    <string name="update_browser_error">ब्राउझर उपलब्ध नाही. ब्राउझर स्थापित किंवा सुरू करा.</string>
+</resources>

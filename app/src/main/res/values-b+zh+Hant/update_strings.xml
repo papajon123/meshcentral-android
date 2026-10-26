@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">應用程式更新</string>
+    <string name="update_consent_title">檢查 GitHub 上的新版本？</string>
+    <string name="update_consent_body">應用程式每天連線至 api.github.com 一次，不會傳送你的任何資料。</string>
+    <string name="update_privacy_detail">GitHub 及其 CDN 可以看到你的 IP 位址和 HTTP 標頭。</string>
+    <string name="update_allow">檢查更新</string>
+    <string name="update_not_now">暫時不要</string>
+    <string name="update_never">尚未檢查。</string>
+    <string name="update_current">找不到更新的相容版本。</string>
+    <string name="update_found">發現可用更新。</string>
+    <string name="update_suppressed">已延後或略過此版本。</string>
+    <string name="update_network_error">無法檢查，請在 24 小時後重試。</string>
+    <string name="update_rate_limit">GitHub 已限制請求，請在 24 小時後重試。</string>
+    <string name="update_invalid_metadata">無法驗證版本資訊，請在 24 小時後重試。</string>
+    <string name="update_wrong_signer">此版本的簽章不同，無法提供相容更新。</string>
+    <string name="update_checking">正在檢查…</string>
+    <string name="update_last_check">上次嘗試：%1$s</string>
+    <string name="update_recently_checked">不到一分鐘前剛檢查過。請稍後再試。</string>
+    <string name="update_check_now">立即檢查</string>
+    <string name="update_available">版本 %1$s 可用</string>
+    <string name="update_download">下載</string>
+    <string name="update_later">稍後</string>
+    <string name="update_skip">略過此版本</string>
+    <string name="update_browser_error">沒有可用的瀏覽器，請安裝或啟用瀏覽器。</string>
+</resources>

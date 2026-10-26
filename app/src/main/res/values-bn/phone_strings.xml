@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_title">Android ফোন</string>
+    <string name="phone_view_only">ফোন এজেন্ট শুধু স্ক্রিন শেয়ার করে। দূর থেকে নিয়ন্ত্রণ এখনও সম্ভব নয়। সরাতে টানুন, জুম করতে দুই আঙুল ব্যবহার করুন।</string>
+    <string name="phone_unknown">অজানা</string>
+    <string name="phone_battery">ব্যাটারি: %1$s</string>
+    <string name="phone_battery_level">%1$s%%</string>
+    <string name="phone_charging">চার্জ হচ্ছে</string>
+    <string name="phone_on_battery">ব্যাটারিতে চলছে</string>
+    <string name="phone_power_unknown">চার্জের অবস্থা অজানা</string>
+    <string name="phone_find">ফোন খুঁজুন ও মালিকের সঙ্গে যোগাযোগ করুন</string>
+    <string name="phone_vibrate">৫ সেকেন্ড কম্পন</string>
+    <string name="phone_flash">১০ সেকেন্ডের জন্য টর্চ</string>
+    <string name="phone_alert">ফোনে বার্তা</string>
+    <string name="phone_toast">সংক্ষিপ্ত বিজ্ঞপ্তি</string>
+    <string name="phone_open_url">লিঙ্ক খুলুন</string>
+    <string name="phone_dial">ডায়াল প্যাড খুলুন</string>
+    <string name="phone_actions_unavailable">এই কাজগুলির জন্য এজেন্ট অনলাইনে থাকতে হবে এবং দূর থেকে নিয়ন্ত্রণের অনুমতি লাগবে।</string>
+    <string name="phone_message_title">শিরোনাম</string>
+    <string name="phone_message_text">বার্তা</string>
+    <string name="phone_url">লিঙ্ক</string>
+    <string name="phone_number">ফোন নম্বর</string>
+    <string name="phone_message_hint">বার্তা সর্বাধিক ১০০০ অক্ষর, শিরোনাম ৮০ অক্ষর। সার্ভার বার্তা সংরক্ষণ করতে পারে।</string>
+    <string name="phone_url_hint">স্পেস বা যুক্ত লগইন তথ্য ছাড়া সম্পূর্ণ http বা https লিঙ্ক দিন।</string>
+    <string name="phone_dial_hint">শুধু সংখ্যা, +, * ও #, সর্বাধিক ৪০ অক্ষর। ফোনে থাকা ব্যক্তি কল শুরু করবেন।</string>
+    <string name="phone_quotes_hint">সোজা দ্বৈত উদ্ধৃতিচিহ্ন বাঁকানো চিহ্নে বদলে যাবে, কারণ ফোন এজেন্ট সেগুলি অপরিবর্তিত রাখতে পারে না।</string>
+    <string name="phone_confirm">নির্বাচিত ফোনে এই নির্দেশ পাঠাবেন?</string>
+    <string name="phone_send">নির্দেশ পাঠান</string>
+    <string name="phone_review">পর্যালোচনা</string>
+    <string name="phone_edit">সম্পাদনা</string>
+    <string name="phone_cancel">বাতিল</string>
+    <string name="phone_command_sent">নির্দেশ পাঠানো হয়েছে। ফোনে তা কার্যকর হয়েছে কি না নিশ্চিত নয়।</string>
+    <string name="phone_send_failed">নির্দেশ পাঠানো হয়নি। সংযোগ এবং দূর থেকে নিয়ন্ত্রণের অনুমতি পরীক্ষা করুন।</string>
+    <string name="phone_files_limits">ফোন এজেন্ট ফোল্ডার ও ফাইল তৈরি বা নাম পরিবর্তন সমর্থন করে না। Android ফোনে অনুমতি চাইতে পারে।</string>
+</resources>

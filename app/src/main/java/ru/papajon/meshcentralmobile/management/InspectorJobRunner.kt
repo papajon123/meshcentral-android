@@ -56,9 +56,12 @@ internal class InspectorJobRunner(
 
 internal class InspectorJobException(val text: UiText) : Exception()
 
-/** Never renders exception messages or arbitrary text from the server. */
+/** Server rejections use a bounded reason; other exception messages remain private. */
 internal fun inspectorFailureText(error: Exception): UiText {
     if (error is InspectorJobException) return error.text
+    if (error is ControlRequestException && error.serverReason != null) {
+        return UiText.resource(R.string.parity_fixes_server_rejected, UiText.Literal(error.serverReason))
+    }
     val code = when (error) {
         is CompanionException -> error.code
         is TimeoutCancellationException -> CompanionErrorCode.TIMEOUT

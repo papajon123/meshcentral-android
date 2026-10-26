@@ -21,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.BuildConfig
 import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.ui.components.connectionStateLabel
 import ru.papajon.meshcentralmobile.web.MeshWebViewController
@@ -33,6 +34,7 @@ fun MeshWebViewSurface(
     showHeader: Boolean = true,
     onWebViewReady: (WebView) -> Unit = {},
 ) {
+    if (!BuildConfig.DEBUG) return
     var webViewRef by remember { mutableStateOf<WebView?>(null) }
     var status by remember { mutableStateOf(MeshWebViewStatus()) }
 

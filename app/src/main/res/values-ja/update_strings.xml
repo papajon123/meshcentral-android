@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">アプリの更新</string>
+    <string name="update_consent_title">GitHub で新しいバージョンを確認しますか？</string>
+    <string name="update_consent_body">アプリは1日1回 api.github.com に接続します。あなたのデータは送信されません。</string>
+    <string name="update_privacy_detail">GitHub とその CDN には IP アドレスと HTTP ヘッダーが伝わります。</string>
+    <string name="update_allow">更新を確認</string>
+    <string name="update_not_now">今はしない</string>
+    <string name="update_never">まだ確認していません。</string>
+    <string name="update_current">互換性のある新しいリリースはありません。</string>
+    <string name="update_found">更新が見つかりました。</string>
+    <string name="update_suppressed">このリリースは延期またはスキップされました。</string>
+    <string name="update_network_error">確認できませんでした。24時間後に再試行してください。</string>
+    <string name="update_rate_limit">GitHub によりリクエストが制限されました。24時間後に再試行してください。</string>
+    <string name="update_invalid_metadata">リリース情報を検証できませんでした。24時間後に再試行してください。</string>
+    <string name="update_wrong_signer">このビルドは署名が異なるため、互換性のある更新を提示できません。</string>
+    <string name="update_checking">確認中…</string>
+    <string name="update_last_check">最終試行：%1$s</string>
+    <string name="update_recently_checked">1分以内に確認済みです。しばらくしてから再試行してください。</string>
+    <string name="update_check_now">今すぐ確認</string>
+    <string name="update_available">バージョン %1$s が利用可能です</string>
+    <string name="update_download">ダウンロード</string>
+    <string name="update_later">後で</string>
+    <string name="update_skip">このバージョンをスキップ</string>
+    <string name="update_browser_error">利用できるブラウザーがありません。インストールするか有効にしてください。</string>
+</resources>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reliability_waiting_network">没有网络。正在等待重新连接…</string>
+    <string name="reliability_clearing_session">正在移除已保存的登录信息和会话…</string>
+    <string name="reliability_clear_failed">无法完成会话清除。请重试。</string>
+</resources>

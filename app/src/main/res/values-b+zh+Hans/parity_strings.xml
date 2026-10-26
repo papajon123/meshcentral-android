@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">需要注意</string>
+    <string name="parity_security">Windows 安全状态</string>
+    <string name="parity_security_cached">最近报告的状态，可能已过时。</string>
+    <string name="parity_antivirus">防病毒软件</string>
+    <string name="parity_updates">自动更新</string>
+    <string name="parity_firewall">防火墙</string>
+    <string name="parity_enabled">已启用</string>
+    <string name="parity_updated">已更新</string>
+    <string name="parity_unknown">未知</string>
+    <string name="parity_ok">正常</string>
+    <string name="parity_message">向电脑用户发送消息</string>
+    <string name="parity_message_title">标题</string>
+    <string name="parity_message_confirm">发送此消息？</string>
+    <string name="parity_message_sent">已发送。尚未确认送达。</string>
+    <string name="parity_shortcuts">我的快捷键</string>
+    <string name="parity_remove_shortcut">删除 %1$s</string>
+    <string name="parity_add_shortcut">添加快捷键</string>
+    <string name="parity_suggestions">推荐组合</string>
+    <string name="parity_shortcut_label">名称</string>
+    <string name="parity_shortcut_key">按键：%1$s</string>
+    <string name="parity_review">检查</string>
+    <string name="parity_save">保存</string>
+    <string name="parity_history">历史记录</string>
+    <string name="parity_events">设备事件（最多 50 条）</string>
+    <string name="parity_power_history">电源历史记录</string>
+    <string name="parity_history_error">无法加载。请点击刷新重试。</string>
+    <string name="parity_history_empty">未收到记录。</string>
+    <string name="parity_power_on">已开机</string>
+    <string name="parity_hibernating">休眠</string>
+    <string name="parity_power_off">已关机</string>
+    <string name="parity_yes">是</string>
+    <string name="parity_no">否</string>
+</resources>

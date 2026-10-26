@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">به‌روزرسانی برنامه</string>
+    <string name="update_consent_title">نسخه‌های جدید در GitHub بررسی شوند؟</string>
+    <string name="update_consent_body">برنامه روزی یک‌بار به api.github.com متصل می‌شود؛ هیچ‌کدام از داده‌های شما ارسال نمی‌شود.</string>
+    <string name="update_privacy_detail">GitHub و CDN آن نشانی IP و سرآیندهای HTTP شما را می‌بینند.</string>
+    <string name="update_allow">بررسی به‌روزرسانی</string>
+    <string name="update_not_now">فعلاً نه</string>
+    <string name="update_never">هنوز بررسی نشده است.</string>
+    <string name="update_current">نسخهٔ سازگار جدیدتری پیدا نشد.</string>
+    <string name="update_found">به‌روزرسانی پیدا شد.</string>
+    <string name="update_suppressed">این نسخه به تعویق افتاده یا نادیده گرفته شده است.</string>
+    <string name="update_network_error">بررسی ممکن نشد. ۲۴ ساعت دیگر دوباره تلاش کنید.</string>
+    <string name="update_rate_limit">GitHub درخواست‌ها را محدود کرده است. ۲۴ ساعت دیگر دوباره تلاش کنید.</string>
+    <string name="update_invalid_metadata">اطلاعات نسخه تأیید نشد. ۲۴ ساعت دیگر دوباره تلاش کنید.</string>
+    <string name="update_wrong_signer">امضای این ساخت متفاوت است و نمی‌توان به‌روزرسانی سازگاری پیشنهاد داد.</string>
+    <string name="update_checking">در حال بررسی…</string>
+    <string name="update_last_check">آخرین تلاش: %1$s</string>
+    <string name="update_recently_checked">کمتر از یک دقیقه پیش بررسی شد. کمی بعد دوباره امتحان کنید.</string>
+    <string name="update_check_now">اکنون بررسی کن</string>
+    <string name="update_available">نسخهٔ %1$s در دسترس است</string>
+    <string name="update_download">بارگیری</string>
+    <string name="update_later">بعداً</string>
+    <string name="update_skip">نادیده گرفتن این نسخه</string>
+    <string name="update_browser_error">مرورگری در دسترس نیست. یک مرورگر نصب یا فعال کنید.</string>
+</resources>

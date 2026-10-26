@@ -8,6 +8,11 @@ This repository is a native Android client for controlling MeshCentral from Andr
 - Use JDK 17 and an Android SDK with platform/build-tools 35. Set `JAVA_HOME` and `ANDROID_HOME` to your installations.
 - Validate changes with `./gradlew testDebugUnitTest lintDebug assembleDebug`; run `connectedDebugAndroidTest` on a dedicated emulator for UI changes.
 
+## Workflow
+
+- Work on a branch named `mr/<topic>` and open a GitLab merge request; the maintainer reviews and merges it.
+- Push directly to `main` only release commits and reports the maintainer has approved.
+
 ## Security
 
 - Do not commit credentials, tokens, passwords, keystores, `local.properties`, APK/AAB outputs, or generated private files.

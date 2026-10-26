@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s అసంపూర్ణ పత్రం తొలగించబడింది.</string>
+    <string name="final_fixes_download_marked">%1$s అసంపూర్ణ పత్రానికి .partial సఫిక్స్ జోడించబడింది. మళ్లీ ప్రయత్నించే ముందు దాన్ని Android ఫైల్స్ యాప్లో తొలగించండి.</string>
+    <string name="final_fixes_download_retained">%1$s Android అసంపూర్ణ పత్రాన్ని తొలగించలేకపోయింది లేదా దానికి .partial సఫిక్స్ జోడించలేకపోయింది. దాన్ని ఉపయోగించవద్దు; Android ఫైల్స్ యాప్‌లో దాన్ని తొలగించండి.</string>
+    <string name="final_fixes_download_transport_failed">డౌన్‌లోడ్ సమయంలో కనెక్షన్ తెగిపోయింది. కొత్త ఫైల్ సెషన్ తెరిచి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="final_fixes_download_invalid">డౌన్‌లోడ్ చేసిన డేటా ఆశించిన ఫైల్‌తో సరిపోలలేదు. కొత్త ఫైల్ సెషన్ తెరిచి మళ్లీ ప్రయత్నించండి.</string>
+</resources>

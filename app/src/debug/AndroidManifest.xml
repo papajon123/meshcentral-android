@@ -13,6 +13,16 @@
 
     <application android:usesCleartextTraffic="true">
         <provider
+            android:name="ru.papajon.meshcentralmobile.mesh.files.FixtureDocumentsProvider"
+            android:authorities="${applicationId}.testdocuments"
+            android:exported="true"
+            android:grantUriPermissions="true"
+            android:permission="android.permission.MANAGE_DOCUMENTS">
+            <intent-filter>
+                <action android:name="android.content.action.DOCUMENTS_PROVIDER" />
+            </intent-filter>
+        </provider>
+        <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.updates"
             android:exported="false"

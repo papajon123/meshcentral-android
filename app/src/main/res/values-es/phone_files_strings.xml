@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="phone_console_required">Los mensajes, los enlaces y el marcado requieren el permiso de consola además del control remoto.</string>
+    <string name="phone_url_format">Usa http:// o https:// en minúsculas. No se permiten espacios ni comillas dobles; usa codificación porcentual.</string>
+    <string name="phone_files_choose_category">Elige una categoría o carpeta del teléfono antes de subir.</string>
+    <string name="phone_files_ambiguous_name">Varios archivos multimedia comparten este nombre. Abre el archivo desde su carpeta en Sdcard para descargar o eliminar el correcto.</string>
+    <string name="phone_files_directory_too_large">Esta categoría contiene demasiados archivos para listarlos. Abre una carpeta más pequeña en Sdcard.</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">Требует внимания</string>
+    <string name="parity_security">Безопасность Windows</string>
+    <string name="parity_security_cached">Последние полученные сведения; они могли устареть.</string>
+    <string name="parity_antivirus">Антивирус</string>
+    <string name="parity_updates">Автоматические обновления</string>
+    <string name="parity_firewall">Брандмауэр</string>
+    <string name="parity_enabled">Включён</string>
+    <string name="parity_updated">Обновлён</string>
+    <string name="parity_unknown">Неизвестно</string>
+    <string name="parity_ok">В порядке</string>
+    <string name="parity_message">Сообщение пользователю компьютера</string>
+    <string name="parity_message_title">Заголовок</string>
+    <string name="parity_message_confirm">Отправить это сообщение?</string>
+    <string name="parity_message_sent">Отправлено. Доставка не подтверждена.</string>
+    <string name="parity_shortcuts">Мои сочетания</string>
+    <string name="parity_remove_shortcut">Удалить %1$s</string>
+    <string name="parity_add_shortcut">Добавить сочетание</string>
+    <string name="parity_suggestions">Предложения</string>
+    <string name="parity_shortcut_label">Подпись</string>
+    <string name="parity_shortcut_key">Клавиша: %1$s</string>
+    <string name="parity_review">Проверить</string>
+    <string name="parity_save">Сохранить</string>
+    <string name="parity_history">История</string>
+    <string name="parity_events">События устройства (до 50)</string>
+    <string name="parity_power_history">История питания</string>
+    <string name="parity_history_error">Не удалось загрузить. Нажмите «Обновить» для повтора.</string>
+    <string name="parity_history_empty">Записей не получено.</string>
+    <string name="parity_power_on">Включён</string>
+    <string name="parity_hibernating">Гибернация</string>
+    <string name="parity_power_off">Выключен</string>
+    <string name="parity_yes">Да</string>
+    <string name="parity_no">Нет</string>
+</resources>

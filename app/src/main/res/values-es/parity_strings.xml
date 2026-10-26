@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_needs_attention">Requiere atención</string>
+    <string name="parity_security">Seguridad de Windows</string>
+    <string name="parity_security_cached">Último estado comunicado; puede estar desactualizado.</string>
+    <string name="parity_antivirus">Antivirus</string>
+    <string name="parity_updates">Actualizaciones automáticas</string>
+    <string name="parity_firewall">Cortafuegos</string>
+    <string name="parity_enabled">Activado</string>
+    <string name="parity_updated">Actualizado</string>
+    <string name="parity_unknown">Desconocido</string>
+    <string name="parity_ok">Correcto</string>
+    <string name="parity_message">Mensaje al usuario del equipo</string>
+    <string name="parity_message_title">Título</string>
+    <string name="parity_message_confirm">¿Enviar este mensaje?</string>
+    <string name="parity_message_sent">Enviado. Entrega no confirmada.</string>
+    <string name="parity_shortcuts">Mis atajos</string>
+    <string name="parity_remove_shortcut">Eliminar %1$s</string>
+    <string name="parity_add_shortcut">Añadir atajo</string>
+    <string name="parity_suggestions">Sugerencias</string>
+    <string name="parity_shortcut_label">Nombre</string>
+    <string name="parity_shortcut_key">Tecla: %1$s</string>
+    <string name="parity_review">Revisar</string>
+    <string name="parity_save">Guardar</string>
+    <string name="parity_history">Historial</string>
+    <string name="parity_events">Eventos del dispositivo (hasta 50)</string>
+    <string name="parity_power_history">Historial de energía</string>
+    <string name="parity_history_error">No se pudo cargar. Pulsa Actualizar para reintentar.</string>
+    <string name="parity_history_empty">No se recibieron registros.</string>
+    <string name="parity_power_on">Encendido</string>
+    <string name="parity_hibernating">Hibernando</string>
+    <string name="parity_power_off">Apagado</string>
+    <string name="parity_yes">Sí</string>
+    <string name="parity_no">No</string>
+</resources>

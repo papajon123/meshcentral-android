@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="final_fixes_download_removed">%1$s 未完了のドキュメントは削除されました。</string>
+    <string name="final_fixes_download_marked">%1$s 未完了のドキュメントに接尾辞 .partial が付きました。再試行する前に、Android の「ファイル」アプリで削除してください。</string>
+    <string name="final_fixes_download_retained">%1$s Android は未完了のドキュメントを削除できず、.partial を付けることもできませんでした。使用せず、Android の「ファイル」アプリで削除してください。</string>
+    <string name="final_fixes_download_transport_failed">ダウンロード中に接続が中断されました。新しいファイルセッションを開いて再試行してください。</string>
+    <string name="final_fixes_download_invalid">ダウンロードしたデータが想定されたファイルと一致しませんでした。新しいファイルセッションを開いて再試行してください。</string>
+</resources>

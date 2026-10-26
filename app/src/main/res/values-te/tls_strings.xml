@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tls_error_untrusted">సర్వర్ సర్టిఫికెట్ విశ్వసనీయమైనది కాదు. నమ్మే ముందు దాని వేలిముద్రను సర్వర్‌లోని సర్టిఫికెట్‌తో పోల్చండి.</string>
+    <string name="tls_error_changed">సర్వర్ కీ మారింది. కనెక్షన్ నిరోధించబడింది: సర్వర్ నిర్వాహకుడితో కొత్త వేలిముద్రను ధృవీకరించండి.</string>
+    <string name="tls_untrusted_title">విశ్వసనీయత లేని సర్వర్ సర్టిఫికెట్</string>
+    <string name="tls_changed_title">సర్వర్ సర్టిఫికెట్ మారింది</string>
+    <string name="tls_fingerprint">పబ్లిక్ కీ యొక్క SHA-256 వేలిముద్ర (SPKI)</string>
+    <string name="tls_previous_fingerprint">గతంలో విశ్వసించిన పబ్లిక్ కీ, SHA-256 (SPKI)</string>
+    <string name="tls_new_fingerprint">కొత్త పబ్లిక్ కీ, SHA-256 (SPKI)</string>
+    <string name="tls_subject">సర్టిఫికెట్ యజమాని: %1$s</string>
+    <string name="tls_validity">చెల్లుబాటు: %1$s నుండి %2$s వరకు</string>
+    <string name="tls_server">సర్వర్: %1$s</string>
+    <string name="tls_compare">వేరే విశ్వసనీయ సమాచార మార్గం ద్వారా ఈ వేలిముద్రను సర్వర్‌లోని సర్టిఫికెట్‌తో పోల్చండి.</string>
+    <string name="tls_trust">ఈ సర్వర్‌ను నమ్ము</string>
+    <string name="tls_replace">వేలిముద్రను మార్చు…</string>
+    <string name="tls_replace_title">విశ్వసనీయ కీని మార్చాలా?</string>
+    <string name="tls_replace_warning">కీ మారడం అంటే ఎవరైనా మీ సర్వర్‌గా నటిస్తున్నారని అర్థం కావచ్చు. కొత్త వేలిముద్రను స్వతంత్రంగా ధృవీకరించిన తర్వాతే కొనసాగండి. పాత కీని ఇకపై నమ్మరు.</string>
+    <string name="tls_confirm_replace">మార్పును నిర్ధారించు</string>
+    <string name="tls_pinned_key">విశ్వసనీయ సర్వర్ కీ</string>
+    <string name="tls_forget">మర్చిపో</string>
+    <string name="tls_forget_title">విశ్వసనీయ కీని మర్చిపోవాలా?</string>
+    <string name="tls_forget_warning">ప్రస్తుత కనెక్షన్ మూసివేయబడుతుంది. సర్వర్ సర్టిఫికెట్‌ను Android నమ్మకపోతే, మీరు ఈ సర్వర్‌ను మళ్లీ ధృవీకరించాలి.</string>
+    <string name="tls_certificate_fingerprint">సర్టిఫికెట్ SHA-256 — బ్రౌజర్‌లో కనిపించే విలువ</string>
+    <string name="tls_error_validity">సర్టిఫికెట్ గడువు ముగిసింది లేదా ఇంకా ప్రారంభం కాలేదు. ఫోన్ తేదీ, సమయం మరియు సర్వర్ సర్టిఫికెట్ చెల్లుబాటు కాలాన్ని తనిఖీ చేయండి. నమ్మకాన్ని ఆమోదించడం ద్వారా ఈ లోపాన్ని దాటవేయలేరు.</string>
+    <string name="tls_error_chain">సర్టిఫికెట్ లేదా దాని గొలుసులో చెల్లని సంతకం, బలహీనమైన కీ లేదా అల్గారిథమ్, లేదా సర్టిఫికెట్ అథారిటీ యొక్క చెల్లని ఉద్దేశం లేదా పరిమితులు ఉన్నాయి. నిర్వాహకుడు సర్టిఫికెట్‌ను సరిచేయాలి; దీన్ని ఆమోదించలేరు.</string>
+    <string name="tls_error_hostname">సర్టిఫికెట్ సర్వర్ చిరునామాతో సరిపోలడం లేదు. చిరునామాను తనిఖీ చేసి, సర్టిఫికెట్‌లోని పేర్లను సరిచేయమని నిర్వాహకుడిని అడగండి.</string>
+    <string name="tls_hostname_warning">హెచ్చరిక: సర్టిఫికెట్‌లోని పేరు సర్వర్ చిరునామాతో సరిపోలడం లేదు. స్వతంత్ర ధృవీకరణ తర్వాత మాత్రమే కీని ఆమోదించండి.</string>
+    <string name="tls_blocked_title">సర్వర్ సర్టిఫికెట్ తిరస్కరించబడింది</string>
+    <string name="tls_verify_instructions">నిర్వాహకుడు కింది కమాండ్‌తో SPKI వేలిముద్రను లెక్కించవచ్చు. నేరుగా TLS వాడితే meshcentral-data/webserver-cert-public.crt; TLS రివర్స్ ప్రాక్సీలో ముగిస్తే ప్రాక్సీ సర్టిఫికెట్ వాడండి. cert.pem స్థానంలో ఆ ఫైల్ ఇవ్వండి. బ్రౌజర్ సర్టిఫికెట్ యొక్క వేరే వేలిముద్రను చూపుతుంది.</string>
+    <string name="tls_independent_warning">స్వతంత్ర, నమ్మదగిన మార్గంలో ధృవీకరించండి. ఇదే ధృవీకరించని కనెక్షన్ ద్వారా పొందిన వేలిముద్ర మధ్యవర్తి దాడి నుంచి రక్షించదు.</string>
+    <string name="tls_openssl_command">openssl x509 -in cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | openssl dgst -sha256 -c</string>
+    <string name="tls_issuer_meshcentral">సర్టిఫికెట్ జారీచేసినవారు తమను MeshCentral రూట్ అని పేర్కొంటున్నారు.</string>
+    <string name="tls_issuer_unknown">ఈ సర్టిఫికెట్‌పై తెలియని సర్టిఫికెట్ అథారిటీ సంతకం చేసింది. సర్వర్ పబ్లిక్ సర్టిఫికెట్‌ను ఉపయోగిస్తే, దాని గొలుసు అసంపూర్ణంగా ఉండవచ్చు — సర్వర్‌ను సరిచేయడం మంచిది.</string>
+</resources>

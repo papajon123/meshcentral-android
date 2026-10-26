@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.notifications
 
+import ru.papajon.meshcentralmobile.json.optText
+
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -39,14 +41,14 @@ object NotificationCodec {
         val result = ArrayList<NotificationFeedItem>(minOf(array.length(), MAX_FEED))
         for (index in 0 until minOf(array.length(), MAX_FEED)) {
             val item = array.optJSONObject(index) ?: continue
-            val id = item.optString("id")
-            val kind = NotificationEventKind.fromWire(item.optString("kind")) ?: continue
+            val id = item.optText("id")
+            val kind = NotificationEventKind.fromWire(item.optText("kind")) ?: continue
             val time = item.optLong("time", -1L)
             val expiresAt = item.optLong("expiresAt", -1L)
             if (!EVENT_ID.matches(id) || time <= 0L || expiresAt <= 0L) continue
-            val nodeId = item.optString("nodeId")
+            val nodeId = item.optText("nodeId")
                 .takeIf { !item.isNull("nodeId") && IDENTIFIER.matches(it) }
-            val jobId = item.optString("jobId")
+            val jobId = item.optText("jobId")
                 .takeIf { !item.isNull("jobId") && IDENTIFIER.matches(it) }
             result += NotificationFeedItem(id, kind, nodeId, jobId, time, expiresAt)
         }
@@ -63,7 +65,7 @@ object NotificationCodec {
         val array = JSONArray(raw ?: "[]")
         buildSet {
             for (index in 0 until minOf(array.length(), MAX_PENDING)) {
-                val id = array.optString(index)
+                val id = array.optText(index)
                 if (EVENT_ID.matches(id)) add(id)
             }
         }
@@ -86,7 +88,7 @@ object NotificationCodec {
             } else {
                 buildSet {
                     for (index in 0 until kindsArray.length()) {
-                        NotificationEventKind.fromWire(kindsArray.optString(index))?.let(::add)
+                        NotificationEventKind.fromWire(kindsArray.optText(index))?.let(::add)
                     }
                 }
             }
@@ -118,11 +120,11 @@ object NotificationCodec {
         if (raw.isNullOrBlank() || raw.toByteArray(Charsets.UTF_8).size > MAX_SECRET_BYTES) return null
         return runCatching {
             val objectValue = JSONObject(raw)
-            val tokenId = objectValue.optString("tokenId")
-            val token = objectValue.optString("token")
-            val endpoint = objectValue.optString("endpoint")
+            val tokenId = objectValue.optText("tokenId")
+            val token = objectValue.optText("token")
+            val endpoint = objectValue.optText("endpoint")
             val expiresAt = objectValue.optLong("expiresAt", -1L)
-            val userId = objectValue.optString("userId")
+            val userId = objectValue.optText("userId")
             if (!TOKEN_ID.matches(tokenId) || !TOKEN.matches(token) ||
                 !USER_ID.matches(userId) || expiresAt <= 0L ||
                 !NotificationEndpoint.isValidPath(endpoint)

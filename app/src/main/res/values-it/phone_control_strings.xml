@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">Il servizio di accessibilità per il controllo remoto è disattivato sul telefono</string>
+    <string name="phone_control_unsupported">Android su questo telefono non supporta l’input remoto</string>
+    <string name="phone_control_unknown">L’agente non segnala il supporto per l’input</string>
+    <string name="phone_control_no_permission">Le tue autorizzazioni consentono solo la visualizzazione</string>
+    <string name="phone_control_back">Indietro</string>
+    <string name="phone_control_home">Home</string>
+    <string name="phone_control_recents">Recenti</string>
+    <string name="phone_control_notifications">Notifiche</string>
+    <string name="phone_control_quick_settings">Impostazioni rapide</string>
+    <string name="phone_control_text">Inserisci testo</string>
+    <string name="phone_control_text_hint">Il testo viene aggiunto alla fine del campo selezionato. L’input è bloccato nei campi password.</string>
+    <string name="phone_control_consent_hint">Il proprietario del telefono deve approvare il controllo. Schermata di blocco e inserimento del PIN non sono disponibili.</string>
+</resources>

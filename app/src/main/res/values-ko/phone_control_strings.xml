@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="phone_control_disabled">휴대전화에서 원격 제어 접근성 서비스가 꺼져 있습니다</string>
+    <string name="phone_control_unsupported">이 휴대전화의 Android는 원격 입력을 지원하지 않습니다</string>
+    <string name="phone_control_unknown">에이전트가 입력 지원을 보고하지 않습니다</string>
+    <string name="phone_control_no_permission">권한으로는 보기만 가능합니다</string>
+    <string name="phone_control_back">뒤로</string>
+    <string name="phone_control_home">홈</string>
+    <string name="phone_control_recents">최근 앱</string>
+    <string name="phone_control_notifications">알림</string>
+    <string name="phone_control_quick_settings">빠른 설정</string>
+    <string name="phone_control_text">텍스트 입력</string>
+    <string name="phone_control_text_hint">텍스트는 선택한 필드 끝에 추가됩니다. 비밀번호 필드에서는 입력이 차단됩니다.</string>
+    <string name="phone_control_consent_hint">휴대전화 소유자가 제어를 승인해야 합니다. 잠금 화면과 PIN 입력은 사용할 수 없습니다.</string>
+</resources>

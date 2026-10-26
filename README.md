@@ -2,7 +2,7 @@
 
 <p align="center"><a href="README.md"><strong>English</strong></a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.ru.md">Русский</a></p>
 
-<p align="center"><strong>An independent Android client for your own MeshCentral server: computers, desktop, terminal, files, SSH and SFTP from a phone or tablet.</strong></p>
+<p align="center"><strong>An independent Android client for your own MeshCentral server: computers and phones, desktop, terminal, files, SSH and SFTP from a phone or tablet.</strong></p>
 
 <p align="center">
   <a href="https://github.com/papajon123/meshcentral-android/releases"><strong>Download APK</strong></a>
@@ -15,7 +15,9 @@
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 Android locale variants">
 </p>
 
-> **Version 0.7.3** fixes sign-in on servers that require a verification code (two-factor authentication). See the [changelog](CHANGELOG.md).
+> **Version 0.8.0** adds phone viewing and files, phone control with an input-capable agent, server-key pinning, remembered two-factor sign-in and expanded computer tools. See the [changelog](CHANGELOG.md) and [validation](docs/RELEASE_0_8_0_VALIDATION.md).
+
+This is a client: you manage computers and phones *from* your phone. The managed phone needs the official [MeshCentral Android agent](https://github.com/Ylianst/MeshCentralAndroidAgent), which shares its screen after Android consent and remains view-only. Remote touch, navigation and text entry require a modified agent with input support, enabled accessibility and sufficient rights. That agent support is not yet in the upstream project. See [how the options compare](docs/COMPARISON.md) and [how this app is built](AI_POLICY.md).
 
 ## Tour
 
@@ -42,7 +44,7 @@ This is a small independent project in public preview. The most useful help righ
 
 ## Quick start
 
-1. **Install the app.** Download the [signed APK](https://github.com/papajon123/meshcentral-android/releases). Android 8.0 (API 26) or newer is required. There is no in-app updater.
+1. **Install the app.** Download the [signed APK](https://github.com/papajon123/meshcentral-android/releases). Android 8.0 (API 26) or newer is required. With your consent, the app checks GitHub for updates once a day; downloads open in your browser.
 2. **Keep the same signer.** Android accepts an update only with the same package name, the same signing key and a higher `versionCode`.
 3. **Connect your own server.** Enter the full HTTPS URL of your MeshCentral server, for example `https://meshcentral.example.com/`, then sign in with a MeshCentral account. No server or account is preconfigured. Browser SSO is not supported. For the terminal, install a current Android System WebView.
 
@@ -51,6 +53,7 @@ This is a small independent project in public preview. The most useful help righ
 ### Devices, search and profiles
 
 - Browse groups and computers, filter by online status or favourites, and see OS, address and Agent version.
+- Phones with the official Android agent: live battery, cached system/network information, screen viewing, files and vibration, flashlight, message, link and dial-pad requests after confirmation. Submission is not proof of execution; console actions also need Console permission. Input requires the modified agent described above.
 - Search the loaded list by device name, group, host/IP or OS. The query is Unicode-normalised and case-insensitive; every word must match (AND). Typing does not send a request.
 - Keep up to 20 recently opened computers per profile and account. The scope key is hashed; device names and addresses are not stored in the recent list.
 - Keep several server profiles (up to 20) with separate URLs, credentials, favourites and recent devices. The first profile is migrated from the existing settings. Credentials and favourites are profile-scoped; the app PIN and privacy switches stay global. Switching or deleting a profile closes its sessions.
@@ -59,8 +62,10 @@ This is a small independent project in public preview. The most useful help righ
 
 - Keep **two sessions** open: one desktop plus one tool, or two tools. A third session is not admitted until one is closed explicitly.
 - The selected device and tab survive Activity recreation; after process death the app restores the choice, not a fake live connection. Input, commands and file changes are not replayed.
-- Desktop: view and control the Agent desktop with touch, trackpad, keyboard, clipboard text, monitor switching and reconnect.
-- Terminal: run commands in the Agent shell. Files: browse, download to a document, upload, create folders, rename and delete. SSH and SFTP: use the server-side relays.
+- Computer desktop: touch and trackpad, two-finger right click, clipboard text, monitor switching and reconnect. Keep fixed shortcuts and up to 12 named keyboard combinations per profile. Phone input has its own capability and permission checks.
+- Terminal: run commands in the Agent shell; keep up to 20 single-line favorites per profile, with insertion separate from Enter. A separate Run command screen offers preview, confirmation and bounded output; commands run as the agent account and their output can be visible to other users with device access. SSH and SFTP use the server-side relays.
+- Windows Run command offers an explicit **PowerShell 5+ (UTF-8)** choice; the default shell/body stay unchanged. This avoids common code-page problems without guessing received text, but program-specific encoding and agent-side conversion can still lose data. Favorite-command dialogs keep the terminal grid stable. See [Windows fixes and limits](docs/WINDOWS_POLISH.md).
+- Computer files: browse, download, upload, create folders, rename and delete. Phone files: categories and accessible storage, upload/download with size/SHA-256 checks, and deletion; no create/rename. Duplicate media names have restricted actions; select a category before uploading. An isolated one-byte zero download frame fails verification rather than silently changing the file.
 - Standard desktop, terminal, files, SSH and SFTP **do not require a server plugin**. Tabs follow the capabilities reported by the server; a known denial disables a tab, while missing optional data allows an explicit attempt. The server decides.
 
 ### Share to a computer
@@ -72,9 +77,11 @@ This is a small independent project in public preview. The most useful help righ
 
 ### System, services and power
 
-- Read system, disk, memory and network data that MeshCentral already stores for the device. Missing data stays unknown; it is not shown as zero.
+- Read cached system, BIOS, motherboard, TPM, disks, memory and network details. Online agents can supply software inventory and CPU/RAM samples without a plugin; Linux CPU is an average since the previous sample. Last boot and estimated uptime can be stale. Missing data stays unknown, including JSON null. Recognized Windows BIOS CIM_DATETIME values display as a localized date without shifting the release day.
+- See reported Windows Security Center/antivirus status and a Needs attention filter, up to 50 device events, the latest 100 power transitions and a seven-day connectivity chart with unknown gaps.
 - With the optional plugin, list services and processes. Confirmed service start/stop/restart is available only where the Agent, OS and user rights support it; the result is checked again after the action.
-- Restart, shutdown and Wake-on-LAN are offered only when the reported rights and online state allow them. A server ACK is not treated as execution: the app polls and reports reconnected, still offline or unknown.
+- Wake, sleep, restart and shutdown follow current rights and connection state. Agent uninstall and device removal require two confirmations and exact device-name entry; Android agents are excluded. A server ACK, disconnection or disappearance is not proof of execution. Destructive-action live acceptance remains pending.
+- Preview and confirm a bounded message to a computer user with Chat/Notify permission; the app reports submission, not delivery.
 
 ### Jobs, history and Quick Help
 
@@ -85,30 +92,34 @@ This is a small independent project in public preview. The most useful help righ
 ### Optional notifications
 
 - Optional background notifications use WorkManager with a **15-minute** best-effort interval, quiet hours and per-kind filters. There is no FCM, no project push service and no permanent socket.
-- After an explicit opt-in, the app stores a read-only bearer token in Android Keystore-backed storage (30-day TTL) and polls a same-origin HTTPS endpoint. Cookies, redirects, query tokens and self-signed exceptions are rejected for this path.
+- After an explicit opt-in, the app stores a read-only bearer token in Android Keystore-backed storage (30-day TTL) and polls a same-origin HTTPS endpoint using the profile TLS policy, including an explicitly approved private-server key. A trust refusal stops polling before the token is sent. Cookies, redirects, query tokens and unapproved certificates are rejected.
 - Duplicate and expired events are filtered; tapping a notification routes to the right profile, device or job after unlock. A failed online revoke is reported as a limitation, not as success.
 
 ## Optional server plugin
 
-Jobs, service/process views, confirmed service actions and background notifications use the optional **`mobilecompanion` 1.1.0** plugin. Standard desktop, terminal, files, SSH and SFTP work without it.
+Jobs, service/process views, confirmed service actions and background notifications use the optional **`mobilecompanion` 1.1.2** plugin. Standard desktop, terminal, files, SSH and SFTP work without it.
 
 - Requires MeshCentral **1.3.0** and the user right `MESHRIGHT_REMOTECOMMAND (0x20000)`. Agent-console right **24 is not sufficient**.
 - The plugin exposes fixed templates, ACL-checked jobs, read-only HTTP events and notification tokens. It does not patch MeshCentral core and does not accept arbitrary code or shell strings.
 - The app does **not** install, configure, deploy or administer MeshCentral or the plugin. The [plugin package and its README](server/mobile-companion/README.md) are separate from the APK.
-- Live acceptance used an isolated real MeshCentral 1.3.0 with a Linux Agent. Windows Agent and systemd service mutations remain untested. Multi-server MeshCentral is not supported by this plugin version.
+- Live acceptance used an isolated MeshCentral 1.3.0 with a Linux Agent; Windows service/process reads were also verified with Companion 1.1.2. Windows and systemd service mutations remain untested. Multi-server MeshCentral is not supported by this plugin version.
 
 ## Validation and limitations
 
-- Local public checks: 240 JVM tests; API 35 instrumentation: 135 passed, 4 opt-in/compatibility assumptions skipped, no failures. International, RTL, font ×2 and tablet galleries were captured. See [implementation and limits](docs/ROADMAP_IMPLEMENTATION.md).
+- Candidate checks and their exact scope are recorded in [0.8.0 validation](docs/RELEASE_0_8_0_VALIDATION.md). Historical API 26/35 and international/RTL/large-font/tablet results remain in [implementation and limits](docs/ROADMAP_IMPLEMENTATION.md); they are not a fresh acceptance of every 0.8.0 flow.
 
-- Windows service/process reads through Companion 1.1.2 were verified on a real Mesh Agent. Other live Windows flows, a physical phone, systemd service actions, TalkBack, physical-phone large-font acceptance, battery use, Doze/OEM restrictions and every 0.7.3 flow on Android 8 remain unverified.
+- Live evidence covers Linux CPU/RAM, history and reviewed command output ([parity checks](docs/PARITY_FIXES_VALIDATION.md)), and phone downloads/verified uploads with official agent 1.0.23 ([phone file checks](docs/PHONE_FILES_FIXES_VALIDATION.md)). Phone input requires the modified agent; hardware effects, broad Windows/macOS acceptance, physical phones, systemd service actions, TalkBack, battery use, Doze/OEM restrictions and every 0.8.0 flow on Android 8 remain unverified.
 - A physical-phone acceptance must still cover install/update over a signed build, sign-in/2FA, two sessions, rotation/background/lock/network loss/process death, share from real apps, notifications, and the optional plugin.
 - No WebRTC in this release. WebRTC was researched, but MeshCentral 1.3.0 does not accept the terminal RTC offer; the WSS relay remains. See the [roadmap](docs/ROADMAP.md).
 - Intel AMT KVM, RDP, VNC, chat, registry/software management and server administration remain in the web panel. The app does not administer the server.
 
+## How this app is built
+
+Most code, tests and docs are written by AI coding agents (Claude Code and OpenAI Codex) under the maintainer's direction. The maintainer personally reviews every change: reads the code and the architecture in the merge request and checks the behaviour before it ships. The [AI policy](AI_POLICY.md) describes the automated checks and the rules for AI-assisted contributions.
+
 ## Languages
 
-- **22 languages in 23 Android locale variants** (Simplified and Traditional Chinese are two variants of one language). Each variant has 979 translated strings plus the shared application name.
+- **22 languages in 23 Android locale variants** (Simplified and Traditional Chinese are two variants of one language). The [translation check](ci/check_translations.py) verifies matching resources in every variant; current counts are in the [release validation](docs/RELEASE_0_8_0_VALIDATION.md).
 - Android 8–12 follows the system language. Android 13+ also exposes per-app language settings; there is no separate language picker inside the app.
 - If no supported language matches, the app falls back to English. Arabic, Persian and Urdu use a right-to-left layout.
 - Translations are machine-produced (DeepSeek) and have not been proofread by native speakers of every language. Server messages, device/file names, terminal output and physical key captions are not translated.
@@ -122,7 +133,8 @@ To be notified about new versions, add `https://github.com/papajon123/meshcentra
 ## Privacy and security
 
 - No ads, analytics, telemetry, crash-reporting SDK or project-operated backend. The app connects to the MeshCentral server you configure.
-- MeshCentral credentials and the app PIN are protected with an Android Keystore key. Android backup and device transfer are disabled; session cookies stay in process memory and can be cleared in **Settings → Data**.
+- MeshCentral credentials and the app PIN are protected with an Android Keystore key. Android backup and device transfer are disabled. Session/relay cookies stay in process memory. Optional **Remember this device** stores the server-issued 2FA cookie separately with Keystore encryption, tied to the profile, endpoint, account and issuing TLS trust; expiry and Forget are shown in server settings.
+- Self-signed/private-CA servers require explicit public-key approval after checking the SHA-256 fingerprint through an independent channel. Pins apply to control, tools and optional notification polling. A changed/rejected key stops requests; trust changes clear remembered-device credentials. Lost-phone recovery and server-side revocation limits are explained in [Security](SECURITY.md).
 - App lock is optional (PIN, Android 9+ biometrics, or both). Screenshot blocking is off by default and does not stop a camera.
 - Profile credentials are scoped to their server. The notification token is read-only, Keystore-backed and revocable; Quick Help reports are redacted before sharing.
 - The server operator can see connection metadata, device and session activity, and traffic through the server. Server logging, terminal recording and access control are outside the app.

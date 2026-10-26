@@ -10,6 +10,8 @@ import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.BufferedSource
+import ru.papajon.meshcentralmobile.mesh.tls.ServerTls
+import javax.net.ssl.X509TrustManager
 
 class NotificationHttpException(
     val kind: Kind,
@@ -33,14 +35,21 @@ class NotificationHttpException(
  * [NotificationEventParser.MAX_BODY_BYTES] from the response stream.
  *
  * The injected [client] seam keeps Android instrumented tests on a local MockWebServer; production
- * uses [systemTrustClient] with the platform trust store only.
+ * uses [forServer] with the current profile's endpoint and mandatory key pin.
  */
 class NotificationHttpClient(
-    client: OkHttpClient = systemTrustClient(),
+    client: OkHttpClient,
     private val clock: () -> Long = System::currentTimeMillis,
-) {
+    private val isCurrentPolicy: () -> Boolean = { true },
+) : java.io.Closeable {
     private val client = client.newBuilder().followRedirects(false).followSslRedirects(false)
-        .cookieJar(CookieJar.NO_COOKIES).build()
+        .cookieJar(CookieJar.NO_COOKIES)
+        .addNetworkInterceptor { chain ->
+            // TLS may have blocked while the user replaced/forgot the key. This check runs
+            // after the handshake but before HTTP headers (including the bearer) are written.
+            if (!isCurrentPolicy()) throw IOException("Notification TLS policy changed")
+            chain.proceed(chain.request())
+        }.build()
     suspend fun fetch(url: HttpUrl, token: String, since: Long): NotificationEventPage =
         withContext(Dispatchers.IO) {
             val requestUrl = url.newBuilder()
@@ -55,6 +64,7 @@ class NotificationHttpClient(
                 .get()
                 .build()
             val response = try {
+                if (!isCurrentPolicy()) throw IOException("Notification TLS policy changed")
                 client.newCall(request).execute()
             } catch (error: javax.net.ssl.SSLException) {
                 throw error
@@ -116,18 +126,38 @@ class NotificationHttpClient(
         return seconds.coerceIn(1L, 3_600L) * 1_000L
     }
 
+    fun cancel() {
+        client.dispatcher.cancelAll()
+    }
+
+    override fun close() {
+        cancel()
+        client.connectionPool.evictAll()
+        client.dispatcher.executorService.shutdown()
+    }
+
     companion object {
         const val TIMEOUT_SECONDS = 15L
 
-        fun systemTrustClient(): OkHttpClient = OkHttpClient.Builder()
-            .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .callTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
-            .followRedirects(false)
-            .followSslRedirects(false)
-            .retryOnConnectionFailure(false)
-            .cookieJar(CookieJar.NO_COOKIES)
-            .build()
+        internal fun forServer(
+            server: HttpUrl,
+            pinnedSpkiSha256: String?,
+            platform: X509TrustManager? = null,
+            isCurrentPolicy: () -> Boolean = { true },
+        ): NotificationHttpClient {
+            val tls = if (platform == null) ServerTls(server, pinnedSpkiSha256)
+                else ServerTls(server, pinnedSpkiSha256, platform = platform)
+            return NotificationHttpClient(OkHttpClient.Builder()
+                .connectTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .readTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .writeTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .callTimeout(TIMEOUT_SECONDS, TimeUnit.SECONDS)
+                .followRedirects(false)
+                .followSslRedirects(false)
+                .retryOnConnectionFailure(false)
+                .cookieJar(CookieJar.NO_COOKIES)
+                .apply { tls.applyTo(this) }
+                .build(), isCurrentPolicy = isCurrentPolicy)
+        }
     }
 }

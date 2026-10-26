@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update_title">Pembaruan aplikasi</string>
+    <string name="update_consent_title">Periksa versi baru di GitHub?</string>
+    <string name="update_consent_body">Aplikasi menghubungi api.github.com sekali sehari; tidak ada data Anda yang dikirim.</string>
+    <string name="update_privacy_detail">GitHub dan CDN-nya dapat melihat alamat IP serta header HTTP Anda.</string>
+    <string name="update_allow">Periksa pembaruan</string>
+    <string name="update_not_now">Jangan sekarang</string>
+    <string name="update_never">Belum pernah diperiksa.</string>
+    <string name="update_current">Tidak ada rilis kompatibel yang lebih baru.</string>
+    <string name="update_found">Pembaruan ditemukan.</string>
+    <string name="update_suppressed">Rilis ini ditunda atau dilewati.</string>
+    <string name="update_network_error">Tidak dapat memeriksa. Coba lagi setelah 24 jam.</string>
+    <string name="update_rate_limit">GitHub membatasi permintaan. Coba lagi setelah 24 jam.</string>
+    <string name="update_invalid_metadata">Informasi rilis tidak dapat diverifikasi. Coba lagi setelah 24 jam.</string>
+    <string name="update_wrong_signer">Build ini memiliki tanda tangan berbeda. Pembaruan yang kompatibel tidak dapat ditawarkan.</string>
+    <string name="update_checking">Memeriksa…</string>
+    <string name="update_last_check">Percobaan terakhir: %1$s</string>
+    <string name="update_recently_checked">Diperiksa kurang dari satu menit yang lalu. Coba lagi sebentar lagi.</string>
+    <string name="update_check_now">Periksa sekarang</string>
+    <string name="update_available">Versi %1$s tersedia</string>
+    <string name="update_download">Unduh</string>
+    <string name="update_later">Nanti</string>
+    <string name="update_skip">Lewati versi ini</string>
+    <string name="update_browser_error">Browser tidak tersedia. Instal atau aktifkan browser.</string>
+</resources>

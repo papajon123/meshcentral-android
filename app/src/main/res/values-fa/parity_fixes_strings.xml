@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="parity_fixes_warning">هشدار</string>
+    <string name="parity_fixes_server_rejected">پاسخ سرور: %1$s</string>
+    <string name="parity_fixes_output_truncated">خروجی به 65,536 نویسه کوتاه شد.</string>
+    <string name="parity_fixes_linux_cpu_average">CPU: میانگین از اندازه‌گیری قبلی، شامل اندازه‌گیری‌های درخواستی نشست‌های دیگر.</string>
+    <string name="parity_fixes_run_warning">فرمانی روی این دستگاه اجرا می‌شود. آن را با دقت بررسی کنید. همه کاربرانی که به این دستگاه دسترسی دارند می‌توانند خروجی فرمان را ببینند. اطلاعات محرمانه وارد نکنید.</string>
+</resources>
