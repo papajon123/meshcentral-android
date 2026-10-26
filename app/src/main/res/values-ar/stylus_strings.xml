@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">القلم كفأرة دقيقة</string>
+    <string name="stylus_precision_summary">استخدم الإدخال المطلق للقلم وتجاهل لمسات راحة اليد. يظل التكبير بإصبعين متاحًا.</string>
+    <string name="stylus_hint_desktop">القلم: المس للنقر، واضغط مع الاستمرار ثم حرّك للسحب. الأزرار الجانبية: نقرة يمنى أو وسطى. التكبير بإصبعين.</string>
+    <string name="stylus_hint_phone">القلم: انقر أو اضغط مع الاستمرار أو اسحب للتحكم في الهاتف. التكبير بإصبعين. لا يُرسل التحويم.</string>
+</resources>

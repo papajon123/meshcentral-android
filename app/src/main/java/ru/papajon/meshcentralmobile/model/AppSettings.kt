@@ -9,6 +9,8 @@ data class AppSettings(
     val blockScreenshots: Boolean = false,
     val biometricUnlockEnabled: Boolean = false,
     val lockTimeoutSeconds: Long = DEFAULT_LOCK_TIMEOUT_SECONDS,
+    val stylusPrecisionEnabled: Boolean = true,
+    val stylusHintSeen: Boolean = false,
 )
 
 /** No personal server is baked in: the first launch asks the user for their own HTTPS address. */

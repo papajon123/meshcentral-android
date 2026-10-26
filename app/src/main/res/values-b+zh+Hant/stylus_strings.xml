@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">觸控筆作為精準滑鼠</string>
+    <string name="stylus_precision_summary">使用觸控筆絕對定位輸入並忽略手掌觸碰。雙指縮放仍可使用。</string>
+    <string name="stylus_hint_desktop">觸控筆：輕觸即按一下，按住並移動可拖曳。側鍵：右鍵或中鍵按一下。雙指縮放。</string>
+    <string name="stylus_hint_phone">觸控筆：點按、按住或滑動以控制手機。雙指縮放。不傳送懸停。</string>
+</resources>

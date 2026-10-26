@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">精密マウスとしてのペン</string>
+    <string name="stylus_precision_summary">ペンの絶対座標入力を使い、手のひらの触れを無視します。2本指のズームはそのまま使えます。</string>
+    <string name="stylus_hint_desktop">ペン：タッチでクリック、長押しして動かすとドラッグ。側面ボタン：右クリックまたは中クリック。2本指でズーム。</string>
+    <string name="stylus_hint_phone">ペン：タップ、長押し、スワイプでスマートフォンを操作。2本指でズーム。ホバーは送信されません。</string>
+</resources>

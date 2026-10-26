@@ -168,6 +168,16 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
         settingsState.value = loadSettings()
     }
 
+    fun updateStylusPrecision(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_STYLUS_PRECISION, enabled).apply()
+        settingsState.value = loadSettings()
+    }
+
+    fun markStylusHintSeen() {
+        prefs.edit().putBoolean(KEY_STYLUS_HINT_SEEN, true).apply()
+        settingsState.value = loadSettings()
+    }
+
     fun saveLastBackgroundAt(timestampMillis: Long) {
         prefs.edit().putLong(KEY_LAST_BACKGROUND_AT, timestampMillis).apply()
     }
@@ -195,6 +205,8 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
             blockScreenshots = prefs.getBoolean(KEY_BLOCK_SCREENSHOTS, false),
             biometricUnlockEnabled = prefs.getBoolean(KEY_BIOMETRIC_UNLOCK, false),
             lockTimeoutSeconds = prefs.getLong(KEY_LOCK_TIMEOUT_SECONDS, DEFAULT_LOCK_TIMEOUT_SECONDS),
+            stylusPrecisionEnabled = prefs.getBoolean(KEY_STYLUS_PRECISION, true),
+            stylusHintSeen = prefs.getBoolean(KEY_STYLUS_HINT_SEEN, false),
         )
     }
 
@@ -297,6 +309,8 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
         private const val KEY_BIOMETRIC_UNLOCK = "biometric_unlock"
         private const val KEY_LOCK_TIMEOUT_SECONDS = "lock_timeout_seconds"
         private const val KEY_LAST_BACKGROUND_AT = "last_background_at"
+        private const val KEY_STYLUS_PRECISION = "stylus_precision"
+        private const val KEY_STYLUS_HINT_SEEN = "stylus_hint_seen"
         private const val KEY_FAVORITES = "favorites"
         private const val KEY_PROFILES = "server_profiles_v1"
         private const val KEY_PROFILES_BACKUP = "server_profiles_v1_previous"

@@ -48,8 +48,8 @@ class MeshDesktopRelay(
     private var tunnelId: String? = null
     private var currentBaseUrl: HttpUrl? = null
     @Volatile private var currentDevice: MeshDevice? = null
-    private data class PhonePress(val socket: WebSocket, val x: Int, val y: Int)
-    private var phonePress: PhonePress? = null
+    private data class MousePress(val socket: WebSocket, val x: Int, val y: Int)
+    private val mousePresses = mutableMapOf<MouseButton, MousePress>()
     private var authCookie: String? = null
     private var relayCookie: String? = null
     @Volatile private var frameVersion = 0L
@@ -74,7 +74,7 @@ class MeshDesktopRelay(
         val current = currentDevice?.takeIf { it.isAndroidAgent } ?: return
         val updated = device?.takeIf { it.nodeId == current.nodeId }
             ?: current.copy(remoteInput = PhoneRemoteInput.Unknown)
-        if (!updated.phoneInputAllowed) releasePhonePress()
+        if (!updated.phoneInputAllowed) releaseMouseButtons()
         currentDevice = updated
         _desktopState.update { it.copy(device = updated, viewOnly = updated.viewOnly) }
     }
@@ -86,7 +86,7 @@ class MeshDesktopRelay(
     }
 
     fun connect(baseUrl: HttpUrl, device: MeshDevice) {
-        synchronized(this) { releasePhonePress() }
+        synchronized(this) { releaseMouseButtons() }
         if (!device.canOpenNativeDesktop) {
             _desktopState.value = RemoteDesktopState(
                 connectionState = ConnectionState.Failed,
@@ -121,6 +121,7 @@ class MeshDesktopRelay(
         resumeWatchdogJob?.cancel()
         stopKeepAlive()
         val previousSocket = relaySocket
+        synchronized(this) { releaseMouseButtons() }
         relaySocket = null
         sendControlClose(previousSocket)
         previousSocket?.close(CLOSE_NORMAL, "Reconnecting desktop")
@@ -150,6 +151,7 @@ class MeshDesktopRelay(
         stopKeepAlive()
         resumeWatchdogJob?.cancel()
         val previous = relaySocket
+        synchronized(this) { releaseMouseButtons() }
         relaySocket = null
         previous?.cancel()
         waitForNetwork()
@@ -202,7 +204,7 @@ class MeshDesktopRelay(
     }
 
     fun disconnect(resetState: Boolean = true) {
-        synchronized(this) { releasePhonePress() }
+        synchronized(this) { releaseMouseButtons() }
         manualClose = true
         cancelReconnect()
         resumeWatchdogJob?.cancel()
@@ -230,7 +232,10 @@ class MeshDesktopRelay(
     /** Pauses the remote screen stream; used when the app goes to the background. */
     fun setPaused(paused: Boolean): Boolean {
         backgroundPaused = paused
-        if (paused) resumeWatchdogJob?.cancel()
+        if (paused) {
+            synchronized(this) { releaseMouseButtons() }
+            resumeWatchdogJob?.cancel()
+        }
         return sendBinary(KvmInputEncoder.pause(paused))
     }
 
@@ -266,28 +271,35 @@ class MeshDesktopRelay(
     @Synchronized override fun sendMouseMove(x: Int, y: Int): Boolean {
         if (!inputAllowed()) return false
         val sent = sendBinary(KvmInputEncoder.mouseMove(x, y))
-        if (sent) phonePress?.takeIf { it.socket === relaySocket }?.let { phonePress = it.copy(x = x, y = y) }
-        return sent
-    }
-
-    @Synchronized override fun sendMouseButton(x: Int, y: Int, button: MouseButton, down: Boolean): Boolean {
-        // A release cannot start input. Only release this relay's own successful phone press,
-        // at its last sent coordinates, even if permission/capability was revoked meanwhile.
-        if (!down && button == MouseButton.Left && phonePress != null) return releasePhonePress()
-        if (!inputAllowed()) return false
-        val socket = relaySocket ?: return false
-        val sent = socket.send(ByteString.of(*KvmInputEncoder.mouseButton(x, y, button, down)))
-        if (sent && down && button == MouseButton.Left && currentDevice?.isAndroidAgent == true) {
-            phonePress = PhonePress(socket, x, y)
+        if (sent) mousePresses.replaceAll { _, press ->
+            if (press.socket === relaySocket) press.copy(x = x, y = y) else press
         }
         return sent
     }
 
-    private fun releasePhonePress(): Boolean {
-        val press = phonePress ?: return false
-        phonePress = null
+    @Synchronized override fun sendMouseButton(x: Int, y: Int, button: MouseButton, down: Boolean): Boolean {
+        // A release cannot start input. Release only this relay's own successful press on its
+        // original socket, including after input has been locked or permission revoked.
+        if (!down && mousePresses.containsKey(button)) {
+            val point = if (inputAllowed() && currentDevice?.isAndroidAgent != true) x to y else null
+            return releaseMouseButton(button, point)
+        }
+        if (!inputAllowed()) return false
+        val socket = relaySocket ?: return false
+        val sent = socket.send(ByteString.of(*KvmInputEncoder.mouseButton(x, y, button, down)))
+        if (sent && down) mousePresses[button] = MousePress(socket, x, y)
+        return sent
+    }
+
+    private fun releaseMouseButton(button: MouseButton, point: Pair<Int, Int>? = null): Boolean {
+        val press = mousePresses.remove(button) ?: return false
         if (press.socket !== relaySocket) return false
-        return press.socket.send(ByteString.of(*KvmInputEncoder.mouseButton(press.x, press.y, MouseButton.Left, false)))
+        return press.socket.send(ByteString.of(*KvmInputEncoder.mouseButton(
+            point?.first ?: press.x, point?.second ?: press.y, button, false)))
+    }
+
+    private fun releaseMouseButtons() {
+        mousePresses.keys.toList().forEach { releaseMouseButton(it) }
     }
 
     override fun sendMouseClick(x: Int, y: Int, button: MouseButton): Boolean {
@@ -425,6 +437,7 @@ class MeshDesktopRelay(
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
             if (relaySocket !== webSocket) return
+            synchronized(this@MeshDesktopRelay) { mousePresses.clear() }
             relaySocket = null
             _desktopState.update {
                 it.copy(
@@ -445,6 +458,7 @@ class MeshDesktopRelay(
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
             if (relaySocket !== webSocket) return
+            synchronized(this@MeshDesktopRelay) { mousePresses.clear() }
             relaySocket = null
             if (manualClose) {
                 _desktopState.update {
@@ -562,6 +576,7 @@ class MeshDesktopRelay(
             next
         }
 
+        if (inputLock?.locked == true) synchronized(this) { releaseMouseButtons() }
         if (screenSize != null) {
             val changed = previousSize.first != screenSize.width || previousSize.second != screenSize.height
             if (initialisation.shouldInitialise(changed)) sendInitialisationSequence()

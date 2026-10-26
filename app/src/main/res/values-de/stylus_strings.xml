@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">Stift als präzise Maus</string>
+    <string name="stylus_precision_summary">Absolute Stifteingabe nutzen und Handballenberührungen ignorieren. Zwei Finger zoomen weiterhin.</string>
+    <string name="stylus_hint_desktop">Stift: Tippen für einen Klick, halten und bewegen zum Ziehen. Seitentasten: Rechts- oder Mittelklick. Zwei Finger zoomen.</string>
+    <string name="stylus_hint_phone">Stift: Tippen, Halten oder Wischen zur Steuerung des Telefons. Zwei Finger zoomen. Schweben wird nicht gesendet.</string>
+</resources>

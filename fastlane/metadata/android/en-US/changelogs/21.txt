@@ -1,0 +1,1 @@
+0.8.2: Stylus and S Pen: the pen works as a precise mouse with hover, side-button right click and palm rejection, and gives precise taps on controlled phones. Also in 0.8: phone screen viewing, battery, actions and verified files; server-key pinning; Remember this device for 2FA; computer security, inventory and history; terminal favorites; recovery after network outages.

@@ -1,3 +1,12 @@
+# 0.8.2 — 2026-10-26
+
+## Stylus / S Pen
+
+- Use a pen as an absolute mouse on computer desktops in every pointer mode, with hover, left-button drag, side-button right/middle clicks and an eraser mapped to the right button.
+- Reject palm input while the pen is nearby or touching; keep two-finger local zoom and pan.
+- Use the pen for precise tap, hold and swipe on phones that explicitly enable remote input; do not send hover to phones.
+- Add an enabled-by-default “Stylus as a precise mouse” setting, a first-use hint and translations in all 23 locales. Pressure and tilt are not transmitted. See [M8 details](docs/STYLUS.md).
+
 # 0.8.1 — 2026-10-26
 
 - First public build of the 0.8 line. It contains the same app as 0.8.0, which did not reach GitHub Releases because two device tests failed on the release emulators (a keyboard covering a button on a small screen, and a slow WebSocket teardown). The tests were stabilized; app code is unchanged.

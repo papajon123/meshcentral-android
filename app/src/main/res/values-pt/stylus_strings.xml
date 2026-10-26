@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">Caneta como rato de precisão</string>
+    <string name="stylus_precision_summary">Use a entrada absoluta da caneta e ignore os toques da palma. O zoom com dois dedos mantém-se.</string>
+    <string name="stylus_hint_desktop">Caneta: toque para clicar, mantenha premido e mova para arrastar. Botões laterais: clique direito ou do meio. Zoom com dois dedos.</string>
+    <string name="stylus_hint_phone">Caneta: toque, mantenha premido ou deslize para controlar o telefone. Zoom com dois dedos. O hover não é enviado.</string>
+</resources>

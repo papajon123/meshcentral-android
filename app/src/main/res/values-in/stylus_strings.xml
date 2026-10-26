@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">Stilus sebagai mouse presisi</string>
+    <string name="stylus_precision_summary">Gunakan input absolut stilus dan abaikan sentuhan telapak tangan. Cubit dua jari tetap bisa memperbesar.</string>
+    <string name="stylus_hint_desktop">Stilus: sentuh untuk mengeklik, tahan dan gerakkan untuk menyeret. Tombol samping: klik kanan atau tengah. Cubit dua jari untuk memperbesar.</string>
+    <string name="stylus_hint_phone">Stilus: ketuk, tahan, atau geser untuk mengontrol ponsel. Cubit dua jari untuk memperbesar. Hover tidak dikirim.</string>
+</resources>

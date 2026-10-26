@@ -639,6 +639,9 @@ fun MeshCentralApp(
                         onAddShortcut = { settingsRepository.addShortcut(activeProfileId, it) },
                         onRemoveShortcut = { settingsRepository.removeShortcut(activeProfileId, it) },
                         shortcutProfileId = activeProfileId,
+                        stylusPrecisionEnabled = settings.stylusPrecisionEnabled,
+                        stylusHintSeen = settings.stylusHintSeen,
+                        onStylusHintSeen = settingsRepository::markStylusHintSeen,
                         onFullscreenChanged = {
                             remoteFullscreen = it
                             onRemoteFullscreenChanged(it)
@@ -656,6 +659,7 @@ fun MeshCentralApp(
                         updates = { UpdateSettings(updateState, updateModel::consent, { updateModel.check(manual = true) }, updateModel::later, updateModel::skip) },
                         settings = settings,
                         serverUrl = settings.serverUrl,
+                        onStylusPrecisionChanged = settingsRepository::updateStylusPrecision,
                         hasPin = secureVault.hasPin(),
                         onScreenshotBlockingChanged = { enabled ->
                             settingsRepository.updateBlockScreenshots(enabled)

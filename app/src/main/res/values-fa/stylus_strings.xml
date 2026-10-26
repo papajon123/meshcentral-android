@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">قلم به‌عنوان ماوس دقیق</string>
+    <string name="stylus_precision_summary">از ورودی مطلق قلم استفاده کنید و تماس کف دست را نادیده بگیرید. بزرگ‌نمایی با دو انگشت همچنان کار می‌کند.</string>
+    <string name="stylus_hint_desktop">قلم: برای کلیک لمس کنید، برای کشیدن نگه دارید و حرکت دهید. دکمه‌های کناری: کلیک راست یا میانی. بزرگ‌نمایی با دو انگشت.</string>
+    <string name="stylus_hint_phone">قلم: برای کنترل تلفن ضربه بزنید، نگه دارید یا بکشید. بزرگ‌نمایی با دو انگشت. شناور بودن ارسال نمی‌شود.</string>
+</resources>

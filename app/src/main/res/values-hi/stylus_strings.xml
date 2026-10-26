@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">सटीक माउस के रूप में स्टाइलस</string>
+    <string name="stylus_precision_summary">स्टाइलस का निरपेक्ष इनपुट इस्तेमाल करें और हथेली के स्पर्श को अनदेखा करें। दो उंगलियों से ज़ूम अभी भी काम करता है।</string>
+    <string name="stylus_hint_desktop">स्टाइलस: क्लिक करने के लिए छुएँ, खींचने के लिए दबाकर रखें और खिसकाएँ। साइड बटन: दायाँ या मध्य क्लिक। दो उंगलियों से ज़ूम।</string>
+    <string name="stylus_hint_phone">स्टाइलस: फ़ोन नियंत्रित करने के लिए टैप करें, दबाकर रखें या स्वाइप करें। दो उंगलियों से ज़ूम। हॉवर नहीं भेजा जाता।</string>
+</resources>

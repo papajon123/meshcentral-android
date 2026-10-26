@@ -21,12 +21,14 @@ import ru.papajon.meshcentralmobile.input.NativeRemoteInputSink
 import ru.papajon.meshcentralmobile.mesh.PhoneTouchGesture
 import ru.papajon.meshcentralmobile.mesh.RemoteDesktopState
 import ru.papajon.meshcentralmobile.mesh.RemoteViewport
+import ru.papajon.meshcentralmobile.mesh.StylusInputController
 
 /** Phone-only direct touch. Two fingers always transform the local picture, never send KVM. */
 @Composable
 fun PhoneSessionCanvas(state: RemoteDesktopState, zoom: Float, panX: Float, panY: Float,
     onViewportChanged: (Float, Float, Float) -> Unit, onCanvasSizeChanged: (IntSize) -> Unit,
-    input: NativeRemoteInputSink, modifier: Modifier = Modifier) {
+    input: NativeRemoteInputSink, modifier: Modifier = Modifier,
+    stylusPrecisionEnabled: Boolean = true, onStylusUsed: () -> Unit = {}) {
     var size by remember { mutableStateOf(IntSize.Zero) }
     val viewport = RemoteViewport(size.width, size.height, state.remoteWidth, state.remoteHeight, zoom, panX, panY)
     val currentViewport by rememberUpdatedState(viewport)
@@ -34,24 +36,45 @@ fun PhoneSessionCanvas(state: RemoteDesktopState, zoom: Float, panX: Float, panY
     val currentOnViewportChanged by rememberUpdatedState(onViewportChanged)
     val scope = rememberCoroutineScope()
     var replay by remember { mutableStateOf<Job?>(null) }
+    val stylus = remember(input, state.device?.nodeId, state.attempt, state.remoteWidth, state.remoteHeight) {
+        StylusInputController(input, phone = true, onPhoneGesture = { points ->
+            if (currentState.inputEnabled && replay?.isActive != true) {
+                replay = scope.launch {
+                    try { PhoneTouchGesture.replay(points, input) { currentState.inputEnabled } }
+                    finally { replay = null }
+                }
+            }
+        }, nowMillis = android.os.SystemClock::uptimeMillis)
+    }
+    val penInput = stylusCanvasInput(stylus, stylusPrecisionEnabled,
+        state.hasFrame && state.inputEnabled, viewport, onStylusUsed,
+        contactEnabled = replay?.isActive != true)
     DisposableEffect(state.device?.nodeId, state.attempt, state.inputEnabled, state.remoteWidth, state.remoteHeight) {
         onDispose { replay?.cancel() }
     }
     Canvas(modifier.testTag("phone_control_canvas").onSizeChanged { size = it; onCanvasSizeChanged(it) }
-        .pointerInput(state.device?.nodeId, state.attempt, state.inputEnabled, state.remoteWidth, state.remoteHeight) {
+        .then(penInput)
+        .pointerInput(state.device?.nodeId, state.attempt, state.inputEnabled, state.remoteWidth, state.remoteHeight,
+            stylus, stylusPrecisionEnabled) {
             awaitEachGesture {
                 val down = awaitFirstDown(requireUnconsumed = false)
                 if (!currentState.hasFrame) return@awaitEachGesture
                 val initialViewport = currentViewport
                 val start = initialViewport.toRemote(down.position.x, down.position.y)
                 val gesture = PhoneTouchGesture(start.first, start.second)
+                var penOrPalm = stylusPrecisionEnabled && (down.isPen() || stylus.blocksFingerInput)
                 val acceptsInput = currentState.inputEnabled && replay?.isActive != true &&
                     initialViewport.hitsImage(down.position.x, down.position.y)
                 var multiTouch = false
                 var last = down
                 do {
                     val event = awaitPointerEvent()
-                    if (event.changes.count { it.pressed || it.previousPressed } > 1) {
+                    penOrPalm = penOrPalm || (stylusPrecisionEnabled &&
+                        (stylus.blocksFingerInput || event.changes.any { it.isPen() }))
+                    if (penOrPalm) {
+                        gesture.cancel()
+                        transformWithFingers(event, currentViewport, currentOnViewportChanged)
+                    } else if (event.changes.count { it.pressed || it.previousPressed } > 1) {
                         multiTouch = true
                         gesture.cancel()
                         val view = currentViewport
@@ -77,10 +100,13 @@ fun PhoneSessionCanvas(state: RemoteDesktopState, zoom: Float, panX: Float, panY
                     }
                     event.changes.forEach { it.consume() }
                 } while (event.changes.any { it.pressed })
-                if (acceptsInput && !multiTouch && currentState.inputEnabled) {
+                if (acceptsInput && !penOrPalm && !multiTouch && currentState.inputEnabled) {
                     val end = initialViewport.toRemote(last.position.x, last.position.y)
                     val points = gesture.finish(end.first, end.second, last.uptimeMillis - down.uptimeMillis)
-                    replay = scope.launch { PhoneTouchGesture.replay(points, input) { currentState.inputEnabled } }
+                    replay = scope.launch {
+                        try { PhoneTouchGesture.replay(points, input) { currentState.inputEnabled } }
+                        finally { replay = null }
+                    }
                 }
             }
         }) {

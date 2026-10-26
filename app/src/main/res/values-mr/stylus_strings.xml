@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">अचूक माउस म्हणून स्टायलस</string>
+    <string name="stylus_precision_summary">स्टायलसचे निरपेक्ष इनपुट वापरा आणि तळहाताच्या स्पर्शाकडे दुर्लक्ष करा. दोन बोटांनी झूम अजूनही चालते.</string>
+    <string name="stylus_hint_desktop">स्टायलस: क्लिक करण्यासाठी स्पर्श करा, ड्रॅग करण्यासाठी दाबून धरा आणि हलवा. बाजूची बटणे: उजवे किंवा मधले क्लिक. दोन बोटांनी झूम.</string>
+    <string name="stylus_hint_phone">स्टायलस: फोन नियंत्रित करण्यासाठी टॅप करा, दाबून धरा किंवा स्वाइप करा. दोन बोटांनी झूम. हॉव्हर पाठवले जात नाही.</string>
+</resources>

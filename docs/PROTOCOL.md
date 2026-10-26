@@ -203,6 +203,39 @@ Mouse coordinates are **absolute framebuffer pixels** (`obj.SendMouseMsg` uses c
 Negative wheel deltas use MeshCentral's complement form (`255 - (abs >> 8)`, `255 - (abs & 0xFF)`), not
 two's complement.
 
+### Stylus / S Pen (M8, 0.8.1)
+
+Audited against MeshCentral **1.3.1**, `public/scripts/agent-desktop-0.0.2.js:561–580`
+(`SendTouchMsg1` / `SendTouchMsg2`) and `582–650` (`SendMouseMsg`). The mouse format remains
+KVM 2, ten bytes: `00 02 00 0A 00 flags x:u16 y:u16`, with absolute framebuffer pixels.
+Hover and drag movement use `flags=00`; left down/up `02/04`, right `08/10`, middle `20/40`.
+The client reuses `KvmInputEncoder`; it introduces no pen command or touch-protocol extension.
+Neither this mouse message nor the audited touch messages carry pen pressure, tilt or eraser data.
+
+Android `TOOL_TYPE_STYLUS` bypasses the selected computer touch/trackpad/scroll/pan mode when
+“Stylus as a precise mouse” is enabled (the default). Hover enter/move sends only a mouse move.
+Contact presses left; moves retain the press until release. `BUTTON_STYLUS_PRIMARY` selects right,
+`BUTTON_STYLUS_SECONDARY` selects middle (secondary wins if both are pressed). `TOOL_TYPE_ERASER`
+selects right, ahead of both side buttons: this is a context-menu convention, **not remote erasing**.
+The button is selected at contact and latched until release, including when the side button is let go.
+Coordinates use `RemoteViewport` for fit/zoom/pan; presses and hover outside the image are ignored,
+and an existing drag clamps to the frame edges. Cancellation attempts to release only its own press.
+
+Palm contacts cannot click, move the remote cursor or scroll while a pen hovers or touches. A rejected
+finger gesture stays rejected until all its fingers lift. Two actual fingers still zoom/pan the local
+picture; a pen plus one palm is not a pinch. Two fingers cancel an active pen stroke. Disabling the
+setting restores the existing touch-mode behavior for the pen. The preference and first-use hint
+flag are non-secret, global local settings; they do not change profile credentials or server state.
+Android can synthesize a hover exit immediately before a palm contact. Finger gestures beginning
+within 250 ms of hover exit are also rejected; after that guard, ordinary finger input resumes.
+
+For an Android phone, only the existing `remoteInput == enabled` capability plus session/rights
+checks permit input. Pen/eraser/side-button contact all mean a left-button touch. Hover is never sent.
+Completed gestures reuse `PhoneTouchGesture`'s bounded timing/trajectory replay and cancellation
+rules below; the phone owner's consent is still mandatory. Pressure and tilt are ignored locally.
+See [implementation and validation](STYLUS.md) and the
+[Android MotionEvent reference](https://developer.android.com/reference/android/view/MotionEvent).
+
 ### Keepalive and close
 
 Text frames `{"ctrlChannel":102938,"type":"rtt","time":<ms>}` every 10 s; the echo carries the same `time`,

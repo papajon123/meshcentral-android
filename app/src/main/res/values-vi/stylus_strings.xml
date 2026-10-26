@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">Bút cảm ứng như chuột chính xác</string>
+    <string name="stylus_precision_summary">Dùng đầu vào tuyệt đối bằng bút cảm ứng và bỏ qua chạm của lòng bàn tay. Thu phóng bằng hai ngón vẫn hoạt động.</string>
+    <string name="stylus_hint_desktop">Bút: chạm để nhấp, giữ và di chuyển để kéo. Nút bên: nhấp chuột phải hoặc giữa. Thu phóng bằng hai ngón.</string>
+    <string name="stylus_hint_phone">Bút: chạm, giữ hoặc vuốt để điều khiển điện thoại. Thu phóng bằng hai ngón. Không gửi thao tác rê.</string>
+</resources>

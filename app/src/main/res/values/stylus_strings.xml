@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="stylus_precision_title">Stylus as a precise mouse</string>
+    <string name="stylus_precision_summary">Use absolute pen input and ignore palm touches. Two fingers still zoom.</string>
+    <string name="stylus_hint_desktop">Pen: touch to click, hold and move to drag. Side buttons: right or middle click. Two fingers zoom.</string>
+    <string name="stylus_hint_phone">Pen: tap, hold or swipe to control the phone. Two fingers zoom. Hover is not sent.</string>
+</resources>

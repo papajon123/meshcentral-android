@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">Lápiz como ratón de precisión</string>
+    <string name="stylus_precision_summary">Usa la entrada absoluta del lápiz e ignora los toques de la palma. El zoom con dos dedos sigue disponible.</string>
+    <string name="stylus_hint_desktop">Lápiz: toca para hacer clic; mantén pulsado y mueve para arrastrar. Botones laterales: clic derecho o central. Zoom con dos dedos.</string>
+    <string name="stylus_hint_phone">Lápiz: toca, mantén pulsado o desliza para controlar el teléfono. Zoom con dos dedos. El hover no se envía.</string>
+</resources>

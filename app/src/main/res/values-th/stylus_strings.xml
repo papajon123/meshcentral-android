@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">สไตลัสเป็นเมาส์ที่แม่นยำ</string>
+    <string name="stylus_precision_summary">ใช้อินพุตแบบสัมบูรณ์จากสไตลัสและเพิกเฉยต่อการสัมผัสของฝ่ามือ การซูมด้วยสองนิ้วยังใช้ได้</string>
+    <string name="stylus_hint_desktop">สไตลัส: แตะเพื่อคลิก กดค้างแล้วเลื่อนเพื่อลาก ปุ่มด้านข้าง: คลิกขวาหรือกลาง ซูมด้วยสองนิ้ว</string>
+    <string name="stylus_hint_phone">สไตลัส: แตะ กดค้าง หรือปัดเพื่อควบคุมโทรศัพท์ ซูมด้วยสองนิ้ว ไม่ส่งโฮเวอร์</string>
+</resources>

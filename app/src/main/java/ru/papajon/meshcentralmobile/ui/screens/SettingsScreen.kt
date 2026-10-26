@@ -45,6 +45,7 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Key
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Security
+import androidx.compose.material.icons.outlined.TouchApp
 import androidx.compose.material.icons.outlined.SystemUpdateAlt
 import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.Button
@@ -119,6 +120,7 @@ fun SettingsScreen(
     onEditServer: (() -> Unit)? = null,
     onNotifications: (() -> Unit)? = null,
     updates: @Composable () -> Unit = {},
+    onStylusPrecisionChanged: (Boolean) -> Unit = {},
 ) {
     var newPin by rememberSaveable { mutableStateOf("") }
     var message by remember {
@@ -354,13 +356,23 @@ fun SettingsScreen(
             subtitle = stringResource(R.string.settings_section_session_subtitle),
         ) {
             MeshCard(shape = MaterialTheme.shapes.large) {
-                SettingsActionRow(
-                    icon = Icons.Outlined.Lock,
-                    title = stringResource(R.string.settings_lock_now),
-                    supporting = stringResource(R.string.settings_lock_now_supporting),
-                    actionLabel = stringResource(R.string.settings_lock_now_action),
-                    onClick = onLockNow,
-                )
+                Column {
+                    SettingsSwitchRow(
+                        icon = Icons.Outlined.TouchApp,
+                        title = stringResource(R.string.stylus_precision_title),
+                        supporting = stringResource(R.string.stylus_precision_summary),
+                        checked = settings.stylusPrecisionEnabled,
+                        onCheckedChange = onStylusPrecisionChanged,
+                    )
+                    SettingsDivider()
+                    SettingsActionRow(
+                        icon = Icons.Outlined.Lock,
+                        title = stringResource(R.string.settings_lock_now),
+                        supporting = stringResource(R.string.settings_lock_now_supporting),
+                        actionLabel = stringResource(R.string.settings_lock_now_action),
+                        onClick = onLockNow,
+                    )
+                }
             }
         }
 

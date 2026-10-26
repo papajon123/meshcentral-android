@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">درست ماؤس کے طور پر اسٹائلس</string>
+    <string name="stylus_precision_summary">اسٹائلس کا مطلق ان پٹ استعمال کریں اور ہتھیلی کے لمس نظرانداز کریں۔ دو انگلیوں سے زوم اب بھی کام کرتا ہے۔</string>
+    <string name="stylus_hint_desktop">اسٹائلس: کلک کرنے کے لیے چھوئیں، گھسیٹنے کے لیے دبا کر رکھیں اور حرکت دیں۔ پہلو کے بٹن: دائیں یا درمیانی کلک۔ دو انگلیوں سے زوم۔</string>
+    <string name="stylus_hint_phone">اسٹائلس: فون کنٹرول کرنے کے لیے ٹیپ کریں، دبا کر رکھیں یا سوائپ کریں۔ دو انگلیوں سے زوم۔ ہوور نہیں بھیجا جاتا۔</string>
+</resources>

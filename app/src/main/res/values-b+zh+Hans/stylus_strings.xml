@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">触控笔作为精准鼠标</string>
+    <string name="stylus_precision_summary">使用触控笔绝对定位输入并忽略手掌触碰。双指缩放仍然可用。</string>
+    <string name="stylus_hint_desktop">触控笔：轻触即单击，按住并移动可拖拽。侧键：右键或中键单击。双指缩放。</string>
+    <string name="stylus_hint_phone">触控笔：点按、按住或滑动以控制手机。双指缩放。不发送悬停。</string>
+</resources>

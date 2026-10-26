@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">Stylet comme souris de précision</string>
+    <string name="stylus_precision_summary">Saisie absolue au stylet, les contacts de la paume sont ignorés. Le zoom à deux doigts reste disponible.</string>
+    <string name="stylus_hint_desktop">Stylet : toucher pour cliquer, maintenir puis déplacer pour glisser. Boutons latéraux : clic droit ou central. Zoom à deux doigts.</string>
+    <string name="stylus_hint_phone">Stylet : toucher, maintenir ou balayer pour contrôler le téléphone. Zoom à deux doigts. Le survol n’est pas envoyé.</string>
+</resources>

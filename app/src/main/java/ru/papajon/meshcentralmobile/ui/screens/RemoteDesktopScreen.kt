@@ -104,6 +104,12 @@ import ru.papajon.meshcentralmobile.mesh.RemoteDesktopState
 import ru.papajon.meshcentralmobile.mesh.RemoteViewport
 import ru.papajon.meshcentralmobile.mesh.SessionGestureAction
 import ru.papajon.meshcentralmobile.mesh.SessionGesturePolicy
+import ru.papajon.meshcentralmobile.mesh.StylusInputController
+import ru.papajon.meshcentralmobile.ui.screens.session.isPen
+import ru.papajon.meshcentralmobile.ui.screens.session.stylusCanvasInput
+import ru.papajon.meshcentralmobile.ui.screens.session.transformWithFingers
+import ru.papajon.meshcentralmobile.ui.screens.session.rememberStylusHint
+import ru.papajon.meshcentralmobile.ui.screens.session.FingerDragCancellation
 import ru.papajon.meshcentralmobile.model.ConnectionState
 import ru.papajon.meshcentralmobile.model.RemoteControlMode
 import ru.papajon.meshcentralmobile.ui.components.EmptyState
@@ -145,6 +151,9 @@ fun RemoteDesktopScreen(
     onAddShortcut: ((ru.papajon.meshcentralmobile.model.CustomShortcut) -> Boolean)? = null,
     onRemoveShortcut: (Int) -> Unit = {},
     shortcutProfileId: String = "",
+    stylusPrecisionEnabled: Boolean = true,
+    stylusHintSeen: Boolean = false,
+    onStylusHintSeen: () -> Unit = {},
 ) {
     val desktopState by meshClient.desktopState.collectAsState()
     var fullscreen by rememberSaveable { mutableStateOf(false) }
@@ -161,6 +170,7 @@ fun RemoteDesktopScreen(
     var panY by rememberSaveable { mutableStateOf(0f) }
     var canvasSize by remember { mutableStateOf(IntSize.Zero) }
     var lastGesture by remember { mutableStateOf("idle") }
+    val stylusHint = rememberStylusHint(stylusHintSeen, onStylusHintSeen, desktopState.device?.isAndroidAgent == true)
 
     BackHandler {
         when {
@@ -227,7 +237,8 @@ fun RemoteDesktopScreen(
                 PhoneSessionCanvas(desktopState, zoom, panX, panY,
                     onViewportChanged = { z, x, y -> zoom = z; panX = x; panY = y },
                     onCanvasSizeChanged = { canvasSize = it }, input = meshClient.remoteInputSink,
-                    modifier = Modifier.fillMaxWidth().weight(1f))
+                    modifier = Modifier.fillMaxWidth().weight(1f),
+                    stylusPrecisionEnabled = stylusPrecisionEnabled, onStylusUsed = stylusHint.onUse)
                 PhoneControlPanel(desktopState, meshClient.remoteInputSink,
                     Modifier.heightIn(max = 176.dp).verticalScroll(rememberScrollState()))
                 Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
@@ -254,6 +265,8 @@ fun RemoteDesktopScreen(
             onGestureAction = { lastGesture = it.name },
             inputSink = meshClient.remoteInputSink,
             modifier = Modifier.fillMaxSize(),
+            stylusPrecisionEnabled = stylusPrecisionEnabled,
+            onStylusUsed = stylusHint.onUse,
         )
 
         if (!desktopState.hasFrame || desktopState.connectionState == ConnectionState.Reconnecting) {
@@ -376,6 +389,8 @@ fun RemoteDesktopScreen(
             active = !device.isAndroidAgent && keyboardActive && desktopState.inputEnabled,
             modifier = Modifier.align(Alignment.BottomStart),
         )
+        androidx.compose.material3.SnackbarHost(stylusHint.host,
+            Modifier.align(Alignment.TopCenter).windowInsetsPadding(WindowInsets.safeDrawing))
     }
 
     when (sheet) {
@@ -913,9 +928,12 @@ internal fun SessionCanvas(
     onGestureAction: (SessionGestureAction) -> Unit = {},
     inputSink: NativeRemoteInputSink,
     modifier: Modifier = Modifier,
+    stylusPrecisionEnabled: Boolean = true,
+    onStylusUsed: () -> Unit = {},
 ) {
     if (desktopState.device?.isAndroidAgent == true) {
-        PhoneSessionCanvas(desktopState, zoom, panX, panY, onViewportChanged, onCanvasSizeChanged, inputSink, modifier)
+        PhoneSessionCanvas(desktopState, zoom, panX, panY, onViewportChanged, onCanvasSizeChanged, inputSink, modifier,
+            stylusPrecisionEnabled, onStylusUsed)
         return
     }
     var canvasSize by remember { mutableStateOf(IntSize.Zero) }
@@ -942,6 +960,17 @@ internal fun SessionCanvas(
     val currentOnDragConsumed by rememberUpdatedState(onDragConsumed)
     val currentInputEnabled by rememberUpdatedState(desktopState.inputEnabled)
     val currentHasFrame by rememberUpdatedState(desktopState.hasFrame)
+    val stylus = remember(inputSink, desktopState.device?.nodeId, desktopState.attempt,
+        desktopState.remoteWidth, desktopState.remoteHeight) {
+        StylusInputController(inputSink, onCursor = { x, y ->
+            remoteCursor = Offset(x.toFloat(), y.toFloat())
+            val canvasPoint = currentViewport.toCanvas(x, y)
+            trackpadCursor = Offset(canvasPoint.first, canvasPoint.second)
+        }, nowMillis = android.os.SystemClock::uptimeMillis)
+    }
+    val fingerDragCancellation = remember { FingerDragCancellation() }
+    val penInput = stylusCanvasInput(stylus, stylusPrecisionEnabled,
+        desktopState.inputEnabled && desktopState.hasFrame, viewport, onStylusUsed, fingerDragCancellation::cancel)
 
     LaunchedEffect(canvasSize, desktopState.remoteWidth, desktopState.remoteHeight) {
         if (canvasSize.width > 0 && canvasSize.height > 0) {
@@ -955,12 +984,14 @@ internal fun SessionCanvas(
                 canvasSize = it
                 onCanvasSizeChanged(it)
             }
-            .pointerInput(mode) {
+            .then(penInput)
+            .pointerInput(mode, stylus, stylusPrecisionEnabled) {
                 coroutineScope {
                     val gestureScope = this
                     awaitEachGesture {
                         val down = awaitFirstDown(requireUnconsumed = false)
                         if (!currentHasFrame) return@awaitEachGesture
+                        var penOrPalm = stylusPrecisionEnabled && (down.isPen() || stylus.blocksFingerInput)
 
                         val longPressReached = java.util.concurrent.atomic.AtomicBoolean(false)
                         val slopPx = with(density) {
@@ -980,7 +1011,15 @@ internal fun SessionCanvas(
                         var scrolledBy = 0f
                         var remoteDragging = false
                         var lastReportedAction: SessionGestureAction? = null
-                        if (currentDragArmed && currentInputEnabled &&
+                        val releaseFingerDrag = {
+                            if (remoteDragging) {
+                                val remote = currentViewport.toRemote(lastPosition.x, lastPosition.y)
+                                inputSink.sendMouseButton(remote.first, remote.second, MouseButton.Left, false)
+                                remoteDragging = false
+                            }
+                        }
+                        fingerDragCancellation.release = releaseFingerDrag
+                        if (!penOrPalm && currentDragArmed && currentInputEnabled &&
                             currentViewport.hitsImage(downPosition.x, downPosition.y)
                         ) {
                             val remote = currentViewport.toRemote(downPosition.x, downPosition.y)
@@ -997,7 +1036,8 @@ internal fun SessionCanvas(
                             delay(SessionGesturePolicy.LONG_PRESS_MILLIS)
                             longPressReached.set(true)
                             val distanceDp = (lastPosition - downPosition).getDistance() / density.density
-                            if (!remoteDragging && !multiTouch && !viewPanning &&
+                            if (!penOrPalm && !(stylusPrecisionEnabled && stylus.blocksFingerInput) &&
+                                !remoteDragging && !multiTouch && !viewPanning &&
                                 SessionGesturePolicy.onHold(mode, distanceDp) == SessionGestureAction.RightClick &&
                                 currentInputEnabled
                             ) {
@@ -1019,6 +1059,21 @@ internal fun SessionCanvas(
                             while (true) {
                                 val event = awaitPointerEvent()
                                 val pressedCount = event.changes.count { it.pressed }
+                                penOrPalm = penOrPalm || (stylusPrecisionEnabled &&
+                                    (stylus.blocksFingerInput || event.changes.any { it.isPen() }))
+                                if (penOrPalm) {
+                                    longPressTimer.cancel()
+                                    lastTapUpMillis = 0L
+                                    if (remoteDragging) {
+                                        val remote = currentViewport.toRemote(lastPosition.x, lastPosition.y)
+                                        inputSink.sendMouseButton(remote.first, remote.second, MouseButton.Left, false)
+                                        remoteDragging = false
+                                    }
+                                    transformWithFingers(event, currentViewport, onViewportChanged)
+                                    event.changes.forEach { it.consume() }
+                                    if (pressedCount == 0) break
+                                    continue
+                                }
                                 if (pressedCount == 0) {
                                     if (remoteDragging) lastPosition = event.changes.firstOrNull()?.position ?: lastPosition
                                     break
@@ -1170,6 +1225,7 @@ internal fun SessionCanvas(
                                 event.changes.forEach { it.consume() }
                             }
 
+                            if (penOrPalm) return@awaitEachGesture
                             if (remoteDragging) {
                                 val remote = currentViewport.toRemote(lastPosition.x, lastPosition.y)
                                 inputSink.sendMouseButton(remote.first, remote.second, MouseButton.Left, down = false)
@@ -1230,10 +1286,8 @@ internal fun SessionCanvas(
                             }
                         } finally {
                             longPressTimer.cancel()
-                            if (remoteDragging && currentInputEnabled) {
-                                val remote = currentViewport.toRemote(lastPosition.x, lastPosition.y)
-                                inputSink.sendMouseButton(remote.first, remote.second, MouseButton.Left, down = false)
-                            }
+                            releaseFingerDrag()
+                            if (fingerDragCancellation.release === releaseFingerDrag) fingerDragCancellation.release = null
                         }
                     }
                 }

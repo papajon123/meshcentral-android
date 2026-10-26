@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">Перо как точная мышь</string>
+    <string name="stylus_precision_summary">Абсолютный ввод пером, ладонь игнорируется. Масштабирование двумя пальцами сохраняется.</string>
+    <string name="stylus_hint_desktop">Перо: касание — клик, удержание с движением — перетаскивание. Боковые кнопки: правый или средний клик. Масштабирование двумя пальцами.</string>
+    <string name="stylus_hint_phone">Перо: касание, удержание или свайп для управления телефоном. Масштабирование двумя пальцами. Наведение не передаётся.</string>
+</resources>

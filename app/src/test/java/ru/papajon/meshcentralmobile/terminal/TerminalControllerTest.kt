@@ -39,6 +39,11 @@ class TerminalControllerTest {
         fun receive(text: String) { check(frames.trySend(RelayFrame.Text(text)).isSuccess) }
     }
 
+    private companion object {
+        /** Longer than a CI scheduling pause between connect() and the first scripted server frame. */
+        const val SCRIPTED_DEADLINE_MILLIS = 500L
+    }
+
     private fun withSession(protocol: RelayProtocol, block: (FakeRelay, TerminalController) -> Unit) {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         val relay = FakeRelay(protocol)
@@ -133,12 +138,13 @@ class TerminalControllerTest {
     @Test fun emptySshOutputTimesOutAndLatePromptCannotEnableInput() = runBlocking {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         val relay = FakeRelay(RelayProtocol.SshTerminal)
-        val controller = TerminalController(relay, scope, shellReadyTimeoutMillis = 20, inputDispatcher = Dispatchers.Unconfined)
+        val controller = TerminalController(relay, scope, shellReadyTimeoutMillis = SCRIPTED_DEADLINE_MILLIS, inputDispatcher = Dispatchers.Unconfined)
         try {
             controller.connect()
             relay.receive("c")
             relay.receive("~")
             withTimeout(2000) { controller.state.first { it.phase == RelayPhase.Failed } }
+            assertEquals(UiText.Resource(R.string.terminal_shell_timeout), controller.state.value.message)
             withTimeout(2000) { relay.state.first { it.phase == RelayPhase.Closed } }
             assertTrue(relay.closed)
             assertFalse(controller.state.value.awaitingShell)
@@ -169,11 +175,11 @@ class TerminalControllerTest {
     @Test fun credentialEntryPausesDeadlineButSubmittedCredentialsMustReceiveC() = runBlocking {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         val relay = FakeRelay(RelayProtocol.SshTerminal)
-        val controller = TerminalController(relay, scope, shellReadyTimeoutMillis = 50, inputDispatcher = Dispatchers.Unconfined)
+        val controller = TerminalController(relay, scope, shellReadyTimeoutMillis = SCRIPTED_DEADLINE_MILLIS, inputDispatcher = Dispatchers.Unconfined)
         try {
             controller.connect()
             relay.receive("{\"action\":\"sshauth\"}")
-            delay(100) // Exceed the network deadline while the human is still entering credentials.
+            delay(SCRIPTED_DEADLINE_MILLIS * 2) // Exceed the network deadline while the human is still entering credentials.
             assertFalse(relay.closed)
             assertEquals(TerminalAuth.PasswordOrKey, controller.state.value.auth)
             controller.authenticate("synthetic-user", "synthetic-password")
@@ -189,7 +195,7 @@ class TerminalControllerTest {
     @Test fun storedSshAuthenticationAlsoTimesOutBeforeC() = runBlocking {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         val relay = FakeRelay(RelayProtocol.SshTerminal)
-        val controller = TerminalController(relay, scope, shellReadyTimeoutMillis = 20, inputDispatcher = Dispatchers.Unconfined)
+        val controller = TerminalController(relay, scope, shellReadyTimeoutMillis = SCRIPTED_DEADLINE_MILLIS, inputDispatcher = Dispatchers.Unconfined)
         try {
             controller.connect()
             relay.receive("{\"action\":\"sshautoauth\"}")

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">নির্ভুল মাউস হিসেবে স্টাইলাস</string>
+    <string name="stylus_precision_summary">স্টাইলাসের পরম ইনপুট ব্যবহার করুন এবং হাতের তালুর স্পর্শ উপেক্ষা করুন। দুই আঙুলে জুম আগের মতোই কাজ করে।</string>
+    <string name="stylus_hint_desktop">স্টাইলাস: ক্লিক করতে স্পর্শ করুন, টেনে নিতে চেপে ধরে সরান। পাশের বোতাম: ডান বা মাঝের ক্লিক। দুই আঙুলে জুম।</string>
+    <string name="stylus_hint_phone">স্টাইলাস: ফোন নিয়ন্ত্রণ করতে ট্যাপ, চেপে ধরা বা সোয়াইপ করুন। দুই আঙুলে জুম। হোভার পাঠানো হয় না।</string>
+</resources>

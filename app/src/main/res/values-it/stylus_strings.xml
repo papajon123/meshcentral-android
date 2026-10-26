@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">Stilo come mouse di precisione</string>
+    <string name="stylus_precision_summary">Usa l’input assoluto dello stilo e ignora i tocchi del palmo. Lo zoom a due dita resta disponibile.</string>
+    <string name="stylus_hint_desktop">Stilo: tocca per fare clic, tieni premuto e sposta per trascinare. Tasti laterali: clic destro o centrale. Zoom a due dita.</string>
+    <string name="stylus_hint_phone">Stilo: tocca, tieni premuto o scorri per controllare il telefono. Zoom a due dita. Il passaggio del puntatore non viene inviato.</string>
+</resources>

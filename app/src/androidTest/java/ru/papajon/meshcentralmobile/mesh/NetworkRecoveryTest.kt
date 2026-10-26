@@ -137,6 +137,10 @@ class NetworkRecoveryTest {
             override fun onMessage(webSocket: WebSocket, text: String) {
                 if (text == "2") webSocket.send(okio.ByteString.of(0, 7, 0, 8, 0, 16, 0, 16))
             }
+            override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+                // Complete the close handshake so fixture shutdown does not race its open socket.
+                webSocket.close(code, null)
+            }
         }))
         val url = server.url("/")
         onMain { relay.connect(url, fixtureDevice()) }
@@ -189,6 +193,9 @@ class NetworkRecoveryTest {
         override fun onOpen(webSocket: WebSocket, response: Response) {
             webSocket.send("""{"action":"userinfo","userinfo":{"_id":"user/test/fixture"}}""")
             webSocket.send("""{"action":"nodes","nodes":{}}""")
+        }
+        override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
+            webSocket.close(code, null)
         }
     })
 

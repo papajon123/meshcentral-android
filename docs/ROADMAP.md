@@ -1,5 +1,9 @@
 # Roadmap
 
+## Next release: 0.8.1
+
+- [Stylus / S Pen (M8)](STYLUS.md): absolute pen input, hover, buttons, palm rejection and precise phone gestures. Local implementation on `mr/stylus`; this work does not delay 0.8.0 or authorize publication.
+
 ## Direction for 0.8
 
 This is a direction, not a schedule: there are no dates, and plans can change after review and testing.

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="stylus_precision_title">Hassas fare olarak dokunmatik kalem</string>
+    <string name="stylus_precision_summary">Mutlak dokunmatik kalem girişini kullanın ve avuç içi dokunuşlarını yok sayın. İki parmakla yakınlaştırma çalışmaya devam eder.</string>
+    <string name="stylus_hint_desktop">Dokunmatik kalem: tıklamak için dokunun, sürüklemek için basılı tutup hareket ettirin. Yan düğmeler: sağ veya orta tıklama. İki parmakla yakınlaştırma.</string>
+    <string name="stylus_hint_phone">Dokunmatik kalem: telefonu kontrol etmek için dokunun, basılı tutun veya kaydırın. İki parmakla yakınlaştırma. Üzerine gelme durumu gönderilmez.</string>
+</resources>
