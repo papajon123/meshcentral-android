@@ -38,4 +38,4 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" dist/*.apk dist/SHA256SUMS dist/release-info.json --verify-tag --prerelease --title "MeshCentral Android $RELEASE_VERSION" --notes-file .github/RELEASE_NOTES.md
+        run: gh release create "$TAG" dist/*.apk dist/SHA256SUMS dist/release-info.json --verify-tag --prerelease --title "MeshPilot $RELEASE_VERSION" --notes-file .github/RELEASE_NOTES.md
