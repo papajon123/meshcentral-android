@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">सर्व्हरने ही फाइल नाकारली. पुन्हा प्रयत्न करण्यापूर्वी तिच्या परवानग्या आणि प्रकार तपासा.</string>
+</resources>

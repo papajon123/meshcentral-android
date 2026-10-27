@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">Không thể xác minh: %1$s</string>
+    <string name="review_paused">Tạm dừng: mất kết nối</string>
+    <string name="review_retry_all">Thử lại các mục chưa hoàn tất</string>
+    <string name="review_cleanup_title">Dọn dẹp tệp lưu trữ từ xa</string>
+    <string name="review_archive_left">Có thể còn tệp lưu trữ tạm thời trên máy tính: %1$s. Hãy kiểm tra và xóa khi không có thao tác lưu trữ nào đang chạy.</string>
+    <string name="review_archive_space">Tạo ZIP cần dung lượng trống trong thư mục nguồn từ xa cho một tệp lưu trữ đầy đủ. Nếu Agent không thể khởi động, các tệp sẽ được sao chép riêng lẻ. Thư mục cục bộ chưa hoàn tất giữ hậu tố .partial.</string>
+    <string name="review_grant_failed">Nhà cung cấp này không thể duy trì quyền truy cập cho hàng đợi. Hãy chọn vị trí khác.</string>
+    <string name="review_zip_invalid">Tệp lưu trữ bị hỏng, không đầy đủ hoặc vượt quá giới hạn cấu trúc được hỗ trợ.</string>
+    <string name="review_source_changed">Mục đã chọn đã thay đổi. Làm mới thư mục và xác nhận lại lựa chọn.</string>
+    <string name="review_sftp_types">Máy chủ này không nhận diện liên kết tượng trưng hoặc tệp đặc biệt trong danh sách SFTP. Các tệp không thể xác minh được báo theo đường dẫn; hàng đợi tạm dừng khi mất kết nối. Thư mục chưa hoàn tất vẫn được đánh dấu .partial.</string>
+    <string name="review_skipped">Đã bỏ qua mục không được hỗ trợ: %1$s</string>
+    <string name="review_folder_unavailable">Không có quyền truy cập thư mục: %1$s. Phần còn lại của hàng đợi vẫn tiếp tục.</string>
+    <string name="review_local_failed">Không thể ghi hoặc đọc lại tài liệu Android cục bộ. Phiên tệp vẫn đang kết nối; hãy thử lại mục này.</string>
+    <string name="review_local_no_rename">Nhà cung cấp này không thể đổi tên tài liệu. Một số tệp sẽ giữ hậu tố .partial; hãy đổi tên trong Tệp của Android.</string>
+    <string name="review_source_changed_deleted">Đã xóa: %1$s. Phần còn lại của lựa chọn chưa bị xóa; hãy làm mới thư mục và xác nhận lại.</string>
+    <string name="files_delete_follow_links">Xóa thư mục đệ quy sẽ đi theo liên kết tượng trưng và điểm nối. Các mục tiêu bên ngoài thư mục đã chọn cũng có thể bị xóa; hãy kiểm tra thư mục trong MeshCentral trước khi xác nhận.</string>
+</resources>

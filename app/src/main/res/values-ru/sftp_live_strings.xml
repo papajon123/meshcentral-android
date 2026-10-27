@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">Сервер отказал в скачивании файла. Перед повтором проверьте права доступа и тип файла.</string>
+</resources>

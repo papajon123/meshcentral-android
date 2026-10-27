@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">Cử chỉ hai ngón</string>
+    <string name="desktop_gesture_default">Hành vi gốc</string>
+    <string name="desktop_gesture_scroll">Cuộn cửa sổ từ xa</string>
+    <string name="desktop_gesture_pan">Di chuyển hình ảnh</string>
+    <string name="desktop_pinch">Chụm để thu phóng</string>
+    <string name="desktop_three_fingers">Ba ngón tay cuộn cửa sổ từ xa.</string>
+    <string name="desktop_scale">Tỷ lệ hình ảnh được yêu cầu: %1$d%%</string>
+    <string name="desktop_pip">Hình trong hình</string>
+    <string name="desktop_pip_auto">Tiếp tục xem khi rời ứng dụng</string>
+    <string name="desktop_stream_rate">≈ %1$.1f cập nhật/giây · %2$d B/s</string>
+    <string name="desktop_input_help">Bàn phím và chuột phần cứng hoạt động trên desktop. Android có thể giữ Alt+Tab hoặc Meta; trong trường hợp đó, hãy dùng menu phím. Con lăn ngang dùng Shift + con lăn khi được hỗ trợ.</string>
+    <string name="desktop_rate_help">Chất lượng, tỷ lệ và giới hạn khung hình là các cài đặt được yêu cầu. Người xem khác có thể tăng chất lượng, tỷ lệ hoặc tốc độ cập nhật. Bộ đếm đo số lần cập nhật ô, không phải toàn bộ khung hình.</string>
+    <string name="desktop_keyboard_capture">Ghi nhận bàn phím vật lý</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc giải phóng bàn phím và mở tùy chọn phiên.</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">Perangkat ini tidak lagi tersedia. Buka aplikasi.</string>
+    <string name="integration_favorites">Favorit</string>
+    <string name="integration_updated">Diperbarui: %1$s</string>
+    <string name="integration_widget_empty">Buka aplikasi dan tambahkan perangkat favorit.</string>
+    <string name="integration_widget_description">Perangkat favorit dan ketersediaan terakhir yang diketahui</string>
+    <string name="integration_last_known">Status terakhir yang diketahui</string>
+    <string name="integration_open_to_refresh">Buka aplikasi untuk menghubungkan dan menyegarkan.</string>
+    <string name="integration_refresh">Segarkan</string>
+    <string name="integration_open_app">Buka aplikasi</string>
+    <string name="backup_title">Cadangan pengaturan</string>
+    <string name="backup_description">Ekspor profil server, favorit, pintasan keyboard, cuplikan perintah, dan preferensi aplikasi. Kata sandi, token sesi, cookie perangkat yang diingat, dan PIN aplikasi tidak disertakan. Cuplikan perintah dapat berisi teks yang Anda masukkan; tinjau sebelum dibagikan.</string>
+    <string name="backup_export">Ekspor file</string>
+    <string name="backup_import">Impor file</string>
+    <string name="backup_include_keys">Sertakan kunci masuk server (hanya terenkripsi)</string>
+    <string name="backup_password">Kata sandi cadangan (minimal 8 karakter)</string>
+    <string name="backup_password_hint">Kata sandi mengenkripsi seluruh file. Simpan dengan aman; kata sandi tidak dapat dipulihkan.</string>
+    <string name="backup_confirm_password">Konfirmasi kata sandi</string>
+    <string name="backup_password_mismatch">Kata sandi harus sama dan terdiri dari 8–1024 karakter.</string>
+    <string name="backup_busy">Memproses…</string>
+    <string name="backup_saved">File cadangan disimpan.</string>
+    <string name="backup_failed">Tidak dapat memproses cadangan. Periksa file, versi format, kata sandi, dan akses penyimpanan.</string>
+    <string name="backup_preview">Tinjau impor</string>
+    <string name="backup_preview_explanation">Profil akan ditambahkan sebagai profil baru. Profil, kredensial, dan PIN yang ada akan tetap dipertahankan. Tinjau alamat server dan kunci yang disematkan sebelum mengonfirmasi.</string>
+    <string name="backup_profile_details">%1$d favorit · %2$d pintasan · %3$d perintah</string>
+    <string name="backup_pinned_key">Kunci server yang disematkan: %1$s</string>
+    <string name="backup_contains_key">Menyertakan kunci masuk server yang terenkripsi</string>
+    <string name="backup_apply_preferences">Ganti juga tampilan, perlindungan tangkapan layar, jeda kunci otomatis, dan preferensi stilus</string>
+    <string name="backup_confirm_import">Tambah profil</string>
+    <string name="backup_imported">%1$d profil ditambahkan. Pilih profil lalu masuk.</string>
+    <string name="backup_capacity">Slot profil yang tersedia tidak cukup. Hapus profil yang tidak digunakan sebelum mengimpor.</string>
+    <string name="backup_decrypt">Dekripsi cadangan</string>
+    <string name="backup_no_profiles">Konfigurasikan profil server HTTPS sebelum mengekspor.</string>
+</resources>

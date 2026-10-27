@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">Gesto de dois dedos</string>
+    <string name="desktop_gesture_default">Comportamento original</string>
+    <string name="desktop_gesture_scroll">Rolar a janela remota</string>
+    <string name="desktop_gesture_pan">Mover a imagem</string>
+    <string name="desktop_pinch">Pinçar para ampliar</string>
+    <string name="desktop_three_fingers">Três dedos rolam a janela remota.</string>
+    <string name="desktop_scale">Escala solicitada da imagem: %1$d%%</string>
+    <string name="desktop_pip">Imagem em imagem</string>
+    <string name="desktop_pip_auto">Continuar assistindo ao sair do aplicativo</string>
+    <string name="desktop_stream_rate">≈ %1$.1f atualizações/s · %2$d B/s</string>
+    <string name="desktop_input_help">Teclado e mouse físicos funcionam na área de trabalho. O Android pode reservar Alt+Tab ou Meta; nesse caso, use o menu de teclas. A roda horizontal usa Shift + roda quando compatível.</string>
+    <string name="desktop_rate_help">Qualidade, escala e limite de quadros são configurações solicitadas. Outros espectadores podem aumentar a qualidade, a escala ou a taxa de atualização. O contador mede atualizações de blocos, não quadros completos.</string>
+    <string name="desktop_keyboard_capture">Capturar teclado físico</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc libera o teclado e abre as opções da sessão.</string>
+</resources>

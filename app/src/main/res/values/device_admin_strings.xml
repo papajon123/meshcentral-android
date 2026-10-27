@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">Invite device</string>
+    <string name="admin_invite_help">Anyone with this link can install an agent into “%1$s”. Share it only with the person you want to help.</string>
+    <string name="admin_invite_mode">Allows background and interactive installation of any available agent.</string>
+    <string name="admin_expiry">Link lifetime</string>
+    <string name="admin_create_link">Create link</string>
+    <string name="admin_expires_at">Expires: %1$s</string>
+    <string name="admin_expired">This link has expired. Create a new link.</string>
+    <string name="admin_qr">Scan to open the agent installation page</string>
+    <string name="admin_share">Share link</string>
+    <string name="admin_copy">Copy link</string>
+    <string name="admin_copied">Link copied</string>
+    <string name="admin_close">Close</string>
+    <string name="admin_cancel">Cancel</string>
+    <string name="admin_confirm">Confirm</string>
+    <string name="admin_review">Review changes</string>
+    <string name="admin_edit">Edit device</string>
+    <string name="admin_name">Name</string>
+    <string name="admin_description">Description</string>
+    <string name="admin_tags">Tags, separated by commas</string>
+    <string name="admin_notes">Notes</string>
+    <string name="admin_save_notes">Save notes</string>
+    <string name="admin_move">Move to another group</string>
+    <string name="admin_move_confirm">Move “%1$s” to “%2$s”? Access will follow the destination group.</string>
+    <string name="admin_edit_confirm">Save these changes to “%1$s”?</string>
+    <string name="admin_notes_confirm">Replace the notes for “%1$s”?</string>
+    <string name="admin_saved">Changes confirmed by the server</string>
+    <string name="admin_failed">Could not confirm the change. Refresh and check the device before trying again.</string>
+    <string name="admin_invite_failed">Could not create the link. Check your connection and group permissions, then try again.</string>
+    <string name="admin_loading">Waiting for the server…</string>
+    <string name="admin_invalid">Name: 1–64 characters. Description: up to 64 characters. Each tag: up to 63 characters; total: up to 4096. Use single-line text without control or text-direction formatting characters.</string>
+    <string name="admin_endpoint">Server: %1$s</string>
+    <string name="admin_unavailable">Reconnect and refresh to manage this device. Your account must have the required permissions.</string>
+    <string name="admin_notes_limit">Notes: up to 16000 characters.</string>
+    <string name="admin_no_destinations">No compatible groups with permission to move this device.</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">เลือกแล้ว: %1$d</string>
+    <string name="tools_clear_selection">ล้างการเลือก</string>
+    <string name="tools_download_selected">ดาวน์โหลดรายการที่เลือก</string>
+    <string name="tools_delete_selected">ลบรายการที่เลือก</string>
+    <string name="tools_select_hint">แตะค้างเพื่อเลือกรายการหลายรายการ</string>
+    <string name="tools_download_folder">ดาวน์โหลดโฟลเดอร์</string>
+    <string name="tools_folder_notice">โฟลเดอร์ Mesh Agent จะถูกดาวน์โหลดเป็นไฟล์ ZIP ส่วนโฟลเดอร์ SFTP จะถูกคัดลอกทีละไฟล์ เลือกโฟลเดอร์ปลายทาง</string>
+    <string name="tools_batch_progress">เสร็จสิ้น: %1$d จาก %2$d · %3$d ไบต์</string>
+    <string name="tools_retry">ลองอีกครั้ง</string>
+    <string name="tools_queued">อยู่ในคิว</string>
+    <string name="tools_active">กำลังดาวน์โหลด</string>
+    <string name="tools_succeeded">ตรวจสอบแล้ว</string>
+    <string name="tools_failed">ล้มเหลว</string>
+    <string name="tools_cancelled">ยกเลิกแล้ว</string>
+    <string name="tools_archiving">กำลังสร้างไฟล์เก็บถาวรระยะไกล…</string>
+    <string name="tools_archive_failed">ไม่สามารถสร้างหรือตรวจสอบไฟล์เก็บถาวรได้</string>
+    <string name="tools_archive_left">ดาวน์โหลดล้มเหลว อาจมีไฟล์เก็บถาวรชั่วคราว meshpilot-*.zip อยู่ในโฟลเดอร์ต้นทาง ลองอีกครั้งเพื่อลบและดาวน์โหลดใหม่</string>
+    <string name="tools_batch_failed">มีการดาวน์โหลดที่ล้มเหลว การลองอีกครั้งจะเริ่มใหม่ในไฟล์ภายในเครื่องใหม่</string>
+    <string name="tools_delete_list">ลบรายการเหล่านี้หรือไม่ การดำเนินการนี้ไม่สามารถเลิกทำได้</string>
+</resources>

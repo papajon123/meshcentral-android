@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">चयनित: %1$d</string>
+    <string name="tools_clear_selection">चयन साफ़ करें</string>
+    <string name="tools_download_selected">चयनित डाउनलोड करें</string>
+    <string name="tools_delete_selected">चयनित हटाएँ</string>
+    <string name="tools_select_hint">कई आइटम चुनने के लिए दबाकर रखें</string>
+    <string name="tools_download_folder">फ़ोल्डर डाउनलोड करें</string>
+    <string name="tools_folder_notice">Mesh Agent के फ़ोल्डर ZIP संग्रह के रूप में डाउनलोड होते हैं। SFTP फ़ोल्डर फ़ाइल-दर-फ़ाइल कॉपी होते हैं। गंतव्य फ़ोल्डर चुनें।</string>
+    <string name="tools_batch_progress">पूर्ण: %2$d में से %1$d · %3$d बाइट</string>
+    <string name="tools_retry">पुनः प्रयास करें</string>
+    <string name="tools_queued">कतार में</string>
+    <string name="tools_active">डाउनलोड हो रहा है</string>
+    <string name="tools_succeeded">सत्यापित</string>
+    <string name="tools_failed">विफल</string>
+    <string name="tools_cancelled">रद्द किया गया</string>
+    <string name="tools_archiving">दूरस्थ संग्रह बनाया जा रहा है…</string>
+    <string name="tools_archive_failed">संग्रह बनाया या सत्यापित नहीं किया जा सका।</string>
+    <string name="tools_archive_left">डाउनलोड विफल हुआ। स्रोत फ़ोल्डर में अस्थायी meshpilot-*.zip संग्रह रह सकता है। उसे साफ़ करके फिर से डाउनलोड करने के लिए पुनः प्रयास करें।</string>
+    <string name="tools_batch_failed">एक डाउनलोड विफल हुआ। पुनः प्रयास करने पर यह नई स्थानीय फ़ाइल में दोबारा शुरू होगा।</string>
+    <string name="tools_delete_list">ये आइटम हटाएँ? इसे पूर्ववत नहीं किया जा सकता।</string>
+</resources>

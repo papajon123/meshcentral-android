@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">முந்தைய</string>
+    <string name="devices_page_next">அடுத்தது</string>
+    <plurals name="devices_page_count">
+        <item quantity="one">%3$d சாதனத்தில் %1$d–%2$d</item>
+        <item quantity="other">%3$d சாதனங்களில் %1$d–%2$d</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="one">சாதனம் %1$d–%2$d</item>
+        <item quantity="other">சாதனங்கள் %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">கண்டறியப்பட்ட சாதனங்கள்: %1$d</string>
+    <string name="devices_server_search">பெயரால் அனைத்து சாதனங்களையும் தேடு</string>
+    <string name="devices_page_failed">சாதனங்களை ஏற்ற முடியவில்லை. மீண்டும் முயல்க.</string>
     <string name="biometric_unlock_title">MeshPilot-ஐ அன்லாக் செய்</string>
     <string name="biometric_unlock_subtitle">பயன்பாட்டைத் திறக்க, சாதனத்தின் பயோமெட்ரிக் மூலம் உங்கள் அடையாளத்தை உறுதிசெய்யவும்.</string>
     <string name="cancel">ரத்துசெய்</string>
@@ -314,4 +327,6 @@
     <string name="settings_update_supporting">கையொப்பமிடப்பட்ட APKகள் GitHub வெளியீடுகளில் கிடைக்கும். புதிய பதிப்பை தற்போதைய பதிப்பின் மேல் நிறுவவும்.</string>
     <string name="settings_update_action">புதுப்பிப்பைப் பதிவிறக்கு</string>
     <string name="settings_update_unavailable">உலாவியைத் திறக்க முடியவில்லை. https://github.com/papajon123/meshcentral-android/releases ஐ கைமுறையாகத் திறக்கவும்.</string>
+    <string name="chat_verifying_peer">பயனருடன் அரட்டை இணைப்பு சரிபார்க்கப்படுகிறது…</string>
+    <string name="chat_server_retained">சேவையகம் முந்தைய இணைப்பை இன்னும் வைத்திருக்கிறது. 20 நிமிடங்கள் வரை மீண்டும் முயல்கிறது…</string>
 </resources>

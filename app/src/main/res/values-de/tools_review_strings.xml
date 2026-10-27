@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">Verifizierung nicht möglich: %1$s</string>
+    <string name="review_paused">Pausiert: Verbindung verloren</string>
+    <string name="review_retry_all">Unerledigte Elemente wiederholen</string>
+    <string name="review_cleanup_title">Remote-Archiv bereinigen</string>
+    <string name="review_archive_left">Auf dem Computer kann ein temporäres Archiv zurückbleiben: %1$s. Prüfen und entfernen Sie es, wenn kein Archivvorgang läuft.</string>
+    <string name="review_archive_space">Zum Erstellen eines ZIP-Archivs wird im entfernten Quellordner freier Speicherplatz für ein vollständiges Archiv benötigt. Kann der Agent es nicht starten, werden Dateien einzeln kopiert. Unvollständige lokale Ordner behalten das Suffix .partial.</string>
+    <string name="review_grant_failed">Dieser Anbieter konnte den Zugriff für die Warteschlange nicht aufrechterhalten. Wählen Sie einen anderen Speicherort.</string>
+    <string name="review_zip_invalid">Das Archiv ist beschädigt, unvollständig oder überschreitet die unterstützten Strukturgrenzen.</string>
+    <string name="review_source_changed">Das ausgewählte Element hat sich geändert. Aktualisieren Sie den Ordner und bestätigen Sie die Auswahl erneut.</string>
+    <string name="review_sftp_types">Dieser Server kennzeichnet keine symbolischen Links oder speziellen Dateien in SFTP-Listen. Nicht verifizierbare Dateien werden per Pfad gemeldet; bei einer Trennung pausiert die Warteschlange. Unvollständige Ordner bleiben mit .partial gekennzeichnet.</string>
+    <string name="review_skipped">Nicht unterstütztes Element übersprungen: %1$s</string>
+    <string name="review_folder_unavailable">Kein Zugriff auf den Ordner: %1$s. Der Rest der Warteschlange wird weiter verarbeitet.</string>
+    <string name="review_local_failed">Das lokale Android-Dokument konnte nicht geschrieben oder zurückgelesen werden. Die Dateisitzung ist weiterhin verbunden; wiederholen Sie diesen Eintrag.</string>
+    <string name="review_local_no_rename">Dieser Anbieter kann Dokumente nicht umbenennen. Einige Dateien behalten die Endung .partial; benennen Sie sie in den Android-Dateien um.</string>
+    <string name="review_source_changed_deleted">Bereits gelöscht: %1$s. Die übrige Auswahl wurde nicht gelöscht; aktualisieren Sie den Ordner und bestätigen Sie erneut.</string>
+    <string name="files_delete_follow_links">Beim rekursiven Löschen eines Ordners werden symbolische Links und Verknüpfungen verfolgt. Auch Ziele außerhalb des ausgewählten Ordners können gelöscht werden; prüfen Sie den Ordner vor der Bestätigung in MeshCentral.</string>
+</resources>

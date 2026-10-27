@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">Este dispositivo ya no está disponible. Abre la aplicación.</string>
+    <string name="integration_favorites">Favoritos</string>
+    <string name="integration_updated">Actualizado: %1$s</string>
+    <string name="integration_widget_empty">Abre la aplicación y añade dispositivos favoritos.</string>
+    <string name="integration_widget_description">Dispositivos favoritos y su última disponibilidad conocida</string>
+    <string name="integration_last_known">Último estado conocido</string>
+    <string name="integration_open_to_refresh">Abre la aplicación para conectar y actualizar.</string>
+    <string name="integration_refresh">Actualizar</string>
+    <string name="integration_open_app">Abrir aplicación</string>
+    <string name="backup_title">Copia de seguridad de los ajustes</string>
+    <string name="backup_description">Exporta perfiles de servidor, favoritos, atajos de teclado, fragmentos de comandos y preferencias de la aplicación. Se excluyen las contraseñas, los tokens de sesión, las cookies de dispositivos recordados y el PIN de la aplicación. Los fragmentos de comandos pueden contener texto que introdujiste; revísalos antes de compartirlos.</string>
+    <string name="backup_export">Exportar archivo</string>
+    <string name="backup_import">Importar archivo</string>
+    <string name="backup_include_keys">Incluir claves de inicio de sesión del servidor (solo cifradas)</string>
+    <string name="backup_password">Contraseña de la copia (mínimo 8 caracteres)</string>
+    <string name="backup_password_hint">La contraseña cifra todo el archivo. Guárdala en un lugar seguro; no se puede recuperar.</string>
+    <string name="backup_confirm_password">Confirmar contraseña</string>
+    <string name="backup_password_mismatch">Las contraseñas deben coincidir y tener entre 8 y 1024 caracteres.</string>
+    <string name="backup_busy">Procesando…</string>
+    <string name="backup_saved">Copia de seguridad guardada.</string>
+    <string name="backup_failed">No se pudo procesar la copia de seguridad. Comprueba el archivo, la versión del formato, la contraseña y el acceso al almacenamiento.</string>
+    <string name="backup_preview">Revisar importación</string>
+    <string name="backup_preview_explanation">Los perfiles se añadirán como perfiles nuevos. Los perfiles, las credenciales y el PIN existentes se mantendrán. Revisa las direcciones de los servidores y las claves fijadas antes de confirmar.</string>
+    <string name="backup_profile_details">%1$d favoritos · %2$d atajos · %3$d comandos</string>
+    <string name="backup_pinned_key">Clave fijada del servidor: %1$s</string>
+    <string name="backup_contains_key">Incluye una clave de inicio de sesión del servidor cifrada</string>
+    <string name="backup_apply_preferences">También reemplazar la apariencia, la protección de capturas, el retardo de bloqueo automático y las preferencias del lápiz</string>
+    <string name="backup_confirm_import">Añadir perfiles</string>
+    <string name="backup_imported">Se añadieron %1$d perfiles. Selecciona un perfil e inicia sesión.</string>
+    <string name="backup_capacity">No hay suficientes espacios libres para perfiles. Elimina los perfiles que no uses antes de importar.</string>
+    <string name="backup_decrypt">Descifrar copia de seguridad</string>
+    <string name="backup_no_profiles">Configura un perfil de servidor HTTPS antes de exportar.</string>
+</resources>

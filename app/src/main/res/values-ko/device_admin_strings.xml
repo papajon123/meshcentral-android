@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">기기 초대</string>
+    <string name="admin_invite_help">이 링크가 있는 사람은 누구나 “%1$s”에 에이전트를 설치할 수 있습니다. 도움을 주려는 사람에게만 공유하세요.</string>
+    <string name="admin_invite_mode">사용 가능한 모든 에이전트를 백그라운드 및 대화형으로 설치할 수 있습니다.</string>
+    <string name="admin_expiry">링크 유효 기간</string>
+    <string name="admin_create_link">링크 만들기</string>
+    <string name="admin_expires_at">만료: %1$s</string>
+    <string name="admin_expired">이 링크는 만료되었습니다. 새 링크를 만드세요.</string>
+    <string name="admin_qr">스캔하여 에이전트 설치 페이지 열기</string>
+    <string name="admin_share">링크 공유</string>
+    <string name="admin_copy">링크 복사</string>
+    <string name="admin_copied">링크가 복사되었습니다</string>
+    <string name="admin_close">닫기</string>
+    <string name="admin_cancel">취소</string>
+    <string name="admin_confirm">확인</string>
+    <string name="admin_review">변경 사항 검토</string>
+    <string name="admin_edit">기기 편집</string>
+    <string name="admin_name">이름</string>
+    <string name="admin_description">설명</string>
+    <string name="admin_tags">태그(쉼표로 구분)</string>
+    <string name="admin_notes">메모</string>
+    <string name="admin_save_notes">메모 저장</string>
+    <string name="admin_move">다른 그룹으로 이동</string>
+    <string name="admin_move_confirm">“%1$s” 기기를 “%2$s”(으)로 이동할까요? 액세스 권한은 대상 그룹을 따릅니다.</string>
+    <string name="admin_edit_confirm">“%1$s”에 이 변경 사항을 저장할까요?</string>
+    <string name="admin_notes_confirm">“%1$s”의 메모를 바꿀까요?</string>
+    <string name="admin_saved">서버에서 변경 사항을 확인했습니다</string>
+    <string name="admin_failed">변경 사항을 확인하지 못했습니다. 새로 고친 후 기기를 확인하고 다시 시도하세요.</string>
+    <string name="admin_invite_failed">링크를 만들지 못했습니다. 연결과 그룹 권한을 확인한 후 다시 시도하세요.</string>
+    <string name="admin_loading">서버를 기다리는 중…</string>
+    <string name="admin_invalid">이름: 1–64자. 설명: 최대 64자. 각 태그: 최대 63자, 전체: 최대 4096자. 제어 문자나 텍스트 방향 서식 문자 없이 한 줄 텍스트를 사용하세요.</string>
+    <string name="admin_endpoint">서버: %1$s</string>
+    <string name="admin_unavailable">이 기기를 관리하려면 다시 연결하고 새로 고치세요. 계정에 필요한 권한이 있어야 합니다.</string>
+    <string name="admin_notes_limit">메모: 최대 16000자.</string>
+    <string name="admin_no_destinations">이 기기를 이동할 권한이 있는 호환 그룹이 없습니다.</string>
+</resources>

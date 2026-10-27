@@ -38,7 +38,7 @@ internal class RelayCredentials(val baseUrl: HttpUrl, val authCookie: String, va
  */
 internal class ManagedRelayConnection(
     override val protocol: RelayProtocol,
-    private val nodeId: String,
+    val nodeId: String,
     private val socketFactory: WebSocket.Factory,
     private val scope: CoroutineScope,
     private val credentials: () -> RelayCredentials?,

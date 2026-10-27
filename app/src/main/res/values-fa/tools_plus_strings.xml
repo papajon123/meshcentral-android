@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">انتخاب‌شده: %1$d</string>
+    <string name="tools_clear_selection">پاک کردن انتخاب</string>
+    <string name="tools_download_selected">بارگیری موارد انتخاب‌شده</string>
+    <string name="tools_delete_selected">حذف موارد انتخاب‌شده</string>
+    <string name="tools_select_hint">برای انتخاب چند مورد، لمس کرده و نگه دارید</string>
+    <string name="tools_download_folder">بارگیری پوشه</string>
+    <string name="tools_folder_notice">پوشه‌های Mesh Agent به‌صورت بایگانی ZIP بارگیری می‌شوند. پوشه‌های SFTP فایل‌به‌فایل کپی می‌شوند. یک پوشه مقصد انتخاب کنید.</string>
+    <string name="tools_batch_progress">تکمیل‌شده: %1$d از %2$d · %3$d بایت</string>
+    <string name="tools_retry">تلاش دوباره</string>
+    <string name="tools_queued">در صف</string>
+    <string name="tools_active">در حال بارگیری</string>
+    <string name="tools_succeeded">تأییدشده</string>
+    <string name="tools_failed">ناموفق</string>
+    <string name="tools_cancelled">لغو شد</string>
+    <string name="tools_archiving">در حال ایجاد بایگانی راه دور…</string>
+    <string name="tools_archive_failed">بایگانی ایجاد یا تأیید نشد.</string>
+    <string name="tools_archive_left">بارگیری ناموفق بود. ممکن است بایگانی موقت meshpilot-*.zip در پوشه مبدأ باقی بماند. برای پاک کردن آن و بارگیری دوباره، دوباره تلاش کنید.</string>
+    <string name="tools_batch_failed">یکی از بارگیری‌ها ناموفق بود. تلاش دوباره آن را در یک فایل محلی جدید از نو آغاز می‌کند.</string>
+    <string name="tools_delete_list">این موارد حذف شوند؟ این کار قابل بازگشت نیست.</string>
+</resources>

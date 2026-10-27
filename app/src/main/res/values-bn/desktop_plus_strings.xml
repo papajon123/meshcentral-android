@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">দুই আঙুলের অঙ্গভঙ্গি</string>
+    <string name="desktop_gesture_default">মূল আচরণ</string>
+    <string name="desktop_gesture_scroll">দূরবর্তী উইন্ডো স্ক্রল করুন</string>
+    <string name="desktop_gesture_pan">ছবি প্যান করুন</string>
+    <string name="desktop_pinch">জুম করতে পিঞ্চ করুন</string>
+    <string name="desktop_three_fingers">তিন আঙুল দূরবর্তী উইন্ডো স্ক্রল করে।</string>
+    <string name="desktop_scale">অনুরোধ করা ছবির স্কেল: %1$d%%</string>
+    <string name="desktop_pip">পিকচার-ইন-পিকচার</string>
+    <string name="desktop_pip_auto">অ্যাপ থেকে বের হলে দেখা চালিয়ে যান</string>
+    <string name="desktop_stream_rate">≈ %1$.1f আপডেট/সে · %2$d B/s</string>
+    <string name="desktop_input_help">হার্ডওয়্যার কীবোর্ড ও মাউস ডেস্কটপে কাজ করে। Android Alt+Tab বা Meta সংরক্ষিত রাখতে পারে; সেক্ষেত্রে কী মেনু ব্যবহার করুন। সমর্থিত হলে অনুভূমিক হুইল Shift + হুইল দিয়ে কাজ করে।</string>
+    <string name="desktop_rate_help">গুণমান, স্কেল ও ফ্রেমের সীমা হলো অনুরোধ করা সেটিংস। অন্য দর্শকরা গুণমান, স্কেল বা আপডেটের হার বাড়াতে পারে। কাউন্টারটি টাইল আপডেট গণনা করে, সম্পূর্ণ ফ্রেম নয়।</string>
+    <string name="desktop_keyboard_capture">ভৌত কীবোর্ড ক্যাপচার করুন</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc কীবোর্ড মুক্ত করে সেশন বিকল্প খোলে।</string>
+</resources>

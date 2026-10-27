@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">ఈ పరికరం ఇకపై అందుబాటులో లేదు. యాప్‌ను తెరవండి.</string>
+    <string name="integration_favorites">ఇష్టమైనవి</string>
+    <string name="integration_updated">నవీకరించబడింది: %1$s</string>
+    <string name="integration_widget_empty">యాప్‌ను తెరిచి ఇష్టమైన పరికరాలను జోడించండి.</string>
+    <string name="integration_widget_description">ఇష్టమైన పరికరాలు మరియు వాటి చివరిగా తెలిసిన అందుబాటు స్థితి</string>
+    <string name="integration_last_known">చివరిగా తెలిసిన స్థితి</string>
+    <string name="integration_open_to_refresh">కనెక్ట్ చేయడానికి మరియు రిఫ్రెష్ చేయడానికి యాప్‌ను తెరవండి.</string>
+    <string name="integration_refresh">రిఫ్రెష్ చేయి</string>
+    <string name="integration_open_app">యాప్ తెరవండి</string>
+    <string name="backup_title">సెట్టింగ్‌ల బ్యాకప్</string>
+    <string name="backup_description">సర్వర్ ప్రొఫైల్‌లు, ఇష్టమైనవి, కీబోర్డ్ షార్ట్‌కట్‌లు, కమాండ్ స్నిప్పెట్‌లు మరియు యాప్ ప్రాధాన్యతలను ఎగుమతి చేయండి. పాస్‌వర్డ్‌లు, సెషన్ టోకెన్‌లు, గుర్తుంచుకున్న పరికరాల కుకీలు మరియు యాప్ PIN చేర్చబడవు. కమాండ్ స్నిప్పెట్‌లలో మీరు నమోదు చేసిన వచనం ఉండవచ్చు; పంచుకునే ముందు వాటిని సమీక్షించండి.</string>
+    <string name="backup_export">ఫైల్‌ను ఎగుమతి చేయి</string>
+    <string name="backup_import">ఫైల్‌ను దిగుమతి చేయి</string>
+    <string name="backup_include_keys">సర్వర్ లాగిన్ కీలను చేర్చు (ఎన్‌క్రిప్ట్ చేసినవి మాత్రమే)</string>
+    <string name="backup_password">బ్యాకప్ పాస్‌వర్డ్ (కనీసం 8 అక్షరాలు)</string>
+    <string name="backup_password_hint">పాస్‌వర్డ్ మొత్తం ఫైల్‌ను ఎన్‌క్రిప్ట్ చేస్తుంది. దాన్ని సురక్షితంగా ఉంచండి; దాన్ని పునరుద్ధరించలేము.</string>
+    <string name="backup_confirm_password">పాస్‌వర్డ్‌ను నిర్ధారించండి</string>
+    <string name="backup_password_mismatch">పాస్‌వర్డ్‌లు సరిపోలాలి మరియు 8–1024 అక్షరాలు ఉండాలి.</string>
+    <string name="backup_busy">ప్రాసెస్ చేస్తోంది…</string>
+    <string name="backup_saved">బ్యాకప్ ఫైల్ సేవ్ చేయబడింది.</string>
+    <string name="backup_failed">బ్యాకప్‌ను ప్రాసెస్ చేయలేకపోయాం. ఫైల్, ఫార్మాట్ వెర్షన్, పాస్‌వర్డ్ మరియు నిల్వ యాక్సెస్‌ను తనిఖీ చేయండి.</string>
+    <string name="backup_preview">దిగుమతిని సమీక్షించండి</string>
+    <string name="backup_preview_explanation">ప్రొఫైల్‌లు కొత్త ప్రొఫైల్‌లుగా జోడించబడతాయి. ఇప్పటికే ఉన్న ప్రొఫైల్‌లు, ఆధారాలు మరియు PIN అలాగే ఉంటాయి. నిర్ధారించే ముందు సర్వర్ చిరునామాలు మరియు పిన్ చేసిన కీలను సమీక్షించండి.</string>
+    <string name="backup_profile_details">%1$d ఇష్టమైనవి · %2$d షార్ట్‌కట్‌లు · %3$d కమాండ్‌లు</string>
+    <string name="backup_pinned_key">పిన్ చేసిన సర్వర్ కీ: %1$s</string>
+    <string name="backup_contains_key">ఎన్‌క్రిప్ట్ చేసిన సర్వర్ లాగిన్ కీ ఉంది</string>
+    <string name="backup_apply_preferences">రూపం, స్క్రీన్‌షాట్ రక్షణ, ఆటో-లాక్ ఆలస్యం మరియు స్టైలస్ ప్రాధాన్యతలను కూడా భర్తీ చేయి</string>
+    <string name="backup_confirm_import">ప్రొఫైల్‌లను జోడించు</string>
+    <string name="backup_imported">%1$d ప్రొఫైల్‌లు జోడించబడ్డాయి. ప్రొఫైల్‌ను ఎంచుకుని సైన్ ఇన్ చేయండి.</string>
+    <string name="backup_capacity">ప్రొఫైల్‌లకు సరిపడా ఖాళీ స్లాట్‌లు లేవు. దిగుమతి చేసే ముందు ఉపయోగించని ప్రొఫైల్‌లను తీసివేయండి.</string>
+    <string name="backup_decrypt">బ్యాకప్ డిక్రిప్ట్ చేయి</string>
+    <string name="backup_no_profiles">ఎగుమతి చేయడానికి ముందు HTTPS సర్వర్ ప్రొఫైల్‌ను కాన్ఫిగర్ చేయండి.</string>
+</resources>

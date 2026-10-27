@@ -1,5 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">Trước</string>
+    <string name="devices_page_next">Tiếp</string>
+    <plurals name="devices_page_count">
+        <item quantity="other">%1$d–%2$d trong %3$d thiết bị</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="other">Thiết bị %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">Số thiết bị tìm thấy: %1$d</string>
+    <string name="devices_server_search">Tìm mọi thiết bị theo tên</string>
+    <string name="devices_page_failed">Không thể tải thiết bị. Hãy thử lại.</string>
     <string name="biometric_unlock_title">Mở khóa MeshPilot</string>
     <string name="biometric_unlock_subtitle">Xác minh danh tính bằng sinh trắc học của thiết bị để mở ứng dụng.</string>
     <string name="cancel">Hủy</string>
@@ -314,4 +325,6 @@
     <string name="settings_update_supporting">APK đã ký có trong các bản phát hành GitHub. Cài phiên bản mới đè lên phiên bản hiện tại.</string>
     <string name="settings_update_action">Tải bản cập nhật</string>
     <string name="settings_update_unavailable">Không thể mở trình duyệt. Hãy mở https://github.com/papajon123/meshcentral-android/releases theo cách thủ công.</string>
+    <string name="chat_verifying_peer">Đang kiểm tra kết nối trò chuyện với người dùng…</string>
+    <string name="chat_server_retained">Máy chủ vẫn giữ kết nối trước đó. Đang thử lại trong tối đa 20 phút…</string>
 </resources>

@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">قبلی</string>
+    <string name="devices_page_next">بعدی</string>
+    <plurals name="devices_page_count">
+        <item quantity="one">\u2066%1$d–%2$d\u2069 از %3$d دستگاه</item>
+        <item quantity="other">\u2066%1$d–%2$d\u2069 از %3$d دستگاه</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="one">دستگاه \u2066%1$d–%2$d\u2069</item>
+        <item quantity="other">دستگاه‌ها \u2066%1$d–%2$d\u2069</item>
+    </plurals>
+    <string name="devices_server_total">دستگاه‌های یافت‌شده: %1$d</string>
+    <string name="devices_server_search">جست‌وجوی همه دستگاه‌ها بر اساس نام</string>
+    <string name="devices_page_failed">بارگذاری دستگاه‌ها ممکن نشد. دوباره تلاش کنید.</string>
     <string name="biometric_unlock_title">باز کردن قفل MeshPilot</string>
     <string name="biometric_unlock_subtitle">برای باز کردن برنامه، هویت خود را با زیست‌سنجی دستگاه تأیید کنید.</string>
     <string name="cancel">لغو</string>
@@ -314,4 +327,6 @@
     <string name="settings_update_supporting">فایل‌های APK امضاشده در انتشارهای GitHub در دسترس‌اند. نسخه جدید را روی نسخه فعلی نصب کنید.</string>
     <string name="settings_update_action">دانلود به‌روزرسانی</string>
     <string name="settings_update_unavailable">مرورگر باز نشد. https://github.com/papajon123/meshcentral-android/releases را دستی باز کنید.</string>
+    <string name="chat_verifying_peer">در حال بررسی اتصال گفتگو با کاربر…</string>
+    <string name="chat_server_retained">سرور هنوز اتصال قبلی را نگه داشته است. تا 20 دقیقه دوباره تلاش می‌شود…</string>
 </resources>

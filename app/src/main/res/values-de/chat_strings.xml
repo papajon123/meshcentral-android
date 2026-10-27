@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">Chat mit dem Benutzer</string>
+    <string name="chat_connecting">Verbindung zum Chat wird hergestellt…</string>
+    <string name="chat_waiting">Warten, bis der Benutzer das Chatfenster öffnet</string>
+    <string name="chat_connected">Der Benutzer ist im Chat</string>
+    <string name="chat_peer_left">Der Benutzer hat den Chat verlassen oder die Verbindung wurde getrennt</string>
+    <string name="chat_failed">Die Chat-Verbindung wurde getrennt. Fordern Sie das Fenster erneut an, um die Verbindung wiederherzustellen.</string>
+    <string name="chat_closed">Der Chat wurde geschlossen. Öffnen Sie ihn erneut über das Menü des Geräts.</string>
+    <string name="chat_request">Chatfenster erneut anfordern</string>
+    <string name="chat_close">Chat schließen</string>
+    <string name="chat_message">Nachricht</string>
+    <string name="chat_send">Nachricht senden</string>
+    <string name="chat_send_failed">Nachricht nicht gesendet. Ihr Text ist noch hier; versuchen Sie es erneut.</string>
+    <string name="chat_length">Maximale Zeichenanzahl: %1$d</string>
+    <string name="chat_recorded">Der Server zeichnet diesen Chat auf</string>
+    <string name="chat_you">Sie</string>
+    <string name="chat_user">Benutzer</string>
+    <string name="chat_empty">Nachrichten bleiben hier, bis Sie den Chat schließen.</string>
+    <string name="chat_notification">Neue Chatnachricht</string>
+    <string name="chat_notifications_enable">Chat-Benachrichtigungen aktivieren</string>
+    <string name="chat_notifications_unavailable">Benachrichtigungen sind in den Android-Einstellungen deaktiviert.</string>
+    <string name="chat_truncated">Nachricht gekürzt</string>
+    <string name="chat_reconnecting">Erneute Verbindung zum Chat…</string>
+    <string name="chat_not_opened">Der Benutzer hat das Chatfenster nicht geöffnet</string>
+    <string name="chat_invite_unavailable">Der Computer oder die Steuerungsverbindung ist offline. Versuchen Sie später, das Fenster erneut anzufordern.</string>
+    <string name="chat_unread">Ungelesene Chatnachrichten: %1$d</string>
+    <string name="chat_service_channel">Aktive Chats</string>
+    <string name="chat_service_active">Chat ist aktiv</string>
+    <string name="chat_service_description">Hält Ihre Unterhaltung verbunden, während Sie andere Apps verwenden.</string>
+    <string name="chat_service_failed">Der Chat konnte nicht weiter ausgeführt werden. Öffnen Sie ihn erneut, solange die App sichtbar ist.</string>
+    <string name="chat_back">Zurück</string>
+    <string name="chat_close_confirm">Diesen Chat schließen und seine Nachrichten löschen?</string>
+</resources>

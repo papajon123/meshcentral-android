@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">సర్వర్ ఈ ఫైల్‌ను తిరస్కరించింది. మళ్లీ ప్రయత్నించే ముందు దాని అనుమతులు మరియు రకాన్ని తనిఖీ చేయండి.</string>
+</resources>

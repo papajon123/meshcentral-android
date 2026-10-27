@@ -9,6 +9,8 @@
   terminal.loadAddon(fit);
   terminal.open(document.getElementById('terminal'));
   let enabled = false;
+  let inputEpoch = 0;
+  let retainedHistory = false;
   let control = false;
   // A form dialog's IME belongs to the dialog, not the remote shell. Resizing the PTY while
   // editing a favorite lets the shell move its prompt between the insert and the next paint.
@@ -16,6 +18,9 @@
   // Consume OSC clipboard commands. No clipboard addon or network-capable link addon is loaded.
   terminal.parser.registerOscHandler(52, () => true);
   terminal.parser.registerOscHandler(8, () => true);
+  // A new shell can run `clear` (ED 2 + ED 3) in its startup scripts. Its screen is
+  // disposable, but previous local sessions are not. Keep ED 0/1/2 semantics intact.
+  terminal.parser.registerCsiHandler({final:'J'}, params => retainedHistory && params[0] === 3);
   terminal.onData(data => {
     if (!enabled) return;
     if (control && data.length === 1) {
@@ -23,9 +28,9 @@
       if (code >= 64 && code <= 95) data = String.fromCharCode(code - 64);
       else if (data === '?') data = '\x7f';
     }
-    TerminalBridge.input(data);
+    TerminalBridge.input(data, inputEpoch);
   });
-  terminal.onBinary(data => { if (enabled) TerminalBridge.input(data); });
+  terminal.onBinary(data => { if (enabled) TerminalBridge.input(data, inputEpoch); });
   // xterm 5.5.0 Terminal._inputEvent deliberately skips direct insertText in screenReaderMode.
   // Android commitText (including CJK/emoji) can emit only beforeinput/input, with no key or
   // composition events. Preserve accessible output and forward precisely that missing path.
@@ -77,9 +82,14 @@
   const resize = () => {
     if (inputDialog) return;
     if (!document.documentElement.clientWidth || !document.documentElement.clientHeight) return;
+    // Showing an error/reconnect button changes the grid height. xterm adjusts ydisp along
+    // with ybase on resize, which moves a reader away from the line they were inspecting.
+    const before = terminal.buffer.active;
+    const viewport = {atBottom: before.viewportY >= before.baseY, y: before.viewportY};
     fit.fit();
     // Bound cell allocation even on pathological display sizes.
     if (terminal.cols > 500 || terminal.rows > 300) terminal.resize(Math.min(terminal.cols,500),Math.min(terminal.rows,300));
+    if (!viewport.atBottom) terminal.scrollToLine(Math.min(viewport.y, terminal.buffer.active.baseY));
     TerminalBridge.resize(terminal.cols,terminal.rows,document.documentElement.clientWidth,document.documentElement.clientHeight);
   };
   new ResizeObserver(resize).observe(document.getElementById('terminal'));
@@ -99,16 +109,45 @@
       const bytes = Uint8Array.from(raw, c => c.charCodeAt(0));
       terminal.write(bytes, () => TerminalBridge.consumed());
     },
-    enable: value => { enabled = value; terminal.options.disableStdin = !value; if (!value) control = false; },
+    // A manual reconnect keeps this xterm instance and its scrollback. Capture the viewport
+    // before the ordered reset chunk and restore the same buffer line after it.
+    beginSession: encoded => {
+      retainedHistory = true;
+      const buffer = terminal.buffer.active;
+      const saved = {atBottom: buffer.viewportY >= buffer.baseY, y: buffer.viewportY};
+      const raw = atob(encoded);
+      const bytes = Uint8Array.from(raw, c => c.charCodeAt(0));
+      terminal.clearSelection();
+      terminal.write(bytes);
+      // Archive the old screen tail AND boundary before allowing fresh remote output.
+      // Shell startup commonly sends ED(2); that must only erase its own new screen.
+      terminal.write('\r\n'.repeat(terminal.rows), () => {
+        const current = terminal.buffer.active;
+        if (saved.atBottom) terminal.scrollToBottom();
+        else terminal.scrollToLine(Math.min(Math.max(0, saved.y), current.baseY));
+        window.meshTerminal.sessionSerial += 1;
+        TerminalBridge.consumed();
+      });
+    },
+    enable: (value, epoch) => {
+      enabled = value; inputEpoch = epoch; terminal.options.disableStdin = !value;
+      if (!value) { control = false; input.value = ''; input.blur(); imeValue = null; keyDown = false; keyPress = false; }
+    },
+    userInput: () => { retainedHistory = false; },
     control: value => { control = value; },
     inputDialog: value => { inputDialog = value; if (!value) resize(); },
-    key: value => {
+    key: (value, epoch = inputEpoch) => {
+      if (epoch !== inputEpoch) return;
       if (terminal.modes.applicationCursorKeysMode && /^\x1b\[[ABCD]$/.test(value)) value = '\x1bO' + value.slice(-1);
       if (enabled) terminal.input(value, true);
     },
     focus: () => terminal.focus(), selectAll: () => terminal.selectAll(),
     clearSelection: () => terminal.clearSelection(), selection: () => terminal.getSelection().slice(0,262144),
-    configure
+    configure,
+    // Local test/inspection helpers only; they neither send input nor read server data.
+    viewport: () => ({y: terminal.buffer.active.viewportY, base: terminal.buffer.active.baseY, rows: terminal.rows, cols: terminal.cols}),
+    scrollToLine: value => terminal.scrollToLine(Math.max(0, Number(value) || 0)),
+    sessionSerial: 0
   };
   if (window.meshTerminalConfiguration) configure(window.meshTerminalConfiguration);
   resize();

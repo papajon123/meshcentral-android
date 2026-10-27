@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">Đã chọn: %1$d</string>
+    <string name="tools_clear_selection">Bỏ chọn</string>
+    <string name="tools_download_selected">Tải xuống mục đã chọn</string>
+    <string name="tools_delete_selected">Xóa mục đã chọn</string>
+    <string name="tools_select_hint">Nhấn giữ để chọn nhiều mục</string>
+    <string name="tools_download_folder">Tải xuống thư mục</string>
+    <string name="tools_folder_notice">Thư mục Mesh Agent được tải xuống dưới dạng tệp ZIP. Thư mục SFTP được sao chép từng tệp một. Chọn thư mục đích.</string>
+    <string name="tools_batch_progress">Hoàn tất: %1$d / %2$d · %3$d byte</string>
+    <string name="tools_retry">Thử lại</string>
+    <string name="tools_queued">Trong hàng đợi</string>
+    <string name="tools_active">Đang tải xuống</string>
+    <string name="tools_succeeded">Đã xác minh</string>
+    <string name="tools_failed">Thất bại</string>
+    <string name="tools_cancelled">Đã hủy</string>
+    <string name="tools_archiving">Đang tạo tệp lưu trữ từ xa…</string>
+    <string name="tools_archive_failed">Không thể tạo hoặc xác minh tệp lưu trữ.</string>
+    <string name="tools_archive_left">Tải xuống thất bại. Có thể còn một tệp lưu trữ tạm thời meshpilot-*.zip trong thư mục nguồn. Hãy thử lại để dọn dẹp và tải xuống lại.</string>
+    <string name="tools_batch_failed">Một mục tải xuống đã thất bại. Thử lại sẽ bắt đầu lại trong một tệp cục bộ mới.</string>
+    <string name="tools_delete_list">Xóa các mục này? Không thể hoàn tác.</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">此设备已不可用。请打开应用。</string>
+    <string name="integration_favorites">收藏</string>
+    <string name="integration_updated">已更新：%1$s</string>
+    <string name="integration_widget_empty">打开应用并添加收藏的设备。</string>
+    <string name="integration_widget_description">收藏的设备及其上次已知的可用状态</string>
+    <string name="integration_last_known">上次已知状态</string>
+    <string name="integration_open_to_refresh">打开应用以连接并刷新。</string>
+    <string name="integration_refresh">刷新</string>
+    <string name="integration_open_app">打开应用</string>
+    <string name="backup_title">设置备份</string>
+    <string name="backup_description">导出服务器配置、收藏、键盘快捷键、命令片段和应用偏好设置。不包含密码、会话令牌、已记住设备的 Cookie 和应用 PIN。命令片段可能包含你输入的文本；分享前请检查。</string>
+    <string name="backup_export">导出文件</string>
+    <string name="backup_import">导入文件</string>
+    <string name="backup_include_keys">包含服务器登录密钥（仅限加密形式）</string>
+    <string name="backup_password">备份密码（至少 8 个字符）</string>
+    <string name="backup_password_hint">密码会加密整个文件。请妥善保管；密码无法找回。</string>
+    <string name="backup_confirm_password">确认密码</string>
+    <string name="backup_password_mismatch">密码必须一致，且长度为 8–1024 个字符。</string>
+    <string name="backup_busy">正在处理…</string>
+    <string name="backup_saved">备份文件已保存。</string>
+    <string name="backup_failed">无法处理备份。请检查文件、格式版本、密码和存储访问权限。</string>
+    <string name="backup_preview">查看导入内容</string>
+    <string name="backup_preview_explanation">配置将作为新配置添加。现有配置、凭据和 PIN 将保持不变。确认前请检查服务器地址和固定密钥。</string>
+    <string name="backup_profile_details">%1$d 个收藏 · %2$d 个快捷键 · %3$d 条命令</string>
+    <string name="backup_pinned_key">固定的服务器密钥：%1$s</string>
+    <string name="backup_contains_key">包含加密的服务器登录密钥</string>
+    <string name="backup_apply_preferences">同时替换外观、截屏保护、自动锁定延迟和触控笔偏好设置</string>
+    <string name="backup_confirm_import">添加配置</string>
+    <string name="backup_imported">已添加 %1$d 个配置。请选择一个配置并登录。</string>
+    <string name="backup_capacity">可用配置位置不足。导入前请删除未使用的配置。</string>
+    <string name="backup_decrypt">解密备份</string>
+    <string name="backup_no_profiles">导出前请先配置 HTTPS 服务器配置。</string>
+</resources>

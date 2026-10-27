@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">MeshPilot-কে সহায়তা করুন</string>
+    <string name="support_body">MeshPilot বিনামূল্যে, ওপেন সোর্স এবং বিজ্ঞাপনমুক্ত। Boosty-তে সাবস্ক্রিপশন বা এককালীন অনুদান নতুন সংস্করণ প্রকাশে সাহায্য করে।</string>
+    <string name="support_action">Boosty-তে সহায়তা করুন</string>
+    <string name="support_link_copied">কোনো ব্রাউজার পাওয়া যায়নি। Boosty লিঙ্ক কপি করা হয়েছে।</string>
+</resources>

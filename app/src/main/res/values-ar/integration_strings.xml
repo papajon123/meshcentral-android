@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">لم يعد هذا الجهاز متاحًا. افتح التطبيق.</string>
+    <string name="integration_favorites">المفضلة</string>
+    <string name="integration_updated">آخر تحديث: %1$s</string>
+    <string name="integration_widget_empty">افتح التطبيق وأضف أجهزة إلى المفضلة.</string>
+    <string name="integration_widget_description">الأجهزة المفضلة وآخر حالة توفر معروفة لها</string>
+    <string name="integration_last_known">آخر حالة معروفة</string>
+    <string name="integration_open_to_refresh">افتح التطبيق للاتصال والتحديث.</string>
+    <string name="integration_refresh">تحديث</string>
+    <string name="integration_open_app">فتح التطبيق</string>
+    <string name="backup_title">نسخة احتياطية للإعدادات</string>
+    <string name="backup_description">صدّر ملفات تعريف الخوادم والمفضلة واختصارات لوحة المفاتيح ومقتطفات الأوامر وتفضيلات التطبيق. تُستبعد كلمات المرور ورموز الجلسات وملفات تعريف ارتباط الأجهزة المتذكّرة ورقم PIN الخاص بالتطبيق. قد تحتوي مقتطفات الأوامر على نص أدخلته؛ راجعها قبل المشاركة.</string>
+    <string name="backup_export">تصدير الملف</string>
+    <string name="backup_import">استيراد الملف</string>
+    <string name="backup_include_keys">تضمين مفاتيح تسجيل الدخول إلى الخادم (مشفّرة فقط)</string>
+    <string name="backup_password">كلمة مرور النسخة الاحتياطية (8 أحرف على الأقل)</string>
+    <string name="backup_password_hint">تشفّر كلمة المرور الملف بأكمله. احتفظ بها في مكان آمن؛ لا يمكن استعادتها.</string>
+    <string name="backup_confirm_password">تأكيد كلمة المرور</string>
+    <string name="backup_password_mismatch">يجب أن تتطابق كلمتا المرور وأن تحتوي كل منهما على 8–1024 حرفًا.</string>
+    <string name="backup_busy">جارٍ المعالجة…</string>
+    <string name="backup_saved">تم حفظ ملف النسخة الاحتياطية.</string>
+    <string name="backup_failed">تعذّرت معالجة النسخة الاحتياطية. تحقق من الملف وإصدار التنسيق وكلمة المرور والوصول إلى وحدة التخزين.</string>
+    <string name="backup_preview">مراجعة الاستيراد</string>
+    <string name="backup_preview_explanation">ستُضاف ملفات التعريف كملفات تعريف جديدة. ستبقى ملفات التعريف والبيانات السرية ورقم PIN الحالية كما هي. راجع عناوين الخوادم والمفاتيح المثبّتة قبل التأكيد.</string>
+    <string name="backup_profile_details">المفضلة: %1$d · الاختصارات: %2$d · الأوامر: %3$d</string>
+    <string name="backup_pinned_key">مفتاح الخادم المثبّت: %1$s</string>
+    <string name="backup_contains_key">يتضمن مفتاح تسجيل دخول مشفّرًا إلى الخادم</string>
+    <string name="backup_apply_preferences">استبدال المظهر وحماية لقطات الشاشة ومدة القفل التلقائي وتفضيلات القلم أيضًا</string>
+    <string name="backup_confirm_import">إضافة ملفات التعريف</string>
+    <string name="backup_imported">تمت إضافة %1$d من ملفات التعريف. اختر ملف تعريف وسجّل الدخول.</string>
+    <string name="backup_capacity">لا توجد أماكن كافية لملفات التعريف. احذف ملفات التعريف غير المستخدمة قبل الاستيراد.</string>
+    <string name="backup_decrypt">فك تشفير النسخة الاحتياطية</string>
+    <string name="backup_no_profiles">اضبط ملف تعريف خادم HTTPS قبل التصدير.</string>
+</resources>

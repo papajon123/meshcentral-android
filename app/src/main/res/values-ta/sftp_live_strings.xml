@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">சேவையகம் இந்தக் கோப்பை நிராகரித்தது. மீண்டும் முயல்வதற்கு முன் அதன் அனுமதிகளையும் வகையையும் சரிபார்க்கவும்.</string>
+</resources>

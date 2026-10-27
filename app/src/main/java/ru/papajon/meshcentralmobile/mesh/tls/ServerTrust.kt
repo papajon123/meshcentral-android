@@ -12,7 +12,7 @@ import java.security.cert.X509Certificate
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.internal.tls.OkHostnameVerifier
 
-enum class ServerCertificateFailureKind { Untrusted, Changed, Expired, NotYetValid, ServerConfiguration, HostnameMismatch }
+enum class ServerCertificateFailureKind { Untrusted, Changed, Expired, NotYetValid, ServerConfiguration, HostnameMismatch, ExpectedKeyConfirmation }
 
 enum class ServerCertificateIssuerExplanation { MeshCentralRoot, UnknownAuthority }
 
@@ -28,8 +28,9 @@ data class ServerCertificateFailure(
     val issuerExplanation: ServerCertificateIssuerExplanation? = null,
     val previousSpkiSha256: String? = null,
     val hostnameMismatch: Boolean = false,
+    val expectedSpkiSha256: String? = null,
 ) {
-    val canApprove: Boolean get() = kind == ServerCertificateFailureKind.Untrusted || kind == ServerCertificateFailureKind.Changed
+    val canApprove: Boolean get() = kind == ServerCertificateFailureKind.Untrusted || kind == ServerCertificateFailureKind.Changed || kind == ServerCertificateFailureKind.ExpectedKeyConfirmation
 }
 
 sealed interface ServerTrustDecision {
@@ -55,17 +56,19 @@ fun evaluateServerTrust(
     leaf: X509Certificate,
     pinnedSpkiSha256: String?,
     serverAddress: String,
-): ServerTrustDecision = evaluateServerTrust(platformTrusted, listOf(leaf), pinnedSpkiSha256, serverAddress)
+    expectedSpkiSha256: String? = null,
+): ServerTrustDecision = evaluateServerTrust(platformTrusted, listOf(leaf), pinnedSpkiSha256, serverAddress, expectedSpkiSha256)
 
 fun evaluateServerTrust(
     platformTrusted: Boolean,
     chain: List<X509Certificate>,
     pinnedSpkiSha256: String?,
     serverAddress: String,
+    expectedSpkiSha256: String? = null,
 ): ServerTrustDecision {
     require(chain.isNotEmpty()) { "Empty server certificate chain" }
     val leaf = chain.first()
-    val datedCertificates = if (platformTrusted && pinnedSpkiSha256 == null) listOf(leaf) else chain
+    val datedCertificates = if (platformTrusted && pinnedSpkiSha256 == null && expectedSpkiSha256 == null) listOf(leaf) else chain
     for (certificate in datedCertificates) {
         val dateFailure = try {
             certificate.checkValidity()
@@ -77,14 +80,19 @@ fun evaluateServerTrust(
         }
         if (dateFailure != null) return ServerTrustDecision.Rejected(leaf.failure(dateFailure, serverAddress))
     }
-    if (!platformTrusted && (!chain.isInternallyConsistent() || !chain.hasSafeServerAlgorithms())) {
+    if ((!platformTrusted || expectedSpkiSha256 != null) && (!chain.isInternallyConsistent() || !chain.hasSafeServerAlgorithms())) {
         return ServerTrustDecision.Rejected(leaf.failure(ServerCertificateFailureKind.ServerConfiguration, serverAddress))
     }
-    if (spkiSha256(leaf) == pinnedSpkiSha256) return ServerTrustDecision.PinnedKey
+    // Compute this before the expected-key branch so its dialog is as informative as Untrusted.
+    // Expired, weak and inconsistent certificates still return above and remain unapprovable.
     val issuerExplanation = if (!platformTrusted && leaf.subjectX500Principal != leaf.issuerX500Principal) {
         if (Regex("(?:^|,)CN=MeshCentralRoot-[^,]+(?:,|$)").containsMatchIn(leaf.issuerX500Principal.name))
             ServerCertificateIssuerExplanation.MeshCentralRoot else ServerCertificateIssuerExplanation.UnknownAuthority
     } else null
+    if (expectedSpkiSha256 != null) return ServerTrustDecision.Rejected(
+        leaf.failure(ServerCertificateFailureKind.ExpectedKeyConfirmation, serverAddress, issuerExplanation)
+            .copy(expectedSpkiSha256 = expectedSpkiSha256))
+    if (spkiSha256(leaf) == pinnedSpkiSha256) return ServerTrustDecision.PinnedKey
     if (pinnedSpkiSha256 != null) {
         return ServerTrustDecision.Rejected(leaf.failure(
             ServerCertificateFailureKind.Changed, serverAddress, issuerExplanation,

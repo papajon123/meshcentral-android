@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">No se pudo verificar: %1$s</string>
+    <string name="review_paused">En pausa: conexión perdida</string>
+    <string name="review_retry_all">Reintentar elementos sin terminar</string>
+    <string name="review_cleanup_title">Limpieza del archivo comprimido remoto</string>
+    <string name="review_archive_left">Puede quedar un archivo comprimido temporal en el equipo: %1$s. Compruébalo y elimínalo cuando no haya ninguna operación de archivo comprimido en curso.</string>
+    <string name="review_archive_space">Crear un ZIP necesita espacio libre en la carpeta de origen remota para un archivo comprimido completo. Si el agente no puede iniciarlo, los archivos se copiarán individualmente. Las carpetas locales incompletas conservan el sufijo .partial.</string>
+    <string name="review_grant_failed">Este proveedor no pudo conservar el acceso para la cola. Elige otra ubicación.</string>
+    <string name="review_zip_invalid">El archivo comprimido está dañado, incompleto o supera los límites de estructura admitidos.</string>
+    <string name="review_source_changed">El elemento seleccionado cambió. Actualiza la carpeta y vuelve a confirmar la selección.</string>
+    <string name="review_sftp_types">Este servidor no identifica enlaces simbólicos ni archivos especiales en los listados SFTP. Los archivos no verificables se notifican por su ruta; la cola se pausa si se desconecta. Las carpetas incompletas siguen marcadas con .partial.</string>
+    <string name="review_skipped">Se omitió un elemento no compatible: %1$s</string>
+    <string name="review_folder_unavailable">Sin acceso a la carpeta: %1$s. El resto de la cola continúa.</string>
+    <string name="review_local_failed">No se pudo escribir ni releer el documento local de Android. La sesión de archivos sigue conectada; reintente este elemento.</string>
+    <string name="review_local_no_rename">Este proveedor no puede renombrar documentos. Algunos archivos conservarán el sufijo .partial; cámbieles el nombre en Archivos de Android.</string>
+    <string name="review_source_changed_deleted">Ya se eliminó: %1$s. El resto de la selección no se eliminó; actualice la carpeta y confirme de nuevo.</string>
+    <string name="files_delete_follow_links">La eliminación recursiva de carpetas sigue enlaces simbólicos y uniones. También se pueden borrar destinos fuera de la carpeta seleccionada; revise la carpeta en MeshCentral antes de confirmar.</string>
+</resources>

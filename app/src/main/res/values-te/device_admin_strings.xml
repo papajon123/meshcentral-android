@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">పరికరాన్ని ఆహ్వానించండి</string>
+    <string name="admin_invite_help">ఈ లింక్ ఉన్న ఎవరైనా “%1$s” లో ఏజెంట్‌ను ఇన్‌స్టాల్ చేయవచ్చు. మీరు సహాయం చేయాలనుకున్న వ్యక్తితో మాత్రమే దీన్ని పంచుకోండి.</string>
+    <string name="admin_invite_mode">అందుబాటులో ఉన్న ఏదైనా ఏజెంట్‌ను నేపథ్యంలో మరియు పరస్పర చర్యతో ఇన్‌స్టాల్ చేయడానికి అనుమతిస్తుంది.</string>
+    <string name="admin_expiry">లింక్ చెల్లుబాటు కాలం</string>
+    <string name="admin_create_link">లింక్ సృష్టించండి</string>
+    <string name="admin_expires_at">గడువు: %1$s</string>
+    <string name="admin_expired">ఈ లింక్ గడువు ముగిసింది. కొత్త లింక్ సృష్టించండి.</string>
+    <string name="admin_qr">ఏజెంట్ ఇన్‌స్టాలేషన్ పేజీని తెరవడానికి స్కాన్ చేయండి</string>
+    <string name="admin_share">లింక్ పంచుకోండి</string>
+    <string name="admin_copy">లింక్ కాపీ చేయండి</string>
+    <string name="admin_copied">లింక్ కాపీ అయింది</string>
+    <string name="admin_close">మూసివేయండి</string>
+    <string name="admin_cancel">రద్దు చేయి</string>
+    <string name="admin_confirm">నిర్ధారించండి</string>
+    <string name="admin_review">మార్పులను సమీక్షించండి</string>
+    <string name="admin_edit">పరికరాన్ని సవరించండి</string>
+    <string name="admin_name">పేరు</string>
+    <string name="admin_description">వివరణ</string>
+    <string name="admin_tags">ట్యాగ్‌లు, కామాలతో వేరు చేయండి</string>
+    <string name="admin_notes">నోట్స్</string>
+    <string name="admin_save_notes">నోట్స్ సేవ్ చేయండి</string>
+    <string name="admin_move">మరొక గ్రూప్‌కు తరలించండి</string>
+    <string name="admin_move_confirm">“%1$s” ను “%2$s” కు తరలించాలా? యాక్సెస్ గమ్యస్థాన గ్రూపును అనుసరిస్తుంది.</string>
+    <string name="admin_edit_confirm">“%1$s” కు ఈ మార్పులను సేవ్ చేయాలా?</string>
+    <string name="admin_notes_confirm">“%1$s” నోట్స్‌ను భర్తీ చేయాలా?</string>
+    <string name="admin_saved">మార్పులు సర్వర్ ద్వారా నిర్ధారించబడ్డాయి</string>
+    <string name="admin_failed">మార్పును నిర్ధారించలేకపోయాం. మళ్లీ ప్రయత్నించే ముందు రిఫ్రెష్ చేసి పరికరాన్ని తనిఖీ చేయండి.</string>
+    <string name="admin_invite_failed">లింక్ సృష్టించలేకపోయాం. మీ కనెక్షన్ మరియు గ్రూప్ అనుమతులను తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="admin_loading">సర్వర్ కోసం వేచి ఉంది…</string>
+    <string name="admin_invalid">పేరు: 1–64 అక్షరాలు. వివరణ: గరిష్ఠంగా 64 అక్షరాలు. ప్రతి ట్యాగ్: గరిష్ఠంగా 63 అక్షరాలు; మొత్తం: గరిష్ఠంగా 4096. నియంత్రణ లేదా వచన-దిశ ఫార్మాటింగ్ అక్షరాలు లేని ఒకే పంక్తి వచనాన్ని ఉపయోగించండి.</string>
+    <string name="admin_endpoint">సర్వర్: %1$s</string>
+    <string name="admin_unavailable">ఈ పరికరాన్ని నిర్వహించడానికి మళ్లీ కనెక్ట్ అయి రిఫ్రెష్ చేయండి. మీ ఖాతాకు అవసరమైన అనుమతులు ఉండాలి.</string>
+    <string name="admin_notes_limit">నోట్స్: గరిష్ఠంగా 16000 అక్షరాలు.</string>
+    <string name="admin_no_destinations">ఈ పరికరాన్ని తరలించడానికి అనుమతి ఉన్న సరిపోయే గ్రూపులు లేవు.</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">இந்தச் சாதனம் இனி கிடைக்காது. பயன்பாட்டைத் திறக்கவும்.</string>
+    <string name="integration_favorites">பிடித்தவை</string>
+    <string name="integration_updated">புதுப்பிக்கப்பட்டது: %1$s</string>
+    <string name="integration_widget_empty">பயன்பாட்டைத் திறந்து பிடித்த சாதனங்களைச் சேர்க்கவும்.</string>
+    <string name="integration_widget_description">பிடித்த சாதனங்களும் அவற்றின் கடைசியாக அறியப்பட்ட கிடைக்கும் நிலையும்</string>
+    <string name="integration_last_known">கடைசியாக அறியப்பட்ட நிலை</string>
+    <string name="integration_open_to_refresh">இணைக்கவும் புதுப்பிக்கவும் பயன்பாட்டைத் திறக்கவும்.</string>
+    <string name="integration_refresh">புதுப்பி</string>
+    <string name="integration_open_app">பயன்பாட்டைத் திற</string>
+    <string name="backup_title">அமைப்புகளின் காப்புப்பிரதி</string>
+    <string name="backup_description">சேவையகச் சுயவிவரங்கள், பிடித்தவை, விசைப்பலகைக் குறுக்குவழிகள், கட்டளைப் பகுதிகள் மற்றும் பயன்பாட்டு விருப்பங்களை ஏற்றுமதி செய்யவும். கடவுச்சொற்கள், அமர்வு டோக்கன்கள், நினைவில் வைக்கப்பட்ட சாதனங்களின் குக்கீகள் மற்றும் பயன்பாட்டு PIN ஆகியவை சேர்க்கப்படவில்லை. கட்டளைப் பகுதிகளில் நீங்கள் உள்ளிட்ட உரை இருக்கலாம்; பகிர்வதற்கு முன் அவற்றை மறுபரிசீலனை செய்யவும்.</string>
+    <string name="backup_export">கோப்பை ஏற்றுமதி செய்</string>
+    <string name="backup_import">கோப்பை இறக்குமதி செய்</string>
+    <string name="backup_include_keys">சேவையக உள்நுழைவு விசைகளைச் சேர் (மறையாக்கப்பட்டவை மட்டும்)</string>
+    <string name="backup_password">காப்புப்பிரதி கடவுச்சொல் (குறைந்தது 8 எழுத்துகள்)</string>
+    <string name="backup_password_hint">கடவுச்சொல் முழுக் கோப்பையும் மறையாக்குகிறது. அதைப் பாதுகாப்பாக வைத்திருங்கள்; அதை மீட்டெடுக்க முடியாது.</string>
+    <string name="backup_confirm_password">கடவுச்சொல்லை உறுதிப்படுத்து</string>
+    <string name="backup_password_mismatch">கடவுச்சொற்கள் பொருந்த வேண்டும் மற்றும் 8–1024 எழுத்துகளைக் கொண்டிருக்க வேண்டும்.</string>
+    <string name="backup_busy">செயலாக்கப்படுகிறது…</string>
+    <string name="backup_saved">காப்புப்பிரதி கோப்பு சேமிக்கப்பட்டது.</string>
+    <string name="backup_failed">காப்புப்பிரதியைச் செயலாக்க முடியவில்லை. கோப்பு, வடிவ பதிப்பு, கடவுச்சொல் மற்றும் சேமிப்பக அணுகலைச் சரிபார்க்கவும்.</string>
+    <string name="backup_preview">இறக்குமதியை மறுபரிசீலனை செய்</string>
+    <string name="backup_preview_explanation">சுயவிவரங்கள் புதிய சுயவிவரங்களாகச் சேர்க்கப்படும். ஏற்கனவே உள்ள சுயவிவரங்கள், சான்றுகள் மற்றும் PIN அப்படியே இருக்கும். உறுதிப்படுத்துவதற்கு முன் சேவையக முகவரிகளையும் பின்னப்பட்ட விசைகளையும் மறுபரிசீலனை செய்யவும்.</string>
+    <string name="backup_profile_details">%1$d பிடித்தவை · %2$d குறுக்குவழிகள் · %3$d கட்டளைகள்</string>
+    <string name="backup_pinned_key">பின்னப்பட்ட சேவையக விசை: %1$s</string>
+    <string name="backup_contains_key">மறையாக்கப்பட்ட சேவையக உள்நுழைவு விசை உள்ளது</string>
+    <string name="backup_apply_preferences">தோற்றம், திரைப்பிடிப்புப் பாதுகாப்பு, தானியங்கிப் பூட்டு தாமதம் மற்றும் ஸ்டைலஸ் விருப்பங்களையும் மாற்று</string>
+    <string name="backup_confirm_import">சுயவிவரங்களைச் சேர்</string>
+    <string name="backup_imported">%1$d சுயவிவரங்கள் சேர்க்கப்பட்டன. ஒரு சுயவிவரத்தைத் தேர்ந்தெடுத்து உள்நுழையவும்.</string>
+    <string name="backup_capacity">சுயவிவரங்களுக்குப் போதுமான காலி இடம் இல்லை. இறக்குமதி செய்வதற்கு முன் பயன்படுத்தாத சுயவிவரங்களை அகற்றவும்.</string>
+    <string name="backup_decrypt">காப்புப்பிரதியின் மறையாக்கத்தை நீக்கு</string>
+    <string name="backup_no_profiles">ஏற்றுமதி செய்வதற்கு முன் HTTPS சேவையகச் சுயவிவரத்தை உள்ளமைக்கவும்.</string>
+</resources>

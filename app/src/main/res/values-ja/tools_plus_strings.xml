@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">選択済み：%1$d</string>
+    <string name="tools_clear_selection">選択を解除</string>
+    <string name="tools_download_selected">選択項目をダウンロード</string>
+    <string name="tools_delete_selected">選択項目を削除</string>
+    <string name="tools_select_hint">複数の項目を選択するには長押しします</string>
+    <string name="tools_download_folder">フォルダーをダウンロード</string>
+    <string name="tools_folder_notice">Mesh Agent のフォルダーは ZIP アーカイブとしてダウンロードされます。SFTP フォルダーはファイルごとにコピーされます。保存先フォルダーを選択してください。</string>
+    <string name="tools_batch_progress">完了：%1$d / %2$d · %3$d バイト</string>
+    <string name="tools_retry">再試行</string>
+    <string name="tools_queued">待機中</string>
+    <string name="tools_active">ダウンロード中</string>
+    <string name="tools_succeeded">検証済み</string>
+    <string name="tools_failed">失敗</string>
+    <string name="tools_cancelled">キャンセル済み</string>
+    <string name="tools_archiving">リモートアーカイブを作成しています…</string>
+    <string name="tools_archive_failed">アーカイブを作成または検証できませんでした。</string>
+    <string name="tools_archive_left">ダウンロードに失敗しました。一時的な meshpilot-*.zip アーカイブがコピー元フォルダーに残っている可能性があります。再試行して削除し、もう一度ダウンロードしてください。</string>
+    <string name="tools_batch_failed">ダウンロードに失敗しました。再試行すると、新しいローカルファイルで最初からやり直します。</string>
+    <string name="tools_delete_list">これらの項目を削除しますか？この操作は元に戻せません。</string>
+</resources>

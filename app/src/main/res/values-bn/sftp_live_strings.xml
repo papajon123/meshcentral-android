@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">সার্ভার এই ফাইলটি প্রত্যাখ্যান করেছে। আবার চেষ্টা করার আগে এর অনুমতি ও ধরন যাচাই করুন।</string>
+</resources>

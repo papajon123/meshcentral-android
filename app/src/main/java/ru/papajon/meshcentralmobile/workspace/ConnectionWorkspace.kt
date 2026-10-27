@@ -17,6 +17,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.takeWhile
 import org.json.JSONObject
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.localization.UiText
@@ -36,7 +37,7 @@ import ru.papajon.meshcentralmobile.transfer.*
 import ru.papajon.meshcentralmobile.notifications.NotificationController
 import ru.papajon.meshcentralmobile.notifications.NotificationContract
 
-data class EventDestination(val profileId: String, val nodeId: String?, val jobId: String?)
+data class EventDestination(val profileId: String, val nodeId: String?, val jobId: String?, val chatSession: String? = null)
 
 class OpenSession(
     val id: String,
@@ -45,9 +46,10 @@ class OpenSession(
     val tab: DeviceTab,
     val terminal: TerminalController? = null,
     val files: FilesController? = null,
+    val chat: ru.papajon.meshcentralmobile.mesh.chat.ChatController? = null,
     private val onClose: () -> Unit = {},
 ) : AutoCloseable {
-    override fun close() { terminal?.close(); files?.close(); onClose() }
+    override fun close() { terminal?.close(); files?.close(); chat?.close(); onClose() }
 }
 
 /** Application lifetime, never holds an Activity. Foreground transfers can outlive its UI. */
@@ -63,8 +65,11 @@ class ConnectionWorkspace private constructor(private val application: Applicati
         val owner = client
         val vault = credentialVault
         val id = profileId
+        val clearLauncher = ru.papajon.meshcentralmobile.integration.LauncherCoordinator.clear(application, id)
+        cancelPendingDestinations()
         scope.launch {
             try {
+                clearLauncher.join()
                 closeAll()
                 // Revocation is best effort. Its Keystore/WorkManager work must not run on Main.
                 try { withContext(Dispatchers.IO) { withTimeout(25_000) { disableNotifications() } } }
@@ -105,9 +110,10 @@ class ConnectionWorkspace private constructor(private val application: Applicati
         retryJob = scope.launch {
             reconnectingTransfer = true
             try {
-                val device = client.clientState.value.devices.firstOrNull { it.nodeId == target.nodeId }
+                val device = expectedClient.resolveDevice(target.nodeId)
                     ?: error("device unavailable")
-                check(client.clientState.value.devicesCurrent && expectedUser != null)
+                check(client === expectedClient && client.clientState.value.devicesCurrent && expectedUser != null &&
+                    client.clientState.value.userId == expectedUser && queue === transfers)
                 val tab = if (target.controller.state.value.sftp) DeviceTab.Sftp else DeviceTab.Files
                 val slot = sessions.firstOrNull { it.nodeId == target.nodeId && it.tab == tab }
                 if (slot != null && slot.files?.state?.value?.let { !it.connected && !it.busy && !it.authRequired } == true) closeSession(slot.id)
@@ -133,13 +139,64 @@ class ConnectionWorkspace private constructor(private val application: Applicati
         }
     }
     var showTransfersRequested by mutableStateOf(false)
-    var eventDestination by mutableStateOf<EventDestination?>(null)
+    var showChatsRequested by mutableStateOf(false)
+    var unreadChats by mutableStateOf(0)
+        private set
+    private val mutableActiveChats = kotlinx.coroutines.flow.MutableStateFlow(false)
+    val activeChats: kotlinx.coroutines.flow.StateFlow<Boolean> = mutableActiveChats
+    private fun refreshChatUnread() {
+        unreadChats = sessions.sumOf { it.chat?.state?.value?.unreadCount ?: 0 }
+        mutableActiveChats.value = sessions.any { it.chat?.state?.value?.active == true }
+    }
+    fun closeChats() { sessions.filter { it.chat != null }.map { it.id }.forEach(::closeSession) }
+    fun ensureChatService(): Boolean = try {
+        androidx.core.content.ContextCompat.startForegroundService(application,
+            Intent(application, ru.papajon.meshcentralmobile.background.ChatService::class.java))
+        true
+    } catch (_: RuntimeException) {
+        message = UiText.Resource(R.string.chat_service_failed)
+        false
+    }
+    private var pendingEvent by mutableStateOf<EventDestination?>(null)
+    private var pendingLauncher by mutableStateOf<String?>(null)
+    var launcherActivationAttempted by mutableStateOf(false)
+        private set
+    var eventDestination: EventDestination?
+        get() = pendingEvent
+        set(value) {
+            if (value != null) launcherDestination = null
+            pendingEvent = value
+        }
+    var launcherDestination: String?
+        get() = pendingLauncher
+        set(value) {
+            if (value != pendingLauncher) launcherActivationAttempted = false
+            if (value != null) pendingEvent = null
+            pendingLauncher = value
+        }
+    fun claimLauncherActivation(token: String): Boolean {
+        if (launcherDestination != token || launcherActivationAttempted) return false
+        launcherActivationAttempted = true
+        return true
+    }
+    fun restoreLauncherDestination(token: String, activationAttempted: Boolean) {
+        launcherDestination = token
+        launcherActivationAttempted = activationAttempted
+    }
+    fun cancelPendingDestinations() {
+        launcherDestination = null
+        eventDestination = null
+    }
     fun acceptShare(intent: Intent) {
+        if (!ru.papajon.meshcentralmobile.workspace.IncomingIntentPolicy.accepts(intent.flags)) return
+        if (intent.action == ru.papajon.meshcentralmobile.background.ChatService.SHOW_CHATS) { showChatsRequested = true; return }
         val targetProfile = runCatching { intent.getStringExtra(NotificationContract.EXTRA_PROFILE_ID) }.getOrNull()
         if (targetProfile != null && SettingsRepository(application).profilesState.value.any { it.id == targetProfile }) {
             val node = runCatching { intent.getStringExtra(NotificationContract.EXTRA_NODE_ID) }.getOrNull()?.takeIf { it.startsWith("node/") && it.length <= 2048 }
             val job = runCatching { intent.getStringExtra(NotificationContract.EXTRA_JOB_ID) }.getOrNull()?.takeIf { it.matches(Regex("mc_[A-Za-z0-9_-]{1,128}")) }
-            eventDestination = EventDestination(targetProfile, node, job)
+            val chat = runCatching { intent.getStringExtra(ru.papajon.meshcentralmobile.mesh.chat.ChatNotifier.EXTRA_SESSION) }
+                .getOrNull()?.takeIf { it.length <= 2100 }
+            eventDestination = EventDestination(targetProfile, node, job, chat)
         }
         if (intent.action == "show-transfers") { showTransfersRequested = true; return }
         if (intent.action != Intent.ACTION_SEND && intent.action != Intent.ACTION_SEND_MULTIPLE) return
@@ -164,14 +221,36 @@ class ConnectionWorkspace private constructor(private val application: Applicati
     var profileId by mutableStateOf(SettingsRepository(application).activeProfile.id)
         private set
     private var networkAvailable = application.getSystemService(ConnectivityManager::class.java).activeNetwork != null
+    private var currentNetwork = application.getSystemService(ConnectivityManager::class.java).activeNetwork
     var credentialVault = vault(profileId)
         private set
     var client by mutableStateOf(MeshCentralClient(credentialVault, scope))
         private set
+    private val lockSettings = SettingsRepository(application)
+    val appLockVault = SecureVault(application)
+    val appLock = ru.papajon.meshcentralmobile.settings.AppLockController(lockSettings, appLockVault) {
+        updateAppVisibility()
+    }
+    private var processVisible = false
+
+    /** One process-wide lock gate; individual Activities cannot unpause a locked desktop. */
+    private fun updateAppVisibility(force: Boolean = false) {
+        client.setAppLocked(appLock.isLocked)
+        client.setRemoteInputSuppressed(appLock.isLocked || !appLock.hasInteractiveWindow)
+        val visible = appLock.hasVisibleWindow
+        if (force || visible != processVisible) {
+            processVisible = visible
+            if (visible) client.onAppForeground() else client.onAppBackground()
+        }
+    }
+
     private val registry = SessionRegistry<OpenSession>()
     var sessions by mutableStateOf<List<OpenSession>>(emptyList())
         private set
-    var selectedDeviceId by mutableStateOf<String?>(null)
+    private var selectedDevice by mutableStateOf<String?>(null)
+    var selectedDeviceId: String?
+        get() = selectedDevice
+        set(value) { selectedDevice = value; client.selectDevice(value) }
     var deviceTab by mutableStateOf(DeviceTab.Overview)
     var message by mutableStateOf<UiText?>(null)
     private var boundIdentity: String? = null
@@ -207,6 +286,7 @@ class ConnectionWorkspace private constructor(private val application: Applicati
         boundIdentity = null
         credentialVault = vault(id)
         client = MeshCentralClient(credentialVault, scope)
+        updateAppVisibility(force = true)
         if (!networkAvailable) client.onNetworkLost()
     }
 
@@ -228,16 +308,66 @@ class ConnectionWorkspace private constructor(private val application: Applicati
     fun selectTab(tab: DeviceTab): Boolean {
         val state = client.clientState.value
         val device = state.devices.firstOrNull { it.nodeId == selectedDeviceId } ?: return false
+        if (tab == DeviceTab.PortForwarding && !client.canForward(device.nodeId)) return false
         if (tab == DeviceTab.Desktop) return connectDesktop(device)
+        if (tab == DeviceTab.Chat) {
+            val id = "${device.nodeId}|Chat"
+            if (registry.get(id) == null && !ru.papajon.meshcentralmobile.mesh.chat.ChatProtocol.allowed(device, state.devicesCurrent && state.socketConnected)) return false
+            if (registry.get(id)?.chat?.state?.value?.phase == ru.papajon.meshcentralmobile.mesh.chat.ChatPhase.Closed) registry.close(id)
+            val ownerProfile = profileId
+            val existing = registry.get(id)
+            val session = registry.admit(id) {
+                val updates = ru.papajon.meshcentralmobile.mesh.chat.ChatNotificationUpdates(scope)
+                OpenSession(id, device.nodeId, device.name, tab,
+                    chat = client.createChat(device,
+                        onBackgroundMessage = {
+                            updates.submit {
+                                val unread = registry.get(id)?.chat?.state?.value?.unreadCount ?: 0
+                                if (profileId == ownerProfile && unread > 0) ru.papajon.meshcentralmobile.mesh.chat.ChatNotifier.post(application, ownerProfile, device.nodeId, id, unread)
+                            }
+                        },
+                        onEnded = {
+                            updates.cancel()
+                            ru.papajon.meshcentralmobile.mesh.chat.ChatNotifier.cancel(application, ownerProfile, id)
+                            scope.launch {
+                                // Admission may still be constructing the session. Do not retain a
+                                // dead slot or let an old callback close a newly opened conversation.
+                                kotlinx.coroutines.yield()
+                                if (profileId == ownerProfile && registry.get(id)?.chat?.state?.value?.phase ==
+                                    ru.papajon.meshcentralmobile.mesh.chat.ChatPhase.Closed) closeSession(id)
+                            }
+                        }))
+            }
+            if (session == null) { message = UiText.resource(R.string.workspace_capacity); return false }
+            sessions = registry.values()
+            if (existing == null) scope.launch {
+                session.chat?.state?.takeWhile { it.phase != ru.papajon.meshcentralmobile.mesh.chat.ChatPhase.Closed }
+                    ?.collect { refreshChatUnread() }
+                refreshChatUnread()
+            }
+            if (!ensureChatService()) { if (existing == null) closeSession(id); return false }
+            // The explicit selection owns startup; a rapid navigation away must not leave an
+            // idle foreground service waiting for a Composable that was never mounted.
+            session.chat?.start()
+        }
         if (tab.protocol != null) {
             if (!state.devicesCurrent || !device.sessionAvailability(tab.protocol, state.serverCapabilities).canAttempt) return false
             val id = "${device.nodeId}|${tab.name}"
             val session = registry.admit(id) {
                 val options = if (tab == DeviceTab.Terminal) JSONObject().put("xterm", true).put("cols", 80).put("rows", 24) else null
                 val connection = client.createRelayConnection(device, tab.protocol, options)
+                val owner = client
+                val identity = boundIdentity
+                val factory: () -> ru.papajon.meshcentralmobile.mesh.session.RelayConnection? = {
+                    val latest = owner.clientState.value
+                    val currentDevice = latest.devices.firstOrNull { it.nodeId == device.nodeId }
+                    if (client !== owner || boundIdentity != identity || !latest.devicesCurrent || latest.requiresSignIn ||
+                        currentDevice == null || !currentDevice.sessionAvailability(tab.protocol, latest.serverCapabilities).canAttempt) null
+                    else owner.createRelayConnection(currentDevice, tab.protocol, options)
+                }
                 if (tab == DeviceTab.Terminal || tab == DeviceTab.Ssh) {
-                    OpenSession(id, device.nodeId, device.name, tab, terminal = TerminalController(connection, scope))
-                } else OpenSession(id, device.nodeId, device.name, tab, files = FilesController(connection, scope, application))
+                    OpenSession(id, device.nodeId, device.name, tab, terminal = TerminalController(connection, scope, connectionFactory = factory))
+                } else OpenSession(id, device.nodeId, device.name, tab, files = FilesController(connection, scope, application, connectionFactory = factory))
             }
             if (session == null) { message = UiText.resource(R.string.workspace_capacity); return false }
             sessions = registry.values()
@@ -280,10 +410,12 @@ class ConnectionWorkspace private constructor(private val application: Applicati
         if (old?.files != null && transfers.target?.controller === old.files) transfers.cancelAll()
         registry.close(id)
         sessions = registry.values()
+        refreshChatUnread()
         if (old != null && old.nodeId == selectedDeviceId && old.tab == deviceTab) showOverview()
         old?.let { lastTabs.remove(it.nodeId) }
     }
     fun closeAll() {
+        client.portForwards.stopAll()
         retryJob?.cancel()
         retryJob = null
         reconnectingTransfer = false
@@ -294,6 +426,8 @@ class ConnectionWorkspace private constructor(private val application: Applicati
         companions.values.forEach { it.close() }; companions.clear()
         registry.closeAll()
         sessions = emptyList()
+        unreadChats = 0
+        mutableActiveChats.value = false
         selectedDeviceId = null
         deviceTab = DeviceTab.Overview
         lastTabs.clear()
@@ -304,10 +438,15 @@ class ConnectionWorkspace private constructor(private val application: Applicati
         application.getSystemService(ConnectivityManager::class.java).registerDefaultNetworkCallback(
             object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) { scope.launch {
+                    if (currentNetwork == network && networkAvailable) return@launch
+                    currentNetwork = network
                     networkAvailable = true
                     client.onNetworkAvailable()
                 } }
                 override fun onLost(network: Network) { scope.launch {
+                    // A late loss callback for the old default must not tear down its replacement.
+                    if (currentNetwork != network) return@launch
+                    currentNetwork = null
                     networkAvailable = false
                     client.onNetworkLost()
                 } }
@@ -317,6 +456,7 @@ class ConnectionWorkspace private constructor(private val application: Applicati
 
     companion object {
         @Volatile private var instance: ConnectionWorkspace? = null
+        fun existing(): ConnectionWorkspace? = instance
         fun get(application: Application): ConnectionWorkspace = instance ?: synchronized(this) {
             instance ?: ConnectionWorkspace(application).also { instance = it }
         }

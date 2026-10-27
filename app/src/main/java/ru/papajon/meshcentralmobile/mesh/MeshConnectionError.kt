@@ -19,6 +19,7 @@ internal object MeshConnectionError {
             ServerCertificateFailureKind.Expired, ServerCertificateFailureKind.NotYetValid -> R.string.tls_error_validity
             ServerCertificateFailureKind.ServerConfiguration -> R.string.tls_error_chain
             ServerCertificateFailureKind.HostnameMismatch -> R.string.tls_error_hostname
+            ServerCertificateFailureKind.ExpectedKeyConfirmation -> R.string.backup_key_approval_title
         },
     )
 

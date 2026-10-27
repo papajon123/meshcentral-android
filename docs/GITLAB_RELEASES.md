@@ -32,11 +32,14 @@ Accepted GitHub PR changes are ported into GitLab before the next snapshot relea
 ## GitLab configuration
 
 The candidate configuration is installed by the project owner, not by the bridge script.
-Use the pinned Android SDK 35 image and dedicated protected runner **15** with tag
+Use the pinned Android SDK 36 image and dedicated protected runner **15** with tag
 `meshcentral-android`. The runner stays locked; shared runners and Auto DevOps are disabled for 124.
 Serialize publication jobs with one `resource_group`.
 Only the checks job caches Gradle data under a project-specific key; the publication job does not
 restore this cache. GitLab's separate protected-ref cache scope should remain enabled.
+The image includes platform 36. Checks retain Build Tools 35.0.0, installing them only on a cache
+miss and caching them in `.android-sdk-cache/build-tools/` alongside Gradle data. Main/release and
+review cache keys are separated and include `android-36`.
 
 Configure these variables with **environment scope `github-release`**, so the normal build/Gradle
 jobs cannot read the deployment credential:

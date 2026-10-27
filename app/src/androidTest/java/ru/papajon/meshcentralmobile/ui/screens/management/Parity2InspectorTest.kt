@@ -124,9 +124,33 @@ class Parity2InspectorTest {
         automation.serviceInfo = automation.serviceInfo.apply {
             flags = flags or android.accessibilityservice.AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
         }
+        compose.waitUntil(timeoutMillis = 10_000) { compose.activity.hasWindowFocus() }
         compose.onNodeWithTag("parity2_command").performScrollTo().performClick().performTextInput("echo example")
+        // The editor's first IME request can race window focus/served-view registration after
+        // another test closes its keyboard. Request it after Compose and the focused window idle.
+        compose.runOnIdle {
+            compose.activity.currentFocus?.let { editor ->
+                editor.context.getSystemService(android.view.inputmethod.InputMethodManager::class.java)
+                    .showSoftInput(editor, android.view.inputmethod.InputMethodManager.SHOW_IMPLICIT)
+            }
+        }
+        var lastImeRequest = android.os.SystemClock.uptimeMillis()
         compose.waitUntil(timeoutMillis = 10_000) {
-            automation.windows.any { it.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_INPUT_METHOD }
+            val visible = automation.windows.any { it.type == android.view.accessibility.AccessibilityWindowInfo.TYPE_INPUT_METHOD }
+            val now = android.os.SystemClock.uptimeMillis()
+            if (!visible && compose.activity.hasWindowFocus() && now - lastImeRequest >= 500) {
+                compose.runOnUiThread {
+                    androidx.core.view.WindowCompat.getInsetsController(compose.activity.window, compose.activity.window.decorView)
+                        .hide(androidx.core.view.WindowInsetsCompat.Type.ime())
+                }
+                android.os.SystemClock.sleep(250)
+                compose.runOnUiThread {
+                    androidx.core.view.WindowCompat.getInsetsController(compose.activity.window, compose.activity.window.decorView)
+                        .show(androidx.core.view.WindowInsetsCompat.Type.ime())
+                }
+                lastImeRequest = now
+            }
+            visible
         }
         // Android delivers IME insets outside Compose's test clock; let the viewport settle first.
         var previousBounds: androidx.compose.ui.geometry.Rect? = null

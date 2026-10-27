@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_detail_join" translatable="false">%1$s\n%2$s</string>
+    <string name="review_file_failed">Could not verify: %1$s</string>
+    <string name="review_paused">Paused: connection lost</string>
+    <string name="review_retry_all">Retry unfinished items</string>
+    <string name="review_cleanup_title">Remote archive cleanup</string>
+    <string name="review_archive_left">A temporary archive may remain on the computer: %1$s. Check and remove it when no archive operation is running.</string>
+    <string name="review_archive_space">Creating a ZIP needs free space in the remote source folder for a full archive. If the agent cannot start it, files will be copied individually. Incomplete local folders keep a .partial suffix.</string>
+    <string name="review_grant_failed">This provider could not retain access for the queue. Choose a different location.</string>
+    <string name="review_zip_invalid">The archive is damaged, incomplete or exceeds the supported structure limits.</string>
+    <string name="review_source_changed">The selected item changed. Refresh the folder and confirm the selection again.</string>
+    <string name="review_sftp_types">This server does not identify symbolic links or special files in SFTP listings. Unverifiable files are reported by path; a disconnected queue pauses. Incomplete folders remain marked .partial.</string>
+    <string name="review_skipped">Skipped unsupported item: %1$s</string>
+    <string name="review_folder_unavailable">No access to folder: %1$s. The rest of the queue continues.</string>
+    <string name="review_local_failed">The local Android document could not be written or read back. The file session is still connected; retry this item.</string>
+    <string name="review_local_no_rename">This provider cannot rename documents. Some files keep the .partial suffix; rename them in Android Files.</string>
+    <string name="review_source_changed_deleted">Already deleted: %1$s. The remaining selection was not deleted; refresh the folder and confirm again.</string>
+    <string name="files_delete_follow_links">Recursive folder deletion follows symbolic links and junctions. Targets outside the selected folder can be erased too; check the folder in MeshCentral before confirming.</string>
+</resources>

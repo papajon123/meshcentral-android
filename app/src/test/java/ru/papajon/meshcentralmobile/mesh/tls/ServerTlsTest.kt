@@ -20,6 +20,35 @@ class ServerTlsTest {
     private fun leaf(name: String = "localhost") = HeldCertificate.Builder().commonName(name)
         .addSubjectAlternativeName(name).signedBy(ca).build()
 
+    @Test fun expectedKeyStillRequiresApprovalWithoutMislabelingATrustedIssuer() {
+        val cert = leaf()
+        withServer(cert) { web, url ->
+            val http = OkHttpClient.Builder().apply {
+                ServerTls(url, null, platform = HandshakeCertificates.Builder().addTrustedCertificate(ca.certificate).build().trustManager,
+                    expectedSpkiSha256 = spkiSha256(cert.certificate)).applyTo(this)
+            }.build()
+            val failure = runCatching { get(http, url) }.exceptionOrNull()?.serverCertificateFailure()
+            assertEquals(ServerCertificateFailureKind.ExpectedKeyConfirmation, failure?.kind)
+            assertEquals(0, web.requestCount)
+            assertNull("A platform-trusted issuer is not an unknown certificate authority", failure?.issuerExplanation)
+        }
+    }
+
+    @Test fun expectedKeyFromAnUnknownIssuerKeepsTheIssuerExplanation() {
+        val otherCa = HeldCertificate.Builder().certificateAuthority(1).build()
+        val cert = HeldCertificate.Builder().commonName("localhost").addSubjectAlternativeName("localhost").signedBy(otherCa).build()
+        withServer(cert) { web, url ->
+            val http = OkHttpClient.Builder().apply {
+                ServerTls(url, null, platform = HandshakeCertificates.Builder().addTrustedCertificate(ca.certificate).build().trustManager,
+                    expectedSpkiSha256 = spkiSha256(cert.certificate)).applyTo(this)
+            }.build()
+            val failure = runCatching { get(http, url) }.exceptionOrNull()?.serverCertificateFailure()
+            assertEquals(ServerCertificateFailureKind.ExpectedKeyConfirmation, failure?.kind)
+            assertEquals(0, web.requestCount)
+            assertEquals(ServerCertificateIssuerExplanation.UnknownAuthority, failure?.issuerExplanation)
+        }
+    }
+
     @Test fun platformTrustedDifferentKeyIsBlockedBeforeSendingHttp() = withServer(leaf()) { web, url ->
         val client = client(url, spkiSha256(leaf().certificate))
         assertFailure(client, url, ServerCertificateFailureKind.Changed)

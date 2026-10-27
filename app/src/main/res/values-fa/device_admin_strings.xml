@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">دعوت دستگاه</string>
+    <string name="admin_invite_help">هر کسی که این پیوند را داشته باشد می‌تواند یک عامل را در «%1$s» نصب کند. آن را فقط با کسی که می‌خواهید کمکش کنید به اشتراک بگذارید.</string>
+    <string name="admin_invite_mode">نصب پس‌زمینه و تعاملی هر عامل در دسترس را مجاز می‌کند.</string>
+    <string name="admin_expiry">مدت اعتبار پیوند</string>
+    <string name="admin_create_link">ساخت پیوند</string>
+    <string name="admin_expires_at">انقضا: %1$s</string>
+    <string name="admin_expired">اعتبار این پیوند به پایان رسیده است. پیوند جدیدی بسازید.</string>
+    <string name="admin_qr">برای باز کردن صفحه نصب عامل اسکن کنید</string>
+    <string name="admin_share">اشتراک‌گذاری پیوند</string>
+    <string name="admin_copy">کپی پیوند</string>
+    <string name="admin_copied">پیوند کپی شد</string>
+    <string name="admin_close">بستن</string>
+    <string name="admin_cancel">لغو</string>
+    <string name="admin_confirm">تأیید</string>
+    <string name="admin_review">بررسی تغییرات</string>
+    <string name="admin_edit">ویرایش دستگاه</string>
+    <string name="admin_name">نام</string>
+    <string name="admin_description">توضیحات</string>
+    <string name="admin_tags">برچسب‌ها، جداشده با ویرگول</string>
+    <string name="admin_notes">یادداشت‌ها</string>
+    <string name="admin_save_notes">ذخیره یادداشت‌ها</string>
+    <string name="admin_move">انتقال به گروه دیگر</string>
+    <string name="admin_move_confirm">«%1$s» به «%2$s» منتقل شود؟ دسترسی از گروه مقصد پیروی می‌کند.</string>
+    <string name="admin_edit_confirm">این تغییرات برای «%1$s» ذخیره شود؟</string>
+    <string name="admin_notes_confirm">یادداشت‌های «%1$s» جایگزین شود؟</string>
+    <string name="admin_saved">تغییرات توسط سرور تأیید شد</string>
+    <string name="admin_failed">تأیید تغییر ممکن نشد. پیش از تلاش دوباره، صفحه را بازخوانی و دستگاه را بررسی کنید.</string>
+    <string name="admin_invite_failed">ساخت پیوند ممکن نشد. اتصال و مجوزهای گروه را بررسی کنید و دوباره تلاش کنید.</string>
+    <string name="admin_loading">در انتظار سرور…</string>
+    <string name="admin_invalid">نام: 1 تا 64 نویسه. توضیحات: حداکثر 64 نویسه. هر برچسب: حداکثر 63 نویسه؛ مجموع: حداکثر 4096. از متن تک‌خطی بدون نویسه‌های کنترلی یا قالب‌بندی جهت متن استفاده کنید.</string>
+    <string name="admin_endpoint">سرور: %1$s</string>
+    <string name="admin_unavailable">برای مدیریت این دستگاه دوباره متصل شوید و صفحه را بازخوانی کنید. حساب شما باید مجوزهای لازم را داشته باشد.</string>
+    <string name="admin_notes_limit">یادداشت‌ها: حداکثر 16000 نویسه.</string>
+    <string name="admin_no_destinations">هیچ گروه سازگاری با مجوز انتقال این دستگاه وجود ندارد.</string>
+</resources>

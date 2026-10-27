@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">Mời thiết bị</string>
+    <string name="admin_invite_help">Bất kỳ ai có liên kết này đều có thể cài đặt agent vào “%1$s”. Chỉ chia sẻ liên kết với người bạn muốn giúp.</string>
+    <string name="admin_invite_mode">Cho phép cài đặt mọi agent có sẵn ở chế độ nền và tương tác.</string>
+    <string name="admin_expiry">Thời hạn của liên kết</string>
+    <string name="admin_create_link">Tạo liên kết</string>
+    <string name="admin_expires_at">Hết hạn: %1$s</string>
+    <string name="admin_expired">Liên kết này đã hết hạn. Hãy tạo liên kết mới.</string>
+    <string name="admin_qr">Quét để mở trang cài đặt agent</string>
+    <string name="admin_share">Chia sẻ liên kết</string>
+    <string name="admin_copy">Sao chép liên kết</string>
+    <string name="admin_copied">Đã sao chép liên kết</string>
+    <string name="admin_close">Đóng</string>
+    <string name="admin_cancel">Hủy</string>
+    <string name="admin_confirm">Xác nhận</string>
+    <string name="admin_review">Xem lại thay đổi</string>
+    <string name="admin_edit">Chỉnh sửa thiết bị</string>
+    <string name="admin_name">Tên</string>
+    <string name="admin_description">Mô tả</string>
+    <string name="admin_tags">Thẻ, cách nhau bằng dấu phẩy</string>
+    <string name="admin_notes">Ghi chú</string>
+    <string name="admin_save_notes">Lưu ghi chú</string>
+    <string name="admin_move">Chuyển sang nhóm khác</string>
+    <string name="admin_move_confirm">Chuyển “%1$s” sang “%2$s”? Quyền truy cập sẽ theo nhóm đích.</string>
+    <string name="admin_edit_confirm">Lưu các thay đổi này vào “%1$s”?</string>
+    <string name="admin_notes_confirm">Thay thế ghi chú của “%1$s”?</string>
+    <string name="admin_saved">Máy chủ đã xác nhận các thay đổi</string>
+    <string name="admin_failed">Không thể xác nhận thay đổi. Hãy làm mới và kiểm tra thiết bị trước khi thử lại.</string>
+    <string name="admin_invite_failed">Không thể tạo liên kết. Hãy kiểm tra kết nối và quyền của nhóm rồi thử lại.</string>
+    <string name="admin_loading">Đang chờ máy chủ…</string>
+    <string name="admin_invalid">Tên: 1–64 ký tự. Mô tả: tối đa 64 ký tự. Mỗi thẻ: tối đa 63 ký tự; tổng cộng: tối đa 4096. Dùng văn bản một dòng, không có ký tự điều khiển hay ký tự định dạng hướng văn bản.</string>
+    <string name="admin_endpoint">Máy chủ: %1$s</string>
+    <string name="admin_unavailable">Kết nối lại và làm mới để quản lý thiết bị này. Tài khoản của bạn phải có các quyền cần thiết.</string>
+    <string name="admin_notes_limit">Ghi chú: tối đa 16000 ký tự.</string>
+    <string name="admin_no_destinations">Không có nhóm tương thích nào được phép chuyển thiết bị này.</string>
+</resources>

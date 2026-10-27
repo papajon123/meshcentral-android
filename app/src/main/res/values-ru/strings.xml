@@ -1,5 +1,22 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">Назад</string>
+    <string name="devices_page_next">Далее</string>
+    <plurals name="devices_page_count">
+        <item quantity="one">%1$d–%2$d из %3$d устройства</item>
+        <item quantity="few">%1$d–%2$d из %3$d устройств</item>
+        <item quantity="many">%1$d–%2$d из %3$d устройств</item>
+        <item quantity="other">%1$d–%2$d из %3$d устройств</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="one">Устройство %1$d–%2$d</item>
+        <item quantity="few">Устройства %1$d–%2$d</item>
+        <item quantity="many">Устройства %1$d–%2$d</item>
+        <item quantity="other">Устройства %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">Найдено устройств: %1$d</string>
+    <string name="devices_server_search">Поиск по имени среди всех устройств</string>
+    <string name="devices_page_failed">Не удалось загрузить устройства. Повторите попытку.</string>
     <string name="biometric_unlock_title">Разблокировка MeshPilot</string>
     <string name="biometric_unlock_subtitle">Подтвердите личность биометрией устройства, чтобы открыть приложение.</string>
     <string name="cancel">Отмена</string>
@@ -314,4 +331,6 @@
     <string name="settings_update_supporting">Подписанные APK доступны в выпусках GitHub. Установите новую версию поверх текущей.</string>
     <string name="settings_update_action">Скачать обновление</string>
     <string name="settings_update_unavailable">Не удалось открыть браузер. Откройте https://github.com/papajon123/meshcentral-android/releases вручную.</string>
+    <string name="chat_verifying_peer">Проверяем соединение с пользователем…</string>
+    <string name="chat_server_retained">Сервер ещё удерживает прежнее соединение. Повторяем попытки до 20 минут…</string>
 </resources>

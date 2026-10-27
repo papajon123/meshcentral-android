@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">ఈ డ్రాఫ్ట్ బ్యాకప్ ఫార్మాట్‌కు మద్దతు లేదు. దీన్ని ఎగుమతి చేసిన యాప్‌లో కొత్త బ్యాకప్‌ను సృష్టించండి.</string>
+    <string name="backup_key_approval_title">దిగుమతి చేసిన సర్వర్ కీని నిర్ధారించండి</string>
+    <string name="backup_key_matches">సర్వర్ కీ బ్యాకప్‌తో సరిపోలుతుంది. సైన్ ఇన్ చేసే ముందు ఇది నమ్మదగినదని నిర్ధారించండి.</string>
+    <string name="backup_key_mismatch">హెచ్చరిక: సర్వర్ కీ బ్యాకప్‌తో సరిపోలడం లేదు. నమ్మే ముందు నిర్వాహకుడితో వేలిముద్రను ధృవీకరించండి.</string>
+    <string name="backup_key_expected">బ్యాకప్ నుండి ఆశించిన కీ: %1$s</string>
+    <string name="backup_error_newer">ఈ ఫైల్ MeshPilot యొక్క కొత్త సంస్కరణ నుండి వచ్చింది. దిగుమతి చేయడానికి యాప్‌ను నవీకరించండి.</string>
+    <string name="backup_error_auth">పాస్‌వర్డ్ తప్పు లేదా ఎన్‌క్రిప్ట్ చేసిన ఫైల్ మార్చబడింది.</string>
+    <string name="backup_error_corrupt">బ్యాకప్ దెబ్బతిన్నది లేదా దాని ఫార్మాట్ చెల్లదు.</string>
+    <string name="backup_error_limit">బ్యాకప్ మద్దతు ఉన్న పరిమాణం లేదా అంశాల పరిమితులను మించిపోయింది.</string>
+    <string name="backup_extension_skipped">కొత్త సంస్కరణ నుండి విభాగం దాటవేయబడింది: %1$s. దాని డేటా దిగుమతి చేయబడదు.</string>
+    <string name="backup_duplicate">ఈ సర్వర్ కోసం ప్రొఫైల్ ఇప్పటికే ఉంది.</string>
+    <string name="backup_skip_duplicates">సర్వర్ ఇప్పటికే ఉన్న ప్రొఫైల్‌లను దాటవేయండి</string>
+    <string name="backup_value_on">ఆన్</string>
+    <string name="backup_value_off">ఆఫ్</string>
+    <string name="backup_preferences_preview">స్క్రీన్‌షాట్ రక్షణ: %1$s\nఆటో-లాక్ ఆలస్యం: %2$d సెకన్లు\nథీమ్: %3$s\nసిస్టమ్ రంగులు: %4$s\nస్టైలస్ ఖచ్చితత్వం: %5$s\nస్టైలస్ సూచన ఇప్పటికే చూపబడింది: %6$s\nలాక్ చేసినప్పుడు పరికరాలను దాచండి: %7$s</string>
+    <string name="integration_privacy_setting">యాప్ లాక్ చేయబడినప్పుడు విడ్జెట్‌లు మరియు షార్ట్‌కట్‌లలో పరికరాలను దాచండి</string>
+    <string name="integration_privacy_help">PIN లేదా బయోమెట్రిక్ రక్షణతో, లాక్ చేసినప్పుడు లేదా యాప్ వెలుపల పరికరాల పేర్లు మరియు స్థితిని దాచండి.</string>
+    <string name="integration_private_hidden">పరికరాలను చూడటానికి యాప్‌ను అన్‌లాక్ చేయండి</string>
+    <string name="integration_private_device">రక్షిత పరికరం</string>
+    <string name="integration_retry_seconds">%1$d సెకన్లలో మళ్లీ ప్రయత్నించండి</string>
+</resources>

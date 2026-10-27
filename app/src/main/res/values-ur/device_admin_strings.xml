@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">ڈیوائس مدعو کریں</string>
+    <string name="admin_invite_help">جس کے پاس یہ لنک ہے وہ کوئی بھی شخص «%1$s» میں ایجنٹ انسٹال کر سکتا ہے۔ اسے صرف اسی شخص کے ساتھ شیئر کریں جس کی آپ مدد کرنا چاہتے ہیں۔</string>
+    <string name="admin_invite_mode">دستیاب کسی بھی ایجنٹ کو پس منظر اور انٹرایکٹو طریقے سے انسٹال کرنے کی اجازت دیتا ہے۔</string>
+    <string name="admin_expiry">لنک کی مدت</string>
+    <string name="admin_create_link">لنک بنائیں</string>
+    <string name="admin_expires_at">ختم ہونے کا وقت: %1$s</string>
+    <string name="admin_expired">اس لنک کی مدت ختم ہو گئی ہے۔ نیا لنک بنائیں۔</string>
+    <string name="admin_qr">ایجنٹ انسٹالیشن صفحہ کھولنے کے لیے اسکین کریں</string>
+    <string name="admin_share">لنک شیئر کریں</string>
+    <string name="admin_copy">لنک کاپی کریں</string>
+    <string name="admin_copied">لنک کاپی ہو گیا</string>
+    <string name="admin_close">بند کریں</string>
+    <string name="admin_cancel">منسوخ کریں</string>
+    <string name="admin_confirm">تصدیق کریں</string>
+    <string name="admin_review">تبدیلیاں دیکھیں</string>
+    <string name="admin_edit">ڈیوائس میں ترمیم کریں</string>
+    <string name="admin_name">نام</string>
+    <string name="admin_description">تفصیل</string>
+    <string name="admin_tags">ٹیگز، کوما سے الگ کریں</string>
+    <string name="admin_notes">نوٹس</string>
+    <string name="admin_save_notes">نوٹس محفوظ کریں</string>
+    <string name="admin_move">دوسرے گروپ میں منتقل کریں</string>
+    <string name="admin_move_confirm">«%1$s» کو «%2$s» میں منتقل کریں؟ رسائی منزل کے گروپ کے مطابق ہوگی۔</string>
+    <string name="admin_edit_confirm">«%1$s» میں یہ تبدیلیاں محفوظ کریں؟</string>
+    <string name="admin_notes_confirm">«%1$s» کے نوٹس بدلیں؟</string>
+    <string name="admin_saved">سرور نے تبدیلیوں کی تصدیق کر دی</string>
+    <string name="admin_failed">تبدیلی کی تصدیق نہیں ہو سکی۔ دوبارہ کوشش سے پہلے ریفریش کر کے ڈیوائس چیک کریں۔</string>
+    <string name="admin_invite_failed">لنک نہیں بن سکا۔ اپنا کنکشن اور گروپ کی اجازتیں چیک کر کے دوبارہ کوشش کریں۔</string>
+    <string name="admin_loading">سرور کا انتظار ہے…</string>
+    <string name="admin_invalid">نام: 1–64 حروف۔ تفصیل: زیادہ سے زیادہ 64 حروف۔ ہر ٹیگ: زیادہ سے زیادہ 63 حروف؛ کل: زیادہ سے زیادہ 4096۔ کنٹرول یا متن کی سمت کی فارمیٹنگ حروف کے بغیر ایک سطری متن استعمال کریں۔</string>
+    <string name="admin_endpoint">سرور: %1$s</string>
+    <string name="admin_unavailable">اس ڈیوائس کا انتظام کرنے کے لیے دوبارہ جڑیں اور ریفریش کریں۔ آپ کے اکاؤنٹ کے پاس مطلوبہ اجازتیں ہونی چاہیے۔</string>
+    <string name="admin_notes_limit">نوٹس: زیادہ سے زیادہ 16000 حروف۔</string>
+    <string name="admin_no_destinations">اس ڈیوائس کو منتقل کرنے کی اجازت والے کوئی مطابق گروپ نہیں ہیں۔</string>
+</resources>

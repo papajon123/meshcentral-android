@@ -46,6 +46,22 @@ class ServerCertificateUiTest {
         compose.runOnIdle { assertTrue(trusted) }
     }
 
+    @Test fun importedExpectedKeyShowsMatchAndMismatchBeforeExplicitTrust() {
+        val current = mutableStateOf(failure.copy(kind = ServerCertificateFailureKind.ExpectedKeyConfirmation,
+            expectedSpkiSha256 = failure.spkiSha256))
+        var approved = false
+        compose.setContent {
+            MeshCentralMobileTheme { ServerCertificateDialog(current.value, false, { approved = true }, {}, {}) }
+        }
+        compose.onNodeWithText(app.getString(R.string.backup_key_approval_title)).assertIsDisplayed()
+        compose.onNodeWithText(app.getString(R.string.backup_key_matches)).performScrollTo().assertIsDisplayed()
+        compose.runOnIdle { assertFalse(approved); current.value = current.value.copy(expectedSpkiSha256 = "cc".repeat(32)) }
+        compose.onNodeWithText(app.getString(R.string.backup_key_mismatch)).performScrollTo().assertIsDisplayed()
+        compose.runOnIdle { assertFalse(approved) }
+        compose.onNodeWithText(app.getString(R.string.tls_trust)).performClick()
+        compose.runOnIdle { assertTrue(approved) }
+    }
+
     @Test fun cancellingDoesNotTrustOrRequestReplacement() {
         var trusted = false
         var replaced = false

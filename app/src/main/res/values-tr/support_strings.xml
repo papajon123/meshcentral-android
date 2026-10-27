@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">MeshPilot\'u destekleyin</string>
+    <string name="support_body">MeshPilot ücretsiz, açık kaynaklı ve reklamsızdır. Boosty\'deki bir abonelik ya da tek seferlik bağış yeni sürümlerin çıkmasına yardımcı olur.</string>
+    <string name="support_action">Boosty\'de destekle</string>
+    <string name="support_link_copied">Tarayıcı bulunamadı. Boosty bağlantısı kopyalandı.</string>
+</resources>

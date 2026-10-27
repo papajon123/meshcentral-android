@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">Cihaz davet et</string>
+    <string name="admin_invite_help">Bu bağlantıya sahip herkes “%1$s” içine bir aracı kurabilir. Bağlantıyı yalnızca yardım etmek istediğiniz kişiyle paylaşın.</string>
+    <string name="admin_invite_mode">Kullanılabilir her aracının arka planda ve etkileşimli olarak kurulmasına izin verir.</string>
+    <string name="admin_expiry">Bağlantı geçerlilik süresi</string>
+    <string name="admin_create_link">Bağlantı oluştur</string>
+    <string name="admin_expires_at">Son geçerlilik: %1$s</string>
+    <string name="admin_expired">Bu bağlantının süresi doldu. Yeni bir bağlantı oluşturun.</string>
+    <string name="admin_qr">Aracı kurulum sayfasını açmak için tarayın</string>
+    <string name="admin_share">Bağlantıyı paylaş</string>
+    <string name="admin_copy">Bağlantıyı kopyala</string>
+    <string name="admin_copied">Bağlantı kopyalandı</string>
+    <string name="admin_close">Kapat</string>
+    <string name="admin_cancel">İptal</string>
+    <string name="admin_confirm">Onayla</string>
+    <string name="admin_review">Değişiklikleri incele</string>
+    <string name="admin_edit">Cihazı düzenle</string>
+    <string name="admin_name">Ad</string>
+    <string name="admin_description">Açıklama</string>
+    <string name="admin_tags">Virgülle ayrılmış etiketler</string>
+    <string name="admin_notes">Notlar</string>
+    <string name="admin_save_notes">Notları kaydet</string>
+    <string name="admin_move">Başka bir gruba taşı</string>
+    <string name="admin_move_confirm">“%1$s” öğesini “%2$s” grubuna taşınsın mı? Erişim, hedef grubu izler.</string>
+    <string name="admin_edit_confirm">Bu değişiklikler “%1$s” için kaydedilsin mi?</string>
+    <string name="admin_notes_confirm">“%1$s” notları değiştirilsin mi?</string>
+    <string name="admin_saved">Değişiklikler sunucu tarafından onaylandı</string>
+    <string name="admin_failed">Değişiklik onaylanamadı. Yeniden denemeden önce yenileyip cihazı kontrol edin.</string>
+    <string name="admin_invite_failed">Bağlantı oluşturulamadı. Bağlantınızı ve grup izinlerinizi kontrol edip yeniden deneyin.</string>
+    <string name="admin_loading">Sunucu bekleniyor…</string>
+    <string name="admin_invalid">Ad: 1–64 karakter. Açıklama: en fazla 64 karakter. Her etiket: en fazla 63 karakter; toplam: en fazla 4096. Kontrol veya metin yönü biçimlendirme karakterleri içermeyen tek satırlık metin kullanın.</string>
+    <string name="admin_endpoint">Sunucu: %1$s</string>
+    <string name="admin_unavailable">Bu cihazı yönetmek için yeniden bağlanıp yenileyin. Hesabınızın gerekli izinlere sahip olması gerekir.</string>
+    <string name="admin_notes_limit">Notlar: en fazla 16000 karakter.</string>
+    <string name="admin_no_destinations">Bu cihazı taşıma izni olan uyumlu grup yok.</string>
+</resources>

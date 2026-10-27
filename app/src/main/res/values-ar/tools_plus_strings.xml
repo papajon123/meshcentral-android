@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">المحدد: %1$d</string>
+    <string name="tools_clear_selection">إلغاء التحديد</string>
+    <string name="tools_download_selected">تنزيل المحدد</string>
+    <string name="tools_delete_selected">حذف المحدد</string>
+    <string name="tools_select_hint">المس مع الاستمرار لتحديد عدة عناصر</string>
+    <string name="tools_download_folder">تنزيل المجلد</string>
+    <string name="tools_folder_notice">تُنزَّل مجلدات Mesh Agent كأرشيفات ZIP. تُنسخ مجلدات SFTP ملفًا بملف. اختر مجلد الوجهة.</string>
+    <string name="tools_batch_progress">المكتمل: %1$d من %2$d · %3$d بايت</string>
+    <string name="tools_retry">إعادة المحاولة</string>
+    <string name="tools_queued">في قائمة الانتظار</string>
+    <string name="tools_active">جارٍ التنزيل</string>
+    <string name="tools_succeeded">تم التحقق</string>
+    <string name="tools_failed">فشل</string>
+    <string name="tools_cancelled">أُلغي</string>
+    <string name="tools_archiving">جارٍ إنشاء الأرشيف البعيد…</string>
+    <string name="tools_archive_failed">تعذّر إنشاء الأرشيف أو التحقق منه.</string>
+    <string name="tools_archive_left">فشل التنزيل. قد يبقى أرشيف مؤقت meshpilot-*.zip في المجلد المصدر. أعد المحاولة لتنظيفه والتنزيل مجددًا.</string>
+    <string name="tools_batch_failed">فشل أحد التنزيلات. تبدأ إعادة المحاولة من جديد في ملف محلي جديد.</string>
+    <string name="tools_delete_list">حذف هذه العناصر؟ لا يمكن التراجع عن ذلك.</string>
+</resources>

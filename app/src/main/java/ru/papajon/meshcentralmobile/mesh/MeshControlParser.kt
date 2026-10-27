@@ -29,6 +29,11 @@ object MeshControlParser {
                         ?: json.optText("name").takeIf { it.isNotBlank() },
                     domain = info?.optText("domain")?.takeIf { it.isNotBlank() },
                     capabilities = MeshServerCapabilities(
+                        features = (info?.opt("features") as? Number)?.toLong(),
+                        advertisedName = (info?.opt("name") as? String)?.takeIf { it.isNotBlank() },
+                        advertisedPort = info?.optIntOrNull("port")?.takeIf { it in 1..65535 },
+                        advertisedHttps = info?.opt("https") as? Boolean,
+                        maxDeviceView = info?.optIntOrNull("maxdeviceview")?.takeIf { it > 0 },
                         features2 = (info?.opt("features2") as? Number)?.toLong(),
                         consent = info?.optIntOrNull("consent"),
                         linuxShell = info?.optText("linuxshell")?.takeIf { it.isNotBlank() },
@@ -46,11 +51,21 @@ object MeshControlParser {
                     siteAdmin = readSiteAdmin(info?.opt("siteadmin")),
                     userGroupIds = parseLinks(info?.optJSONObject("links")).keys.filter { it.startsWith("ugrp/") }.toSet(),
                     removeRights = readRights(info?.opt("removeRights")),
+                    agentInstallAllowed = info != null && (readSiteAdmin(info.opt("siteadmin")) ||
+                        ((readRights(info.opt("siteadmin")) ?: 0) and 4096 == 0)),
                 )
             }
 
             "meshes" -> MeshControlEvent.Meshes(parseMeshes(json.opt("meshes")))
-            "nodes" -> MeshControlEvent.Nodes(parseNodes(json.opt("nodes")))
+            "nodes" -> MeshControlEvent.Nodes(
+                parseNodes(json.opt("nodes")),
+                responseId = json.optText("responseid").takeIf { it.isNotBlank() },
+                skip = json.optIntOrNull("skip")?.takeIf { it >= 0 },
+                limit = json.optIntOrNull("limit")?.takeIf { it > 0 },
+                totalCount = json.optIntOrNull("totalcount")?.takeIf { it >= 0 },
+                filter = json.optText("filter").takeIf { json.has("filter") },
+                result = json.optText("result").takeIf { it.isNotBlank() },
+            )
 
             "authcookie" -> MeshControlEvent.AuthCookie(
                 cookie = json.optText("cookie").takeIf { it.isNotBlank() },
@@ -139,7 +154,12 @@ object MeshControlParser {
                 ?: MeshNodeEvent.MeshChanged(null)
 
             "removenode" -> MeshNodeEvent.NodeRemoved(event.optText("nodeid"))
-            "nodemeshchange", "meshchange", "createmesh", "deletemesh" -> {
+            // The old group also receives this event. Re-read visibility rather than retaining a
+            // moved node whose destination may no longer be accessible to this account.
+            "nodemeshchange" -> MeshNodeEvent.MeshChanged(event.optText("newMeshId").takeIf { it.isNotBlank() },
+                event.optText("nodeid").ifBlank { event.optJSONObject("node")?.optText("_id").orEmpty() }.takeIf { it.isNotBlank() })
+
+            "meshchange", "createmesh", "deletemesh" -> {
                 MeshNodeEvent.MeshChanged(event.optText("meshid").takeIf { it.isNotBlank() })
             }
 
@@ -161,6 +181,7 @@ object MeshControlParser {
                         description = item.optText("desc"),
                         rightsByUser = parseLinks(item.optJSONObject("links")),
                         relayNodeId = item.optText("relayid").takeIf { it.isNotBlank() },
+                        mtype = item.optInt("mtype", 0),
                     ),
                 )
             }
@@ -227,6 +248,10 @@ object MeshControlParser {
             conn = item.optInt("conn", 0),
             pwr = item.optInt("pwr", 0),
             osDescription = item.optText("osdesc"),
+            description = item.optText("desc"),
+            tags = item.optJSONArray("tags")?.let { tags ->
+                (0 until tags.length()).mapNotNull { tags.opt(it) as? String }
+            }.orEmpty(),
             ipAddress = item.optText("ip"),
             mtype = item.optInt("mtype", 0),
             agentId = agent?.optIntOrNull("id"),

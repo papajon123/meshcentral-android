@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">যাচাই করা যায়নি: %1$s</string>
+    <string name="review_paused">বিরত: সংযোগ বিচ্ছিন্ন</string>
+    <string name="review_retry_all">অসম্পূর্ণ আইটেম আবার চেষ্টা করুন</string>
+    <string name="review_cleanup_title">রিমোট আর্কাইভ পরিষ্কার করা</string>
+    <string name="review_archive_left">কম্পিউটারে একটি অস্থায়ী আর্কাইভ থেকে যেতে পারে: %1$s। কোনো আর্কাইভ অপারেশন চলছে না থাকলে এটি পরীক্ষা করে সরান।</string>
+    <string name="review_archive_space">সম্পূর্ণ আর্কাইভের জন্য রিমোট উৎস ফোল্ডারে ZIP তৈরি করতে খালি জায়গা দরকার। এজেন্ট এটি শুরু করতে না পারলে ফাইলগুলো আলাদাভাবে কপি হবে। অসম্পূর্ণ স্থানীয় ফোল্ডারে .partial প্রত্যয় থাকে।</string>
+    <string name="review_grant_failed">এই প্রোভাইডার সারির জন্য অ্যাক্সেস ধরে রাখতে পারেনি। অন্য একটি স্থান বেছে নিন।</string>
+    <string name="review_zip_invalid">আর্কাইভটি ক্ষতিগ্রস্ত, অসম্পূর্ণ বা সমর্থিত কাঠামোর সীমা ছাড়িয়ে গেছে।</string>
+    <string name="review_source_changed">নির্বাচিত আইটেমটি বদলেছে। ফোল্ডার রিফ্রেশ করে আবার নির্বাচন নিশ্চিত করুন।</string>
+    <string name="review_sftp_types">এই সার্ভার SFTP তালিকায় সিম্বলিক লিঙ্ক বা বিশেষ ফাইল শনাক্ত করে না। যাচাই করা যায় না এমন ফাইল পথ দিয়ে জানানো হয়; সংযোগ বিচ্ছিন্ন হলে সারি বিরত থাকে। অসম্পূর্ণ ফোল্ডার .partial চিহ্নিত থাকে।</string>
+    <string name="review_skipped">অসমর্থিত আইটেম এড়িয়ে যাওয়া হয়েছে: %1$s</string>
+    <string name="review_folder_unavailable">ফোল্ডারে প্রবেশ নেই: %1$s। বাকি সারি চলতে থাকে।</string>
+    <string name="review_local_failed">স্থানীয় Android নথি লেখা বা আবার পড়া যায়নি। ফাইল সেশন এখনও সংযুক্ত; এই আইটেমটি আবার চেষ্টা করুন।</string>
+    <string name="review_local_no_rename">এই প্রদানকারী নথির নাম পরিবর্তন করতে পারে না। কিছু ফাইলে .partial প্রত্যয় থাকবে; Android Files-এ সেগুলোর নাম বদলান।</string>
+    <string name="review_source_changed_deleted">ইতিমধ্যে মুছে ফেলা হয়েছে: %1$s। বাকি নির্বাচন মোছা হয়নি; ফোল্ডার রিফ্রেশ করে আবার নিশ্চিত করুন।</string>
+    <string name="files_delete_follow_links">ফোল্ডার পুনরাবৃত্তিভাবে মুছলে সিম্বলিক লিঙ্ক ও জাংশন অনুসরণ করা হয়। নির্বাচিত ফোল্ডারের বাইরের লক্ষ্যও মুছে যেতে পারে; নিশ্চিত করার আগে MeshCentral-এ ফোল্ডারটি দেখুন।</string>
+</resources>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">Soutenir MeshPilot</string>
+    <string name="support_body">MeshPilot est gratuit, open source et sans publicité. Un abonnement ou un don ponctuel sur Boosty aide à publier de nouvelles versions.</string>
+    <string name="support_action">Soutenir sur Boosty</string>
+    <string name="support_link_copied">Aucun navigateur trouvé. Le lien Boosty a été copié.</string>
+</resources>

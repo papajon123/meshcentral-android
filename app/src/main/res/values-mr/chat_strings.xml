@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">वापरकर्त्याशी चॅट</string>
+    <string name="chat_connecting">चॅटशी कनेक्ट होत आहे…</string>
+    <string name="chat_waiting">वापरकर्ता चॅट विंडो उघडण्याची प्रतीक्षा करत आहे</string>
+    <string name="chat_connected">वापरकर्ता चॅटमध्ये आहे</string>
+    <string name="chat_peer_left">वापरकर्त्याने चॅट सोडली किंवा कनेक्शन तुटले</string>
+    <string name="chat_failed">चॅटचे कनेक्शन तुटले. पुन्हा कनेक्ट होण्यासाठी विंडोची पुन्हा विनंती करा.</string>
+    <string name="chat_closed">चॅट बंद झाली. डिव्हाइस मेनूमधून ती पुन्हा उघडा.</string>
+    <string name="chat_request">चॅट विंडोची पुन्हा विनंती करा</string>
+    <string name="chat_close">चॅट बंद करा</string>
+    <string name="chat_message">संदेश</string>
+    <string name="chat_send">संदेश पाठवा</string>
+    <string name="chat_send_failed">संदेश पाठवला गेला नाही. तुमचा मजकूर अजूनही येथे आहे; पुन्हा प्रयत्न करा.</string>
+    <string name="chat_length">अक्षरांची कमाल संख्या: %1$d</string>
+    <string name="chat_recorded">सर्व्हर ही चॅट रेकॉर्ड करत आहे</string>
+    <string name="chat_you">तुम्ही</string>
+    <string name="chat_user">वापरकर्ता</string>
+    <string name="chat_empty">तुम्ही चॅट बंद करेपर्यंत संदेश येथेच राहतील.</string>
+    <string name="chat_notification">नवीन चॅट संदेश</string>
+    <string name="chat_notifications_enable">चॅट सूचना सक्षम करा</string>
+    <string name="chat_notifications_unavailable">Android सेटिंग्जमध्ये सूचना बंद आहेत.</string>
+    <string name="chat_truncated">संदेश लहान केला</string>
+    <string name="chat_reconnecting">चॅटशी पुन्हा कनेक्ट होत आहे…</string>
+    <string name="chat_not_opened">वापरकर्त्याने चॅट विंडो उघडली नाही</string>
+    <string name="chat_invite_unavailable">संगणक किंवा नियंत्रण कनेक्शन ऑफलाइन आहे. नंतर विंडो पुन्हा विनंती करून पहा.</string>
+    <string name="chat_unread">न वाचलेले चॅट संदेश: %1$d</string>
+    <string name="chat_service_channel">सक्रिय चॅट</string>
+    <string name="chat_service_active">चॅट सक्रिय आहे</string>
+    <string name="chat_service_description">तुम्ही इतर ॲप वापरत असताना तुमचे संभाषण कनेक्ट केलेले ठेवते.</string>
+    <string name="chat_service_failed">चॅट चालू ठेवता आले नाही. ॲप दिसत असताना ते पुन्हा उघडा.</string>
+    <string name="chat_back">मागे</string>
+    <string name="chat_close_confirm">ही चॅट बंद करून तिचे संदेश पुसायचे?</string>
+</resources>

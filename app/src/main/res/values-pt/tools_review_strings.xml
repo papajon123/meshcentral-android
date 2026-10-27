@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">Não foi possível verificar: %1$s</string>
+    <string name="review_paused">Em pausa: conexão perdida</string>
+    <string name="review_retry_all">Tentar novamente os itens não concluídos</string>
+    <string name="review_cleanup_title">Limpeza do arquivo compactado remoto</string>
+    <string name="review_archive_left">Um arquivo compactado temporário pode permanecer no computador: %1$s. Verifique e remova-o quando nenhuma operação de arquivo compactado estiver em execução.</string>
+    <string name="review_archive_space">Criar um ZIP exige espaço livre na pasta de origem remota para um arquivo compactado completo. Se o agente não conseguir iniciá-lo, os arquivos serão copiados individualmente. Pastas locais incompletas mantêm o sufixo .partial.</string>
+    <string name="review_grant_failed">Este provedor não conseguiu manter o acesso para a fila. Escolha outro local.</string>
+    <string name="review_zip_invalid">O arquivo compactado está danificado, incompleto ou excede os limites de estrutura suportados.</string>
+    <string name="review_source_changed">O item selecionado mudou. Atualize a pasta e confirme a seleção novamente.</string>
+    <string name="review_sftp_types">Este servidor não identifica links simbólicos nem arquivos especiais nas listagens SFTP. Arquivos não verificáveis são informados pelo caminho; a fila pausa se a conexão cair. Pastas incompletas permanecem marcadas .partial.</string>
+    <string name="review_skipped">Item não suportado ignorado: %1$s</string>
+    <string name="review_folder_unavailable">Sem acesso à pasta: %1$s. O restante da fila continua.</string>
+    <string name="review_local_failed">Não foi possível gravar ou reler o documento Android local. A sessão de arquivos continua conectada; tente novamente este item.</string>
+    <string name="review_local_no_rename">Este provedor não renomeia documentos. Alguns arquivos mantêm o sufixo .partial; renomeie-os em Arquivos do Android.</string>
+    <string name="review_source_changed_deleted">Já excluído: %1$s. O restante da seleção não foi excluído; atualize a pasta e confirme novamente.</string>
+    <string name="files_delete_follow_links">A exclusão recursiva de pastas segue links simbólicos e junções. Destinos fora da pasta selecionada também podem ser apagados; verifique a pasta no MeshCentral antes de confirmar.</string>
+</resources>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">دعوة جهاز</string>
+    <string name="admin_invite_help">يمكن لأي شخص لديه هذا الرابط تثبيت وكيل في «%1$s». لا تشاركه إلا مع الشخص الذي تريد مساعدته.</string>
+    <string name="admin_invite_mode">يتيح تثبيت أي وكيل متاح في الخلفية أو بشكل تفاعلي.</string>
+    <string name="admin_expiry">مدة صلاحية الرابط</string>
+    <string name="admin_create_link">إنشاء رابط</string>
+    <string name="admin_expires_at">ينتهي: %1$s</string>
+    <string name="admin_expired">انتهت صلاحية هذا الرابط. أنشئ رابطًا جديدًا.</string>
+    <string name="admin_qr">امسح الرمز لفتح صفحة تثبيت الوكيل</string>
+    <string name="admin_share">مشاركة الرابط</string>
+    <string name="admin_copy">نسخ الرابط</string>
+    <string name="admin_copied">تم نسخ الرابط</string>
+    <string name="admin_close">إغلاق</string>
+    <string name="admin_cancel">إلغاء</string>
+    <string name="admin_confirm">تأكيد</string>
+    <string name="admin_review">مراجعة التغييرات</string>
+    <string name="admin_edit">تعديل الجهاز</string>
+    <string name="admin_name">الاسم</string>
+    <string name="admin_description">الوصف</string>
+    <string name="admin_tags">الوسوم مفصولة بفواصل</string>
+    <string name="admin_notes">ملاحظات</string>
+    <string name="admin_save_notes">حفظ الملاحظات</string>
+    <string name="admin_move">نقل إلى مجموعة أخرى</string>
+    <string name="admin_move_confirm">نقل «%1$s» إلى «%2$s»؟ ستتبع صلاحية الوصول المجموعة الوجهة.</string>
+    <string name="admin_edit_confirm">حفظ هذه التغييرات في «%1$s»؟</string>
+    <string name="admin_notes_confirm">استبدال ملاحظات «%1$s»؟</string>
+    <string name="admin_saved">تم تأكيد التغييرات من الخادم</string>
+    <string name="admin_failed">تعذّر تأكيد التغيير. حدّث الصفحة وتحقق من الجهاز قبل المحاولة مرة أخرى.</string>
+    <string name="admin_invite_failed">تعذّر إنشاء الرابط. تحقق من اتصالك وأذونات المجموعة، ثم حاول مرة أخرى.</string>
+    <string name="admin_loading">في انتظار الخادم…</string>
+    <string name="admin_invalid">الاسم: من 1 إلى 64 حرفًا. الوصف: حتى 64 حرفًا. كل وسم: حتى 63 حرفًا؛ الإجمالي: حتى 4096. استخدم نصًا من سطر واحد دون أحرف تحكم أو تنسيق اتجاه النص.</string>
+    <string name="admin_endpoint">الخادم: %1$s</string>
+    <string name="admin_unavailable">أعد الاتصال وحدّث الصفحة لإدارة هذا الجهاز. يجب أن يمتلك حسابك الأذونات المطلوبة.</string>
+    <string name="admin_notes_limit">الملاحظات: حتى 16000 حرف.</string>
+    <string name="admin_no_destinations">لا توجد مجموعات متوافقة لديها إذن بنقل هذا الجهاز.</string>
+</resources>

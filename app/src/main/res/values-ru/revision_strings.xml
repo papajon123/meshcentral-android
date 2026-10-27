@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">Этот черновой формат резервной копии не поддерживается. Создайте новую резервную копию в приложении, которое её экспортировало.</string>
+    <string name="backup_key_approval_title">Подтвердите импортированный ключ сервера</string>
+    <string name="backup_key_matches">Ключ сервера совпадает с резервной копией. Перед входом подтвердите, что доверяете ему.</string>
+    <string name="backup_key_mismatch">Внимание: ключ сервера НЕ совпадает с резервной копией. Сверьте отпечаток с администратором, прежде чем доверять ему.</string>
+    <string name="backup_key_expected">Ожидаемый ключ из резервной копии: %1$s</string>
+    <string name="backup_error_newer">Этот файл создан более новой версией MeshPilot. Обновите приложение, чтобы импортировать его.</string>
+    <string name="backup_error_auth">Неверный пароль или зашифрованный файл был изменён.</string>
+    <string name="backup_error_corrupt">Резервная копия повреждена или имеет неверный формат.</string>
+    <string name="backup_error_limit">Резервная копия превышает допустимые размеры или количество элементов.</string>
+    <string name="backup_extension_skipped">Раздел из более новой версии пропущен: %1$s. Его данные не будут импортированы.</string>
+    <string name="backup_duplicate">Профиль для этого сервера уже существует.</string>
+    <string name="backup_skip_duplicates">Пропускать профили, сервер которых уже существует</string>
+    <string name="backup_value_on">Вкл.</string>
+    <string name="backup_value_off">Выкл.</string>
+    <string name="backup_preferences_preview">Защита скриншотов: %1$s\nЗадержка автоблокировки: %2$d сек.\nТема: %3$s\nСистемные цвета: %4$s\nТочность пера: %5$s\nПодсказка по перу уже показана: %6$s\nСкрывать устройства при блокировке: %7$s</string>
+    <string name="integration_privacy_setting">Скрывать устройства в виджетах и ярлыках, пока приложение заблокировано</string>
+    <string name="integration_privacy_help">При защите PIN-кодом или биометрией скрывайте названия и состояние устройств, пока приложение заблокировано или вы находитесь вне приложения.</string>
+    <string name="integration_private_hidden">Разблокируйте приложение, чтобы просмотреть устройства</string>
+    <string name="integration_private_device">Защищённое устройство</string>
+    <string name="integration_retry_seconds">Повторите через %1$d с</string>
+</resources>

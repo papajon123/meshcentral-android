@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">Seleccionados: %1$d</string>
+    <string name="tools_clear_selection">Borrar selección</string>
+    <string name="tools_download_selected">Descargar selección</string>
+    <string name="tools_delete_selected">Eliminar selección</string>
+    <string name="tools_select_hint">Mantén pulsado para seleccionar varios elementos</string>
+    <string name="tools_download_folder">Descargar carpeta</string>
+    <string name="tools_folder_notice">Las carpetas de Mesh Agent se descargan como archivos ZIP. Las carpetas SFTP se copian archivo por archivo. Elige una carpeta de destino.</string>
+    <string name="tools_batch_progress">Completado: %1$d de %2$d · %3$d bytes</string>
+    <string name="tools_retry">Reintentar</string>
+    <string name="tools_queued">En cola</string>
+    <string name="tools_active">Descargando</string>
+    <string name="tools_succeeded">Verificado</string>
+    <string name="tools_failed">Fallido</string>
+    <string name="tools_cancelled">Cancelado</string>
+    <string name="tools_archiving">Creando el archivo comprimido remoto…</string>
+    <string name="tools_archive_failed">No se pudo crear o verificar el archivo comprimido.</string>
+    <string name="tools_archive_left">La descarga falló. Puede quedar un archivo temporal meshpilot-*.zip en la carpeta de origen. Reintenta para eliminarlo y volver a descargar.</string>
+    <string name="tools_batch_failed">Una descarga falló. Al reintentar, empezará de nuevo en un archivo local nuevo.</string>
+    <string name="tools_delete_list">¿Eliminar estos elementos? Esta acción no se puede deshacer.</string>
+</resources>

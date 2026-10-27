@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">Gesto a due dita</string>
+    <string name="desktop_gesture_default">Comportamento originale</string>
+    <string name="desktop_gesture_scroll">Scorri la finestra remota</string>
+    <string name="desktop_gesture_pan">Sposta l\'immagine</string>
+    <string name="desktop_pinch">Pizzica per ingrandire</string>
+    <string name="desktop_three_fingers">Tre dita scorrono la finestra remota.</string>
+    <string name="desktop_scale">Scala dell\'immagine richiesta: %1$d%%</string>
+    <string name="desktop_pip">Immagine nell\'immagine</string>
+    <string name="desktop_pip_auto">Continua a guardare quando esci dall\'app</string>
+    <string name="desktop_stream_rate">≈ %1$.1f aggiornamenti/s · %2$d B/s</string>
+    <string name="desktop_input_help">Tastiera e mouse fisici funzionano sul desktop. Android potrebbe riservare Alt+Tab o Meta; in tal caso usa il menu dei tasti. La rotella orizzontale usa Maiusc + rotella quando supportato.</string>
+    <string name="desktop_rate_help">Qualità, scala e limite di fotogrammi sono impostazioni richieste. Altri spettatori possono aumentare qualità, scala o frequenza di aggiornamento. Il contatore misura gli aggiornamenti dei riquadri, non i fotogrammi completi.</string>
+    <string name="desktop_keyboard_capture">Acquisisci tastiera fisica</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc rilascia la tastiera e apre le opzioni della sessione.</string>
+</resources>

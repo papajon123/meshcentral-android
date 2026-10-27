@@ -1,5 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">前へ</string>
+    <string name="devices_page_next">次へ</string>
+    <plurals name="devices_page_count">
+        <item quantity="other">%3$d 台中 %1$d–%2$d 台</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="other">デバイス %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">検出されたデバイス: %1$d</string>
+    <string name="devices_server_search">すべてのデバイスを名前で検索</string>
+    <string name="devices_page_failed">デバイスを読み込めませんでした。もう一度お試しください。</string>
     <string name="biometric_unlock_title">MeshPilot のロック解除</string>
     <string name="biometric_unlock_subtitle">アプリを開くには、デバイスの生体認証で本人確認を行ってください。</string>
     <string name="cancel">キャンセル</string>
@@ -314,4 +325,6 @@
     <string name="settings_update_supporting">GitHub Releases で署名済み APK を提供しています。現在のバージョンに上書きして新しいバージョンをインストールしてください。</string>
     <string name="settings_update_action">アップデートをダウンロード</string>
     <string name="settings_update_unavailable">ブラウザーを開けませんでした。https://github.com/papajon123/meshcentral-android/releases を手動で開いてください。</string>
+    <string name="chat_verifying_peer">ユーザーとのチャット接続を確認しています…</string>
+    <string name="chat_server_retained">サーバーが前の接続を保持したままです。最大 20 分間再試行しています…</string>
 </resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">Gesto de dos dedos</string>
+    <string name="desktop_gesture_default">Comportamiento original</string>
+    <string name="desktop_gesture_scroll">Desplazar la ventana remota</string>
+    <string name="desktop_gesture_pan">Mover la imagen</string>
+    <string name="desktop_pinch">Pellizcar para ampliar</string>
+    <string name="desktop_three_fingers">Tres dedos desplazan la ventana remota.</string>
+    <string name="desktop_scale">Escala solicitada de la imagen: %1$d%%</string>
+    <string name="desktop_pip">Imagen en imagen</string>
+    <string name="desktop_pip_auto">Seguir viendo al salir de la aplicación</string>
+    <string name="desktop_stream_rate">≈ %1$.1f actualizaciones/s · %2$d B/s</string>
+    <string name="desktop_input_help">El teclado y el ratón físicos funcionan en el escritorio. Android puede reservar Alt+Tab o Meta; en ese caso, usa el menú de teclas. La rueda horizontal usa Mayús + rueda cuando es compatible.</string>
+    <string name="desktop_rate_help">La calidad, la escala y el límite de fotogramas son ajustes solicitados. Otros espectadores pueden aumentar la calidad, la escala o la frecuencia de actualización. El contador mide actualizaciones de mosaicos, no fotogramas completos.</string>
+    <string name="desktop_keyboard_capture">Capturar teclado físico</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc libera el teclado y abre las opciones de sesión.</string>
+</resources>

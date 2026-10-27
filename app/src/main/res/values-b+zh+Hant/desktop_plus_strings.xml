@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">雙指手勢</string>
+    <string name="desktop_gesture_default">原始行為</string>
+    <string name="desktop_gesture_scroll">捲動遠端視窗</string>
+    <string name="desktop_gesture_pan">平移影像</string>
+    <string name="desktop_pinch">雙指捏合縮放</string>
+    <string name="desktop_three_fingers">三指可捲動遠端視窗。</string>
+    <string name="desktop_scale">要求的影像縮放：%1$d%%</string>
+    <string name="desktop_pip">子母畫面</string>
+    <string name="desktop_pip_auto">離開應用程式後繼續觀看</string>
+    <string name="desktop_stream_rate">≈ %1$.1f 更新/秒 · %2$d B/s</string>
+    <string name="desktop_input_help">硬體鍵盤與滑鼠可在桌面上使用。Android 可能會保留 Alt+Tab 或 Meta 鍵；此時請使用按鍵選單。支援時，水平滾輪可透過 Shift + 滾輪操作。</string>
+    <string name="desktop_rate_help">畫質、縮放和影格數上限都是要求的設定。其他檢視者可以提高畫質、縮放或更新率。計數器統計的是圖磚更新次數，而不是完整影格。</string>
+    <string name="desktop_keyboard_capture">擷取實體鍵盤</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc 可釋放鍵盤並開啟工作階段選項。</string>
+</resources>

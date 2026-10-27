@@ -618,9 +618,20 @@ fun SessionOptionsSheet(
     onToggleFullscreen: () -> Unit,
     onHideChrome: () -> Unit,
     onClose: () -> Unit,
+    onScaling: (Int) -> Unit = {},
+    twoFingerAction: ru.papajon.meshcentralmobile.mesh.TwoFingerAction = ru.papajon.meshcentralmobile.mesh.TwoFingerAction.Default,
+    onTwoFingerAction: (ru.papajon.meshcentralmobile.mesh.TwoFingerAction) -> Unit = {},
+    pinchEnabled: Boolean = true,
+    onPinchEnabled: (Boolean) -> Unit = {},
+    pipSupported: Boolean = false,
+    pipAutomatic: Boolean = false,
+    onPipAutomatic: (Boolean) -> Unit = {},
+    onEnterPip: () -> Unit = {},
+    hardwareKeyboardCaptured: Boolean = true,
+    onHardwareKeyboardCaptured: (Boolean) -> Unit = {},
 ) {
-    var quality by remember(state.attempt) { mutableStateOf(60f) }
-    var frameRate by remember(state.attempt) { mutableStateOf(30f) }
+    var quality by remember(state.quality) { mutableStateOf(state.quality.jpegQuality.toFloat()) }
+    var frameRate by remember(state.quality) { mutableStateOf(state.quality.frameRate.toFloat()) }
 
     MeshSheet(onDismissRequest = onClose) {
         Column(
@@ -646,6 +657,8 @@ fun SessionOptionsSheet(
                     Icon(Icons.Outlined.FitScreen, contentDescription = stringResource(R.string.common_action_fit_to_screen))
                 }
             }
+            Text(stringResource(R.string.desktop_rate_help), modifier = Modifier.padding(horizontal = 16.dp),
+                style = MaterialTheme.typography.bodySmall)
             SectionLabel(stringResource(R.string.session_options_stream_quality))
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                 Text(
@@ -665,7 +678,7 @@ fun SessionOptionsSheet(
                 Slider(
                     value = frameRate,
                     onValueChange = { frameRate = it },
-                    valueRange = 5f..60f,
+                    valueRange = 1f..50f,
                     onValueChangeFinished = { onQuality(quality.toInt(), frameRate.toInt()) },
                 )
             }
@@ -674,16 +687,20 @@ fun SessionOptionsSheet(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                OutlinedButton(onClick = { onQuality(35, 12) }, shape = PillShape) {
+                OutlinedButton(onClick = { quality = 35f; frameRate = 12f; onQuality(35, 12) }, shape = PillShape) {
                     Text(stringResource(R.string.session_options_preset_saver))
                 }
-                OutlinedButton(onClick = { onQuality(60, 30) }, shape = PillShape) {
+                OutlinedButton(onClick = { quality = 60f; frameRate = 30f; onQuality(60, 30) }, shape = PillShape) {
                     Text(stringResource(R.string.session_options_preset_balanced))
                 }
-                OutlinedButton(onClick = { onQuality(85, 50) }, shape = PillShape) {
+                OutlinedButton(onClick = { quality = 85f; frameRate = 50f; onQuality(85, 50) }, shape = PillShape) {
                     Text(stringResource(R.string.session_options_preset_sharp))
                 }
             }
+
+            DesktopExtraOptions(state, onScaling, twoFingerAction, onTwoFingerAction, pinchEnabled,
+                onPinchEnabled, pipSupported, pipAutomatic, onPipAutomatic, onEnterPip,
+                hardwareKeyboardCaptured, onHardwareKeyboardCaptured)
 
             SectionLabel(stringResource(R.string.session_options_connection))
             FlowRow(

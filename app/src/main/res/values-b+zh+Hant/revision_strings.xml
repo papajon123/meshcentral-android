@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">不支援此草稿備份格式。請在匯出此備份的應用程式中建立新的備份。</string>
+    <string name="backup_key_approval_title">確認匯入的伺服器金鑰</string>
+    <string name="backup_key_matches">伺服器金鑰與備份相符。登入前請確認您信任此金鑰。</string>
+    <string name="backup_key_mismatch">警告：伺服器金鑰與備份不相符。信任前請與系統管理員核對指紋。</string>
+    <string name="backup_key_expected">備份中的預期金鑰：%1$s</string>
+    <string name="backup_error_newer">此檔案來自較新版本的 MeshPilot。請更新應用程式再匯入。</string>
+    <string name="backup_error_auth">密碼不正確，或加密檔案已被修改。</string>
+    <string name="backup_error_corrupt">備份已損毀或格式無效。</string>
+    <string name="backup_error_limit">備份超出支援的大小或項目數量限制。</string>
+    <string name="backup_extension_skipped">已略過來自較新版本的區段：%1$s。其資料不會被匯入。</string>
+    <string name="backup_duplicate">此伺服器的設定檔已存在。</string>
+    <string name="backup_skip_duplicates">略過伺服器已存在的設定檔</string>
+    <string name="backup_value_on">開啟</string>
+    <string name="backup_value_off">關閉</string>
+    <string name="backup_preferences_preview">螢幕擷取保護：%1$s\n自動鎖定延遲：%2$d 秒\n主題：%3$s\n系統顏色：%4$s\n觸控筆精確度：%5$s\n已顯示觸控筆提示：%6$s\n鎖定時隱藏裝置：%7$s</string>
+    <string name="integration_privacy_setting">應用程式鎖定時，在小工具和捷徑中隱藏裝置</string>
+    <string name="integration_privacy_help">啟用 PIN 或生物辨識保護後，在鎖定或離開應用程式時隱藏裝置名稱和狀態。</string>
+    <string name="integration_private_hidden">解鎖應用程式以查看裝置</string>
+    <string name="integration_private_device">受保護的裝置</string>
+    <string name="integration_retry_seconds">%1$d 秒後重試</string>
+</resources>

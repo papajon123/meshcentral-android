@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">อุปกรณ์นี้ไม่พร้อมใช้งานแล้ว เปิดแอป</string>
+    <string name="integration_favorites">รายการโปรด</string>
+    <string name="integration_updated">อัปเดต: %1$s</string>
+    <string name="integration_widget_empty">เปิดแอปและเพิ่มอุปกรณ์ในรายการโปรด</string>
+    <string name="integration_widget_description">อุปกรณ์ในรายการโปรดและสถานะการใช้งานล่าสุดที่ทราบ</string>
+    <string name="integration_last_known">สถานะล่าสุดที่ทราบ</string>
+    <string name="integration_open_to_refresh">เปิดแอปเพื่อเชื่อมต่อและรีเฟรช</string>
+    <string name="integration_refresh">รีเฟรช</string>
+    <string name="integration_open_app">เปิดแอป</string>
+    <string name="backup_title">สำรองข้อมูลการตั้งค่า</string>
+    <string name="backup_description">ส่งออกโปรไฟล์เซิร์ฟเวอร์ รายการโปรด ปุ่มลัดแป้นพิมพ์ ตัวอย่างคำสั่ง และการตั้งค่าแอป ไม่รวมรหัสผ่าน โทเค็นเซสชัน คุกกี้ของอุปกรณ์ที่จดจำไว้ และ PIN ของแอป ตัวอย่างคำสั่งอาจมีข้อความที่คุณป้อน ตรวจสอบก่อนแชร์</string>
+    <string name="backup_export">ส่งออกไฟล์</string>
+    <string name="backup_import">นำเข้าไฟล์</string>
+    <string name="backup_include_keys">รวมคีย์เข้าสู่ระบบเซิร์ฟเวอร์ (เฉพาะที่เข้ารหัสแล้ว)</string>
+    <string name="backup_password">รหัสผ่านสำรอง (อย่างน้อย 8 ตัวอักษร)</string>
+    <string name="backup_password_hint">รหัสผ่านจะเข้ารหัสทั้งไฟล์ เก็บไว้ให้ปลอดภัยและไม่สามารถกู้คืนได้</string>
+    <string name="backup_confirm_password">ยืนยันรหัสผ่าน</string>
+    <string name="backup_password_mismatch">รหัสผ่านต้องตรงกันและมีความยาว 8–1024 ตัวอักษร</string>
+    <string name="backup_busy">กำลังประมวลผล…</string>
+    <string name="backup_saved">บันทึกไฟล์สำรองแล้ว</string>
+    <string name="backup_failed">ไม่สามารถประมวลผลข้อมูลสำรองได้ ตรวจสอบไฟล์ เวอร์ชันรูปแบบ รหัสผ่าน และสิทธิ์เข้าถึงที่จัดเก็บ</string>
+    <string name="backup_preview">ตรวจสอบการนำเข้า</string>
+    <string name="backup_preview_explanation">โปรไฟล์จะถูกเพิ่มเป็นโปรไฟล์ใหม่ โปรไฟล์ ข้อมูลรับรอง และ PIN ที่มีอยู่จะยังคงอยู่ ตรวจสอบที่อยู่เซิร์ฟเวอร์และคีย์ที่ปักหมุดก่อนยืนยัน</string>
+    <string name="backup_profile_details">%1$d รายการโปรด · %2$d ปุ่มลัด · %3$d คำสั่ง</string>
+    <string name="backup_pinned_key">คีย์เซิร์ฟเวอร์ที่ปักหมุด: %1$s</string>
+    <string name="backup_contains_key">มีคีย์เข้าสู่ระบบเซิร์ฟเวอร์ที่เข้ารหัสแล้ว</string>
+    <string name="backup_apply_preferences">แทนที่รูปลักษณ์ การป้องกันภาพหน้าจอ ระยะหน่วงการล็อกอัตโนมัติ และการตั้งค่าสไตลัสด้วย</string>
+    <string name="backup_confirm_import">เพิ่มโปรไฟล์</string>
+    <string name="backup_imported">เพิ่มโปรไฟล์ %1$d รายการ เลือกโปรไฟล์และเข้าสู่ระบบ</string>
+    <string name="backup_capacity">ช่องโปรไฟล์ว่างไม่เพียงพอ ลบโปรไฟล์ที่ไม่ได้ใช้ก่อนนำเข้า</string>
+    <string name="backup_decrypt">ถอดรหัสข้อมูลสำรอง</string>
+    <string name="backup_no_profiles">กำหนดค่าโปรไฟล์เซิร์ฟเวอร์ HTTPS ก่อนส่งออก</string>
+</resources>

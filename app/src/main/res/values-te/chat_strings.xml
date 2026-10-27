@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">వినియోగదారుతో చాట్</string>
+    <string name="chat_connecting">చాట్‌కు కనెక్ట్ అవుతోంది…</string>
+    <string name="chat_waiting">వినియోగదారు చాట్ విండో తెరవడానికి వేచి ఉంది</string>
+    <string name="chat_connected">వినియోగదారు చాట్‌లో ఉన్నారు</string>
+    <string name="chat_peer_left">వినియోగదారు చాట్ నుండి నిష్క్రమించారు లేదా కనెక్షన్ తెగిపోయింది</string>
+    <string name="chat_failed">చాట్ కనెక్షన్ తెగిపోయింది. మళ్లీ కనెక్ట్ కావడానికి విండోను అభ్యర్థించండి.</string>
+    <string name="chat_closed">చాట్ మూసివేయబడింది. పరికర మెనూ నుండి దాన్ని మళ్లీ తెరవండి.</string>
+    <string name="chat_request">చాట్ విండోను మళ్లీ అభ్యర్థించండి</string>
+    <string name="chat_close">చాట్‌ను మూసివేయి</string>
+    <string name="chat_message">సందేశం</string>
+    <string name="chat_send">సందేశం పంపు</string>
+    <string name="chat_send_failed">సందేశం పంపబడలేదు. మీ వచనం ఇంకా ఇక్కడే ఉంది; మళ్లీ ప్రయత్నించండి.</string>
+    <string name="chat_length">గరిష్ఠ అక్షరాల సంఖ్య: %1$d</string>
+    <string name="chat_recorded">సర్వర్ ఈ చాట్‌ను రికార్డ్ చేస్తోంది</string>
+    <string name="chat_you">మీరు</string>
+    <string name="chat_user">వినియోగదారు</string>
+    <string name="chat_empty">మీరు చాట్‌ను మూసివేసే వరకు సందేశాలు ఇక్కడే ఉంటాయి.</string>
+    <string name="chat_notification">కొత్త చాట్ సందేశం</string>
+    <string name="chat_notifications_enable">చాట్ నోటిఫికేషన్‌లను ప్రారంభించండి</string>
+    <string name="chat_notifications_unavailable">Android సెట్టింగ్‌లలో నోటిఫికేషన్‌లు నిలిపివేయబడ్డాయి.</string>
+    <string name="chat_truncated">సందేశం చిన్నదిగా చేయబడింది</string>
+    <string name="chat_reconnecting">చాట్‌కు మళ్లీ కనెక్ట్ అవుతోంది…</string>
+    <string name="chat_not_opened">వినియోగదారు చాట్ విండోను తెరవలేదు</string>
+    <string name="chat_invite_unavailable">కంప్యూటర్ లేదా నియంత్రణ కనెక్షన్ ఆఫ్‌లైన్‌లో ఉంది. తర్వాత విండోను మళ్లీ అభ్యర్థించండి.</string>
+    <string name="chat_unread">చదవని చాట్ సందేశాలు: %1$d</string>
+    <string name="chat_service_channel">యాక్టివ్ చాట్‌లు</string>
+    <string name="chat_service_active">చాట్ యాక్టివ్‌గా ఉంది</string>
+    <string name="chat_service_description">మీరు ఇతర యాప్‌లను ఉపయోగిస్తున్నప్పుడు మీ సంభాషణను కనెక్ట్‌గా ఉంచుతుంది.</string>
+    <string name="chat_service_failed">చాట్‌ను అమలులో ఉంచలేకపోయింది. యాప్ కనిపిస్తున్నప్పుడు దాన్ని మళ్లీ తెరవండి.</string>
+    <string name="chat_back">వెనుకకు</string>
+    <string name="chat_close_confirm">ఈ చాట్‌ను మూసివేసి దాని సందేశాలను తొలగించాలా?</string>
+</resources>

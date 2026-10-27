@@ -1,0 +1,80 @@
+<resources>
+    <string name="pf_title">Port forwarding</string>
+    <string name="pf_channel">TCP channel</string>
+    <string name="pf_stop_all">Stop all</string>
+    <string name="pf_stop_device">Stop device tunnels</string>
+    <string name="pf_service_failed">The port forwarding service is not running.</string>
+    <string name="pf_starting">Starting…</string>
+    <string name="pf_back">Back</string>
+    <string name="pf_add">Add rule</string>
+    <string name="pf_empty">No forwarding rules for this device yet.</string>
+    <string name="pf_security_warning">Any app on this phone can access an active port, including services that trust localhost without signing in. Browser cookies are shared across ports on 127.0.0.1. The rule stops automatically after %1$d minutes with no connections. An open connection prevents automatic stop, even without traffic. Stop it when finished.</string>
+    <string name="pf_copy_address">Copy local address</string>
+    <string name="pf_copied">Local address copied</string>
+    <string name="pf_open">Open</string>
+    <string name="pf_no_client">No app can open this address. Install a client for this protocol and try again.</string>
+    <string name="pf_delete_rule">Delete %1$s</string>
+    <string name="pf_toggle">Enable %1$s</string>
+    <string name="pf_status_running">Local port open</string>
+    <string name="pf_target_notice">An open local port does not confirm that the remote service is reachable. MeshCentral may leave an unavailable target connection open; stop it manually if your client remains waiting.</string>
+    <string name="pf_status_stopped">Stopped</string>
+    <string name="pf_idle_stopped">Stopped after inactivity</string>
+    <string name="pf_connections">Connections: %1$d</string>
+    <string name="pf_bytes">Sent %1$s · Received %2$s</string>
+    <string name="pf_local_address">Local address</string>
+    <string name="pf_templates">Template</string>
+    <string name="pf_name">Name</string>
+    <string name="pf_remote_address">Remote address</string>
+    <string name="pf_remote_address_hint">Empty = 127.0.0.1 on the remote device</string>
+    <string name="pf_remote_port">Remote port</string>
+    <string name="pf_local_port">Local port</string>
+    <string name="pf_local_port_hint">Empty = automatic port</string>
+    <string name="pf_add_title">New forwarding rule</string>
+    <string name="pf_save">Save</string>
+    <string name="pf_cancel">Cancel</string>
+    <string name="pf_form_name_required">Enter a rule name.</string>
+    <string name="pf_form_name_invalid">The name must be 1–80 characters without control characters.</string>
+    <string name="pf_form_remote_port_invalid">Remote port must be a whole number from 1 to 65535.</string>
+    <string name="pf_form_local_port_invalid">Local port must be empty or a whole number from 0 to 65535.</string>
+    <string name="pf_form_address_invalid">Remote address must be empty, an IP address, or a host name without spaces or a URL.</string>
+    <string name="pf_form_invalid">Check the rule values and try again.</string>
+    <string name="pf_form_save_failed">The rule could not be saved. Check the storage and the 64-rule limit.</string>
+    <string name="pf_delete_failed">The rule could not be deleted.</string>
+    <string name="pf_error_invalid_rule">The rule is invalid. Check the address and ports.</string>
+    <string name="pf_error_unavailable">Port forwarding is not available for this device.</string>
+    <string name="pf_error_port_in_use">The local port is already in use. Choose another port or leave it empty.</string>
+    <string name="pf_error_limit">The connection or buffer limit was reached.</string>
+    <string name="pf_error_connect_failed">The MeshCentral relay could not be paired. Check access, agent availability and the signed-in session.</string>
+    <string name="pf_error_timeout">Timed out waiting for the agent relay to pair.</string>
+    <string name="pf_error_connection_lost">One connection was lost. Other connections remain open.</string>
+    <string name="pf_error_tls">A secure connection to the server could not be established.</string>
+    <string name="pf_error_service">The forwarding service is not running.</string>
+    <string name="pf_template_custom">Custom</string>
+    <string name="pf_saved_title">Saved forwarding rules</string>
+    <string name="pf_saved_count">%1$d saved</string>
+    <string name="pf_saved_available">Available without the device</string>
+    <string name="pf_saved_description">These rules stay here even when the device is offline or removed.</string>
+    <string name="pf_saved_manage">Manage</string>
+    <string name="pf_saved_dialog_title">Saved rules</string>
+    <string name="pf_saved_empty">No saved forwarding rules for this profile.</string>
+    <string name="pf_saved_device_missing">Device unavailable</string>
+    <string name="pf_saved_endpoint">%1$s · %2$s:%3$d</string>
+    <string name="pf_saved_active">Tunnel active. Stop it before deleting.</string>
+    <string name="pf_saved_delete">Delete saved rule %1$s</string>
+    <string name="pf_saved_delete_failed">The saved rule could not be deleted.</string>
+    <string name="pf_saved_close">Close</string>
+
+    <string name="pf_kind_rdp" translatable="false">RDP</string>
+    <string name="pf_kind_vnc" translatable="false">VNC</string>
+    <string name="pf_kind_ssh" translatable="false">SSH</string>
+    <string name="pf_kind_http" translatable="false">HTTP</string>
+    <string name="pf_kind_http_alt" translatable="false">HTTP (8080)</string>
+    <string name="pf_kind_https" translatable="false">HTTPS</string>
+    <string name="pf_kind_custom" translatable="false">TCP</string>
+    <string name="pf_template_rdp" translatable="false">RDP</string>
+    <string name="pf_template_vnc" translatable="false">VNC</string>
+    <string name="pf_template_ssh" translatable="false">SSH</string>
+    <string name="pf_template_http80" translatable="false">HTTP 80</string>
+    <string name="pf_template_http8080" translatable="false">HTTP 8080</string>
+    <string name="pf_template_https" translatable="false">HTTPS 443</string>
+</resources>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">伺服器拒絕了此檔案。重試前請檢查該檔案的權限與類型。</string>
+</resources>

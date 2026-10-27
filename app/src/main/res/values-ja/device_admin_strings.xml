@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">デバイスを招待</string>
+    <string name="admin_invite_help">このリンクを知っている人は誰でも「%1$s」にエージェントをインストールできます。助けたい相手にだけ共有してください。</string>
+    <string name="admin_invite_mode">利用可能なエージェントをバックグラウンドまたは対話形式でインストールできるようにします。</string>
+    <string name="admin_expiry">リンクの有効期間</string>
+    <string name="admin_create_link">リンクを作成</string>
+    <string name="admin_expires_at">有効期限：%1$s</string>
+    <string name="admin_expired">このリンクは期限切れです。新しいリンクを作成してください。</string>
+    <string name="admin_qr">スキャンしてエージェントのインストールページを開きます</string>
+    <string name="admin_share">リンクを共有</string>
+    <string name="admin_copy">リンクをコピー</string>
+    <string name="admin_copied">リンクをコピーしました</string>
+    <string name="admin_close">閉じる</string>
+    <string name="admin_cancel">キャンセル</string>
+    <string name="admin_confirm">確認</string>
+    <string name="admin_review">変更を確認</string>
+    <string name="admin_edit">デバイスを編集</string>
+    <string name="admin_name">名前</string>
+    <string name="admin_description">説明</string>
+    <string name="admin_tags">タグ（カンマ区切り）</string>
+    <string name="admin_notes">メモ</string>
+    <string name="admin_save_notes">メモを保存</string>
+    <string name="admin_move">別のグループに移動</string>
+    <string name="admin_move_confirm">「%1$s」を「%2$s」に移動しますか？アクセス権は移動先のグループに従います。</string>
+    <string name="admin_edit_confirm">「%1$s」へのこの変更を保存しますか？</string>
+    <string name="admin_notes_confirm">「%1$s」のメモを置き換えますか？</string>
+    <string name="admin_saved">変更がサーバーで確認されました</string>
+    <string name="admin_failed">変更を確認できませんでした。更新してデバイスを確認してから、もう一度お試しください。</string>
+    <string name="admin_invite_failed">リンクを作成できませんでした。接続とグループの権限を確認して、もう一度お試しください。</string>
+    <string name="admin_loading">サーバーを待っています…</string>
+    <string name="admin_invalid">名前：1～64文字。説明：最大64文字。各タグ：最大63文字、合計：最大4096文字。制御文字やテキスト方向の書式設定文字を含まない1行のテキストを使用してください。</string>
+    <string name="admin_endpoint">サーバー：%1$s</string>
+    <string name="admin_unavailable">このデバイスを管理するには、再接続して更新してください。アカウントに所定の権限が必要です。</string>
+    <string name="admin_notes_limit">メモ：最大16000文字。</string>
+    <string name="admin_no_destinations">このデバイスを移動する権限がある互換性のあるグループはありません。</string>
+</resources>

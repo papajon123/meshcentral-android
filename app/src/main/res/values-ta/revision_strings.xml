@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">இந்த வரைவு காப்புப்பிரதி வடிவம் ஆதரிக்கப்படவில்லை. இதை ஏற்றுமதி செய்த பயன்பாட்டில் புதிய காப்புப்பிரதியை உருவாக்கவும்.</string>
+    <string name="backup_key_approval_title">இறக்குமதி செய்த சேவையக விசையை உறுதிசெய்யவும்</string>
+    <string name="backup_key_matches">சேவையக விசை காப்புப்பிரதியுடன் பொருந்துகிறது. உள்நுழைவதற்கு முன் இது நம்பகமானது என்பதை உறுதிசெய்யவும்.</string>
+    <string name="backup_key_mismatch">எச்சரிக்கை: சேவையக விசை காப்புப்பிரதியுடன் பொருந்தவில்லை. நம்புவதற்கு முன் நிர்வாகியுடன் கைரேகையைச் சரிபார்க்கவும்.</string>
+    <string name="backup_key_expected">காப்புப்பிரதியிலிருந்து எதிர்பார்க்கப்படும் விசை: %1$s</string>
+    <string name="backup_error_newer">இந்தக் கோப்பு MeshPilot இன் புதிய பதிப்பிலிருந்து வந்தது. இறக்குமதி செய்ய பயன்பாட்டைப் புதுப்பிக்கவும்.</string>
+    <string name="backup_error_auth">கடவுச்சொல் தவறானது அல்லது மறையாக்கப்பட்ட கோப்பு மாற்றப்பட்டுள்ளது.</string>
+    <string name="backup_error_corrupt">காப்புப்பிரதி சேதமடைந்துள்ளது அல்லது அதன் வடிவம் செல்லாதது.</string>
+    <string name="backup_error_limit">காப்புப்பிரதி ஆதரிக்கப்படும் அளவு அல்லது உருப்படி வரம்புகளை மீறுகிறது.</string>
+    <string name="backup_extension_skipped">புதிய பதிப்பின் பகுதி தவிர்க்கப்பட்டது: %1$s. அதன் தரவு இறக்குமதி செய்யப்படாது.</string>
+    <string name="backup_duplicate">இந்தச் சேவையகத்திற்கான சுயவிவரம் ஏற்கனவே உள்ளது.</string>
+    <string name="backup_skip_duplicates">சேவையகம் ஏற்கனவே உள்ள சுயவிவரங்களைத் தவிர்க்கவும்</string>
+    <string name="backup_value_on">இயக்கத்தில்</string>
+    <string name="backup_value_off">அணைப்பில்</string>
+    <string name="backup_preferences_preview">திரைப்பிடிப்பு பாதுகாப்பு: %1$s\nதானியங்கிப் பூட்டு தாமதம்: %2$d வினாடிகள்\nதீம்: %3$s\nசிஸ்டம் நிறங்கள்: %4$s\nஸ்டைலஸ் துல்லியம்: %5$s\nஸ்டைலஸ் குறிப்பு ஏற்கனவே காட்டப்பட்டது: %6$s\nபூட்டியிருக்கும்போது சாதனங்களை மறை: %7$s</string>
+    <string name="integration_privacy_setting">பயன்பாடு பூட்டியிருக்கும்போது விட்ஜெட்டுகள் மற்றும் குறுக்குவழிகளில் சாதனங்களை மறைக்கவும்</string>
+    <string name="integration_privacy_help">PIN அல்லது பயோமெட்ரிக் பாதுகாப்புடன், பூட்டியிருக்கும்போது அல்லது பயன்பாட்டிற்கு வெளியே சாதனப் பெயர்களையும் நிலையையும் மறைக்கவும்.</string>
+    <string name="integration_private_hidden">சாதனங்களைப் பார்க்க பயன்பாட்டை அன்லாக் செய்யவும்</string>
+    <string name="integration_private_device">பாதுகாக்கப்பட்ட சாதனம்</string>
+    <string name="integration_retry_seconds">%1$d வினாடிகளில் மீண்டும் முயற்சிக்கவும்</string>
+</resources>

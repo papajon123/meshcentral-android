@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">不支持此草稿备份格式。请在导出该备份的应用中创建新的备份。</string>
+    <string name="backup_key_approval_title">确认导入的服务器密钥</string>
+    <string name="backup_key_matches">服务器密钥与备份一致。登录前请确认你信任该密钥。</string>
+    <string name="backup_key_mismatch">警告：服务器密钥与备份不一致。信任前请与管理员核对指纹。</string>
+    <string name="backup_key_expected">备份中的预期密钥：%1$s</string>
+    <string name="backup_error_newer">此文件来自更新版本的 MeshPilot。请更新应用后再导入。</string>
+    <string name="backup_error_auth">密码不正确，或加密文件已被修改。</string>
+    <string name="backup_error_corrupt">备份已损坏或格式无效。</string>
+    <string name="backup_error_limit">备份超出了支持的大小或项目数量限制。</string>
+    <string name="backup_extension_skipped">已跳过来自更新版本的区块：%1$s。其数据不会被导入。</string>
+    <string name="backup_duplicate">此服务器的配置已存在。</string>
+    <string name="backup_skip_duplicates">跳过服务器已存在的配置</string>
+    <string name="backup_value_on">已开启</string>
+    <string name="backup_value_off">已关闭</string>
+    <string name="backup_preferences_preview">截屏保护：%1$s\n自动锁定延迟：%2$d 秒\n主题：%3$s\n系统颜色：%4$s\n触控笔精度：%5$s\n已显示触控笔提示：%6$s\n锁定时隐藏设备：%7$s</string>
+    <string name="integration_privacy_setting">应用锁定时在小组件和快捷方式中隐藏设备</string>
+    <string name="integration_privacy_help">启用 PIN 或生物识别保护后，在锁定或离开应用时隐藏设备名称和状态。</string>
+    <string name="integration_private_hidden">解锁应用以查看设备</string>
+    <string name="integration_private_device">受保护的设备</string>
+    <string name="integration_retry_seconds">%1$d 秒后重试</string>
+</resources>

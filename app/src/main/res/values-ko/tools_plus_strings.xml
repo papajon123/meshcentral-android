@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">선택됨: %1$d</string>
+    <string name="tools_clear_selection">선택 해제</string>
+    <string name="tools_download_selected">선택 항목 다운로드</string>
+    <string name="tools_delete_selected">선택 항목 삭제</string>
+    <string name="tools_select_hint">여러 항목을 선택하려면 길게 누르세요</string>
+    <string name="tools_download_folder">폴더 다운로드</string>
+    <string name="tools_folder_notice">Mesh Agent 폴더는 ZIP 아카이브로 다운로드됩니다. SFTP 폴더는 파일별로 복사됩니다. 대상 폴더를 선택하세요.</string>
+    <string name="tools_batch_progress">완료: %1$d/%2$d · %3$d바이트</string>
+    <string name="tools_retry">다시 시도</string>
+    <string name="tools_queued">대기 중</string>
+    <string name="tools_active">다운로드 중</string>
+    <string name="tools_succeeded">검증됨</string>
+    <string name="tools_failed">실패</string>
+    <string name="tools_cancelled">취소됨</string>
+    <string name="tools_archiving">원격 아카이브를 만드는 중…</string>
+    <string name="tools_archive_failed">아카이브를 만들거나 검증하지 못했습니다.</string>
+    <string name="tools_archive_left">다운로드에 실패했습니다. 원본 폴더에 임시 meshpilot-*.zip 아카이브가 남아 있을 수 있습니다. 다시 시도하여 정리하고 다시 다운로드하세요.</string>
+    <string name="tools_batch_failed">다운로드에 실패했습니다. 다시 시도하면 새 로컬 파일에서 처음부터 시작합니다.</string>
+    <string name="tools_delete_list">이 항목을 삭제할까요? 이 작업은 되돌릴 수 없습니다.</string>
+</resources>

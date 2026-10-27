@@ -1,0 +1,6 @@
+{
+  "action": "msg",
+  "type": "ps",
+  "nodeid": "node//fixture",
+  "value": "{\"0\":{\"cmd\":\"System Idle Process\"},\"4\":{\"cmd\":\"System\",\"user\":\"SYSTEM\"},\"120\":{\"cmd\":\"fixture.exe\",\"user\":\"fixture\",\"path\":\"C:\\\\Fixture\\\\fixture.exe\"}}"
+}

@@ -1,0 +1,6 @@
+{
+  "action": "msg",
+  "type": "services",
+  "nodeid": "node//fixture",
+  "value": "[{\"name\":\"fixture-service-0\",\"serviceType\":\"systemd\",\"escname\":\"fixture-value\",\"conf\":\"fixture-value\",\"description\":\"fixture-value\"},{\"name\":\"fixture-service-1\",\"serviceType\":\"systemd\",\"escname\":\"fixture-value\",\"conf\":\"fixture-value\",\"description\":\"fixture-value\"},{\"name\":\"fixture-service-2\",\"serviceType\":\"systemd\",\"escname\":\"fixture-value\",\"conf\":\"fixture-value\",\"description\":\"fixture-value\"},{\"name\":\"fixture-service-3\",\"serviceType\":\"systemd\",\"escname\":\"fixture-value\",\"conf\":\"fixture-value\",\"description\":\"fixture-value\"},{\"name\":\"fixture-service-4\",\"serviceType\":\"systemd\",\"escname\":\"fixture-value\",\"conf\":\"fixture-value\",\"description\":\"fixture-value\"},{\"name\":\"fixture-service-5\",\"serviceType\":\"systemd\",\"escname\":\"fixture-value\",\"conf\":\"fixture-value\",\"description\":\"fixture-value\"},{\"name\":\"fixture-service-6\",\"serviceType\":\"systemd\",\"escname\":\"fixture-value\",\"conf\":\"fixture-value\",\"description\":\"fixture-value\"},{\"name\":\"fixture-service-7\",\"serviceType\":\"systemd\",\"escname\":\"fixture-value\",\"conf\":\"fixture-value\",\"description\":\"fixture-value\",\"state\":\"RUNNING\"}]"
+}

@@ -82,6 +82,7 @@ import ru.papajon.meshcentralmobile.model.AppSettings
 import ru.papajon.meshcentralmobile.ui.components.AppearanceSection
 import ru.papajon.meshcentralmobile.ui.components.IconBadge
 import ru.papajon.meshcentralmobile.ui.components.MeshCard
+import ru.papajon.meshcentralmobile.ui.components.SupportCard
 import ru.papajon.meshcentralmobile.ui.components.SectionHeader
 import ru.papajon.meshcentralmobile.ui.components.StatusPill
 import ru.papajon.meshcentralmobile.ui.theme.MeshMono
@@ -119,8 +120,11 @@ fun SettingsScreen(
     onManageProfiles: (() -> Unit)? = null,
     onEditServer: (() -> Unit)? = null,
     onNotifications: (() -> Unit)? = null,
+    onBackup: (() -> Unit)? = null,
     updates: @Composable () -> Unit = {},
+    forwarding: @Composable () -> Unit = {},
     onStylusPrecisionChanged: (Boolean) -> Unit = {},
+    onHideDevicesWhenLockedChanged: (Boolean) -> Unit = {},
 ) {
     var newPin by rememberSaveable { mutableStateOf("") }
     var message by remember {
@@ -171,6 +175,7 @@ fun SettingsScreen(
         }
 
         AppearanceSection()
+        onBackup?.let { action -> TextButton(onClick = action) { Text(stringResource(R.string.backup_title)) } }
         SettingsStatusStrip(message = message.asString())
 
         SettingsSection(
@@ -228,6 +233,14 @@ fun SettingsScreen(
                         supporting = stringResource(R.string.settings_block_screenshots_supporting),
                         checked = settings.blockScreenshots,
                         onCheckedChange = onScreenshotBlockingChanged,
+                    )
+                    SettingsDivider()
+                    SettingsSwitchRow(
+                        icon = Icons.Outlined.Lock,
+                        title = stringResource(R.string.integration_privacy_setting),
+                        supporting = stringResource(R.string.integration_privacy_help),
+                        checked = settings.hideDevicesWhenLocked,
+                        onCheckedChange = onHideDevicesWhenLockedChanged,
                     )
                     SettingsDivider()
                     SettingsSwitchRow(
@@ -392,7 +405,11 @@ fun SettingsScreen(
             }
         }
 
+        forwarding()
+
         updates()
+
+        SupportCard(url = BuildConfig.SUPPORT_URL)
 
         SettingsSection(
             title = stringResource(R.string.settings_section_about),

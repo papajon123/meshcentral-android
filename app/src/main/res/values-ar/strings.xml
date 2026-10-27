@@ -1,5 +1,26 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">السابق</string>
+    <string name="devices_page_next">التالي</string>
+    <plurals name="devices_page_count">
+        <item quantity="zero">\u2066%1$d–%2$d\u2069 من %3$d جهاز</item>
+        <item quantity="one">\u2066%1$d–%2$d\u2069 من %3$d جهاز</item>
+        <item quantity="two">\u2066%1$d–%2$d\u2069 من %3$d جهازين</item>
+        <item quantity="few">\u2066%1$d–%2$d\u2069 من %3$d أجهزة</item>
+        <item quantity="many">\u2066%1$d–%2$d\u2069 من %3$d جهازًا</item>
+        <item quantity="other">\u2066%1$d–%2$d\u2069 من %3$d جهاز</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="zero">الأجهزة \u2066%1$d–%2$d\u2069</item>
+        <item quantity="one">الجهاز \u2066%1$d–%2$d\u2069</item>
+        <item quantity="two">الجهازان \u2066%1$d–%2$d\u2069</item>
+        <item quantity="few">الأجهزة \u2066%1$d–%2$d\u2069</item>
+        <item quantity="many">الأجهزة \u2066%1$d–%2$d\u2069</item>
+        <item quantity="other">الأجهزة \u2066%1$d–%2$d\u2069</item>
+    </plurals>
+    <string name="devices_server_total">الأجهزة المكتشفة: %1$d</string>
+    <string name="devices_server_search">البحث في جميع الأجهزة بالاسم</string>
+    <string name="devices_page_failed">تعذّر تحميل الأجهزة. أعد المحاولة.</string>
     <string name="biometric_unlock_title">فتح قفل MeshPilot</string>
     <string name="biometric_unlock_subtitle">أكّد هويتك باستخدام البيانات الحيوية للجهاز لفتح التطبيق.</string>
     <string name="cancel">إلغاء</string>
@@ -314,4 +335,6 @@
     <string name="settings_update_supporting">تتوفر ملفات APK الموقّعة في إصدارات GitHub. ثبّت الإصدار الجديد فوق الإصدار الحالي.</string>
     <string name="settings_update_action">تنزيل التحديث</string>
     <string name="settings_update_unavailable">تعذّر فتح المتصفح. افتح https://github.com/papajon123/meshcentral-android/releases يدويًا.</string>
+    <string name="chat_verifying_peer">جارٍ التحقق من اتصال المحادثة بالمستخدم…</string>
+    <string name="chat_server_retained">لا يزال الخادم يحتفظ بالاتصال السابق. تجري إعادة المحاولة لمدة تصل إلى 20 دقيقة…</string>
 </resources>

@@ -51,6 +51,15 @@ class TerminalControllerTest {
         try { block(relay, controller) } finally { controller.close(); scope.cancel() }
     }
 
+    @Test fun rendererInitializationFailureBeforeConnectNeverStartsRelay() = withSession(RelayProtocol.AgentTerminal) { relay, controller ->
+        controller.rendererInitializationFailed()
+        assertEquals(RelayPhase.Failed, controller.state.value.phase)
+        assertEquals(UiText.resource(R.string.terminal_webview_update_required), controller.state.value.message)
+        controller.connect()
+        assertEquals(0, relay.connects)
+        assertFalse(controller.sendInput("unseen command\r"))
+    }
+
     @Test fun agentUsesUtf8AndDoesNotReplayOnReattachOrDisconnect() = withSession(RelayProtocol.AgentTerminal) { relay, controller ->
         controller.connect()
         assertTrue(controller.sendInput("你好 Привет\r"))

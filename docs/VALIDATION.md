@@ -212,7 +212,7 @@ hash are linked from the release; `release-info.json` contains the published APK
 
 ## Automated checks
 
-Requirements: JDK 17, Android SDK platform 35, build-tools 35.0.0.
+Requirements: JDK 17, Android SDK platform 36, build-tools 35.0.0.
 
 ```bash
 ./gradlew testDebugUnitTest lintDebug assembleDebug

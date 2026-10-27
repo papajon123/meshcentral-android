@@ -1,5 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">이전</string>
+    <string name="devices_page_next">다음</string>
+    <plurals name="devices_page_count">
+        <item quantity="other">%3$d개 중 %1$d–%2$d번째 장치</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="other">장치 %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">찾은 장치: %1$d</string>
+    <string name="devices_server_search">이름으로 모든 장치 검색</string>
+    <string name="devices_page_failed">장치를 불러오지 못했습니다. 다시 시도하세요.</string>
     <string name="biometric_unlock_title">MeshPilot 잠금 해제</string>
     <string name="biometric_unlock_subtitle">앱을 열려면 기기 생체 인증으로 본인을 확인하세요.</string>
     <string name="cancel">취소</string>
@@ -314,4 +325,6 @@
     <string name="settings_update_supporting">GitHub Releases에서 서명된 APK를 제공합니다. 현재 버전 위에 새 버전을 설치하세요.</string>
     <string name="settings_update_action">업데이트 다운로드</string>
     <string name="settings_update_unavailable">브라우저를 열지 못했습니다. https://github.com/papajon123/meshcentral-android/releases를 직접 여세요.</string>
+    <string name="chat_verifying_peer">사용자와의 채팅 연결을 확인하는 중…</string>
+    <string name="chat_server_retained">서버가 이전 연결을 계속 유지하고 있습니다. 최대 20분 동안 다시 시도하는 중…</string>
 </resources>

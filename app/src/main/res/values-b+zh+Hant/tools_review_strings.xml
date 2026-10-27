@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">無法驗證：%1$s</string>
+    <string name="review_paused">已暫停：連線中斷</string>
+    <string name="review_retry_all">重試未完成的項目</string>
+    <string name="review_cleanup_title">遠端壓縮檔清理</string>
+    <string name="review_archive_left">電腦上可能留有暫存壓縮檔：%1$s。請在沒有壓縮檔操作執行時檢查並移除它。</string>
+    <string name="review_archive_space">建立 ZIP 需要在遠端來源資料夾中為完整壓縮檔保留可用空間。如果代理程式無法啟動，檔案將逐一複製。未完成的本機資料夾會保留 .partial 後綴。</string>
+    <string name="review_grant_failed">此提供者無法為佇列保留存取權。請選擇其他位置。</string>
+    <string name="review_zip_invalid">壓縮檔已損毀、不完整，或超出支援的結構限制。</string>
+    <string name="review_source_changed">所選項目已變更。請重新整理資料夾並再次確認選取項目。</string>
+    <string name="review_sftp_types">此伺服器無法在 SFTP 清單中辨識符號連結或特殊檔案。無法驗證的檔案會依路徑回報；連線中斷時佇列會暫停。未完成的資料夾仍會標示為 .partial。</string>
+    <string name="review_skipped">已略過不支援的項目：%1$s</string>
+    <string name="review_folder_unavailable">無法存取資料夾：%1$s。佇列其餘部分會繼續。</string>
+    <string name="review_local_failed">無法寫入或重新讀取本機 Android 文件。檔案工作階段仍保持連線；請重試此項目。</string>
+    <string name="review_local_no_rename">此提供者無法重新命名文件。部分檔案會保留 .partial 尾碼；請在 Android 檔案中重新命名。</string>
+    <string name="review_source_changed_deleted">已刪除：%1$s。其餘選取項目未被刪除；請重新整理資料夾並再次確認。</string>
+    <string name="files_delete_follow_links">遞迴刪除資料夾會跟隨符號連結與連接點。所選資料夾之外的目標也可能被清除；確認前請在 MeshCentral 中檢查該資料夾。</string>
+</resources>

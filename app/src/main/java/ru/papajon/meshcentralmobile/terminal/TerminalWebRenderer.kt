@@ -119,9 +119,9 @@ class TerminalWebRenderer internal constructor(context: Context, private val con
             controller.rendererReady()
         } } }
         @JavascriptInterface fun consumed() { main.post { if (!destroyed) controller.outputConsumed() } }
-        @JavascriptInterface fun input(value: String) {
+        @JavascriptInterface fun input(value: String, epoch: Int) {
             if (value.length <= TerminalController.MAX_INPUT_BYTES) main.post {
-                if (!destroyed) controller.sendInput(value)
+                if (!destroyed) controller.sendRendererInput(value, epoch)
             }
         }
         @JavascriptInterface fun resize(cols: Int, rows: Int, width: Int, height: Int) {
@@ -134,7 +134,15 @@ class TerminalWebRenderer internal constructor(context: Context, private val con
         evaluate("window.meshTerminal.write('$encoded')")
     }
 
-    internal fun setInputEnabled(enabled: Boolean) = evaluate("window.meshTerminal?.enable($enabled)")
+    /** The same WebView keeps its scrollback; only parser/modes and viewport anchoring change. */
+    internal fun writeSessionStart(bytes: ByteArray) {
+        val encoded = Base64.encodeToString(bytes, Base64.NO_WRAP)
+        evaluate("window.meshTerminal.beginSession('$encoded')")
+    }
+
+    internal fun userInput() = evaluate("window.meshTerminal?.userInput()")
+
+    internal fun setInputEnabled(enabled: Boolean) = evaluate("window.meshTerminal?.enable($enabled,${controller.rendererEpoch})")
 
     fun configure(background: String, foreground: String, fontSize: Int, inputLabel: String, tooMuchLabel: String) {
         val configuration = JSONObject().put("background", background).put("foreground", foreground)
@@ -191,7 +199,7 @@ class TerminalWebRenderer internal constructor(context: Context, private val con
         }.also { main.postDelayed(it, 250) }
     }
     fun setControl(enabled: Boolean) = evaluate("window.meshTerminal?.control($enabled)")
-    fun key(value: String) = evaluate("window.meshTerminal?.key(${JSONObject.quote(value)})")
+    fun key(value: String) = evaluate("window.meshTerminal?.key(${JSONObject.quote(value)},${controller.rendererEpoch})")
 
     /** Clipboard is populated only by this explicit user action, never by terminal escape sequences. */
     fun copySelection(label: String) {

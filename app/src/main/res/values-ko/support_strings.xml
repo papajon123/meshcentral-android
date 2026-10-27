@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">MeshPilot 후원하기</string>
+    <string name="support_body">MeshPilot은 무료이며 오픈 소스이고 광고가 없습니다. Boosty 구독이나 일회성 후원은 새 버전 출시에 도움이 됩니다.</string>
+    <string name="support_action">Boosty에서 후원하기</string>
+    <string name="support_link_copied">브라우저를 찾을 수 없습니다. Boosty 링크를 복사했습니다.</string>
+</resources>

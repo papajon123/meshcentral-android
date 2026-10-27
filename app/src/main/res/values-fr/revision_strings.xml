@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">Ce format de sauvegarde préliminaire n’est pas pris en charge. Créez une nouvelle sauvegarde dans l’application qui l’a exportée.</string>
+    <string name="backup_key_approval_title">Confirmer la clé de serveur importée</string>
+    <string name="backup_key_matches">La clé du serveur correspond à la sauvegarde. Confirmez que vous lui faites confiance avant de vous connecter.</string>
+    <string name="backup_key_mismatch">Avertissement : la clé du serveur NE correspond PAS à la sauvegarde. Vérifiez l’empreinte avec votre administrateur avant de lui faire confiance.</string>
+    <string name="backup_key_expected">Clé attendue depuis la sauvegarde : %1$s</string>
+    <string name="backup_error_newer">Ce fichier provient d’une version plus récente de MeshPilot. Mettez l’application à jour pour l’importer.</string>
+    <string name="backup_error_auth">Le mot de passe est incorrect ou le fichier chiffré a été modifié.</string>
+    <string name="backup_error_corrupt">La sauvegarde est endommagée ou son format est invalide.</string>
+    <string name="backup_error_limit">La sauvegarde dépasse les limites de taille ou d’éléments prises en charge.</string>
+    <string name="backup_extension_skipped">Une section d’une version plus récente a été ignorée : %1$s. Ses données ne seront pas importées.</string>
+    <string name="backup_duplicate">Un profil pour ce serveur existe déjà.</string>
+    <string name="backup_skip_duplicates">Ignorer les profils dont le serveur existe déjà</string>
+    <string name="backup_value_on">Activé</string>
+    <string name="backup_value_off">Désactivé</string>
+    <string name="backup_preferences_preview">Protection des captures d’écran : %1$s\nDélai de verrouillage automatique : %2$d secondes\nThème : %3$s\nCouleurs du système : %4$s\nPrécision du stylet : %5$s\nAstuce stylet déjà affichée : %6$s\nMasquer les appareils en cas de verrouillage : %7$s</string>
+    <string name="integration_privacy_setting">Masquer les appareils dans les widgets et les raccourcis lorsque l’application est verrouillée</string>
+    <string name="integration_privacy_help">Avec la protection par PIN ou biométrie, masquez le nom et l’état des appareils lorsque l’application est verrouillée ou lorsque vous êtes en dehors de l’application.</string>
+    <string name="integration_private_hidden">Déverrouillez l’application pour afficher les appareils</string>
+    <string name="integration_private_device">Appareil protégé</string>
+    <string name="integration_retry_seconds">Réessayez dans %1$d s</string>
+</resources>

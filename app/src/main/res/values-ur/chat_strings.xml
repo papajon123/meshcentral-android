@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">صارف کے ساتھ چیٹ</string>
+    <string name="chat_connecting">چیٹ سے منسلک ہو رہا ہے…</string>
+    <string name="chat_waiting">صارف کے چیٹ ونڈو کھولنے کا انتظار ہے</string>
+    <string name="chat_connected">صارف چیٹ میں ہے</string>
+    <string name="chat_peer_left">صارف نے چیٹ چھوڑ دی یا رابطہ منقطع ہو گیا</string>
+    <string name="chat_failed">چیٹ کا رابطہ منقطع ہو گیا۔ دوبارہ منسلک ہونے کے لیے ونڈو کی دوبارہ درخواست کریں۔</string>
+    <string name="chat_closed">چیٹ بند ہو گئی۔ ڈیوائس کے مینو سے اسے دوبارہ کھولیں۔</string>
+    <string name="chat_request">چیٹ ونڈو کی دوبارہ درخواست کریں</string>
+    <string name="chat_close">چیٹ بند کریں</string>
+    <string name="chat_message">پیغام</string>
+    <string name="chat_send">پیغام بھیجیں</string>
+    <string name="chat_send_failed">پیغام نہیں بھیجا گیا۔ آپ کا متن اب بھی یہاں ہے؛ دوبارہ کوشش کریں۔</string>
+    <string name="chat_length">زیادہ سے زیادہ %1$d حروف</string>
+    <string name="chat_recorded">سرور اس چیٹ کی ریکارڈنگ کر رہا ہے</string>
+    <string name="chat_you">آپ</string>
+    <string name="chat_user">صارف</string>
+    <string name="chat_empty">چیٹ بند کرنے تک پیغامات یہیں رہیں گے۔</string>
+    <string name="chat_notification">چیٹ کا نیا پیغام</string>
+    <string name="chat_notifications_enable">چیٹ کی اطلاعات فعال کریں</string>
+    <string name="chat_notifications_unavailable">Android کی ترتیبات میں اطلاعات بند ہیں۔</string>
+    <string name="chat_truncated">پیغام مختصر کر دیا گیا</string>
+    <string name="chat_reconnecting">چیٹ سے دوبارہ جڑا جا رہا ہے…</string>
+    <string name="chat_not_opened">صارف نے چیٹ ونڈو نہیں کھولی</string>
+    <string name="chat_invite_unavailable">کمپیوٹر یا کنٹرول کنکشن آف لائن ہے۔ بعد میں ونڈو دوبارہ طلب کرنے کی کوشش کریں۔</string>
+    <string name="chat_unread">نہ پڑھے گئے چیٹ پیغامات: %1$d</string>
+    <string name="chat_service_channel">فعال چیٹس</string>
+    <string name="chat_service_active">چیٹ فعال ہے</string>
+    <string name="chat_service_description">جب آپ دیگر ایپس استعمال کرتے ہیں تو یہ آپ کی گفتگو کو منسلک رکھتا ہے۔</string>
+    <string name="chat_service_failed">چیٹ کو چلتا نہیں رکھا جا سکا۔ ایپ کے نظر آتے وقت اسے دوبارہ کھولیں۔</string>
+    <string name="chat_back">واپس</string>
+    <string name="chat_close_confirm">کیا یہ چیٹ بند کر کے اس کے پیغامات مٹا دیے جائیں؟</string>
+</resources>

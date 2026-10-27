@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">Zwei-Finger-Geste</string>
+    <string name="desktop_gesture_default">Standardverhalten</string>
+    <string name="desktop_gesture_scroll">Remote-Fenster scrollen</string>
+    <string name="desktop_gesture_pan">Bild verschieben</string>
+    <string name="desktop_pinch">Zum Zoomen zusammenziehen</string>
+    <string name="desktop_three_fingers">Mit drei Fingern wird das Remote-Fenster gescrollt.</string>
+    <string name="desktop_scale">Angeforderte Bildskalierung: %1$d%%</string>
+    <string name="desktop_pip">Bild-in-Bild</string>
+    <string name="desktop_pip_auto">Beim Verlassen der App weiter ansehen</string>
+    <string name="desktop_stream_rate">≈ %1$.1f Aktualisierungen/s · %2$d B/s</string>
+    <string name="desktop_input_help">Hardwaretastatur und Maus funktionieren auf dem Desktop. Android kann Alt+Tab oder Meta reservieren; verwenden Sie in diesem Fall das Tastenmenü. Das horizontale Mausrad nutzt Shift + Mausrad, sofern unterstützt.</string>
+    <string name="desktop_rate_help">Qualität, Skalierung und Bildratenlimit sind angeforderte Einstellungen. Andere Betrachter können Qualität, Skalierung oder Aktualisierungsrate erhöhen. Der Zähler misst Kachelaktualisierungen, keine vollständigen Frames.</string>
+    <string name="desktop_keyboard_capture">Physische Tastatur erfassen</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc gibt die Tastatur frei und öffnet die Sitzungsoptionen.</string>
+</resources>

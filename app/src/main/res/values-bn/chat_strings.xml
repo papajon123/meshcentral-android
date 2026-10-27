@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">ব্যবহারকারীর সাথে চ্যাট</string>
+    <string name="chat_connecting">চ্যাটে সংযোগ করা হচ্ছে…</string>
+    <string name="chat_waiting">ব্যবহারকারী চ্যাট উইন্ডো খোলার জন্য অপেক্ষা করা হচ্ছে</string>
+    <string name="chat_connected">ব্যবহারকারী চ্যাটে আছেন</string>
+    <string name="chat_peer_left">ব্যবহারকারী চ্যাট ছেড়ে গেছেন বা সংযোগ বিচ্ছিন্ন হয়েছে</string>
+    <string name="chat_failed">চ্যাটের সংযোগ বিচ্ছিন্ন হয়েছে। পুনরায় সংযোগ করতে উইন্ডোটি আবার অনুরোধ করুন।</string>
+    <string name="chat_closed">চ্যাট বন্ধ হয়েছে। ডিভাইস মেনু থেকে এটি আবার খুলুন।</string>
+    <string name="chat_request">চ্যাট উইন্ডো আবার অনুরোধ করুন</string>
+    <string name="chat_close">চ্যাট বন্ধ করুন</string>
+    <string name="chat_message">বার্তা</string>
+    <string name="chat_send">বার্তা পাঠান</string>
+    <string name="chat_send_failed">বার্তা পাঠানো হয়নি। আপনার লেখা এখনও এখানে আছে; আবার চেষ্টা করুন।</string>
+    <string name="chat_length">সর্বোচ্চ %1$d অক্ষর</string>
+    <string name="chat_recorded">সার্ভার এই চ্যাট রেকর্ড করছে</string>
+    <string name="chat_you">আপনি</string>
+    <string name="chat_user">ব্যবহারকারী</string>
+    <string name="chat_empty">চ্যাট বন্ধ না করা পর্যন্ত বার্তাগুলো এখানেই থাকবে।</string>
+    <string name="chat_notification">চ্যাটে নতুন বার্তা</string>
+    <string name="chat_notifications_enable">চ্যাটের বিজ্ঞপ্তি সক্ষম করুন</string>
+    <string name="chat_notifications_unavailable">Android সেটিংসে বিজ্ঞপ্তি বন্ধ আছে।</string>
+    <string name="chat_truncated">বার্তা সংক্ষিপ্ত করা হয়েছে</string>
+    <string name="chat_reconnecting">চ্যাটে আবার সংযোগ করা হচ্ছে…</string>
+    <string name="chat_not_opened">ব্যবহারকারী চ্যাট উইন্ডো খোলেননি</string>
+    <string name="chat_invite_unavailable">কম্পিউটার বা নিয়ন্ত্রণ সংযোগ অফলাইন। পরে আবার উইন্ডো অনুরোধ করার চেষ্টা করুন।</string>
+    <string name="chat_unread">অপঠিত চ্যাট বার্তা: %1$d</string>
+    <string name="chat_service_channel">সক্রিয় চ্যাট</string>
+    <string name="chat_service_active">চ্যাট সক্রিয় আছে</string>
+    <string name="chat_service_description">আপনি অন্য অ্যাপ ব্যবহার করার সময়ও আপনার কথোপকথন সংযুক্ত রাখে।</string>
+    <string name="chat_service_failed">চ্যাট চালু রাখা যায়নি। অ্যাপটি দৃশ্যমান থাকার সময় এটি আবার খুলুন।</string>
+    <string name="chat_back">ফিরুন</string>
+    <string name="chat_close_confirm">এই চ্যাট বন্ধ করে এর বার্তাগুলো মুছে ফেলবেন?</string>
+</resources>

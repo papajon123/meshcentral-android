@@ -29,6 +29,8 @@ class FixtureDocumentsProvider : DocumentsProvider() {
         val flags: Int,
         val allowDelete: Boolean,
         val allowRename: Boolean,
+        val parent: String = ROOT_ID,
+        val mime: String = MIME_TYPE,
     )
 
     private val lock = Any()
@@ -48,7 +50,7 @@ class FixtureDocumentsProvider : DocumentsProvider() {
                     Root.COLUMN_ROOT_ID -> ROOT_ID
                     Root.COLUMN_DOCUMENT_ID -> ROOT_ID
                     Root.COLUMN_TITLE -> "Synthetic fixtures"
-                    Root.COLUMN_FLAGS -> Root.FLAG_LOCAL_ONLY
+                    Root.COLUMN_FLAGS -> Root.FLAG_LOCAL_ONLY or Root.FLAG_SUPPORTS_CREATE or Root.FLAG_SUPPORTS_IS_CHILD
                     Root.COLUMN_AVAILABLE_BYTES -> 0L
                     else -> null
                 }
@@ -59,10 +61,10 @@ class FixtureDocumentsProvider : DocumentsProvider() {
     override fun queryDocument(documentId: String, projection: Array<out String>?): Cursor =
         synchronized(lock) {
             if (documentId == ROOT_ID) {
-                documentCursor(projection, ROOT_ID, "Synthetic fixtures", Document.MIME_TYPE_DIR, 0L, 0)
+                documentCursor(projection, ROOT_ID, "Synthetic fixtures", Document.MIME_TYPE_DIR, 0L, Document.FLAG_DIR_SUPPORTS_CREATE)
             } else {
                 val fixture = fixtures[documentId] ?: throw FileNotFoundException(documentId)
-                documentCursor(projection, fixture.id, fixture.displayName, MIME_TYPE, fixture.size.toLong(),
+                documentCursor(projection, fixture.id, fixture.displayName, fixture.mime, File(fixturesDirectory(), fixture.id).length(),
                     fixture.flags)
             }
         }
@@ -75,15 +77,15 @@ class FixtureDocumentsProvider : DocumentsProvider() {
         val columns = projection ?: DEFAULT_DOCUMENT_PROJECTION
         val cursor = MatrixCursor(columns)
         synchronized(lock) {
-            if (parentDocumentId != ROOT_ID) throw FileNotFoundException(parentDocumentId)
-            fixtures.values.forEach { fixture ->
+            if (parentDocumentId != ROOT_ID && fixtures[parentDocumentId]?.mime != Document.MIME_TYPE_DIR) throw FileNotFoundException(parentDocumentId)
+            fixtures.values.filter { it.parent == parentDocumentId }.forEach { fixture ->
                 cursor.addRow(columns.map { column ->
                     when (column) {
                         Document.COLUMN_DOCUMENT_ID -> fixture.id
                         Document.COLUMN_DISPLAY_NAME -> fixture.displayName
-                        Document.COLUMN_MIME_TYPE -> MIME_TYPE
+                        Document.COLUMN_MIME_TYPE -> fixture.mime
                         Document.COLUMN_FLAGS -> fixture.flags
-                        Document.COLUMN_SIZE -> fixture.size.toLong()
+                        Document.COLUMN_SIZE -> File(fixturesDirectory(), fixture.id).length()
                         Document.COLUMN_LAST_MODIFIED -> 0L
                         else -> null
                     }
@@ -91,6 +93,25 @@ class FixtureDocumentsProvider : DocumentsProvider() {
             }
         }
         return cursor
+    }
+
+    override fun createDocument(parentDocumentId: String, mimeType: String, displayName: String): String = synchronized(lock) {
+        if (parentDocumentId != ROOT_ID && fixtures[parentDocumentId]?.mime != Document.MIME_TYPE_DIR) throw FileNotFoundException(parentDocumentId)
+        val id = "fixture-${++nextId}"
+        val flags = Document.FLAG_SUPPORTS_DELETE or Document.FLAG_SUPPORTS_RENAME or
+            (if (mimeType == Document.MIME_TYPE_DIR) Document.FLAG_DIR_SUPPORTS_CREATE else Document.FLAG_SUPPORTS_WRITE)
+        fixtures[id] = Fixture(id, displayName, 0, flags, true, true, parentDocumentId, mimeType)
+        File(fixturesDirectory(), id).writeBytes(ByteArray(0))
+        id
+    }
+
+    override fun isChildDocument(parentDocumentId: String, documentId: String): Boolean = synchronized(lock) {
+        var parent = fixtures[documentId]?.parent
+        repeat(64) {
+            if (parent == parentDocumentId) return@synchronized true
+            parent = fixtures[parent]?.parent
+        }
+        false
     }
 
     override fun openDocument(

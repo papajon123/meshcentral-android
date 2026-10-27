@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">ユーザーとのチャット</string>
+    <string name="chat_connecting">チャットに接続しています…</string>
+    <string name="chat_waiting">ユーザーがチャットウィンドウを開くのを待っています</string>
+    <string name="chat_connected">ユーザーがチャットに参加しています</string>
+    <string name="chat_peer_left">ユーザーがチャットから退出したか、接続が切れました</string>
+    <string name="chat_failed">チャットの接続が切れました。再接続するにはウィンドウを再度リクエストしてください。</string>
+    <string name="chat_closed">チャットが閉じられました。デバイスメニューから再度開いてください。</string>
+    <string name="chat_request">チャットウィンドウを再度リクエスト</string>
+    <string name="chat_close">チャットを閉じる</string>
+    <string name="chat_message">メッセージ</string>
+    <string name="chat_send">メッセージを送信</string>
+    <string name="chat_send_failed">メッセージは送信されませんでした。入力したテキストはここに残っています。もう一度お試しください。</string>
+    <string name="chat_length">最大 %1$d 文字</string>
+    <string name="chat_recorded">サーバーがこのチャットを記録しています</string>
+    <string name="chat_you">あなた</string>
+    <string name="chat_user">ユーザー</string>
+    <string name="chat_empty">チャットを閉じるまで、メッセージはここに残ります。</string>
+    <string name="chat_notification">新しいチャットメッセージ</string>
+    <string name="chat_notifications_enable">チャット通知を有効にする</string>
+    <string name="chat_notifications_unavailable">Android の設定で通知が無効になっています。</string>
+    <string name="chat_truncated">メッセージを短縮しました</string>
+    <string name="chat_reconnecting">チャットに再接続しています…</string>
+    <string name="chat_not_opened">ユーザーがチャットウィンドウを開きませんでした</string>
+    <string name="chat_invite_unavailable">コンピューターまたは制御接続がオフラインです。後でもう一度ウィンドウをリクエストしてください。</string>
+    <string name="chat_unread">未読のチャットメッセージ: %1$d</string>
+    <string name="chat_service_channel">アクティブなチャット</string>
+    <string name="chat_service_active">チャットはアクティブです</string>
+    <string name="chat_service_description">他のアプリを使用している間も会話の接続を維持します。</string>
+    <string name="chat_service_failed">チャットを実行したままにできませんでした。アプリが表示されている間に開き直してください。</string>
+    <string name="chat_back">戻る</string>
+    <string name="chat_close_confirm">このチャットを閉じてメッセージを消去しますか？</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">दोन बोटांचा जेश्चर</string>
+    <string name="desktop_gesture_default">मूळ वर्तन</string>
+    <string name="desktop_gesture_scroll">रिमोट विंडो स्क्रोल करा</string>
+    <string name="desktop_gesture_pan">प्रतिमा पॅन करा</string>
+    <string name="desktop_pinch">झूम करण्यासाठी पिंच करा</string>
+    <string name="desktop_three_fingers">तीन बोटे रिमोट विंडो स्क्रोल करतात.</string>
+    <string name="desktop_scale">विनंती केलेले प्रतिमा प्रमाण: %1$d%%</string>
+    <string name="desktop_pip">पिक्चर-इन-पिक्चर</string>
+    <string name="desktop_pip_auto">अ‍ॅप सोडल्यावरही पाहणे सुरू ठेवा</string>
+    <string name="desktop_stream_rate">≈ %1$.1f अद्यतने/से · %2$d B/s</string>
+    <string name="desktop_input_help">हार्डवेअर कीबोर्ड आणि माउस डेस्कटॉपवर काम करतात. Android Alt+Tab किंवा Meta राखून ठेवू शकते; अशा वेळी की मेनू वापरा. समर्थित असल्यास आडवा व्हील Shift + व्हीलने काम करतो.</string>
+    <string name="desktop_rate_help">गुणवत्ता, प्रमाण आणि फ्रेम मर्यादा या विनंती केलेल्या सेटिंग्ज आहेत. इतर पाहणारे गुणवत्ता, प्रमाण किंवा अद्यतन दर वाढवू शकतात. काउंटर टाइल अद्यतने मोजतो, पूर्ण फ्रेम नाहीत.</string>
+    <string name="desktop_keyboard_capture">भौतिक कीबोर्ड कॅप्चर करा</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc कीबोर्ड सोडतो आणि सत्र पर्याय उघडतो.</string>
+</resources>

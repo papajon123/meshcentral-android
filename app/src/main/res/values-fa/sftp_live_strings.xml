@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">سرور این فایل را رد کرد. پیش از تلاش دوباره، مجوزها و نوع آن را بررسی کنید.</string>
+</resources>

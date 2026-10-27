@@ -187,8 +187,8 @@ A reverse proxy or certificate problem is reported as a connection failure; the 
 ## Tech stack
 
 - Kotlin 2.0.21, Jetpack Compose (BOM 2024.12.01), Material 3.
-- Android Gradle Plugin 8.7.3, Gradle 8.10.2, JDK 17.
-- `compileSdk`/`targetSdk` 35, `minSdk` 26 (Android 8.0).
+- Android Gradle Plugin 8.10.1, Gradle 8.11.1, JDK 17.
+- `compileSdk`/`targetSdk` 36, `minSdk` 26 (Android 8.0).
 - OkHttp 4.12.0, kotlinx.coroutines 1.9.0.
 - Bundled xterm.js 5.5.0 and addon-fit 0.10.0, MIT.
 

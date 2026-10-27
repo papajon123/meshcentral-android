@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">Cet appareil n’est plus disponible. Ouvrez l’application.</string>
+    <string name="integration_favorites">Favoris</string>
+    <string name="integration_updated">Mis à jour : %1$s</string>
+    <string name="integration_widget_empty">Ouvrez l’application et ajoutez des appareils favoris.</string>
+    <string name="integration_widget_description">Appareils favoris et leur dernière disponibilité connue</string>
+    <string name="integration_last_known">Dernier état connu</string>
+    <string name="integration_open_to_refresh">Ouvrez l’application pour vous connecter et actualiser.</string>
+    <string name="integration_refresh">Actualiser</string>
+    <string name="integration_open_app">Ouvrir l’application</string>
+    <string name="backup_title">Sauvegarde des paramètres</string>
+    <string name="backup_description">Exportez les profils de serveur, les favoris, les raccourcis clavier, les extraits de commandes et les préférences de l’application. Les mots de passe, les jetons de session, les cookies des appareils mémorisés et le PIN de l’application sont exclus. Les extraits de commandes peuvent contenir du texte que vous avez saisi ; vérifiez-les avant de les partager.</string>
+    <string name="backup_export">Exporter le fichier</string>
+    <string name="backup_import">Importer le fichier</string>
+    <string name="backup_include_keys">Inclure les clés de connexion au serveur (chiffrées uniquement)</string>
+    <string name="backup_password">Mot de passe de sauvegarde (au moins 8 caractères)</string>
+    <string name="backup_password_hint">Un mot de passe chiffre l’intégralité du fichier. Conservez-le en lieu sûr ; il est irrécupérable.</string>
+    <string name="backup_confirm_password">Confirmer le mot de passe</string>
+    <string name="backup_password_mismatch">Les mots de passe doivent correspondre et contenir entre 8 et 1024 caractères.</string>
+    <string name="backup_busy">Traitement…</string>
+    <string name="backup_saved">Fichier de sauvegarde enregistré.</string>
+    <string name="backup_failed">Impossible de traiter la sauvegarde. Vérifiez le fichier, la version du format, le mot de passe et l’accès au stockage.</string>
+    <string name="backup_preview">Vérifier l’importation</string>
+    <string name="backup_preview_explanation">Les profils seront ajoutés en tant que nouveaux profils. Les profils, identifiants et PIN existants resteront en place. Vérifiez les adresses des serveurs et les clés épinglées avant de confirmer.</string>
+    <string name="backup_profile_details">%1$d favoris · %2$d raccourcis · %3$d commandes</string>
+    <string name="backup_pinned_key">Clé de serveur épinglée : %1$s</string>
+    <string name="backup_contains_key">Comprend une clé de connexion au serveur chiffrée</string>
+    <string name="backup_apply_preferences">Remplacer aussi l’apparence, la protection des captures d’écran, le délai de verrouillage automatique et les préférences du stylet</string>
+    <string name="backup_confirm_import">Ajouter les profils</string>
+    <string name="backup_imported">%1$d profils ajoutés. Sélectionnez un profil et connectez-vous.</string>
+    <string name="backup_capacity">Pas assez d’emplacements de profil disponibles. Supprimez les profils inutilisés avant d’importer.</string>
+    <string name="backup_decrypt">Déchiffrer la sauvegarde</string>
+    <string name="backup_no_profiles">Configurez un profil de serveur HTTPS avant d’exporter.</string>
+</resources>

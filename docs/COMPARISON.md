@@ -1,12 +1,12 @@
 # MeshCentral on Android: comparison
 
-As of **2026-10-26**. Our column describes the published **0.8.2 prerelease (code 21)**.
+As of **2026-10-26**. Our column describes the published **0.8.4 prerelease (code 23)**.
 Competitor columns describe the linked public sources checked on that date, not hands-on tests.
 **Not stated** means not found in those descriptions; it does not mean absent.
 **Partial** identifies a concrete capability or acceptance limit, not a claim of complete parity.
 A client manages other devices from a phone; an agent makes that phone a managed device.
 
-| Capability | MeshPilot 0.8.2 | PocketMesh [P] | MeshControl Pro [M] | Official Android agent [A] |
+| Capability | MeshPilot 0.8.4 | PocketMesh [P] | MeshControl Pro [M] | Official Android agent [A] |
 |---|---|---|---|---|
 | Role, source and price | Independent client; Apache 2.0; free, no ads/analytics [1] | Client; closed source; currently free | Client; proprietary distribution; 15-day trial, then advertised €4.89/month or €48.99/year | Agent, not a control client; Apache 2.0 |
 | Distribution and updates | GitHub APKs; opt-in daily/manual checks, browser download, no automatic installation [2] | GitHub APK; checks every 12 hours | Google Play | Google Play or GitHub APK/AAB |
@@ -35,7 +35,7 @@ A client manages other devices from a phone; an agent makes that phone a managed
 Each numbered note gives production code and a validation report. Source availability or a passing
 unit test does **not** establish live support on every agent, OS or physical device. Candidate checks
 are recorded in [0.8.0 validation](RELEASE_0_8_0_VALIDATION.md); published releases and remaining acceptance in
-[0.8.1 and 0.8.2 release validation](RELEASE_0_8_2_VALIDATION.md).
+[0.8.1–0.8.4 release validation](RELEASE_0_8_2_VALIDATION.md).
 Historical reports keep their original versions; newer scoped evidence supersedes only matching claims.
 
 1. [License](../LICENSE), [dependencies and package](../app/build.gradle.kts), [privacy](../PRIVACY.md);

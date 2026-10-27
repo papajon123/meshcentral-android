@@ -50,15 +50,21 @@ class MeshDesktopRelay(
     @Volatile private var currentDevice: MeshDevice? = null
     private data class MousePress(val socket: WebSocket, val x: Int, val y: Int)
     private val mousePresses = mutableMapOf<MouseButton, MousePress>()
+    private val keyPresses = mutableMapOf<Pair<Int, Boolean>, WebSocket>()
+    @Volatile private var inputSuppressed = false
+    @Volatile private var appLocked = false
     private var authCookie: String? = null
     private var relayCookie: String? = null
     @Volatile private var frameVersion = 0L
-    private var protocolNumberSent = false
+    /** The agent parses the first tunnel message as the protocol; nothing binary may precede it. */
+    @Volatile private var protocolNumberSent = false
     private var manualClose = false
     private var reconnectJob: Job? = null
     private var keepAliveJob: Job? = null
     private var resumeWatchdogJob: Job? = null
-    private var quality = DesktopQuality()
+    @Volatile private var quality = DesktopQuality()
+    private val streamMeter = DesktopStreamMeter()
+    private var statisticsJob: Job? = null
     private val retry = ConnectionRetryPolicy()
     private var networkAvailable = true
     private var controlAvailable = true
@@ -174,6 +180,7 @@ class MeshDesktopRelay(
     /** Restore the same session after backgrounding, or reopen its relay if it disappeared. */
     fun resumeAfterBackground(controlReady: Boolean): DesktopResumeAction {
         backgroundPaused = false
+        if (appLocked) { sendBinary(KvmInputEncoder.pause(true)); return DesktopResumeAction.None }
         if (retry.exhausted) return DesktopResumeAction.None
         val state = _desktopState.value
         val action = DesktopResumePolicy.onForeground(
@@ -199,7 +206,7 @@ class MeshDesktopRelay(
         val previousVersion = frameVersion
         resumeWatchdogJob = scope.launch {
             delay(RESUME_FRAME_TIMEOUT_MILLIS)
-            if (!backgroundPaused && relaySocket === socket && frameVersion == previousVersion) reconnect(resetBudget = false)
+            if (!backgroundPaused && !appLocked && relaySocket === socket && frameVersion == previousVersion) reconnect(resetBudget = false)
         }
     }
 
@@ -222,21 +229,45 @@ class MeshDesktopRelay(
         }
     }
 
-    fun requestRefresh(): Boolean = sendBinary(KvmInputEncoder.refresh())
+    fun requestRefresh(): Boolean = !appLocked && sendBinary(KvmInputEncoder.refresh())
 
-    fun setQuality(jpegQuality: Int, frameRate: Int): Boolean {
-        quality = quality.copy(jpegQuality = jpegQuality.coerceIn(1, 100), frameRate = frameRate.coerceIn(1, 60))
-        return sendBinary(KvmInputEncoder.compression(jpegQuality = quality.jpegQuality, frameRate = quality.frameRate))
+    fun setQuality(jpegQuality: Int, frameRate: Int, scaling: Int = quality.scaling): Boolean {
+        quality = DesktopQuality(jpegQuality, frameRate, scaling).normalized()
+        _desktopState.update { it.copy(quality = quality) }
+        val sent = sendBinary(quality.packet())
+        if (sent) requestRefresh()
+        return sent
+    }
+
+    /** A lock is stronger than visibility/navigation pause and survives reconnect/foreground calls. */
+    @Synchronized fun setAppLocked(locked: Boolean) {
+        if (appLocked == locked) return
+        if (locked) releaseMouseButtons()
+        appLocked = locked
+        if (locked) {
+            resumeWatchdogJob?.cancel()
+            framebuffer.clear()
+            _desktopState.update { it.copy(framebuffer = null, bytesPerSecond = 0, framesPerSecond = 0f) }
+        } else {
+            val state = _desktopState.value
+            if (state.remoteWidth > 0 && state.remoteHeight > 0)
+                framebuffer.apply(KvmPacket.ScreenSize(state.remoteWidth, state.remoteHeight))
+        }
+        sendBinary(KvmInputEncoder.pause(locked || backgroundPaused))
+        if (!locked && !backgroundPaused) requestRefresh()
     }
 
     /** Pauses the remote screen stream; used when the app goes to the background. */
-    fun setPaused(paused: Boolean): Boolean {
+    @Synchronized fun setPaused(paused: Boolean): Boolean {
+        val wasPaused = backgroundPaused
         backgroundPaused = paused
-        if (paused) {
-            synchronized(this) { releaseMouseButtons() }
+        if (paused || appLocked) {
+            releaseMouseButtons()
             resumeWatchdogJob?.cancel()
         }
-        return sendBinary(KvmInputEncoder.pause(paused))
+        val sent = sendBinary(KvmInputEncoder.pause(paused || appLocked))
+        if (sent && wasPaused && !paused && !appLocked) requestRefresh()
+        return sent
     }
 
     fun selectDisplay(display: Int): Boolean {
@@ -246,9 +277,17 @@ class MeshDesktopRelay(
 
     fun requestDisplays(): Boolean = sendBinary(KvmInputEncoder.getDisplays())
 
-    override fun sendRemoteKey(remoteKeyCode: Int, down: Boolean, extended: Boolean): Boolean {
+    @Synchronized override fun sendRemoteKey(remoteKeyCode: Int, down: Boolean, extended: Boolean): Boolean {
+        val key = remoteKeyCode to extended
+        if (!down && keyPresses.containsKey(key)) {
+            val socket = keyPresses.remove(key)
+            return socket === relaySocket && socket?.send(ByteString.of(*KvmInputEncoder.key(remoteKeyCode, false, extended))) == true
+        }
         if (!inputAllowed()) return false
-        return sendBinary(KvmInputEncoder.key(remoteKeyCode, down, extended))
+        val socket = relaySocket ?: return false
+        val sent = socket.send(ByteString.of(*KvmInputEncoder.key(remoteKeyCode, down, extended)))
+        if (sent && down) keyPresses[key] = socket
+        return sent
     }
 
     override fun sendUnicodeText(text: String): Int {
@@ -300,6 +339,13 @@ class MeshDesktopRelay(
 
     private fun releaseMouseButtons() {
         mousePresses.keys.toList().forEach { releaseMouseButton(it) }
+        keyPresses.keys.toList().forEach { (key, extended) -> sendRemoteKey(key, false, extended) }
+    }
+
+    /** A passive PiP must never accept input, even through an old callback. */
+    @Synchronized fun setInputSuppressed(suppressed: Boolean) {
+        if (suppressed) releaseMouseButtons()
+        inputSuppressed = suppressed
     }
 
     override fun sendMouseClick(x: Int, y: Int, button: MouseButton): Boolean {
@@ -329,11 +375,14 @@ class MeshDesktopRelay(
 
     private fun inputAllowed(): Boolean {
         val state = _desktopState.value
-        return relaySocket != null && state.inputEnabled &&
+        return relaySocket != null && protocolNumberSent && !appLocked && !backgroundPaused && !inputSuppressed && state.inputEnabled &&
             (state.device?.isAndroidAgent != true || phoneInputAllowed(state.device))
     }
 
     private fun sendBinary(packet: ByteArray): Boolean {
+        // State changes made before "c" (saved quality, pause, lock) are applied by the
+        // initialisation sequence; sending them early makes the agent read them as the protocol.
+        if (!protocolNumberSent) return false
         return relaySocket?.send(ByteString.of(*packet)) == true
     }
 
@@ -437,7 +486,7 @@ class MeshDesktopRelay(
 
         override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
             if (relaySocket !== webSocket) return
-            synchronized(this@MeshDesktopRelay) { mousePresses.clear() }
+            synchronized(this@MeshDesktopRelay) { mousePresses.clear(); keyPresses.clear() }
             relaySocket = null
             _desktopState.update {
                 it.copy(
@@ -458,7 +507,7 @@ class MeshDesktopRelay(
 
         override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
             if (relaySocket !== webSocket) return
-            synchronized(this@MeshDesktopRelay) { mousePresses.clear() }
+            synchronized(this@MeshDesktopRelay) { mousePresses.clear(); keyPresses.clear() }
             relaySocket = null
             if (manualClose) {
                 _desktopState.update {
@@ -484,9 +533,9 @@ class MeshDesktopRelay(
         when {
             text == "c" || text == "cr" -> {
                 if (protocolNumberSent) return
-                protocolNumberSent = true
                 // MeshCentral waits for the viewer protocol number before forwarding KVM data.
                 webSocket.send(PROTOCOL_NUMBER)
+                protocolNumberSent = true
                 _desktopState.update {
                     it.copy(
                         connectionState = ConnectionState.Connected,
@@ -502,7 +551,8 @@ class MeshDesktopRelay(
         }
     }
 
-    private fun handleRelayBinary(socket: WebSocket, payload: ByteArray) {
+    @Synchronized private fun handleRelayBinary(socket: WebSocket, payload: ByteArray) {
+        streamMeter.received(payload.size)
         val packets = decoder.append(payload)
         if (packets.isEmpty()) return
 
@@ -519,11 +569,11 @@ class MeshDesktopRelay(
             when (packet) {
                 is KvmPacket.ScreenSize -> {
                     screenSize = packet
-                    framebuffer.apply(packet)?.let { update = it }
+                    if (!appLocked) framebuffer.apply(packet)?.let { update = it }
                 }
 
-                is KvmPacket.Tile -> framebuffer.apply(packet)?.let { update = it }
-                is KvmPacket.CopyRect -> framebuffer.apply(packet)?.let { update = it }
+                is KvmPacket.Tile -> if (!appLocked) framebuffer.apply(packet)?.let { update = it }
+                is KvmPacket.CopyRect -> if (!appLocked) framebuffer.apply(packet)?.let { update = it }
                 is KvmPacket.Displays -> displays = packet
                 is KvmPacket.DisplayGeometry -> geometry = packet
                 is KvmPacket.Cursor -> cursor = packet
@@ -538,7 +588,10 @@ class MeshDesktopRelay(
         val previousSize = _desktopState.value.remoteWidth to _desktopState.value.remoteHeight
         // An upgrade or "c" can precede an immediate refusal. A real KVM frame proves recovery.
         if (update != null || screenSize != null) retry.reset()
-        if (update != null) frameVersion++
+        if (update != null) {
+            frameVersion++
+            if (packets.any { it is KvmPacket.Tile || it is KvmPacket.CopyRect }) streamMeter.frame()
+        }
 
         _desktopState.update { state ->
             var next = state
@@ -592,13 +645,16 @@ class MeshDesktopRelay(
         initialisation.markInitialised()
         KvmInputEncoder.initialisationSequence(
             jpegQuality = quality.jpegQuality,
-            frameRate = quality.frameRate,
+            frameRate = quality.frameIntervalMillis,
+            scaling = quality.scaling,
         ).filter { packet ->
             // Key-up and touch-init are also input packets; phone agents only expose a display.
-            _desktopState.value.device?.isAndroidAgent != true || packet[1].toInt() !in setOf(1, 14)
+            val command = packet[1].toInt()
+            (!appLocked || command != 8) &&
+                ((!appLocked && !inputSuppressed && _desktopState.value.device?.isAndroidAgent != true) || command !in setOf(1, 14))
         }.forEach(::sendBinary)
         sendBinary(KvmInputEncoder.getDisplays())
-        if (backgroundPaused) sendBinary(KvmInputEncoder.pause(true)) else requestRefresh()
+        if (backgroundPaused || appLocked) sendBinary(KvmInputEncoder.pause(true)) else requestRefresh()
     }
 
     private fun handleControlJson(webSocket: WebSocket, text: String) {
@@ -625,6 +681,15 @@ class MeshDesktopRelay(
 
     private fun startKeepAlive() {
         stopKeepAlive()
+        streamMeter.reset(android.os.SystemClock.elapsedRealtime())
+        statisticsJob = scope.launch {
+            while (true) {
+                delay(1000)
+                val rate = streamMeter.sample(android.os.SystemClock.elapsedRealtime())
+                _desktopState.update { it.copy(bytesReceived = rate.totalBytes,
+                    bytesPerSecond = rate.bytesPerSecond, framesPerSecond = rate.framesPerSecond) }
+            }
+        }
         keepAliveJob = scope.launch {
             while (true) {
                 delay(KEEP_ALIVE_INTERVAL_MILLIS)
@@ -642,6 +707,9 @@ class MeshDesktopRelay(
     }
 
     private fun stopKeepAlive() {
+        statisticsJob?.cancel()
+        statisticsJob = null
+        _desktopState.update { it.copy(bytesPerSecond = 0L, framesPerSecond = 0f) }
         keepAliveJob?.cancel()
         keepAliveJob = null
     }
@@ -718,4 +786,13 @@ class MeshDesktopRelay(
 data class DesktopQuality(
     val jpegQuality: Int = 60,
     val frameRate: Int = 30,
-)
+    val scaling: Int = 1024,
+) {
+    // The wire field is a capture interval in milliseconds, NOT frames/second.
+    val frameIntervalMillis: Int get() = kotlin.math.ceil(1000.0 / frameRate.coerceIn(1, 50)).toInt()
+    fun normalized() = copy(jpegQuality = jpegQuality.coerceIn(1, 100),
+        frameRate = frameRate.coerceIn(1, 50), scaling = scaling.coerceIn(128, 1024))
+    fun packet(): ByteArray = normalized().let {
+        KvmInputEncoder.compression(jpegQuality = it.jpegQuality, scaling = it.scaling, frameRate = it.frameIntervalMillis)
+    }
+}

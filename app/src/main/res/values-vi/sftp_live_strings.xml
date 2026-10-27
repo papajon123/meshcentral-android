@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">Máy chủ đã từ chối tệp này. Hãy kiểm tra quyền và loại tệp trước khi thử lại.</string>
+</resources>

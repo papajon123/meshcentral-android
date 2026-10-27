@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">Пригласить устройство</string>
+    <string name="admin_invite_help">Любой, у кого есть эта ссылка, может установить агент в «%1$s». Делитесь ею только с тем, кому хотите помочь.</string>
+    <string name="admin_invite_mode">Разрешает фоновую и интерактивную установку любого доступного агента.</string>
+    <string name="admin_expiry">Срок действия ссылки</string>
+    <string name="admin_create_link">Создать ссылку</string>
+    <string name="admin_expires_at">Истекает: %1$s</string>
+    <string name="admin_expired">Срок действия ссылки истёк. Создайте новую ссылку.</string>
+    <string name="admin_qr">Отсканируйте, чтобы открыть страницу установки агента</string>
+    <string name="admin_share">Поделиться ссылкой</string>
+    <string name="admin_copy">Копировать ссылку</string>
+    <string name="admin_copied">Ссылка скопирована</string>
+    <string name="admin_close">Закрыть</string>
+    <string name="admin_cancel">Отмена</string>
+    <string name="admin_confirm">Подтвердить</string>
+    <string name="admin_review">Проверить изменения</string>
+    <string name="admin_edit">Изменить устройство</string>
+    <string name="admin_name">Имя</string>
+    <string name="admin_description">Описание</string>
+    <string name="admin_tags">Теги через запятую</string>
+    <string name="admin_notes">Заметки</string>
+    <string name="admin_save_notes">Сохранить заметки</string>
+    <string name="admin_move">Переместить в другую группу</string>
+    <string name="admin_move_confirm">Переместить «%1$s» в «%2$s»? Доступ будет определяться целевой группой.</string>
+    <string name="admin_edit_confirm">Сохранить эти изменения для «%1$s»?</string>
+    <string name="admin_notes_confirm">Заменить заметки для «%1$s»?</string>
+    <string name="admin_saved">Изменения подтверждены сервером</string>
+    <string name="admin_failed">Не удалось подтвердить изменение. Обновите данные и проверьте устройство, затем повторите попытку.</string>
+    <string name="admin_invite_failed">Не удалось создать ссылку. Проверьте подключение и права на группу, затем повторите попытку.</string>
+    <string name="admin_loading">Ожидание сервера…</string>
+    <string name="admin_invalid">Имя: 1–64 символов. Описание: до 64 символов. Каждый тег: до 63 символов; всего: до 4096. Используйте однострочный текст без управляющих символов и символов форматирования направления текста.</string>
+    <string name="admin_endpoint">Сервер: %1$s</string>
+    <string name="admin_unavailable">Переподключитесь и обновите данные, чтобы управлять этим устройством. У вашей учётной записи должны быть нужные права.</string>
+    <string name="admin_notes_limit">Заметки: до 16000 символов.</string>
+    <string name="admin_no_destinations">Нет подходящих групп с правом перемещения этого устройства.</string>
+</resources>

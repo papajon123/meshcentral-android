@@ -12,6 +12,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application android:usesCleartextTraffic="true">
+        <activity android:name=".ui.screens.session.DesktopPipHarnessActivity"
+            android:exported="false" android:supportsPictureInPicture="true"
+            android:configChanges="screenSize|smallestScreenSize|screenLayout|orientation" />
         <provider
             android:name="ru.papajon.meshcentralmobile.mesh.files.FixtureDocumentsProvider"
             android:authorities="${applicationId}.testdocuments"

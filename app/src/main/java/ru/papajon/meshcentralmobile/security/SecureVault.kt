@@ -17,7 +17,8 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.GCMParameterSpec
 import javax.crypto.spec.PBEKeySpec
 
-class SecureVault(context: Context, private val credentialNamespace: String? = null, preferencesName: String = PREFS_NAME) {
+class SecureVault(context: Context, private val credentialNamespace: String? = null, preferencesName: String = PREFS_NAME,
+    private val readOnly: Boolean = false) {
     private val prefs = context.applicationContext.getSharedPreferences(preferencesName, Context.MODE_PRIVATE)
     private val random = SecureRandom()
     private val credentialKey = credentialNamespace?.let {
@@ -28,11 +29,12 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
     val rememberedDevice = RememberedDeviceStore(
         read = { getEncrypted("remembered.$credentialKey") },
         write = { putEncrypted("remembered.$credentialKey", it) },
-        remove = { prefs.edit().remove("remembered.$credentialKey").apply() },
+        remove = { if (!readOnly) prefs.edit().remove("remembered.$credentialKey").apply() },
     )
 
     /** Called only for the profile created from pre-profile settings. Migration and marker are atomic. */
     fun migrateLegacyCredentials(serverUrl: String) {
+        if (readOnly) return
         require(credentialNamespace == "default") { "Only the legacy profile can claim legacy credentials" }
         val marker = "migrated.$credentialKey"
         if (prefs.getBoolean(marker, false)) return
@@ -69,6 +71,7 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
     }
 
     fun clearCredentials() {
+        if (readOnly) return
         rememberedDevice.clear()
         val editor = prefs.edit().remove(credentialKey)
         if (credentialNamespace != null) editor.putBoolean("migrated.$credentialKey", true)
@@ -89,7 +92,7 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
     }
     fun clearScopedSecret(label: String) {
         require(label.matches(Regex("[a-z_]{1,40}")))
-        prefs.edit().remove("secret.$credentialKey.$label").apply()
+        if (!readOnly) prefs.edit().remove("secret.$credentialKey.$label").apply()
     }
 
     /** Server setting, separate from account credentials; never store it in profile metadata. */
@@ -124,15 +127,15 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
     }
 
     fun clearPin() {
-        prefs.edit().remove(KEY_PIN).apply()
+        if (!readOnly) prefs.edit().remove(KEY_PIN).apply()
     }
 
     fun clearAll() {
-        prefs.edit().clear().apply()
+        if (!readOnly) prefs.edit().clear().apply()
     }
 
     private fun putEncrypted(key: String, plaintext: String) {
-        prefs.edit().putString(key, encryptedValue(plaintext)).apply()
+        if (!readOnly) prefs.edit().putString(key, encryptedValue(plaintext)).apply()
     }
 
     private fun encryptedValue(plaintext: String): String {

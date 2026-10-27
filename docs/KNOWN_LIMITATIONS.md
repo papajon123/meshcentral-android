@@ -1,6 +1,6 @@
 # Known Limitations
 
-This page describes 0.7.1. Limits below are deliberate, unverified or outside this client.
+This page records current limitations and historical validation references. Limits below are deliberate, unverified or outside this client.
 
 ## Validation status
 
@@ -8,9 +8,66 @@ Local public build/JVM and API 35 instrumentation passed. Compatibility work use
 
 Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM background delivery and battery measurements remain. Restrictive remote-command ACL and notification-token revocation were exercised; consent/refusal coverage is not exhaustive.
 
-## Device screen and capabilities
+## TCP port forwarding (Unreleased)
 
-- System/network details depend on the data reported by MeshCentral. Missing fields stay unknown. Services/processes and events require the optional plugin; power/wake availability depends on rights, agent state and the network.
+- TCP only; no UDP or full VPN. Each rule occupies `127.0.0.1` and, when configured and supported,
+  `::1` on one port, never a wildcard. An IPv4-only host can use the IPv4 listener; a port occupied
+  on an available IPv6 loopback still fails instead of being silently bypassed. Any app can access an enabled
+  port, including remote services which trust localhost without authentication. Browser cookies
+  are shared across ports on `127.0.0.1`; loopback ports do not isolate browser sessions.
+- Requires a connected desktop Mesh Agent and Remote Control or Relay rights. Android agents,
+  server-local devices (`localrelay.ashx`) and unknown rights are not offered. An enabled rule
+  means the local listener is ready; the remote target is contacted only when a client connects.
+- At most 64 saved rules, eight active rules and 16 simultaneous TCP connections in total.
+  Extra connections are closed without opening another relay. Rules contain no passwords or
+  cookies; do not put sensitive information in their names. Rules never auto-start and stop
+  after five minutes with no connections. Active but idle connections do not trigger this timer.
+- MeshCentral raw TCP has no directional FIN/half-close frame. After local EOF, the app first
+  waits while queued uploads make progress, allowing at most 120 seconds without a decrease in
+  the queue. Expiry or remote EOF with unsent bytes causes RST;
+  normal completion uses a WebSocket close handshake. An empty queue is not target-application
+  acknowledgement. The raw WebSocket write timeout is 120 seconds. Existing responses
+  drain until five seconds of quiet time after the last received frame, with an initial grace
+  period and no interruption of an in-progress local write. Protocols which need a remote FIN
+  before replying are unsupported. An empty Android queue does not prove that the server/agent
+  has drained its own buffers: sending local FIN before a slow target responds can still lose
+  those downstream bytes when the quiet deadline expires. Keep the write side open until the
+  application response (as a normal HTTP upload does). This is not transparent TCP half-close emulation.
+- The 20-second deadline confirms relay pairing only. MeshCentral 1.3.1 sends `c` before proving
+  the target connected, and its agent has no TCP-connect error handler. An unreachable target
+  may leave a paired connection open indefinitely; stop it manually if the client keeps waiting.
+  No target-data timeout is imposed on protocols where silence can be legitimate.
+- Pairing refusal/timeout stops the rule only when no other connections remain. Certificate/TLS-policy
+  failure still stops the rule. Other failures after pairing
+  reset the affected client socket without stopping sibling connections or retrying. RST also
+  prevents an EOF-delimited client from treating a known failure/cancellation as a short success.
+- TCP relay Ping is 120 seconds: a proxy with a 60-second idle timeout can still drop an idle
+  SSH connection. It cannot terminate other live connections through the rule. A client-specific
+  keepalive may be needed. Very long reader backpressure can still exceed the heartbeat window.
+- `tcpaddr` is resolved/reached by the agent, not Android. Live checks cover explicit loopback
+  addressing and the Windows host's HTTPS endpoint reached from the WSL Linux agent's network.
+  A separate physical machine on a real LAN remains unverified.
+- HTTP, SSH, echo traffic, notification updates/stop and the default idle expiry were live-tested on an API 36 emulator with
+  MeshCentral 1.3.1. Physical phones, OEM battery policies, and installed Microsoft RDP/VNC/SSH
+  handler behavior remain unverified. The URI is only a convenience; copy the endpoint if a
+  particular client uses a different link format. HTTPS to loopback may fail the target site's
+  certificate/hostname check; the tunnel never disables the external browser's TLS checks.
+- On the local Windows/API 36 emulator fixture, `10.0.2.2` can corrupt the TLS tail when a
+  remote HTTP/1.0 connection ends (`SSLProtocolException: BAD_RECORD_MAC`). A raw Android
+  WebSocket without the forwarding code reproduces it; the identical test through `adb reverse`
+  succeeds. HTTP/1.1 keep-alive also succeeds over `10.0.2.2`. The precise virtual-network
+  component is not identified. Treat this as a fixture-path limitation, not a reason to ignore
+  TLS errors or retry the stream; physical-device acceptance is still required.
+- Notification permission is requested on Android 13+. If notifications are denied or the channel
+  is disabled, use the in-app switch/Stop all or Android's active-app controls; the notification
+  drawer action cannot be shown. Process death closes sockets; no service/route is restored.
+- Incoming TCP relay callbacks apply socket backpressure; a malicious server can still allocate a
+  WebSocket frame inside OkHttp before the app rejects frames larger than 1 MiB. This is not a
+  general resource-isolation boundary against a hostile authenticated MeshCentral server.
+
+## Device capabilities
+
+- System/network details depend on the data reported by MeshCentral. Missing fields stay unknown. Native processes/services use the agent control channel; the older Companion diagnostics remain optional; power/wake availability depends on rights, agent state and the network.
 - Desktop, Terminal, Files, SSH and SFTP tabs are shown but disabled for a known denial, a known offline/unsupported state, or a missing required right. Unknown optional metadata enables an explicit attempt; the server decides the result.
 - The app does not infer a grant from a missing field, nor does it bypass a server denial. A failed attempt reports the server's reason.
 - At most two sessions can remain open, including at most one desktop. Closing is explicit; process death restores the selection, not a live connection.
@@ -22,7 +79,9 @@ Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM back
 - Rendering is a local xterm.js 5.5.0 / addon-fit 0.10.0 view (MIT). It has no network/file access, no remote navigation, no OSC 8 links and no OSC 52 clipboard writes. Copy is limited to the explicit toolbar action and selection cap.
 - Input is capped at 64 KiB per action, scrollback at 3,000 lines and the grid at 500 × 300 cells. Pending output is bounded to 1 MiB; a full buffer applies backpressure, and an individual frame over 1 MiB closes the session with an explicit error. Output is not silently dropped.
 - Non-composition IME replacement and multi-character deletion retain xterm 5.5's limited terminal semantics: replacement text can be appended, and a multi-character deletion can produce one DEL. Use terminal editing keys for these operations; a full remote-line editor is not implemented.
-- A terminal is one-shot. Closing, losing the control/server/account session, or a relay failure ends it; reopen the tab for a new session. Previous input is never replayed automatically.
+- Each remote terminal shell is one-shot. After a relay/network/Agent failure, **Reconnect** explicitly creates a new shell while retaining the same local renderer, scrollback and viewport. Control-channel authentication and current device rights must be available again. Closing the tab, changing the account/profile or disposing the session still destroys its history. Submitted SSH passwords/keys are not retained or replayed; server-saved authentication may be offered by the server after an explicit reconnect.
+- Buffered input from an old renderer generation is rejected. A broken WebView must be reopened/updated; reconnect does not repair the renderer. If the bounded output buffer is completely full, let it drain before reconnecting.
+- After reconnect, the remote `ESC[3J` command no longer erases local scrollback: shell startup scripts can emit it as part of `clear`. Normal screen erasure still works. Close the tab to discard retained output. The previous visible screen and session marker are moved into scrollback before the fresh shell can clear its screen.
 - MeshCentral can record terminal activity. The app shows a recording notice when the Agent relay reports it (`cr`). The audited SSH relay does not forward this marker to the client; absence of a notice never proves that recording is disabled.
 - Fragmented UTF-8 at the MeshCentral SSH relay boundary is an upstream limitation noted in the renderer audit. The local renderer preserves split UTF-8 for raw Agent bytes; physical IMEs and composition remain a test gap.
 - Terminal output and scrollback are not written to app storage. They are lost when the session is disposed.
@@ -30,13 +89,19 @@ Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM back
 ## Files and transfers
 
 - Directory replies are limited to 1 MiB of JSON and 20,000 entries. Over-limit replies are rejected, not truncated.
-- Downloads use a fresh listing for the expected size, SAF truncation and post-transfer checks. A failed or cancelled download may still leave a partial document at the user-selected location; the app does not delete or automatically rewrite it.
+- Downloads use a fresh listing for the expected size, SAF truncation and post-transfer checks. Failure/cancellation attempts to remove only the newly created destination. If the provider refuses deletion, the app attempts to mark it `.partial` and reports whether it was removed, marked or retained. Previously existing documents and upload sources are not deleted.
 - Both Agent and SFTP uploads are verified by readback SHA-256 and a fresh directory listing. An upload acknowledgement alone is not treated as success.
-- There is no transfer resume and no automatic retry of a file operation. Reopening the tab or retrying requires a new explicit action.
+- There is no byte-offset resume or automatic retry. Computer queues offer explicit per-item or all-unfinished retry from byte zero; successful items are retained. Downloads create a new document, uploads can replace the same confirmed remote name. A fresh SFTP connection prompts for credentials again. Queue entries are process-local. Persistable SAF grants survive Activity destruction and are released on queue replacement/close; abrupt process death can leave a platform grant, but does not restore a queue.
+- Long-press selection and download queues apply to computer Agent/SFTP sessions, not Android phone media categories. A batch holds at most 1,000 items. Recursive copying is bounded to 32 levels and 20,000 descendants per folder. A failed folder remains `name.partial` with completed contents. MeshCentral SFTP discards symlink/special-file metadata: the client attempts them as regular files, rejects size mismatch/refusal and pauses after a timeout. Same-size link targets cannot be distinguished. The opt-in `SftpLiveAcceptanceTest` exercises real OpenSSH through MeshCentral 1.3.1; Windows Agent compatibility remains unverified by that test.
+- MeshCentral 1.3.1 closes its SFTP relay when `readdir` fails (including a directory without read permission). A regular-file refusal preserves the connection and later queue entries continue; a directory refusal or stalled FIFO pauses the remaining queue. Agent `dir:null`/over-limit subfolders now fail only their queue row and keep the session. After fixing the remote object, retry explicitly and authenticate again. The client cannot retain a connection the server has closed or infer missing Unix file-type metadata.
+- Agent ZIP support is audited against MeshCentral 1.3.1, requires write permission and space for a remote copy, and has no capability/free-space preflight. If ZIP does not start, cancel plus a fresh absence check precedes recursive fallback. A ZIP that starts but never completes (write error or silence) is abandoned after an activity idle timeout and copied file-by-file. Completed archives require size/SHA-256 readback and ZIP/ZIP64 structure validation (65,535 entries and 32 MiB metadata maximum). Member CRC/decompression is not checked; validation requires a seekable SAF descriptor. Large ZIP64 is tested with sparse byte fixtures, not a physical 4 GiB transfer.
+- Closing/cancelling an archive download sends `download stop`, discards late blocks until the next listing and attempts exact-name cleanup in the same session; a cancel during ZIP creation still closes the relay after bounded cancellation. A lost connection or refusal can leave `meshpilot-<UUID>.zip`; the exact path is shown in an in-app notice and optional private notification. A verified download stays successful with a cleanup warning. No broad temporary-file deletion runs. Process termination can prevent cleanup/notification.
+- Recursive Agent folder deletion follows symbolic links and junctions, so targets outside the selected folder can be erased; the confirmation warns, but listings do not expose link targets. If a SAF provider cannot rename documents, verified files and folders keep the `.partial` suffix with a warning instead of being deleted.
+- Downloads check the advertised size, local SAF readback SHA-256 against the received bytes, and a fresh remote listing. That is not a remote content snapshot: a file can change without changing its size. The live fixture independently compares the SHA-256 of all archive members. Android does not extract untrusted archives automatically.
 - Cancelling an unconfirmed mkdir, rename or delete reports “unverified”, not success. The server may already have applied the mutation; live cancellation semantics remain unverified.
 - Existing entries whose names cannot be safely created or operated are read-only. Use **Open web panel** for those entries; the app does not guess at destructive operations.
 - SFTP directory deletion semantics and restrictive SSH/SFTP file permissions are server-dependent and were not exhaustively tested. Agent file permissions are not assumed to match SFTP permissions.
-- SAF grants are temporary. The app does not request broad storage permission or persist a URI grant.
+- Queues require persistable SAF grants and release their own grants on replacement/close. Providers refusing persistence cannot run queues. No broad storage permission is requested. Single-file downloads use CreateDocument, including the system Downloads destination.
 
 ## SSH and SFTP
 
@@ -74,6 +139,7 @@ Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM back
 - **Settings → Debug WebView** is a raw view of the configured MeshCentral page, not the local terminal renderer. It has its own WebView cookies and storage, cleared by **Settings → Data**. WebView contents debugging is enabled only in debug builds.
 - The terminal's local WebView serves only bundled assets from a reserved origin and blocks network/file access. It receives no MeshCentral cookie or SSH secret.
 - App lock is optional. Biometrics require Android 9+; the PIN remains the fallback. App lock protects the UI, not the MeshCentral account.
+- Active port-forwarding tunnels continue while the app is locked so external RDP/VNC/SSH/browser clients keep working. Stop them explicitly or through the notification. One open connection prevents the five-minute no-connection timeout, even without traffic.
 - Screenshot blocking (`FLAG_SECURE`) is opt-in and off by default. It does not stop a camera pointed at the screen and may hide the app from the recent-apps preview.
 
 ## Updates and distribution
@@ -114,3 +180,14 @@ Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM back
 - A reverse proxy with a subpath still needs live compatibility testing.
 - Network changes, VPNs, captive portals and TLS interception can cause failures that the app reports but cannot repair.
 - No SLA, general server-version support matrix, or bug-fix timeline is provided.
+
+## Native task tools
+
+- Computer task tabs cover Windows, Linux and macOS agents. Android tabs remain hidden until a successful process-list probe. PID 0 is neither displayed nor queried. Field and process-detail availability vary by agent/OS.
+- Process verification is conservative: an empty list or a list retaining no more than half of the pre-command PID/name identities cannot prove termination. A different name at the same PID can confirm the previous identity ended only on Windows and with that continuity check. Linux/macOS/unknown-platform renames remain unverified; same-name PID reuse remains indistinguishable.
+- Agent list replies have no request identifier. Ordinary cancellation retains the abandoned slot for up to 15 seconds; draining its late reply restores fresh reads and mutations without reconnecting. A real request timeout or an expired drain releases the slot but makes subsequent replies display-only until an agent-offline or control-disconnect boundary. Agent restarts invalidate pending reads and operation generations; they do not require reconnecting the server socket. Mutation verification deadlines are checked between reads and may be exceeded by one read's own 15-second timeout.
+- Android agent 14 remains read-only even after a successful task-list probe. Missing `features2` is treated as zero, matching the official web client's bitwise input-allowed check.
+- Missing Linux service state remains unknown. For systemd, a formerly running service is marked no longer running only when the same unit remains in a complete-enough list and a majority of the other previously running units remain running. Without these witnesses, a failed running-table probe is indistinguishable from a stopped service. A vanished unit is not proof of a stopped state. Restart still requires an observed not-running-to-running transition or a changed nonzero PID.
+- Startup type is obtained on opening service details and retained only for the screen session. Known startup codes, process-detail labels, sizes, durations and dates are localized/formatted; missing or invalid values remain unknown.
+- Critical-name detection is a warning heuristic, not an exhaustive OS protection list. It includes the Mesh Agent, common Windows core services, ssh/sshd, networking and systemd units.
+- Windows/macOS live mutations, physical-device TalkBack and low-end-device performance need separate acceptance. Synthetic Windows fixtures use the actual JSON-string envelope sent by meshcore 1.3.1; they are not recorded Windows traffic.

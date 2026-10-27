@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">सत्यापित नहीं किया जा सका: %1$s</string>
+    <string name="review_paused">रोका गया: कनेक्शन टूट गया</string>
+    <string name="review_retry_all">अधूरे आइटम फिर से आज़माएँ</string>
+    <string name="review_cleanup_title">दूरस्थ संग्रह की सफ़ाई</string>
+    <string name="review_archive_left">कंप्यूटर पर एक अस्थायी संग्रह रह सकता है: %1$s। जब कोई संग्रह ऑपरेशन न चल रहा हो, तब इसे जाँचें और हटाएँ।</string>
+    <string name="review_archive_space">पूरा संग्रह बनाने के लिए ZIP को दूरस्थ स्रोत फ़ोल्डर में खाली जगह चाहिए। यदि एजेंट इसे शुरू नहीं कर सकता, तो फ़ाइलें अलग-अलग कॉपी होंगी। अधूरे स्थानीय फ़ोल्डर .partial प्रत्यय बनाए रखते हैं।</string>
+    <string name="review_grant_failed">यह प्रदाता कतार के लिए पहुँच बनाए नहीं रख सका। कोई दूसरा स्थान चुनें।</string>
+    <string name="review_zip_invalid">संग्रह क्षतिग्रस्त या अधूरा है, या समर्थित संरचना सीमाओं से अधिक है।</string>
+    <string name="review_source_changed">चुना गया आइटम बदल गया। फ़ोल्डर रीफ़्रेश करें और चयन की फिर से पुष्टि करें।</string>
+    <string name="review_sftp_types">यह सर्वर SFTP सूचियों में सांकेतिक लिंक या विशेष फ़ाइलों की पहचान नहीं करता। असत्यापनीय फ़ाइलें पथ द्वारा बताई जाती हैं; कनेक्शन टूटने पर कतार रुक जाती है। अधूरे फ़ोल्डर .partial चिह्नित रहते हैं।</string>
+    <string name="review_skipped">असमर्थित आइटम छोड़ा गया: %1$s</string>
+    <string name="review_folder_unavailable">फ़ोल्डर तक पहुँच नहीं: %1$s. बाकी कतार जारी रहती है।</string>
+    <string name="review_local_failed">स्थानीय Android दस्तावेज़ लिखा या दोबारा पढ़ा नहीं जा सका। फ़ाइल सत्र अभी भी जुड़ा है; इस आइटम को फिर आज़माएँ।</string>
+    <string name="review_local_no_rename">यह प्रदाता दस्तावेज़ों का नाम नहीं बदल सकता। कुछ फ़ाइलों में .partial प्रत्यय रहेगा; उन्हें Android Files में नाम बदलें।</string>
+    <string name="review_source_changed_deleted">पहले ही हटाया गया: %1$s. बाकी चयन नहीं हटाया गया; फ़ोल्डर रीफ़्रेश करें और फिर पुष्टि करें।</string>
+    <string name="files_delete_follow_links">फ़ोल्डर का पुनरावर्ती विलोपन सांकेतिक लिंक और जंक्शन का अनुसरण करता है। चयनित फ़ोल्डर के बाहर के लक्ष्य भी मिट सकते हैं; पुष्टि से पहले MeshCentral में फ़ोल्डर जाँचें।</string>
+</resources>

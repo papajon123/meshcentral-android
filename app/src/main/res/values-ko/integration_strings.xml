@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">이 기기는 더 이상 사용할 수 없습니다. 앱을 여세요.</string>
+    <string name="integration_favorites">즐겨찾기</string>
+    <string name="integration_updated">업데이트: %1$s</string>
+    <string name="integration_widget_empty">앱을 열고 즐겨찾기 기기를 추가하세요.</string>
+    <string name="integration_widget_description">즐겨찾기 기기와 마지막으로 알려진 사용 가능 상태</string>
+    <string name="integration_last_known">마지막으로 알려진 상태</string>
+    <string name="integration_open_to_refresh">연결하고 새로 고치려면 앱을 여세요.</string>
+    <string name="integration_refresh">새로 고침</string>
+    <string name="integration_open_app">앱 열기</string>
+    <string name="backup_title">설정 백업</string>
+    <string name="backup_description">서버 프로필, 즐겨찾기, 키보드 단축키, 명령 스니펫 및 앱 환경설정을 내보냅니다. 비밀번호, 세션 토큰, 기억된 기기 쿠키 및 앱 PIN은 제외됩니다. 명령 스니펫에는 입력한 텍스트가 포함될 수 있으므로 공유하기 전에 검토하세요.</string>
+    <string name="backup_export">파일 내보내기</string>
+    <string name="backup_import">파일 가져오기</string>
+    <string name="backup_include_keys">서버 로그인 키 포함 (암호화된 경우만)</string>
+    <string name="backup_password">백업 비밀번호 (8자 이상)</string>
+    <string name="backup_password_hint">비밀번호는 파일 전체를 암호화합니다. 안전하게 보관하세요. 복구할 수 없습니다.</string>
+    <string name="backup_confirm_password">비밀번호 확인</string>
+    <string name="backup_password_mismatch">비밀번호가 일치해야 하며 8–1024자여야 합니다.</string>
+    <string name="backup_busy">처리 중…</string>
+    <string name="backup_saved">백업 파일을 저장했습니다.</string>
+    <string name="backup_failed">백업을 처리할 수 없습니다. 파일, 형식 버전, 비밀번호 및 저장소 접근 권한을 확인하세요.</string>
+    <string name="backup_preview">가져오기 검토</string>
+    <string name="backup_preview_explanation">프로필은 새 프로필로 추가됩니다. 기존 프로필, 자격 증명 및 PIN은 그대로 유지됩니다. 확인하기 전에 서버 주소와 고정된 키를 검토하세요.</string>
+    <string name="backup_profile_details">즐겨찾기 %1$d개 · 단축키 %2$d개 · 명령 %3$d개</string>
+    <string name="backup_pinned_key">고정된 서버 키: %1$s</string>
+    <string name="backup_contains_key">암호화된 서버 로그인 키가 포함되어 있습니다</string>
+    <string name="backup_apply_preferences">화면 모양, 스크린샷 보호, 자동 잠금 지연 및 펜 환경설정도 바꾸기</string>
+    <string name="backup_confirm_import">프로필 추가</string>
+    <string name="backup_imported">프로필 %1$d개를 추가했습니다. 프로필을 선택하고 로그인하세요.</string>
+    <string name="backup_capacity">프로필 여유 공간이 부족합니다. 가져오기 전에 사용하지 않는 프로필을 삭제하세요.</string>
+    <string name="backup_decrypt">백업 복호화</string>
+    <string name="backup_no_profiles">내보내기 전에 HTTPS 서버 프로필을 구성하세요.</string>
+</resources>

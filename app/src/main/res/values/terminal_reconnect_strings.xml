@@ -1,0 +1,4 @@
+<resources>
+    <string name="terminal_reconnect">Reconnect</string>
+    <string name="terminal_new_session">New terminal session</string>
+</resources>

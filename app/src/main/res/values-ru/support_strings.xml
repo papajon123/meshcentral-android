@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">Поддержать MeshPilot</string>
+    <string name="support_body">MeshPilot бесплатный, открытый и без рекламы. Подписка или разовый донат на Boosty помогают выпускать новые версии.</string>
+    <string name="support_action">Поддержать на Boosty</string>
+    <string name="support_link_copied">Браузер не найден. Ссылка на Boosty скопирована.</string>
+</resources>

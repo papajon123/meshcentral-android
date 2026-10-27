@@ -1,0 +1,6 @@
+{
+  "action": "msg",
+  "type": "ps",
+  "nodeid": "node//fixture",
+  "value": "{\"100\":{\"pid\":100,\"user\":\"fixture\",\"cmd\":\"fixture-process-0\"},\"101\":{\"pid\":101,\"user\":\"fixture\",\"cmd\":\"fixture-process-1\"},\"102\":{\"pid\":102,\"user\":\"fixture\",\"cmd\":\"fixture-process-2\"},\"103\":{\"pid\":103,\"user\":\"fixture\",\"cmd\":\"fixture-process-3\"},\"104\":{\"pid\":104,\"user\":\"fixture\",\"cmd\":\"fixture-process-4\"},\"105\":{\"pid\":105,\"user\":\"fixture\",\"cmd\":\"fixture-process-5\"},\"106\":{\"pid\":106,\"user\":\"fixture\",\"cmd\":\"fixture-process-6\"},\"107\":{\"pid\":107,\"user\":\"fixture\",\"cmd\":\"fixture-process-7\"}}"
+}

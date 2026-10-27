@@ -95,7 +95,7 @@ class NotificationPoller(
         val settings = store.settings()
         val policyInvalidated = AtomicBoolean(false)
         fun matchesPolicy(current: ru.papajon.meshcentralmobile.model.ServerProfile?) = current != null &&
-            current.serverUrl == profile.serverUrl && current.pinnedSpkiSha256 == profile.pinnedSpkiSha256
+            current.serverUrl == profile.serverUrl && current.pinnedSpkiSha256 == profile.pinnedSpkiSha256 && current.expectedSpkiSha256 == profile.expectedSpkiSha256
         fun isCurrentPolicy() = !policyInvalidated.get() && matchesPolicy(profiles.currentProfile(profileId))
         val transport = httpClient ?: NotificationHttpClient.forServer(support.server, support.pinnedSpkiSha256,
             isCurrentPolicy = ::isCurrentPolicy)

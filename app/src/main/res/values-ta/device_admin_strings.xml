@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">சாதனத்தை அழை</string>
+    <string name="admin_invite_help">இந்த இணைப்பைக் கொண்ட எவரும் “%1$s” இல் முகவரை நிறுவலாம். நீங்கள் உதவ விரும்பும் நபருடன் மட்டும் இதைப் பகிரவும்.</string>
+    <string name="admin_invite_mode">கிடைக்கும் எந்த முகவரையும் பின்னணியிலும் ஊடாடலாகவும் நிறுவ அனுமதிக்கிறது.</string>
+    <string name="admin_expiry">இணைப்பின் செல்லுபடியாகும் காலம்</string>
+    <string name="admin_create_link">இணைப்பை உருவாக்கு</string>
+    <string name="admin_expires_at">காலாவதி: %1$s</string>
+    <string name="admin_expired">இந்த இணைப்பு காலாவதியானது. புதிய இணைப்பை உருவாக்கவும்.</string>
+    <string name="admin_qr">முகவர் நிறுவல் பக்கத்தைத் திறக்க ஸ்கேன் செய்யவும்</string>
+    <string name="admin_share">இணைப்பைப் பகிர்</string>
+    <string name="admin_copy">இணைப்பை நகலெடு</string>
+    <string name="admin_copied">இணைப்பு நகலெடுக்கப்பட்டது</string>
+    <string name="admin_close">மூடு</string>
+    <string name="admin_cancel">ரத்துசெய்</string>
+    <string name="admin_confirm">உறுதிசெய்</string>
+    <string name="admin_review">மாற்றங்களை மதிப்பாய்வு செய்</string>
+    <string name="admin_edit">சாதனத்தைத் திருத்து</string>
+    <string name="admin_name">பெயர்</string>
+    <string name="admin_description">விவரம்</string>
+    <string name="admin_tags">குறிச்சொற்கள், காற்புள்ளியால் பிரிக்கவும்</string>
+    <string name="admin_notes">குறிப்புகள்</string>
+    <string name="admin_save_notes">குறிப்புகளைச் சேமி</string>
+    <string name="admin_move">வேறு குழுவுக்கு நகர்த்து</string>
+    <string name="admin_move_confirm">“%1$s” ஐ “%2$s” க்கு நகர்த்தவா? அணுகல் இலக்கு குழுவைப் பின்பற்றும்.</string>
+    <string name="admin_edit_confirm">“%1$s” இல் இந்த மாற்றங்களைச் சேமிக்கவா?</string>
+    <string name="admin_notes_confirm">“%1$s” இன் குறிப்புகளை மாற்றவா?</string>
+    <string name="admin_saved">சேவையகம் மாற்றங்களை உறுதிசெய்தது</string>
+    <string name="admin_failed">மாற்றத்தை உறுதிசெய்ய முடியவில்லை. மீண்டும் முயல்வதற்கு முன் புதுப்பித்துச் சாதனத்தைச் சரிபார்க்கவும்.</string>
+    <string name="admin_invite_failed">இணைப்பை உருவாக்க முடியவில்லை. இணைப்பு மற்றும் குழு அனுமதிகளைச் சரிபார்த்து மீண்டும் முயலவும்.</string>
+    <string name="admin_loading">சேவையகத்திற்காகக் காத்திருக்கிறது…</string>
+    <string name="admin_invalid">பெயர்: 1–64 எழுத்துகள். விவரம்: அதிகபட்சம் 64 எழுத்துகள். ஒவ்வொரு குறிச்சொல்லும்: அதிகபட்சம் 63 எழுத்துகள்; மொத்தம்: அதிகபட்சம் 4096. கட்டுப்பாட்டு அல்லது உரை-திசை வடிவமைப்பு எழுத்துகள் இல்லாத ஒற்றை வரி உரையைப் பயன்படுத்தவும்.</string>
+    <string name="admin_endpoint">சேவையகம்: %1$s</string>
+    <string name="admin_unavailable">இந்தச் சாதனத்தை நிர்வகிக்க மீண்டும் இணைந்து புதுப்பிக்கவும். உங்கள் கணக்கிற்குத் தேவையான அனுமதிகள் இருக்க வேண்டும்.</string>
+    <string name="admin_notes_limit">குறிப்புகள்: அதிகபட்சம் 16000 எழுத்துகள்.</string>
+    <string name="admin_no_destinations">இந்தச் சாதனத்தை நகர்த்த அனுமதியுள்ள பொருத்தமான குழுக்கள் இல்லை.</string>
+</resources>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">Obrolan dengan pengguna</string>
+    <string name="chat_connecting">Menghubungkan ke obrolan…</string>
+    <string name="chat_waiting">Menunggu pengguna membuka jendela obrolan</string>
+    <string name="chat_connected">Pengguna sudah ada di obrolan</string>
+    <string name="chat_peer_left">Pengguna keluar dari obrolan atau koneksi terputus</string>
+    <string name="chat_failed">Obrolan terputus. Minta jendela lagi untuk menyambung ulang.</string>
+    <string name="chat_closed">Obrolan ditutup. Buka lagi dari menu perangkat.</string>
+    <string name="chat_request">Minta jendela obrolan lagi</string>
+    <string name="chat_close">Tutup obrolan</string>
+    <string name="chat_message">Pesan</string>
+    <string name="chat_send">Kirim pesan</string>
+    <string name="chat_send_failed">Pesan tidak terkirim. Teks Anda masih di sini; coba lagi.</string>
+    <string name="chat_length">Maksimal %1$d karakter</string>
+    <string name="chat_recorded">Server merekam obrolan ini</string>
+    <string name="chat_you">Anda</string>
+    <string name="chat_user">Pengguna</string>
+    <string name="chat_empty">Pesan tetap di sini sampai Anda menutup obrolan.</string>
+    <string name="chat_notification">Pesan baru di obrolan</string>
+    <string name="chat_notifications_enable">Aktifkan notifikasi obrolan</string>
+    <string name="chat_notifications_unavailable">Notifikasi dinonaktifkan di setelan Android.</string>
+    <string name="chat_truncated">Pesan dipersingkat</string>
+    <string name="chat_reconnecting">Menghubungkan ulang ke obrolan…</string>
+    <string name="chat_not_opened">Pengguna tidak membuka jendela obrolan</string>
+    <string name="chat_invite_unavailable">Komputer atau koneksi kontrol sedang offline. Coba minta jendela lagi nanti.</string>
+    <string name="chat_unread">Pesan obrolan belum dibaca: %1$d</string>
+    <string name="chat_service_channel">Obrolan aktif</string>
+    <string name="chat_service_active">Obrolan sedang aktif</string>
+    <string name="chat_service_description">Menjaga percakapan tetap terhubung saat Anda menggunakan aplikasi lain.</string>
+    <string name="chat_service_failed">Tidak dapat menjaga obrolan tetap berjalan. Buka kembali selagi aplikasi terlihat.</string>
+    <string name="chat_back">Kembali</string>
+    <string name="chat_close_confirm">Tutup obrolan ini dan hapus pesannya?</string>
+</resources>

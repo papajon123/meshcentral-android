@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">إيماءة بإصبعين</string>
+    <string name="desktop_gesture_default">السلوك الأصلي</string>
+    <string name="desktop_gesture_scroll">تمرير النافذة البعيدة</string>
+    <string name="desktop_gesture_pan">تحريك الصورة</string>
+    <string name="desktop_pinch">القرص للتكبير</string>
+    <string name="desktop_three_fingers">ثلاثة أصابع تمرر النافذة البعيدة.</string>
+    <string name="desktop_scale">مقياس الصورة المطلوب: %1$d%%</string>
+    <string name="desktop_pip">صورة داخل صورة</string>
+    <string name="desktop_pip_auto">الاستمرار في المشاهدة عند مغادرة التطبيق</string>
+    <string name="desktop_stream_rate">≈ %1$.1f تحديث/ث · %2$d بايت/ث</string>
+    <string name="desktop_input_help">تعمل لوحة المفاتيح والفأرة الفعلية على سطح المكتب. قد يحتفظ Android بمفاتيح Alt+Tab أو Meta؛ استخدم قائمة المفاتيح في هذه الحالة. تُستخدم عجلة التمرير الأفقية بالضغط على Shift مع العجلة حيثما كان ذلك مدعومًا.</string>
+    <string name="desktop_rate_help">الجودة والمقياس وحد الإطارات هي إعدادات مطلوبة. يمكن للمشاهدين الآخرين رفع الجودة أو المقياس أو معدل التحديث. يقيس العداد تحديثات البلاطات، وليس الإطارات الكاملة.</string>
+    <string name="desktop_keyboard_capture">التقاط لوحة المفاتيح الفعلية</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc يحرر لوحة المفاتيح ويفتح خيارات الجلسة.</string>
+</resources>

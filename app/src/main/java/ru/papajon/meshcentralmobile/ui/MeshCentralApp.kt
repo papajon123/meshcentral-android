@@ -31,6 +31,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.Modifier
@@ -104,6 +105,7 @@ fun MeshCentralApp(
     var managingSessions by rememberSaveable { mutableStateOf(false) }
     var managingTransfers by rememberSaveable { mutableStateOf(false) }
     var managingNotifications by rememberSaveable { mutableStateOf(false) }
+    var managingBackup by rememberSaveable { mutableStateOf(false) }
     var profileError by remember { mutableStateOf<ru.papajon.meshcentralmobile.localization.UiText?>(null) }
     val settings by settingsRepository.settingsState
     val favorites by settingsRepository.favoritesState
@@ -130,6 +132,11 @@ fun MeshCentralApp(
     val profileVault = sessionViewModel.credentialVault
     val clientState by meshClient.clientState.collectAsState()
     val context = LocalContext.current
+    val forwardNotificationPermission = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.RequestPermission(),
+    ) { /* Denying notifications does not revoke a user-started foreground connection. */ }
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val lifecycleState by lifecycleOwner.lifecycle.currentStateFlow.collectAsState()
     val updateModel: AppUpdateViewModel = androidx.lifecycle.viewmodel.compose.viewModel()
     val updateState by updateModel.state.collectAsState()
     val notificationController = remember(activeProfileId, settings.serverUrl, clientState.userId, meshClient) {
@@ -149,22 +156,52 @@ fun MeshCentralApp(
             }
         }
     }
+    LaunchedEffect(workspace.showChatsRequested) {
+        if (workspace.showChatsRequested) { managingSessions = true; workspace.showChatsRequested = false }
+    }
     LaunchedEffect(workspace.showTransfersRequested) {
         if (workspace.showTransfersRequested) { managingTransfers = true; workspace.showTransfersRequested = false }
     }
     val recentStore = remember(activeProfileId) { RecentDevicesStore(context, activeProfileId) }
     val recentScope = "$activeProfileId|${CredentialScope.normalize(settings.serverUrl)}|${clientState.userId.orEmpty()}"
     var recentIds by remember(recentScope) { mutableStateOf(recentStore.ids(recentScope)) }
+    val devicesObservedAt = remember(meshClient, clientState.devices, clientState.devicesCurrent) { System.currentTimeMillis() }
     fun recordRecent(device: ru.papajon.meshcentralmobile.mesh.MeshDevice) {
         recentStore.record(recentScope, device.nodeId)
         recentIds = recentStore.ids(recentScope)
     }
+    LaunchedEffect(activeProfileId, settings.serverUrl, clientState.userId, clientState.devices,
+        clientState.devicesCurrent, clientState.socketConnected, favorites, recentIds) {
+        val user = clientState.userId
+        if (user != null && clientState.socketConnected && clientState.devicesCurrent && !clientState.requiresSignIn) {
+            kotlinx.coroutines.delay(250)
+            ru.papajon.meshcentralmobile.integration.LauncherCoordinator.publish(context,
+                activeProfileId,
+                ru.papajon.meshcentralmobile.integration.LauncherStore.scope(activeProfileId, settings.serverUrl, user),
+                clientState.devices, favorites.map { it.url }.toSet(), recentIds, devicesObservedAt,
+                canPublish = { !workspace.clearingSession && workspace.client === meshClient && workspace.profileId == activeProfileId &&
+                    meshClient.clientState.value.userId == user && meshClient.clientState.value.devicesCurrent &&
+                    CredentialScope.matches(meshClient.configuredServerAddress.orEmpty(), settings.serverUrl) },
+            ).join()
+        }
+    }
+    LaunchedEffect(meshClient, clientState.socketConnected, clientState.devicesCurrent, clientState.userId, appLockController.isLocked, lifecycleState) {
+        if (lifecycleState.isAtLeast(Lifecycle.State.STARTED) && !appLockController.isLocked && clientState.socketConnected && clientState.devicesCurrent &&
+            clientState.userId != null && !clientState.requiresSignIn && workspace.client === meshClient &&
+            workspace.profileId == activeProfile.id && CredentialScope.matches(meshClient.configuredServerAddress.orEmpty(), activeProfile.serverUrl)) {
+            kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                // Capture the authenticated profile object, never read a possibly switched
+                // activeProfileId delegate after dispatching to IO.
+                ru.papajon.meshcentralmobile.integration.WidgetRefreshGate(context).appAuthenticated(activeProfile.id)
+            }
+        }
+    }
     var pendingFileClose by remember { mutableStateOf<(() -> Unit)?>(null) }
     var browserUnavailable by remember { mutableStateOf(false) }
     val fileState = sessionViewModel.filesController?.state?.collectAsState()?.value
-    val fileOperationBusy = workspace.transfers.hasPending || workspace.sessions.any { it.files?.state?.value?.busy == true }
-    LaunchedEffect(fileState?.transferName) {
-        if (fileState?.transferName != null && fileState.busy) {
+    val fileOperationBusy = workspace.transfers.hasPending || workspace.sessions.any { it.files?.state?.value?.let { state -> state.busy || state.batchBusy } == true }
+    LaunchedEffect(fileState?.transferName, fileState?.batchBusy) {
+        if (fileState?.batchBusy == true || (fileState?.transferName != null && fileState.busy)) {
             try { ContextCompat.startForegroundService(context, Intent(context, FileTransferService::class.java)) }
             catch (_: Exception) {
                 sessionViewModel.filesController?.cancel()
@@ -175,7 +212,8 @@ fun MeshCentralApp(
     fun changeDeviceScreen(action: () -> Unit) {
         if (fileOperationBusy) pendingFileClose = action else action()
     }
-    fun activateProfile(id: String) {
+    fun activateProfile(id: String, fromDestination: Boolean = false) {
+        if (!fromDestination) workspace.cancelPendingDestinations()
         changeDeviceScreen {
             sessionViewModel.switchProfile(id)
             settingsRepository.activateProfile(id)
@@ -210,11 +248,11 @@ fun MeshCentralApp(
     }
 
     LaunchedEffect(meshClient, activeProfileId, settings.serverUrl, settings.allowHttpInDebug,
-        settings.trustSelfSignedCertificates, activeProfile.pinnedSpkiSha256) {
+        settings.trustSelfSignedCertificates, activeProfile.pinnedSpkiSha256, activeProfile.expectedSpkiSha256) {
         if (serverUrlIsValid) {
             meshClient.configureServer(settings.serverUrl)
             meshClient.setAllowSelfSignedCertificates(settings.trustSelfSignedCertificates)
-            meshClient.setPinnedServerKey(activeProfile.pinnedSpkiSha256)
+            meshClient.setServerKeyPolicy(activeProfile.pinnedSpkiSha256, activeProfile.expectedSpkiSha256)
         }
     }
 
@@ -228,7 +266,7 @@ fun MeshCentralApp(
             // Install the active profile's complete trust policy before any stored-credential attempt.
             meshClient.configureServer(settings.serverUrl)
             meshClient.setAllowSelfSignedCertificates(settings.trustSelfSignedCertificates)
-            meshClient.setPinnedServerKey(activeProfile.pinnedSpkiSha256)
+            meshClient.setServerKeyPolicy(activeProfile.pinnedSpkiSha256, activeProfile.expectedSpkiSha256)
             meshClient.loginWithStoredCredentials(settings.serverUrl)
         }
     }
@@ -239,7 +277,7 @@ fun MeshCentralApp(
         onDispose { }
     }
 
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val desktopPipHost = ru.papajon.meshcentralmobile.ui.screens.session.LocalDesktopPip.current
     LaunchedEffect(meshClient, currentDestination, appLockController.isLocked) {
         meshClient.setRemotePaused(currentDestination != AppDestination.Session || appLockController.isLocked)
     }
@@ -255,7 +293,9 @@ fun MeshCentralApp(
                 else -> Unit
             }
         }
-        lifecycleOwner.lifecycle.addObserver(observer)
+        // MainActivity uses the process window registry; a stopped second Activity must not
+        // background an already visible PiP. Standalone hosts retain the legacy lifecycle adapter.
+        if (desktopPipHost == null) lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
@@ -264,7 +304,21 @@ fun MeshCentralApp(
         if (clientState.socketConnected) loginDismissed = false
     }
 
+    if (managingBackup) {
+        ru.papajon.meshcentralmobile.backup.BackupScreen(settingsRepository,
+            onClose = { managingBackup = false },
+            onPreferencesImported = {
+                onScreenshotBlockingChanged(settingsRepository.getSettings().blockScreenshots)
+                appLockController.refreshLockRequirement()
+            }, locked = appLockController.isLocked)
+        if (!appLockController.isLocked) return
+    }
+
     if (appLockController.isLocked) {
+        if (desktopPipHost?.active == true) {
+            ru.papajon.meshcentralmobile.ui.screens.session.LockedDesktopPip()
+            return
+        }
         LockScreen(
             biometricEnabled = settings.biometricUnlockEnabled,
             onPinSubmit = appLockController::unlockWithPin,
@@ -279,31 +333,85 @@ fun MeshCentralApp(
     }
 
     UpdateLifecycle(updateModel)
+    ru.papajon.meshcentralmobile.ui.components.ArchiveCleanupNoticeDialog()
     if (updateState.needsConsent) UpdateConsentDialog(updateModel::consent)
+
+    // Deliberately below the lock gate. Only opaque local tokens can address a cached device;
+    // the current server snapshot and account must authorize it again before opening anything.
+    LaunchedEffect(workspace.launcherDestination, activeProfileId, clientState.devicesCurrent, clientState.userId) {
+        val token = workspace.launcherDestination ?: return@LaunchedEffect
+        val cached = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            ru.papajon.meshcentralmobile.integration.LauncherStore(context).find(token)
+        }
+        // A new intent/manual cancellation may arrive before Compose cancels this IO lookup.
+        if (workspace.launcherDestination != token) return@LaunchedEffect
+        val entry = cached?.devices?.firstOrNull { it.token == token }
+        if (cached == null || entry == null || profiles.none { it.id == cached.profileId }) {
+            workspace.launcherDestination = null
+            workspace.message = ru.papajon.meshcentralmobile.localization.UiText.resource(R.string.integration_unavailable)
+            return@LaunchedEffect
+        }
+        val mayActivate = workspace.claimLauncherActivation(token)
+        if (cached.profileId != activeProfileId) {
+            if (mayActivate) activateProfile(cached.profileId, fromDestination = true)
+            else workspace.launcherDestination = null
+            return@LaunchedEffect
+        }
+        if (!clientState.devicesCurrent || clientState.requiresSignIn || clientState.userId == null) {
+            loginDismissed = false
+            return@LaunchedEffect
+        }
+        workspace.launcherDestination = null
+        val currentScope = ru.papajon.meshcentralmobile.integration.LauncherStore.scope(activeProfileId, settings.serverUrl, clientState.userId!!)
+        val device = clientState.devices.firstOrNull { it.nodeId == entry.nodeId && cached.scope == currentScope }
+        if (device == null) {
+            workspace.message = ru.papajon.meshcentralmobile.localization.UiText.resource(R.string.integration_unavailable)
+        } else changeDeviceScreen {
+            recordRecent(device)
+            sessionViewModel.openDevice(device)
+            sessionViewModel.showOverview()
+            currentDestination = AppDestination.Devices
+        }
+    }
 
     LaunchedEffect(workspace.eventDestination, activeProfileId, clientState.devicesCurrent, clientState.userId) {
         val target = workspace.eventDestination ?: return@LaunchedEffect
-        if (target.profileId != activeProfileId) { activateProfile(target.profileId); return@LaunchedEffect }
+        if (target.profileId != activeProfileId) { activateProfile(target.profileId, fromDestination = true); return@LaunchedEffect }
         if (target.nodeId == null) { managingNotifications = true; workspace.eventDestination = null; return@LaunchedEffect }
         if (!clientState.devicesCurrent || clientState.requiresSignIn) { loginDismissed = false; return@LaunchedEffect }
-        val device = clientState.devices.firstOrNull { it.nodeId == target.nodeId }
+        val expectedClient = meshClient
+        val device = try { expectedClient.resolveDevice(target.nodeId) }
+        catch (_: kotlinx.coroutines.TimeoutCancellationException) { null }
+        catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
+        catch (_: Exception) { return@LaunchedEffect }
+        if (workspace.client !== expectedClient || workspace.eventDestination != target) return@LaunchedEffect
         if (device != null) {
             sessionViewModel.openDevice(device)
-            sessionViewModel.selectDeviceTab(DeviceTab.Help)
+            if (target.chatSession != null) {
+                // Notifications only reopen an existing conversation; never invite a user implicitly.
+                workspace.sessions.firstOrNull { it.id == target.chatSession && it.nodeId == device.nodeId && it.tab == DeviceTab.Chat }
+                    ?.let { sessionViewModel.selectSession(it.id) } ?: sessionViewModel.showOverview()
+            } else sessionViewModel.selectDeviceTab(DeviceTab.Help)
             currentDestination = AppDestination.Devices
             target.jobId?.let { jobId ->
                 val companion = workspace.companion(device.nodeId)
                 companion.refresh().join()
+                if (workspace.eventDestination != target) return@LaunchedEffect
                 companion.selectJob(jobId)
             }
         }
-        workspace.eventDestination = null
+        if (device == null) {
+            workspace.selectedDeviceId = target.nodeId
+            sessionViewModel.showOverview()
+            currentDestination = AppDestination.Devices
+        }
+        if (workspace.eventDestination == target) workspace.eventDestination = null
     }
 
     if (managingProfiles) ServerProfilesSheet(
         profiles = profiles,
         activeProfileId = activeProfileId,
-        onActivate = ::activateProfile,
+        onActivate = { activateProfile(it) },
         onCreate = { name, url ->
             val validation = ServerUrlValidator.validate(url, allowHttpInDebug = false)
             when {
@@ -323,6 +431,11 @@ fun MeshCentralApp(
         },
         onDelete = { id ->
             if (profiles.size > 1 && profiles.any { it.id == id }) changeDeviceScreen {
+                if (!ru.papajon.meshcentralmobile.forward.PortForwardStore(context).deleteProfile(id)) {
+                    profileError = ru.papajon.meshcentralmobile.localization.UiText.resource(R.string.workspace_profile_error)
+                    return@changeDeviceScreen
+                }
+                workspace.cancelPendingDestinations()
                 if (activeProfileId == id) {
                     sessionViewModel.switchProfile(profiles.first { it.id != id }.id)
                     loginDismissed = false
@@ -420,7 +533,7 @@ fun MeshCentralApp(
             meshClient = meshClient,
             secureVault = profileVault,
             serverUrl = settings.serverUrl,
-            onContinueWithoutSignIn = { loginDismissed = true },
+            onContinueWithoutSignIn = { workspace.cancelPendingDestinations(); loginDismissed = true },
             onEditServer = { managingProfiles = true },
             onEditServerSettings = { editingServer = true },
             confirmingCertificateReplacement = certificateApproval.pendingReplacement == clientState.certificateFailure &&
@@ -436,6 +549,7 @@ fun MeshCentralApp(
                 if (meshClient.clientState.value.certificateFailure == failure) certificateApproval.requestReplacement(failure)
             },
             onDismissCertificate = {
+                workspace.cancelPendingDestinations()
                 certificateApproval.dismiss()
                 meshClient.dismissCertificateFailure()
             },
@@ -445,13 +559,13 @@ fun MeshCentralApp(
 
     pendingFileClose?.let { action ->
         AlertDialog(
-            onDismissRequest = { pendingFileClose = null },
+            onDismissRequest = { pendingFileClose = null; workspace.cancelPendingDestinations() },
             title = { Text(stringResource(R.string.device_close_transfer_title)) },
             text = { Text(stringResource(R.string.device_close_transfer_message)) },
             confirmButton = { TextButton(onClick = { pendingFileClose = null; action() }) {
                 Text(stringResource(R.string.device_close_session))
             } },
-            dismissButton = { TextButton(onClick = { pendingFileClose = null; workspace.eventDestination = null }) { Text(stringResource(R.string.cancel)) } },
+            dismissButton = { TextButton(onClick = { pendingFileClose = null; workspace.cancelPendingDestinations() }) { Text(stringResource(R.string.cancel)) } },
         )
     }
     if (browserUnavailable) AlertDialog(
@@ -475,7 +589,10 @@ fun MeshCentralApp(
             if (currentDestination != AppDestination.Session) Column(Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                     TextButton(onClick = { managingProfiles = true }, modifier = Modifier.weight(1f)) { Text(settingsRepository.activeProfile.name) }
-                    TextButton(onClick = { managingSessions = true }) { Text(stringResource(R.string.workspace_sessions_count, workspace.sessions.size)) }
+                    TextButton(onClick = { managingSessions = true }) {
+                        Text(stringResource(R.string.workspace_sessions_count, workspace.sessions.size))
+                        ru.papajon.meshcentralmobile.ui.components.ChatUnreadBadge(workspace.unreadChats)
+                    }
                 }
                 if (transfers.isNotEmpty()) TextButton(onClick = { managingTransfers = true }, modifier = Modifier.padding(horizontal = 12.dp)) {
                     Text(stringResource(R.string.workspace_transfers_count, transfers.size))
@@ -494,6 +611,7 @@ fun MeshCentralApp(
             }
         },
     ) { innerPadding ->
+        Box(Modifier.fillMaxSize()) {
         Row(Modifier.fillMaxSize()) {
         if (useNavigationRail) MeshNavigationRail(currentDestination, selectDestination)
         Crossfade(
@@ -540,15 +658,32 @@ fun MeshCentralApp(
                         },
                     ) else {
                         val device = clientState.devices.firstOrNull { it.nodeId == sessionViewModel.selectedDeviceId }
+                        var androidTasks by remember(meshClient, device?.nodeId) { mutableStateOf(false) }
+                        LaunchedEffect(meshClient, device?.nodeId, device?.conn, device?.rights, clientState.devicesCurrent, clientState.socketConnected) {
+                            if (device?.isAndroidAgent == true && ru.papajon.meshcentralmobile.management.tasks.TaskToolsProtocol.canRead(device, clientState.devicesCurrent && clientState.socketConnected)) {
+                                androidTasks = try {
+                                    ru.papajon.meshcentralmobile.management.tasks.TaskToolsProtocol.processes(meshClient.taskTools(device.nodeId).read("ps"))
+                                    true
+                                } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                                    if (cancelled !is kotlinx.coroutines.TimeoutCancellationException) throw cancelled
+                                    false
+                                } catch (_: Exception) { false }
+                            }
+                        }
                         if (device == null) {
                             val inspector = remember(meshClient, sessionViewModel.selectedDeviceId) {
                                 workspace.inspector(requireNotNull(sessionViewModel.selectedDeviceId))
                             }
                             val info by inspector.state.collectAsState()
                             Column(Modifier.padding(16.dp)) {
-                                Text(stringResource(R.string.device_missing))
+                                Text(stringResource(if (!clientState.devicesCurrent || sessionViewModel.selectedDeviceId in clientState.resolvingDeviceIds)
+                                    R.string.devices_syncing else R.string.device_missing))
                                 info.notice?.let { Text(it.asString()) }
                                 info.error?.let { Text(it.asString()) }
+                                TextButton(onClick = {
+                                    if (!clientState.devicesCurrent) meshClient.retryDevices()
+                                    meshClient.selectDevice(sessionViewModel.selectedDeviceId)
+                                }) { Text(stringResource(R.string.connection_retry)) }
                                 TextButton(onClick = { sessionViewModel.browseDevices() }) {
                                     Text(stringResource(R.string.device_back))
                                 }
@@ -558,6 +693,8 @@ fun MeshCentralApp(
                             server = clientState.serverCapabilities,
                             current = clientState.socketConnected && clientState.devicesCurrent,
                             selected = sessionViewModel.deviceTab,
+                            taskToolsSupported = androidTasks || ru.papajon.meshcentralmobile.management.tasks.TaskToolsProtocol.visible(device),
+                            hasChat = workspace.sessions.any { it.nodeId == device.nodeId && it.chat != null },
                             onSelect = { tab ->
                                 if (tab == DeviceTab.Desktop) {
                                     if (sessionViewModel.connectDesktop(device)) currentDestination = AppDestination.Session
@@ -570,6 +707,45 @@ fun MeshCentralApp(
                             },
                         ) {
                             when (sessionViewModel.deviceTab) {
+                                DeviceTab.Processes, DeviceTab.Services -> {
+                                    val taskScope = rememberCoroutineScope()
+                                    val services = sessionViewModel.deviceTab == DeviceTab.Services
+                                    val controller = remember(meshClient, device.nodeId, services) {
+                                        ru.papajon.meshcentralmobile.management.tasks.TaskToolsController(meshClient.taskTools(device.nodeId), services, taskScope)
+                                    }
+                                    DisposableEffect(controller) { onDispose { controller.close() } }
+                                    ru.papajon.meshcentralmobile.ui.screens.management.TaskToolsScreen(controller, device,
+                                        clientState.devicesCurrent && clientState.socketConnected, services, sessionViewModel::showOverview,
+                                        features2 = clientState.serverCapabilities.features2,
+                                        screenVisible = !managingSessions && !managingProfiles && !managingNotifications && !managingTransfers && !editingServer)
+                                }
+                                DeviceTab.Chat -> workspace.selectedSession?.let { session ->
+                                    session.chat?.let { controller ->
+                                        ru.papajon.meshcentralmobile.ui.screens.ChatScreen(controller,
+                                            deviceName = session.deviceName,
+                                            onBack = sessionViewModel::showOverview,
+                                            onKeepAlive = workspace::ensureChatService,
+                                            screenVisible = !managingSessions && !managingProfiles && !managingNotifications && !managingTransfers && !editingServer,
+                                            onClose = { sessionViewModel.closeSession(session.id) },
+                                            onRead = { ru.papajon.meshcentralmobile.mesh.chat.ChatNotifier.cancel(context, activeProfileId, session.id) })
+                                    }
+                                } ?: EndedSession { sessionViewModel.selectDeviceTab(DeviceTab.Chat) }
+                                DeviceTab.PortForwarding -> {
+                                    val store = remember(context) { ru.papajon.meshcentralmobile.forward.PortForwardStore(context) }
+                                    ru.papajon.meshcentralmobile.forward.PortForwardScreen(
+                                        activeProfileId, device.nodeId, meshClient.portForwards, store,
+                                        onStart = { rule ->
+                                            if (rule.profileId == activeProfileId && meshClient.portForwards.start(rule)) {
+                                                try { ContextCompat.startForegroundService(context, Intent(context, ru.papajon.meshcentralmobile.background.PortForwardService::class.java)) }
+                                                catch (_: Exception) { meshClient.portForwards.serviceFailed() }
+                                                if (android.os.Build.VERSION.SDK_INT >= 33 && ContextCompat.checkSelfPermission(context,
+                                                        android.Manifest.permission.POST_NOTIFICATIONS) != android.content.pm.PackageManager.PERMISSION_GRANTED) {
+                                                    forwardNotificationPermission.launch(android.Manifest.permission.POST_NOTIFICATIONS)
+                                                }
+                                            }
+                                        }, onBack = sessionViewModel::showOverview,
+                                    )
+                                }
                                 DeviceTab.Desktop -> EndedSession {
                                     if (sessionViewModel.connectDesktop(device)) currentDestination = AppDestination.Session
                                 }
@@ -590,6 +766,7 @@ fun MeshCentralApp(
                                     val info by inspector.state.collectAsState()
                                     LaunchedEffect(inspector) { if (info.snapshot == null) inspector.refresh() }
                                     DeviceInspectorScreen(
+                                        adminContent = { ru.papajon.meshcentralmobile.ui.screens.management.DeviceAdminActions(meshClient, device) },
                                         device = device,
                                         canSendToast = ru.papajon.meshcentralmobile.management.ToastCommand.allowed(device, clientState.socketConnected && clientState.devicesCurrent),
                                         onSendToast = inspector::sendToast,
@@ -611,7 +788,7 @@ fun MeshCentralApp(
                                         onRunCommand = inspector::runCommand,
                                         onRemove = inspector::remove,
                                         onOpenTerminal = { sessionViewModel.selectDeviceTab(DeviceTab.Terminal) },
-                                        snapshot = info.snapshot ?: ru.papajon.meshcentralmobile.management.DeviceSystemSnapshot(deviceName = device.name, osName = device.osDescription.takeIf { it.isNotBlank() }),
+                                        snapshot = info.snapshot?.copy(deviceName = device.name) ?: ru.papajon.meshcentralmobile.management.DeviceSystemSnapshot(deviceName = device.name, osName = device.osDescription.takeIf { it.isNotBlank() }),
                                         services = info.services,
                                         processes = info.processes,
                                         loading = info.loading,
@@ -678,6 +855,7 @@ fun MeshCentralApp(
                             appLockController.refreshLockRequirement()
                         },
                         onLockTimeoutChanged = settingsRepository::updateLockTimeoutSeconds,
+                        onHideDevicesWhenLockedChanged = settingsRepository::updateHideDevicesWhenLocked,
                         onPinSaved = { pin ->
                             secureVault.savePin(pin)
                             appLockController.lockNow()
@@ -692,9 +870,27 @@ fun MeshCentralApp(
                         onManageProfiles = { profileError = null; managingProfiles = true },
                         onEditServer = { editingServer = true },
                         onNotifications = { managingNotifications = true },
+                        forwarding = {
+                            val savedRulesStore = remember(context) {
+                                ru.papajon.meshcentralmobile.forward.PortForwardStore(context)
+                            }
+                            ru.papajon.meshcentralmobile.forward.SavedPortForwardRules(
+                                profileId = activeProfileId,
+                                store = savedRulesStore,
+                                manager = meshClient.portForwards,
+                                devices = clientState.devices,
+                            )
+                        },
+                        onBackup = { managingBackup = true },
                     )
                 } }
             }
+        }
+        }
+        if (currentDestination == AppDestination.Session && workspace.unreadChats > 0) {
+            ru.papajon.meshcentralmobile.ui.components.ChatUnreadAction(workspace.unreadChats,
+                onClick = { managingSessions = true }, modifier = Modifier.align(androidx.compose.ui.Alignment.TopEnd)
+                    .windowInsetsPadding(WindowInsets.statusBars).padding(top = 64.dp, end = 16.dp))
         }
         }
     }

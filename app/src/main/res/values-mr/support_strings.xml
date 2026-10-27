@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">MeshPilot ला पाठिंबा द्या</string>
+    <string name="support_body">MeshPilot मोफत, मुक्त स्रोत आणि जाहिरातमुक्त आहे. Boosty वरील सदस्यता किंवा एकदाची देणगी नवीन आवृत्त्या आणण्यास मदत करते.</string>
+    <string name="support_action">Boosty वर पाठिंबा द्या</string>
+    <string name="support_link_copied">ब्राउझर सापडला नाही. Boosty दुवा कॉपी केला आहे.</string>
+</resources>

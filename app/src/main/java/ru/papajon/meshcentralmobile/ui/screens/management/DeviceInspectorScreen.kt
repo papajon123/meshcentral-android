@@ -176,6 +176,7 @@ fun DeviceInspectorScreen(
     onRunCommand: (String, Boolean) -> Unit = { _, _ -> },
     onOpenTerminal: () -> Unit = {},
     onRemove: (ru.papajon.meshcentralmobile.management.DeviceRemovalAction, String) -> Unit = { _, _ -> },
+    adminContent: (@Composable () -> Unit)? = null,
 ) {
     BackHandler(onBack = onBack)
 
@@ -271,6 +272,7 @@ fun DeviceInspectorScreen(
                         { PhoneSection(phone, devicesCurrent, busy, onPhoneCommand) }
                     },
                     parityContent = {
+                        adminContent?.invoke()
                         if (device?.isWindows == true) {
                             WindowsSecuritySection(device.windowsSecurity)
                         }

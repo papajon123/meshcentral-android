@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">हा ड्राफ्ट बॅकअप फॉरमॅट समर्थित नाही. ज्या ॲपने हा बॅकअप निर्यात केला आहे त्या ॲपमध्ये नवीन बॅकअप तयार करा.</string>
+    <string name="backup_key_approval_title">आयात केलेली सर्व्हर की पुष्टी करा</string>
+    <string name="backup_key_matches">सर्व्हर की बॅकअपशी जुळते. साइन इन करण्यापूर्वी विश्वास ठेवण्याची पुष्टी करा.</string>
+    <string name="backup_key_mismatch">इशारा: सर्व्हर की बॅकअपशी जुळत नाही. विश्वास ठेवण्यापूर्वी प्रशासकासोबत फिंगरप्रिंट तपासा.</string>
+    <string name="backup_key_expected">बॅकअपमधील अपेक्षित की: %1$s</string>
+    <string name="backup_error_newer">ही फाइल MeshPilot च्या नवीन आवृत्तीतून आहे. आयात करण्यासाठी ॲप अपडेट करा.</string>
+    <string name="backup_error_auth">पासवर्ड चुकीचा आहे किंवा एन्क्रिप्ट केलेली फाइल बदलली आहे.</string>
+    <string name="backup_error_corrupt">बॅकअप खराब झाला आहे किंवा त्याचा फॉरमॅट अवैध आहे.</string>
+    <string name="backup_error_limit">बॅकअप समर्थित आकार किंवा आयटम मर्यादेपेक्षा जास्त आहे.</string>
+    <string name="backup_extension_skipped">नवीन आवृत्तीतील विभाग वगळला: %1$s. त्याचा डेटा आयात केला जाणार नाही.</string>
+    <string name="backup_duplicate">या सर्व्हरसाठी प्रोफाइल आधीच अस्तित्वात आहे.</string>
+    <string name="backup_skip_duplicates">ज्या प्रोफाइलचा सर्व्हर आधीच अस्तित्वात आहे त्या वगळा</string>
+    <string name="backup_value_on">सुरू</string>
+    <string name="backup_value_off">बंद</string>
+    <string name="backup_preferences_preview">स्क्रीनशॉट संरक्षण: %1$s\nस्वयंचलित लॉक विलंब: %2$d सेकंद\nथीम: %3$s\nसिस्टम रंग: %4$s\nस्टायलस अचूकता: %5$s\nस्टायलस सूचना आधीच दाखवली: %6$s\nलॉक असताना डिव्हाइस लपवा: %7$s</string>
+    <string name="integration_privacy_setting">ॲप लॉक असताना विजेट आणि शॉर्टकटमध्ये डिव्हाइस लपवा</string>
+    <string name="integration_privacy_help">PIN किंवा बायोमेट्रिक संरक्षणासह, लॉक असताना किंवा ॲपबाहेर डिव्हाइसची नावे आणि स्थिती लपवा.</string>
+    <string name="integration_private_hidden">डिव्हाइस पाहण्यासाठी ॲप अनलॉक करा</string>
+    <string name="integration_private_device">संरक्षित डिव्हाइस</string>
+    <string name="integration_retry_seconds">%1$d सेकंदांनंतर पुन्हा प्रयत्न करा</string>
+</resources>

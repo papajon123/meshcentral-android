@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">दो उंगलियों का इशारा</string>
+    <string name="desktop_gesture_default">मूल व्यवहार</string>
+    <string name="desktop_gesture_scroll">रिमोट विंडो स्क्रॉल करें</string>
+    <string name="desktop_gesture_pan">छवि पैन करें</string>
+    <string name="desktop_pinch">ज़ूम करने के लिए पिंच करें</string>
+    <string name="desktop_three_fingers">तीन उंगलियाँ रिमोट विंडो स्क्रॉल करती हैं।</string>
+    <string name="desktop_scale">अनुरोधित छवि स्केल: %1$d%%</string>
+    <string name="desktop_pip">पिक्चर-इन-पिक्चर</string>
+    <string name="desktop_pip_auto">ऐप छोड़ने पर देखना जारी रखें</string>
+    <string name="desktop_stream_rate">≈ %1$.1f अपडेट/से · %2$d B/s</string>
+    <string name="desktop_input_help">हार्डवेयर कीबोर्ड और माउस डेस्कटॉप पर काम करते हैं। Android Alt+Tab या Meta को सुरक्षित रख सकता है; उस स्थिति में कुंजी मेन्यू का उपयोग करें। समर्थित होने पर क्षैतिज व्हील Shift + व्हील से काम करता है।</string>
+    <string name="desktop_rate_help">गुणवत्ता, स्केल और फ़्रेम सीमा अनुरोधित सेटिंग्स हैं। अन्य दर्शक गुणवत्ता, स्केल या अपडेट दर बढ़ा सकते हैं। काउंटर टाइल अपडेट गिनता है, पूरे फ़्रेम नहीं।</string>
+    <string name="desktop_keyboard_capture">भौतिक कीबोर्ड कैप्चर करें</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc कीबोर्ड छोड़ता है और सत्र विकल्प खोलता है।</string>
+</resources>

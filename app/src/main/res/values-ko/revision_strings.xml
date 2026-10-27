@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">이 초안 백업 형식은 지원되지 않습니다. 이 백업을 내보낸 앱에서 새 백업을 만드세요.</string>
+    <string name="backup_key_approval_title">가져온 서버 키 확인</string>
+    <string name="backup_key_matches">서버 키가 백업과 일치합니다. 로그인하기 전에 이 키를 신뢰할지 확인하세요.</string>
+    <string name="backup_key_mismatch">경고: 서버 키가 백업과 일치하지 않습니다. 신뢰하기 전에 관리자와 지문을 대조하세요.</string>
+    <string name="backup_key_expected">백업의 예상 키: %1$s</string>
+    <string name="backup_error_newer">이 파일은 MeshPilot의 더 새로운 버전에서 생성되었습니다. 가져오려면 앱을 업데이트하세요.</string>
+    <string name="backup_error_auth">비밀번호가 올바르지 않거나 암호화된 파일이 수정되었습니다.</string>
+    <string name="backup_error_corrupt">백업이 손상되었거나 형식이 올바르지 않습니다.</string>
+    <string name="backup_error_limit">백업이 지원되는 크기 또는 항목 한도를 초과합니다.</string>
+    <string name="backup_extension_skipped">더 새로운 버전의 섹션을 건너뛰었습니다: %1$s. 해당 데이터는 가져오지 않습니다.</string>
+    <string name="backup_duplicate">이 서버의 프로필이 이미 있습니다.</string>
+    <string name="backup_skip_duplicates">서버가 이미 있는 프로필 건너뛰기</string>
+    <string name="backup_value_on">켜짐</string>
+    <string name="backup_value_off">꺼짐</string>
+    <string name="backup_preferences_preview">스크린샷 보호: %1$s\n자동 잠금 지연: %2$d초\n테마: %3$s\n시스템 색상: %4$s\n펜 정밀도: %5$s\n펜 힌트 표시됨: %6$s\n잠금 중 기기 숨기기: %7$s</string>
+    <string name="integration_privacy_setting">앱이 잠겨 있는 동안 위젯과 바로가기에서 기기 숨기기</string>
+    <string name="integration_privacy_help">PIN 또는 생체 인증 보호를 사용하면 잠겨 있거나 앱 밖에 있을 때 기기 이름과 상태를 숨깁니다.</string>
+    <string name="integration_private_hidden">기기를 보려면 앱 잠금을 해제하세요</string>
+    <string name="integration_private_device">보호된 기기</string>
+    <string name="integration_retry_seconds">%1$d초 후 다시 시도하세요</string>
+</resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">নির্বাচিত: %1$d</string>
+    <string name="tools_clear_selection">নির্বাচন সাফ করুন</string>
+    <string name="tools_download_selected">নির্বাচিতগুলি ডাউনলোড করুন</string>
+    <string name="tools_delete_selected">নির্বাচিতগুলি মুছুন</string>
+    <string name="tools_select_hint">একাধিক আইটেম নির্বাচন করতে চেপে ধরে রাখুন</string>
+    <string name="tools_download_folder">ফোল্ডার ডাউনলোড করুন</string>
+    <string name="tools_folder_notice">Mesh Agent ফোল্ডার ZIP আর্কাইভ হিসেবে ডাউনলোড হয়। SFTP ফোল্ডার ফাইল ধরে ধরে কপি হয়। একটি গন্তব্য ফোল্ডার বেছে নিন।</string>
+    <string name="tools_batch_progress">সম্পন্ন: %2$d-এর মধ্যে %1$d · %3$d বাইট</string>
+    <string name="tools_retry">আবার চেষ্টা করুন</string>
+    <string name="tools_queued">সারিতে আছে</string>
+    <string name="tools_active">ডাউনলোড হচ্ছে</string>
+    <string name="tools_succeeded">যাচাই করা হয়েছে</string>
+    <string name="tools_failed">ব্যর্থ</string>
+    <string name="tools_cancelled">বাতিল</string>
+    <string name="tools_archiving">রিমোট আর্কাইভ তৈরি করা হচ্ছে…</string>
+    <string name="tools_archive_failed">আর্কাইভ তৈরি বা যাচাই করা যায়নি।</string>
+    <string name="tools_archive_left">ডাউনলোড ব্যর্থ হয়েছে। উৎস ফোল্ডারে একটি অস্থায়ী meshpilot-*.zip আর্কাইভ থেকে যেতে পারে। পরিষ্কার করে আবার ডাউনলোড করতে পুনরায় চেষ্টা করুন।</string>
+    <string name="tools_batch_failed">একটি ডাউনলোড ব্যর্থ হয়েছে। পুনরায় চেষ্টা করলে নতুন স্থানীয় ফাইলে আবার শুরু হবে।</string>
+    <string name="tools_delete_list">এই আইটেমগুলি মুছবেন? এটি ফেরানো যায় না।</string>
+</resources>

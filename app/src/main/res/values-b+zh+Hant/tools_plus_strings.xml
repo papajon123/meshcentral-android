@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">已選取：%1$d</string>
+    <string name="tools_clear_selection">取消選取</string>
+    <string name="tools_download_selected">下載所選內容</string>
+    <string name="tools_delete_selected">刪除所選內容</string>
+    <string name="tools_select_hint">長按可選取多個項目</string>
+    <string name="tools_download_folder">下載資料夾</string>
+    <string name="tools_folder_notice">Mesh Agent 資料夾會以 ZIP 壓縮檔下載。SFTP 資料夾則會逐一複製檔案。請選擇目的資料夾。</string>
+    <string name="tools_batch_progress">已完成：%1$d / %2$d · %3$d 位元組</string>
+    <string name="tools_retry">重試</string>
+    <string name="tools_queued">已排入佇列</string>
+    <string name="tools_active">正在下載</string>
+    <string name="tools_succeeded">已驗證</string>
+    <string name="tools_failed">失敗</string>
+    <string name="tools_cancelled">已取消</string>
+    <string name="tools_archiving">正在建立遠端壓縮檔…</string>
+    <string name="tools_archive_failed">無法建立或驗證壓縮檔。</string>
+    <string name="tools_archive_left">下載失敗。來源資料夾中可能留有暫存的 meshpilot-*.zip 壓縮檔。請重試以清除它並重新下載。</string>
+    <string name="tools_batch_failed">有下載失敗。重試會在全新的本機檔案中重新開始。</string>
+    <string name="tools_delete_list">要刪除這些項目嗎？此操作無法復原。</string>
+</resources>

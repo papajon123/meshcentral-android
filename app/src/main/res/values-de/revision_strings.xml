@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">Dieses vorläufige Sicherungsformat wird nicht unterstützt. Erstellen Sie in der App, die diese Sicherung exportiert hat, eine neue Sicherung.</string>
+    <string name="backup_key_approval_title">Importierten Serverschlüssel bestätigen</string>
+    <string name="backup_key_matches">Der Serverschlüssel stimmt mit der Sicherung überein. Bestätigen Sie, dass Sie ihm vertrauen, bevor Sie sich anmelden.</string>
+    <string name="backup_key_mismatch">Warnung: Der Serverschlüssel stimmt NICHT mit der Sicherung überein. Prüfen Sie den Fingerabdruck mit Ihrem Administrator, bevor Sie ihm vertrauen.</string>
+    <string name="backup_key_expected">Erwarteter Schlüssel aus der Sicherung: %1$s</string>
+    <string name="backup_error_newer">Diese Datei stammt aus einer neueren Version von MeshPilot. Aktualisieren Sie die App, um sie zu importieren.</string>
+    <string name="backup_error_auth">Das Passwort ist falsch oder die verschlüsselte Datei wurde verändert.</string>
+    <string name="backup_error_corrupt">Die Sicherung ist beschädigt oder hat ein ungültiges Format.</string>
+    <string name="backup_error_limit">Die Sicherung überschreitet die unterstützten Größen- oder Elementgrenzen.</string>
+    <string name="backup_extension_skipped">Ein Abschnitt aus einer neueren Version wurde übersprungen: %1$s. Die zugehörigen Daten werden nicht importiert.</string>
+    <string name="backup_duplicate">Für diesen Server existiert bereits ein Profil.</string>
+    <string name="backup_skip_duplicates">Profile überspringen, deren Server bereits existiert</string>
+    <string name="backup_value_on">Ein</string>
+    <string name="backup_value_off">Aus</string>
+    <string name="backup_preferences_preview">Screenshot-Schutz: %1$s\nVerzögerung der automatischen Sperre: %2$d Sekunden\nDesign: %3$s\nSystemfarben: %4$s\nStiftpräzision: %5$s\nStift-Hinweis bereits angezeigt: %6$s\nGeräte bei Sperre ausblenden: %7$s</string>
+    <string name="integration_privacy_setting">Geräte in Widgets und Verknüpfungen ausblenden, solange die App gesperrt ist</string>
+    <string name="integration_privacy_help">Mit PIN- oder Biometrieschutz Gerätenamen und -status ausblenden, solange die App gesperrt ist oder Sie sich außerhalb der App befinden.</string>
+    <string name="integration_private_hidden">App entsperren, um Geräte anzuzeigen</string>
+    <string name="integration_private_device">Geschütztes Gerät</string>
+    <string name="integration_retry_seconds">In %1$d s erneut versuchen</string>
+</resources>

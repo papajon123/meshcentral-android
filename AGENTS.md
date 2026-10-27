@@ -5,7 +5,7 @@ This repository is a native Android client for controlling MeshCentral from Andr
 ## Build
 
 - Use PowerShell on Windows.
-- Use JDK 17 and an Android SDK with platform/build-tools 35. Set `JAVA_HOME` and `ANDROID_HOME` to your installations.
+- Use JDK 17 and an Android SDK with platform 36 and build-tools 35.0.0. Set `JAVA_HOME` and `ANDROID_HOME` to your installations.
 - Validate changes with `./gradlew testDebugUnitTest lintDebug assembleDebug`; run `connectedDebugAndroidTest` on a dedicated emulator for UI changes.
 
 ## Workflow

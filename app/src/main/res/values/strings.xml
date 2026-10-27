@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">Previous</string>
+    <string name="devices_page_next">Next</string>
+    <plurals name="devices_page_count">
+        <item quantity="one">%1$d–%2$d of %3$d device</item>
+        <item quantity="other">%1$d–%2$d of %3$d devices</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="one">Device %1$d–%2$d</item>
+        <item quantity="other">Devices %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">Devices found: %1$d</string>
+    <string name="devices_server_search">Search all devices by name</string>
+    <string name="devices_page_failed">Could not load devices. Try again.</string>
     <string name="app_name" translatable="false">MeshPilot</string>
     <string name="biometric_unlock_title">Unlock MeshPilot</string>
     <string name="biometric_unlock_subtitle">Confirm your identity with device biometrics to open the app.</string>
@@ -315,4 +328,6 @@
     <string name="settings_update_supporting">Signed APKs are available in GitHub releases. Install the new version over the current one.</string>
     <string name="settings_update_action">Download update</string>
     <string name="settings_update_unavailable">Could not open the browser. Open https://github.com/papajon123/meshcentral-android/releases manually.</string>
+    <string name="chat_verifying_peer">Checking the user’s chat connection…</string>
+    <string name="chat_server_retained">The server is still holding the previous connection. Retrying for up to 20 minutes…</string>
 </resources>

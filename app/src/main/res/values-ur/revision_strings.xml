@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">یہ ڈرافٹ بیک اپ فارمیٹ معاون نہیں ہے۔ جس ایپ نے اسے برآمد کیا ہے، اس میں نیا بیک اپ بنائیں۔</string>
+    <string name="backup_key_approval_title">درآمد شدہ سرور کلید کی تصدیق کریں</string>
+    <string name="backup_key_matches">سرور کلید بیک اپ سے مطابقت رکھتی ہے۔ سائن ان کرنے سے پہلے اس پر اعتماد کرنے کی تصدیق کریں۔</string>
+    <string name="backup_key_mismatch">انتباہ: سرور کلید بیک اپ سے مطابقت نہیں رکھتی۔ اعتماد کرنے سے پہلے منتظم کے ساتھ فنگرپرنٹ کی تصدیق کریں۔</string>
+    <string name="backup_key_expected">بیک اپ سے متوقع کلید: %1$s</string>
+    <string name="backup_error_newer">یہ فائل MeshPilot کے نئے ورژن سے ہے۔ درآمد کرنے کے لیے ایپ اپ ڈیٹ کریں۔</string>
+    <string name="backup_error_auth">پاس ورڈ غلط ہے یا خفیہ کردہ فائل میں تبدیلی کی گئی ہے۔</string>
+    <string name="backup_error_corrupt">بیک اپ خراب ہے یا اس کا فارمیٹ غلط ہے۔</string>
+    <string name="backup_error_limit">بیک اپ معاون سائز یا اشیاء کی حد سے زیادہ ہے۔</string>
+    <string name="backup_extension_skipped">نئے ورژن کا حصہ چھوڑ دیا گیا: %1$s۔ اس کا ڈیٹا درآمد نہیں کیا جائے گا۔</string>
+    <string name="backup_duplicate">اس سرور کے لیے پروفائل پہلے سے موجود ہے۔</string>
+    <string name="backup_skip_duplicates">ایسی پروفائلز چھوڑ دیں جن کا سرور پہلے سے موجود ہے</string>
+    <string name="backup_value_on">آن</string>
+    <string name="backup_value_off">بند</string>
+    <string name="backup_preferences_preview">اسکرین شاٹ تحفظ: %1$s\nخودکار قفل تاخیر: %2$d سیکنڈ\nتھیم: %3$s\nسسٹم کے رنگ: %4$s\nاسٹائلس درستگی: %5$s\nاسٹائلس اشارہ پہلے دکھایا جا چکا ہے: %6$s\nقفل کے دوران ڈیوائسز چھپائیں: %7$s</string>
+    <string name="integration_privacy_setting">ایپ کے مقفل ہونے کے دوران ویجٹس اور شارٹ کٹس میں ڈیوائسز چھپائیں</string>
+    <string name="integration_privacy_help">PIN یا بایومیٹرک تحفظ کے ساتھ، قفل کے دوران یا ایپ سے باہر ڈیوائس کے نام اور حالت چھپائیں۔</string>
+    <string name="integration_private_hidden">ڈیوائسز دیکھنے کے لیے ایپ کا قفل کھولیں</string>
+    <string name="integration_private_device">محفوظ ڈیوائس</string>
+    <string name="integration_retry_seconds">%1$d سیکنڈ بعد دوبارہ کوشش کریں</string>
+</resources>

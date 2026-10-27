@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">แชทกับผู้ใช้</string>
+    <string name="chat_connecting">กำลังเชื่อมต่อกับแชท…</string>
+    <string name="chat_waiting">กำลังรอให้ผู้ใช้เปิดหน้าต่างแชท</string>
+    <string name="chat_connected">ผู้ใช้อยู่ในแชท</string>
+    <string name="chat_peer_left">ผู้ใช้ออกจากแชทหรือการเชื่อมต่อสิ้นสุดลง</string>
+    <string name="chat_failed">การเชื่อมต่อแชทหลุด ขอหน้าต่างอีกครั้งเพื่อเชื่อมต่อใหม่</string>
+    <string name="chat_closed">แชทถูกปิดแล้ว เปิดอีกครั้งจากเมนูอุปกรณ์</string>
+    <string name="chat_request">ขอหน้าต่างแชทอีกครั้ง</string>
+    <string name="chat_close">ปิดแชท</string>
+    <string name="chat_message">ข้อความ</string>
+    <string name="chat_send">ส่งข้อความ</string>
+    <string name="chat_send_failed">ส่งข้อความไม่สำเร็จ ข้อความของคุณยังอยู่ที่นี่ ลองอีกครั้ง</string>
+    <string name="chat_length">สูงสุด %1$d อักขระ</string>
+    <string name="chat_recorded">เซิร์ฟเวอร์กำลังบันทึกแชทนี้</string>
+    <string name="chat_you">คุณ</string>
+    <string name="chat_user">ผู้ใช้</string>
+    <string name="chat_empty">ข้อความจะอยู่ที่นี่จนกว่าคุณจะปิดแชท</string>
+    <string name="chat_notification">ข้อความแชทใหม่</string>
+    <string name="chat_notifications_enable">เปิดการแจ้งเตือนแชท</string>
+    <string name="chat_notifications_unavailable">การแจ้งเตือนถูกปิดในตั้งค่า Android</string>
+    <string name="chat_truncated">ย่อข้อความแล้ว</string>
+    <string name="chat_reconnecting">กำลังเชื่อมต่อแชทใหม่…</string>
+    <string name="chat_not_opened">ผู้ใช้ไม่ได้เปิดหน้าต่างแชท</string>
+    <string name="chat_invite_unavailable">คอมพิวเตอร์หรือการเชื่อมต่อควบคุมออฟไลน์อยู่ ลองขอหน้าต่างอีกครั้งในภายหลัง</string>
+    <string name="chat_unread">ข้อความแชทที่ยังไม่ได้อ่าน: %1$d</string>
+    <string name="chat_service_channel">แชทที่ใช้งานอยู่</string>
+    <string name="chat_service_active">แชททำงานอยู่</string>
+    <string name="chat_service_description">รักษาการเชื่อมต่อบทสนทนาของคุณไว้ขณะใช้แอปอื่น</string>
+    <string name="chat_service_failed">ไม่สามารถทำให้แชททำงานต่อได้ เปิดแชทอีกครั้งขณะที่แอปปรากฏอยู่</string>
+    <string name="chat_back">กลับ</string>
+    <string name="chat_close_confirm">ปิดแชทนี้และลบข้อความทั้งหมดหรือไม่</string>
+</resources>

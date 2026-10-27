@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">पिछला</string>
+    <string name="devices_page_next">अगला</string>
+    <plurals name="devices_page_count">
+        <item quantity="one">%3$d में से %1$d–%2$d डिवाइस</item>
+        <item quantity="other">%3$d में से %1$d–%2$d डिवाइस</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="one">डिवाइस %1$d–%2$d</item>
+        <item quantity="other">डिवाइस %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">मिले डिवाइस: %1$d</string>
+    <string name="devices_server_search">नाम से सभी डिवाइस खोजें</string>
+    <string name="devices_page_failed">डिवाइस लोड नहीं हो सके. फिर से प्रयास करें.</string>
     <string name="biometric_unlock_title">MeshPilot अनलॉक करें</string>
     <string name="biometric_unlock_subtitle">ऐप खोलने के लिए डिवाइस की बायोमेट्रिक्स से अपनी पहचान की पुष्टि करें।</string>
     <string name="cancel">रद्द करें</string>
@@ -314,4 +327,6 @@
     <string name="settings_update_supporting">हस्ताक्षरित APK GitHub रिलीज़ में उपलब्ध हैं। नया संस्करण मौजूदा के ऊपर इंस्टॉल करें।</string>
     <string name="settings_update_action">अपडेट डाउनलोड करें</string>
     <string name="settings_update_unavailable">ब्राउज़र नहीं खोल सका। https://github.com/papajon123/meshcentral-android/releases मैन्युअल रूप से खोलें।</string>
+    <string name="chat_verifying_peer">उपयोगकर्ता के साथ चैट कनेक्शन जाँचा जा रहा है…</string>
+    <string name="chat_server_retained">सर्वर अभी भी पिछला कनेक्शन बनाए हुए है। 20 मिनट तक फिर से प्रयास किया जा रहा है…</string>
 </resources>

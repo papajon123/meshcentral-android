@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">Selezionati: %1$d</string>
+    <string name="tools_clear_selection">Annulla selezione</string>
+    <string name="tools_download_selected">Scarica selezione</string>
+    <string name="tools_delete_selected">Elimina selezione</string>
+    <string name="tools_select_hint">Tieni premuto per selezionare più elementi</string>
+    <string name="tools_download_folder">Scarica cartella</string>
+    <string name="tools_folder_notice">Le cartelle Mesh Agent vengono scaricate come archivi ZIP. Le cartelle SFTP vengono copiate file per file. Scegli una cartella di destinazione.</string>
+    <string name="tools_batch_progress">Completato: %1$d di %2$d · %3$d byte</string>
+    <string name="tools_retry">Riprova</string>
+    <string name="tools_queued">In coda</string>
+    <string name="tools_active">Scaricamento</string>
+    <string name="tools_succeeded">Verificato</string>
+    <string name="tools_failed">Non riuscito</string>
+    <string name="tools_cancelled">Annullato</string>
+    <string name="tools_archiving">Creazione dell’archivio remoto…</string>
+    <string name="tools_archive_failed">Non è stato possibile creare o verificare l’archivio.</string>
+    <string name="tools_archive_left">Il download non è riuscito. Un archivio temporaneo meshpilot-*.zip potrebbe restare nella cartella di origine. Riprova per rimuoverlo e scaricare di nuovo.</string>
+    <string name="tools_batch_failed">Un download non è riuscito. Riprovando, ripartirà in un nuovo file locale.</string>
+    <string name="tools_delete_list">Eliminare questi elementi? L’operazione non può essere annullata.</string>
+</resources>

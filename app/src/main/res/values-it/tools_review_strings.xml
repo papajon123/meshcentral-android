@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">Impossibile verificare: %1$s</string>
+    <string name="review_paused">In pausa: connessione persa</string>
+    <string name="review_retry_all">Riprova gli elementi non completati</string>
+    <string name="review_cleanup_title">Pulizia dell’archivio remoto</string>
+    <string name="review_archive_left">Un archivio temporaneo potrebbe rimanere sul computer: %1$s. Controllalo e rimuovilo quando nessuna operazione di archiviazione è in corso.</string>
+    <string name="review_archive_space">Creare un ZIP richiede spazio libero nella cartella di origine remota per un archivio completo. Se l’agente non riesce ad avviarlo, i file verranno copiati singolarmente. Le cartelle locali incomplete mantengono il suffisso .partial.</string>
+    <string name="review_grant_failed">Questo provider non è riuscito a mantenere l’accesso per la coda. Scegli un’altra posizione.</string>
+    <string name="review_zip_invalid">L’archivio è danneggiato, incompleto o supera i limiti di struttura supportati.</string>
+    <string name="review_source_changed">L’elemento selezionato è cambiato. Aggiorna la cartella e conferma di nuovo la selezione.</string>
+    <string name="review_sftp_types">Questo server non identifica collegamenti simbolici o file speciali negli elenchi SFTP. I file non verificabili vengono segnalati per percorso; la coda si mette in pausa se la connessione si interrompe. Le cartelle incomplete restano contrassegnate con .partial.</string>
+    <string name="review_skipped">Elemento non supportato ignorato: %1$s</string>
+    <string name="review_folder_unavailable">Nessun accesso alla cartella: %1$s. Il resto della coda continua.</string>
+    <string name="review_local_failed">Impossibile scrivere o rileggere il documento Android locale. La sessione file è ancora connessa; riprova questo elemento.</string>
+    <string name="review_local_no_rename">Questo provider non può rinominare i documenti. Alcuni file mantengono il suffisso .partial; rinominali in File di Android.</string>
+    <string name="review_source_changed_deleted">Già eliminato: %1$s. Il resto della selezione non è stato eliminato; aggiorna la cartella e conferma di nuovo.</string>
+    <string name="files_delete_follow_links">L\'eliminazione ricorsiva delle cartelle segue i collegamenti simbolici e le giunzioni. Anche le destinazioni fuori dalla cartella selezionata possono essere cancellate; controlla la cartella in MeshCentral prima di confermare.</string>
+</resources>

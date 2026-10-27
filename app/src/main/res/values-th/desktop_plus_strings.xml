@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">ท่าทางสองนิ้ว</string>
+    <string name="desktop_gesture_default">พฤติกรรมดั้งเดิม</string>
+    <string name="desktop_gesture_scroll">เลื่อนหน้าต่างระยะไกล</string>
+    <string name="desktop_gesture_pan">เลื่อนภาพ</string>
+    <string name="desktop_pinch">หยิกเพื่อซูม</string>
+    <string name="desktop_three_fingers">สามนิ้วเลื่อนหน้าต่างระยะไกล</string>
+    <string name="desktop_scale">ขนาดภาพที่ร้องขอ: %1$d%%</string>
+    <string name="desktop_pip">ภาพซ้อนภาพ</string>
+    <string name="desktop_pip_auto">รับชมต่อเมื่อออกจากแอป</string>
+    <string name="desktop_stream_rate">≈ %1$.1f อัปเดต/วินาที · %2$d B/s</string>
+    <string name="desktop_input_help">คีย์บอร์ดและเมาส์แบบฮาร์ดแวร์ใช้งานได้บนเดสก์ท็อป Android อาจสงวน Alt+Tab หรือ Meta ไว้ ในกรณีนั้นให้ใช้เมนูคีย์ ล้อเลื่อนแนวนอนใช้ Shift + ล้อเลื่อนเมื่อรองรับ</string>
+    <string name="desktop_rate_help">คุณภาพ ขนาด และขีดจำกัดเฟรมเป็นค่าที่ร้องขอ ผู้ชมคนอื่นสามารถเพิ่มคุณภาพ ขนาด หรืออัตราการอัปเดตได้ ตัวนับนับการอัปเดตไทล์ ไม่ใช่เฟรมทั้งหมด</string>
+    <string name="desktop_keyboard_capture">จับการพิมพ์จากแป้นพิมพ์จริง</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc จะปล่อยแป้นพิมพ์และเปิดตัวเลือกเซสชัน</string>
+</resources>

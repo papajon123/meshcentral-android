@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">تأیید نشد: %1$s</string>
+    <string name="review_paused">متوقف شد: اتصال قطع شد</string>
+    <string name="review_retry_all">تلاش دوباره برای موارد ناتمام</string>
+    <string name="review_cleanup_title">پاکسازی بایگانی راه دور</string>
+    <string name="review_archive_left">ممکن است یک بایگانی موقت روی رایانه باقی بماند: %1$s. وقتی هیچ عملیات بایگانی در حال اجرا نیست، آن را بررسی و حذف کنید.</string>
+    <string name="review_archive_space">برای ساخت ZIP به فضای آزاد در پوشه مبدأ راه دور برای یک بایگانی کامل نیاز است. اگر عامل نتواند آن را شروع کند، فایل‌ها جداگانه کپی می‌شوند. پوشه‌های محلی ناتمام پسوند .partial را حفظ می‌کنند.</string>
+    <string name="review_grant_failed">این ارائه‌دهنده نتوانست دسترسی را برای صف حفظ کند. مکان دیگری انتخاب کنید.</string>
+    <string name="review_zip_invalid">بایگانی خراب یا ناتمام است، یا از محدودیت‌های ساختار پشتیبانی‌شده فراتر می‌رود.</string>
+    <string name="review_source_changed">مورد انتخاب‌شده تغییر کرد. پوشه را به‌روزرسانی کنید و انتخاب را دوباره تأیید کنید.</string>
+    <string name="review_sftp_types">این سرور پیوندهای نمادین یا فایل‌های ویژه را در فهرست‌های SFTP شناسایی نمی‌کند. فایل‌های غیرقابل تأیید با مسیر گزارش می‌شوند؛ در صورت قطع اتصال، صف متوقف می‌شود. پوشه‌های ناتمام با .partial علامت‌گذاری‌شده می‌مانند.</string>
+    <string name="review_skipped">مورد پشتیبانی‌نشده رد شد: %1$s</string>
+    <string name="review_folder_unavailable">دسترسی به پوشه وجود ندارد: %1$s. بقیه صف ادامه می‌یابد.</string>
+    <string name="review_local_failed">نوشتن یا بازخوانی سند محلی Android ممکن نشد. نشست فایل هنوز متصل است؛ این مورد را دوباره امتحان کنید.</string>
+    <string name="review_local_no_rename">این ارائه‌دهنده نمی‌تواند نام سندها را تغییر دهد. برخی فایل‌ها پسوند .partial را نگه می‌دارند؛ آن‌ها را در فایل‌های Android تغییر نام دهید.</string>
+    <string name="review_source_changed_deleted">قبلاً حذف شد: %1$s. بقیه انتخاب حذف نشد؛ پوشه را تازه‌سازی و دوباره تأیید کنید.</string>
+    <string name="files_delete_follow_links">حذف بازگشتی پوشه پیوندهای نمادین و اتصال‌ها را دنبال می‌کند. هدف‌های بیرون از پوشه انتخاب‌شده هم ممکن است پاک شوند؛ پیش از تأیید پوشه را در MeshCentral بررسی کنید.</string>
+</resources>

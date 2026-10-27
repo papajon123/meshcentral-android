@@ -8,10 +8,13 @@ This project is distributed under Apache-2.0. This notice identifies the upstrea
 | AndroidX / Jetpack Compose / Material components and icons | Apache-2.0 | https://android.googlesource.com/platform/frameworks/support/+/androidx-main/LICENSE.txt |
 | Kotlin and kotlinx.coroutines | Apache-2.0 | https://github.com/JetBrains/kotlin/blob/master/license/LICENSE.txt ; https://github.com/Kotlin/kotlinx.coroutines/blob/master/LICENSE.txt |
 | OkHttp / Okio | Apache-2.0 | https://github.com/square/okhttp/blob/master/LICENSE.txt ; https://github.com/square/okio/blob/master/LICENSE.txt |
+| ZXing Core 3.5.3 | Apache-2.0 | https://github.com/zxing/zxing/tree/zxing-3.5.3/core |
 | xterm.js `@xterm/xterm` 5.5.0 | MIT | https://registry.npmjs.org/@xterm/xterm/5.5.0 |
 | xterm.js fit addon `@xterm/addon-fit` 0.10.0 | MIT | https://registry.npmjs.org/@xterm/addon-fit/0.10.0 |
 
 ## Bundled terminal renderer provenance
+
+QR invitations use only `com.google.zxing:core:3.5.3` (no Android wrapper, camera permission or runtime dependencies). The upstream license from tag `zxing-3.5.3` is included in the APK at `assets/licenses/zxing-LICENSE`. Source: https://github.com/zxing/zxing/blob/zxing-3.5.3/LICENSE. Copyright ZXing authors.
 
 The APK bundles these unmodified third-party files:
 

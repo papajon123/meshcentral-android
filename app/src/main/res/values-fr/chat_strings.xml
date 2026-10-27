@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">Chat avec l’utilisateur</string>
+    <string name="chat_connecting">Connexion au chat…</string>
+    <string name="chat_waiting">En attente que l’utilisateur ouvre la fenêtre de chat</string>
+    <string name="chat_connected">L’utilisateur est dans le chat</string>
+    <string name="chat_peer_left">L’utilisateur a quitté le chat ou la connexion a été interrompue</string>
+    <string name="chat_failed">La connexion au chat a été interrompue. Demandez à nouveau la fenêtre pour vous reconnecter.</string>
+    <string name="chat_closed">Le chat est fermé. Rouvrez-le depuis le menu de l’appareil.</string>
+    <string name="chat_request">Demander à nouveau la fenêtre de chat</string>
+    <string name="chat_close">Fermer le chat</string>
+    <string name="chat_message">Message</string>
+    <string name="chat_send">Envoyer le message</string>
+    <string name="chat_send_failed">Message non envoyé. Votre texte est toujours là ; réessayez.</string>
+    <string name="chat_length">Nombre maximal de caractères : %1$d</string>
+    <string name="chat_recorded">Le serveur enregistre ce chat</string>
+    <string name="chat_you">Vous</string>
+    <string name="chat_user">Utilisateur</string>
+    <string name="chat_empty">Les messages restent ici jusqu’à ce que vous fermiez le chat.</string>
+    <string name="chat_notification">Nouveau message de chat</string>
+    <string name="chat_notifications_enable">Activer les notifications de chat</string>
+    <string name="chat_notifications_unavailable">Les notifications sont désactivées dans les paramètres Android.</string>
+    <string name="chat_truncated">Message raccourci</string>
+    <string name="chat_reconnecting">Reconnexion au chat…</string>
+    <string name="chat_not_opened">L’utilisateur n’a pas ouvert la fenêtre de chat</string>
+    <string name="chat_invite_unavailable">L’ordinateur ou la connexion de contrôle est hors ligne. Essayez de demander à nouveau la fenêtre plus tard.</string>
+    <string name="chat_unread">Messages de chat non lus : %1$d</string>
+    <string name="chat_service_channel">Chats actifs</string>
+    <string name="chat_service_active">Le chat est actif</string>
+    <string name="chat_service_description">Maintient votre conversation connectée pendant que vous utilisez d’autres applications.</string>
+    <string name="chat_service_failed">Impossible de maintenir le chat actif. Rouvrez-le lorsque l’application est visible.</string>
+    <string name="chat_back">Retour</string>
+    <string name="chat_close_confirm">Fermer ce chat et effacer ses messages ?</string>
+</resources>

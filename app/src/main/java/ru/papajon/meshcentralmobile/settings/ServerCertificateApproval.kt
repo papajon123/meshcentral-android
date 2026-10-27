@@ -36,9 +36,11 @@ internal class ServerCertificateApproval(
     fun approve(failure: ServerCertificateFailure): Boolean {
         if (appLock.isLocked || !currentServer(failure)) return false
         val allowed = when (failure.kind) {
-            ServerCertificateFailureKind.Untrusted -> settings.activeProfile.pinnedSpkiSha256 == null
+            ServerCertificateFailureKind.Untrusted -> settings.activeProfile.pinnedSpkiSha256 == null && settings.activeProfile.expectedSpkiSha256 == null
             ServerCertificateFailureKind.Changed -> pendingReplacement == failure &&
                 previousPin != null && settings.activeProfile.pinnedSpkiSha256 == previousPin
+            ServerCertificateFailureKind.ExpectedKeyConfirmation -> settings.activeProfile.pinnedSpkiSha256 == null &&
+                settings.activeProfile.expectedSpkiSha256 != null && settings.activeProfile.expectedSpkiSha256 == failure.expectedSpkiSha256
             else -> false
         }
         if (!allowed) return false

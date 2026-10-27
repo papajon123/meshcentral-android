@@ -5,6 +5,10 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.material3.Checkbox
+import ru.papajon.meshcentralmobile.mesh.files.FileSelection
+import ru.papajon.meshcentralmobile.mesh.files.DownloadStatus
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -90,12 +94,46 @@ import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/** SAF grants are temporary; no storage-wide permission, persisted URI, or saved transfer is used. */
+/** SAF access is leased for the queue; no storage-wide permission or saved transfer is used. */
 @Composable
 fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modifier = Modifier, preserveOnBack: Boolean = false, onReopen: (() -> Unit)? = null) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val state by controller.state.collectAsState()
+    val batch by controller.batch.state.collectAsState()
+    val selection = remember(controller) { FileSelection() }
+    var selectedNames by remember(controller) { mutableStateOf(emptySet<String>()) }
+    LaunchedEffect(state.path, state.entries) {
+        selection.reconcile(state.path, state.entries); selectedNames = selection.names
+    }
+    fun toggle(entry: RemoteFile) { selection.toggle(state.path, entry); selectedNames = selection.names }
+    fun clearSelection() { selection.clear(); selectedNames = emptySet() }
+    val chooseFolder = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
+        controller.batch.choose(uri)
+    }
+    val createBatchDocument = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/octet-stream")) { uri ->
+        controller.batch.choose(uri, document = true)
+    }
+    var downloadConfirmation by remember(controller) { mutableStateOf<List<RemoteFile>?>(null) }
+    fun beginDownloads(entries: List<RemoteFile>) {
+        scope.launch {
+            val single = entries.size == 1 && !entries[0].directory
+            if (controller.batch.prepare(entries, singleDocument = single)) {
+                try {
+                    ContextCompat.startForegroundService(context, Intent(context, FileTransferService::class.java))
+                    if (single) createBatchDocument.launch(entries[0].name) else chooseFolder.launch(null)
+                    clearSelection()
+                } catch (_: Exception) { controller.batch.chosen(null) }
+            }
+        }
+    }
+    fun downloadItems(entries: List<RemoteFile>) {
+        if (!state.sftp && entries.any { it.directory }) downloadConfirmation = entries else beginDownloads(entries)
+    }
+    fun retry(index: Int) { scope.launch {
+        if (batch.singleDocument) controller.batch.prepareSingleRetry(index)?.let { createBatchDocument.launch(it) }
+        else controller.batch.retry(index)
+    } }
     var selected by remember(controller) { mutableStateOf<RemoteFile?>(null) }
     var leaving by remember(controller) { mutableStateOf(false) }
     val createDocument = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/octet-stream")) { uri ->
@@ -104,10 +142,10 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
     val openDocument = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
         if (uri != null) controller.proposeUpload(uri)
     }
-    val requestBack: () -> Unit = { if (state.busy && !preserveOnBack) leaving = true else onBack() }
+    val requestBack: () -> Unit = { if ((state.busy || state.batchBusy) && !preserveOnBack) leaving = true else onBack() }
     BackHandler(onBack = requestBack)
     LaunchedEffect(controller) { controller.connect() }
-    val enabled = state.connected && !state.busy && state.confirmation == null
+    val enabled = state.connected && !state.busy && !state.batchBusy && !batch.pending && state.confirmation == null
     val spacing = MeshTheme.spacing
     val canParent = state.path.isNotEmpty() && state.path != "/"
 
@@ -154,6 +192,27 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                     canCreateDirectory = !state.androidPhone,
                     canUpload = !state.androidPhone || state.path.isNotEmpty(),
                 )
+                if (!state.androidPhone) {
+                    Text(stringResource(R.string.tools_select_hint), style = MaterialTheme.typography.bodySmall)
+                    if (selectedNames.isNotEmpty()) {
+                        Text(stringResource(R.string.tools_selected, selectedNames.size))
+                        BatchActions(enabled,
+                            onDownload = { downloadItems(state.entries.filter { it.name in selectedNames }) },
+                            onDelete = { controller.proposeDelete(state.entries.filter { it.name in selectedNames }); clearSelection() },
+                            onClear = ::clearSelection)
+                    }
+                    if (batch.rows.isNotEmpty()) {
+                        Text(stringResource(R.string.tools_batch_progress, batch.completed, batch.rows.size, batch.bytes))
+                        LinearProgressIndicator(progress = { batch.completed.toFloat() / batch.rows.size }, modifier = Modifier.fillMaxWidth())
+                        if (!batch.singleDocument && !batch.pending && batch.rows.any { it.status in setOf(DownloadStatus.Failed, DownloadStatus.Cancelled, DownloadStatus.Paused) }) {
+                            TextButton(onClick = { scope.launch { controller.batch.retry() } }, enabled = !state.busy && !state.batchBusy && state.confirmation == null) {
+                                Text(stringResource(R.string.review_retry_all))
+                            }
+                        }
+                    }
+                    if (batch.pending) TextButton(onClick = controller.batch::cancel) { Text(stringResource(R.string.files_cancel_operation)) }
+                }
+                if (state.sftp) Text(stringResource(R.string.review_sftp_types), style = MaterialTheme.typography.bodySmall)
                 if (state.androidPhone) Text(stringResource(R.string.phone_files_limits), style = MaterialTheme.typography.bodySmall)
                 if (!state.connected && !state.busy && !state.authRequired) {
                     onReopen?.let { action -> TextButton(onClick = action) { Text(stringResource(R.string.workspace_reopen)) } }
@@ -169,7 +228,7 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                 state.message?.let { message ->
                     MessageBanner(message = message.asString())
                 }
-                if (state.busy) {
+                if (state.busy && !batch.pending) {
                     TransferBanner(
                         name = state.transferName,
                         transferred = state.transferred,
@@ -185,9 +244,28 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                 }
             }
         }
+        itemsIndexed(batch.rows, key = { index, _ -> "transfer:$index" }) { index, row ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val status = when (row.status) {
+                    DownloadStatus.Queued -> R.string.tools_queued
+                    DownloadStatus.Active -> if (batch.uploading) R.string.transfer_status_active else R.string.tools_active
+                    DownloadStatus.Succeeded -> R.string.tools_succeeded
+                    DownloadStatus.Failed -> R.string.tools_failed
+                    DownloadStatus.Cancelled -> R.string.tools_cancelled
+                    DownloadStatus.Paused -> R.string.review_paused
+                }
+                Column(Modifier.weight(1f)) {
+                    Text(row.name + " · " + stringResource(status), style = MaterialTheme.typography.bodySmall)
+                    row.detail?.let { Text(it.asString(), style = MaterialTheme.typography.bodySmall) }
+                }
+                if (!batch.pending && row.status in setOf(DownloadStatus.Failed, DownloadStatus.Cancelled, DownloadStatus.Paused)) {
+                    TextButton(onClick = { retry(index) }, enabled = !state.busy && !state.batchBusy && state.confirmation == null) { Text(stringResource(R.string.tools_retry)) }
+                }
+            }
+        }
         itemsIndexed(
             items = state.entries,
-            key = { _, entry -> entry.listingIndex?.let { "media:$it" } ?: entry.name },
+            key = { _, entry -> entry.listingIndex?.let { "media:$it" } ?: "entry:${entry.name}" },
         ) { index, entry ->
             Column {
                 if (index > 0) {
@@ -196,9 +274,21 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                         color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
                     )
                 }
-                FileRow(entry = entry, enabled = enabled) { selected = entry }
+                FileRow(entry = entry, enabled = enabled,
+                    selected = entry.name in selectedNames,
+                    selecting = selectedNames.isNotEmpty(),
+                    onLongClick = { if (!state.androidPhone) toggle(entry) },
+                    onClick = { if (selectedNames.isNotEmpty()) toggle(entry) else selected = entry })
             }
         }
+    }
+
+    downloadConfirmation?.let { chosen ->
+        AlertDialog(onDismissRequest = { downloadConfirmation = null },
+            title = { Text(stringResource(R.string.files_download)) },
+            text = { Text(stringResource(R.string.review_archive_space)) },
+            confirmButton = { TextButton(onClick = { downloadConfirmation = null; beginDownloads(chosen) }) { Text(stringResource(R.string.files_download)) } },
+            dismissButton = { TextButton(onClick = { downloadConfirmation = null }) { Text(stringResource(R.string.files_cancel)) } })
     }
 
     selected?.let { entry ->
@@ -214,6 +304,12 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                 ) {
                     if (!entry.actionable) Text(stringResource(if (entry.ambiguousName) R.string.phone_files_ambiguous_name
                         else R.string.files_name_unavailable))
+                    if (entry.actionable && entry.directory && entry.type != 1 && !state.androidPhone) {
+                        TextButton(onClick = { selected = null; downloadItems(listOf(entry)) }, enabled = enabled) {
+                            Text(stringResource(R.string.tools_download_folder))
+                        }
+                        Text(stringResource(R.string.tools_folder_notice), style = MaterialTheme.typography.bodySmall)
+                    }
                     if (entry.actionable && entry.directory) {
                         TextButton(
                             onClick = { selected = null; controller.open(entry) },
@@ -226,7 +322,7 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                         TextButton(
                             onClick = {
                                 selected = null
-                                scope.launch {
+                                if (!state.androidPhone) downloadItems(listOf(entry)) else scope.launch {
                                 if (controller.prepareDownload(entry)) {
                                     try {
                                         // Start while this Activity is visible, before SAF can background it.
@@ -243,7 +339,8 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                         ) {
                             Text(stringResource(R.string.files_download))
                         }
-                        Text(
+                        if (state.sftp) Text(stringResource(R.string.review_sftp_types), style = MaterialTheme.typography.bodySmall)
+                if (state.androidPhone) Text(
                             text = stringResource(R.string.files_download_notice),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -308,7 +405,14 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                     if (request.change == FileChange.Delete) {
                         val warning = if (request.directory && state.sftp) R.string.files_sftp_delete_empty
                         else if (request.directory) R.string.files_confirm_delete_tree else R.string.files_confirm_delete
-                        Text(stringResource(warning, request.name))
+                        if (request.entries.isNotEmpty()) {
+                            Text(stringResource(R.string.tools_delete_list))
+                            request.entries.forEach { Text(it.displayName) }
+                            if (request.directory) Text(stringResource(warning, request.entries.filter { it.directory }.joinToString(", ") { it.displayName }))
+                        } else Text(stringResource(warning, request.name))
+                        if (request.directory) {
+                            Text(stringResource(R.string.files_delete_follow_links), style = MaterialTheme.typography.bodySmall)
+                        }
                     } else {
                         if (request.change == FileChange.Rename) {
                             Text(stringResource(R.string.files_original_name, request.name))
@@ -548,8 +652,10 @@ private fun TransferBanner(name: String?, transferred: Long?, onCancel: () -> Un
     }
 }
 
+@OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
-private fun FileRow(entry: RemoteFile, enabled: Boolean, onClick: () -> Unit) {
+private fun FileRow(entry: RemoteFile, enabled: Boolean, selected: Boolean = false, selecting: Boolean = false,
+    onLongClick: () -> Unit = {}, onClick: () -> Unit) {
     val supporting = when {
         entry.ambiguousName -> "#${entry.listingIndex?.plus(1)} · ${stringResource(R.string.files_size, entry.size)}"
         !entry.actionable -> stringResource(R.string.files_name_unavailable)
@@ -563,12 +669,13 @@ private fun FileRow(entry: RemoteFile, enabled: Boolean, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable(enabled = enabled) { onClick() }
+            .combinedClickable(enabled = enabled, onLongClick = onLongClick, onClick = onClick)
             .heightIn(min = 56.dp)
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        if (selecting) Checkbox(checked = selected, onCheckedChange = { onClick() }, enabled = enabled && entry.actionable && entry.type != 1)
         IconBadge(
             icon = fileIcon(entry),
             size = 40.dp,
@@ -691,5 +798,15 @@ private fun SftpAuthentication(controller: FilesController, savedKeyAvailable: B
                 .heightIn(min = 48.dp)) {
             Text(stringResource(R.string.files_sftp_sign_in))
         }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun BatchActions(enabled: Boolean, onDownload: () -> Unit, onDelete: () -> Unit, onClear: () -> Unit) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        TextButton(onClick = onDownload, enabled = enabled) { Text(stringResource(R.string.tools_download_selected)) }
+        TextButton(onClick = onDelete, enabled = enabled) { Text(stringResource(R.string.tools_delete_selected), color = MaterialTheme.colorScheme.error) }
+        TextButton(onClick = onClear) { Text(stringResource(R.string.tools_clear_selection)) }
     }
 }

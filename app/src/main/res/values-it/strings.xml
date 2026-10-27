@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">Precedente</string>
+    <string name="devices_page_next">Successivo</string>
+    <plurals name="devices_page_count">
+        <item quantity="one">%1$d–%2$d di %3$d dispositivo</item>
+        <item quantity="other">%1$d–%2$d di %3$d dispositivi</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="one">Dispositivo %1$d–%2$d</item>
+        <item quantity="other">Dispositivi %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">Dispositivi trovati: %1$d</string>
+    <string name="devices_server_search">Cerca tutti i dispositivi per nome</string>
+    <string name="devices_page_failed">Impossibile caricare i dispositivi. Riprova.</string>
     <string name="biometric_unlock_title">Sblocco di MeshPilot</string>
     <string name="biometric_unlock_subtitle">Conferma la tua identità con la biometria del dispositivo per aprire l\'app.</string>
     <string name="cancel">Annulla</string>
@@ -314,4 +327,6 @@
     <string name="settings_update_supporting">Gli APK firmati sono disponibili nelle versioni pubblicate su GitHub. Installa la nuova versione sopra quella attuale.</string>
     <string name="settings_update_action">Scarica l\'aggiornamento</string>
     <string name="settings_update_unavailable">Impossibile aprire il browser. Apri manualmente https://github.com/papajon123/meshcentral-android/releases.</string>
+    <string name="chat_verifying_peer">Verifica della connessione chat con l’utente…</string>
+    <string name="chat_server_retained">Il server mantiene ancora la connessione precedente. Nuovi tentativi per un massimo di 20 minuti…</string>
 </resources>

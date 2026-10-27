@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">Chat with user</string>
+    <string name="chat_connecting">Connecting to chat…</string>
+    <string name="chat_waiting">Waiting for the user to open the chat window</string>
+    <string name="chat_connected">User is in the chat</string>
+    <string name="chat_peer_left">The user left the chat or the connection ended</string>
+    <string name="chat_failed">Chat disconnected. Request the window again to reconnect.</string>
+    <string name="chat_closed">Chat closed. Reopen it from the device menu.</string>
+    <string name="chat_request">Request chat window again</string>
+    <string name="chat_close">Close chat</string>
+    <string name="chat_message">Message</string>
+    <string name="chat_send">Send message</string>
+    <string name="chat_send_failed">Message not sent. Your text is still here; try again.</string>
+    <string name="chat_length">Maximum %1$d characters</string>
+    <string name="chat_recorded">The server is recording this chat</string>
+    <string name="chat_you">You</string>
+    <string name="chat_user">User</string>
+    <string name="chat_empty">Messages stay here until you close the chat.</string>
+    <string name="chat_notification">New chat message</string>
+    <string name="chat_notifications_enable">Enable chat notifications</string>
+    <string name="chat_notifications_unavailable">Notifications are disabled in Android settings.</string>
+    <string name="chat_truncated">Message shortened</string>
+    <string name="chat_reconnecting">Reconnecting to chat…</string>
+    <string name="chat_not_opened">The user did not open the chat window</string>
+    <string name="chat_invite_unavailable">The computer or control connection is offline. Try requesting the window again later.</string>
+    <string name="chat_unread">Unread chat messages: %1$d</string>
+    <string name="chat_service_channel">Active chats</string>
+    <string name="chat_service_active">Chat is active</string>
+    <string name="chat_service_description">Keeps your conversation connected while you use other apps.</string>
+    <string name="chat_service_failed">Could not keep chat running. Reopen it while the app is visible.</string>
+    <string name="chat_back">Back</string>
+    <string name="chat_close_confirm">Close this chat and erase its messages?</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">Este formato de copia de seguridad preliminar no es compatible. Crea una nueva copia de seguridad en la app que la exportó.</string>
+    <string name="backup_key_approval_title">Confirma la clave de servidor importada</string>
+    <string name="backup_key_matches">La clave del servidor coincide con la copia de seguridad. Confirma que confías en ella antes de iniciar sesión.</string>
+    <string name="backup_key_mismatch">Advertencia: la clave del servidor NO coincide con la copia de seguridad. Verifica la huella con tu administrador antes de confiar en ella.</string>
+    <string name="backup_key_expected">Clave esperada de la copia de seguridad: %1$s</string>
+    <string name="backup_error_newer">Este archivo es de una versión más reciente de MeshPilot. Actualiza la app para importarlo.</string>
+    <string name="backup_error_auth">La contraseña es incorrecta o el archivo cifrado ha sido modificado.</string>
+    <string name="backup_error_corrupt">La copia de seguridad está dañada o tiene un formato no válido.</string>
+    <string name="backup_error_limit">La copia de seguridad supera los límites de tamaño o de elementos admitidos.</string>
+    <string name="backup_extension_skipped">Se ha omitido una sección de una versión más reciente: %1$s. Sus datos no se importarán.</string>
+    <string name="backup_duplicate">Ya existe un perfil para este servidor.</string>
+    <string name="backup_skip_duplicates">Omitir los perfiles cuyo servidor ya exista</string>
+    <string name="backup_value_on">Activado</string>
+    <string name="backup_value_off">Desactivado</string>
+    <string name="backup_preferences_preview">Protección de capturas de pantalla: %1$s\nRetraso del bloqueo automático: %2$d segundos\nTema: %3$s\nColores del sistema: %4$s\nPrecisión del lápiz: %5$s\nSugerencia del lápiz ya mostrada: %6$s\nOcultar dispositivos al bloquear: %7$s</string>
+    <string name="integration_privacy_setting">Ocultar dispositivos en widgets y accesos directos mientras la app está bloqueada</string>
+    <string name="integration_privacy_help">Con protección por PIN o biometría, oculta los nombres y el estado de los dispositivos mientras la app está bloqueada o estás fuera de ella.</string>
+    <string name="integration_private_hidden">Desbloquea la app para ver los dispositivos</string>
+    <string name="integration_private_device">Dispositivo protegido</string>
+    <string name="integration_retry_seconds">Vuelve a intentarlo en %1$d s</string>
+</resources>

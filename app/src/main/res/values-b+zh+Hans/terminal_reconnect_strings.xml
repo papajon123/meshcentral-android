@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_reconnect">重新连接</string>
+    <string name="terminal_new_session">新建终端会话</string>
+</resources>

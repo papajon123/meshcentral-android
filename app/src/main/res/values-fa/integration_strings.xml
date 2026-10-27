@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">این دستگاه دیگر در دسترس نیست. برنامه را باز کنید.</string>
+    <string name="integration_favorites">موردعلاقه</string>
+    <string name="integration_updated">به‌روزرسانی: %1$s</string>
+    <string name="integration_widget_empty">برنامه را باز کنید و دستگاه‌های موردعلاقه را اضافه کنید.</string>
+    <string name="integration_widget_description">دستگاه‌های موردعلاقه و آخرین وضعیت دسترسی شناخته‌شده آن‌ها</string>
+    <string name="integration_last_known">آخرین وضعیت شناخته‌شده</string>
+    <string name="integration_open_to_refresh">برای اتصال و به‌روزرسانی، برنامه را باز کنید.</string>
+    <string name="integration_refresh">به‌روزرسانی</string>
+    <string name="integration_open_app">باز کردن برنامه</string>
+    <string name="backup_title">پشتیبان‌گیری از تنظیمات</string>
+    <string name="backup_description">نمایه‌های سرور، موردعلاقه‌ها، میان‌برهای صفحه‌کلید، قطعه‌کدهای دستور و ترجیحات برنامه را صادر کنید. گذرواژه‌ها، توکن‌های نشست، کوکی دستگاه‌های به‌خاطرسپرده و PIN برنامه شامل نمی‌شوند. قطعه‌کدهای دستور ممکن است حاوی متنی باشند که وارد کرده‌اید؛ پیش از اشتراک‌گذاری آن‌ها را بررسی کنید.</string>
+    <string name="backup_export">صادر کردن فایل</string>
+    <string name="backup_import">وارد کردن فایل</string>
+    <string name="backup_include_keys">شامل کلیدهای ورود به سرور (فقط رمزگذاری‌شده)</string>
+    <string name="backup_password">گذرواژه پشتیبان (حداقل 8 نویسه)</string>
+    <string name="backup_password_hint">گذرواژه کل فایل را رمزگذاری می‌کند. آن را ایمن نگه دارید؛ قابل بازیابی نیست.</string>
+    <string name="backup_confirm_password">تأیید گذرواژه</string>
+    <string name="backup_password_mismatch">گذرواژه‌ها باید یکسان باشند و 8 تا 1024 نویسه داشته باشند.</string>
+    <string name="backup_busy">در حال پردازش…</string>
+    <string name="backup_saved">فایل پشتیبان ذخیره شد.</string>
+    <string name="backup_failed">پردازش پشتیبان امکان‌پذیر نبود. فایل، نسخه قالب، گذرواژه و دسترسی به فضای ذخیره‌سازی را بررسی کنید.</string>
+    <string name="backup_preview">بررسی وارد کردن</string>
+    <string name="backup_preview_explanation">نمایه‌ها به‌عنوان نمایه‌های جدید اضافه می‌شوند. نمایه‌ها، اعتبارنامه‌ها و PIN موجود حفظ می‌شوند. پیش از تأیید، نشانی سرورها و کلیدهای سنجاق‌شده را بررسی کنید.</string>
+    <string name="backup_profile_details">%1$d موردعلاقه · %2$d میان‌بر · %3$d دستور</string>
+    <string name="backup_pinned_key">کلید سنجاق‌شده سرور: %1$s</string>
+    <string name="backup_contains_key">شامل کلید ورود به سرور رمزگذاری‌شده است</string>
+    <string name="backup_apply_preferences">ظاهر، محافظت از تصاویر صفحه، تأخیر قفل خودکار و ترجیحات قلم را نیز جایگزین کن</string>
+    <string name="backup_confirm_import">افزودن نمایه‌ها</string>
+    <string name="backup_imported">%1$d نمایه اضافه شد. یک نمایه انتخاب کنید و وارد شوید.</string>
+    <string name="backup_capacity">جای خالی کافی برای نمایه‌ها وجود ندارد. پیش از وارد کردن، نمایه‌های بلااستفاده را حذف کنید.</string>
+    <string name="backup_decrypt">رمزگشایی پشتیبان</string>
+    <string name="backup_no_profiles">پیش از صدور، یک نمایه سرور HTTPS پیکربندی کنید.</string>
+</resources>

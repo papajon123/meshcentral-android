@@ -1,3 +1,115 @@
+# 0.9.0 — 2026-10-27
+
+## Support
+
+- Add a **Support MeshPilot** card in Settings that opens the Boosty page (subscriptions and one-time tips, Russian and international cards). The link comes from the build (`SUPPORT_URL`); an empty value hides the card. No features depend on support.
+
+- Match chat UI test windows to the app during rotation and keyboard resizing, and verify both regular and compact peer-closure controls on tablets and phones.
+
+## Native processes and services
+
+- Recover task actions after leaving during a list read by draining its late response; finish in-flight verification reads before checking the action deadline. Keep Android tasks read-only and Linux process renames unverified, compute systemd observations in linear time off the UI thread, and distinguish polling errors from view-only permissions.
+
+- Tighten restricted-input and server-policy checks; reject empty/incomplete verification snapshots, recover reads after agent restarts, pause refresh during confirmation, and localize task details.
+
+- Open process and service lists directly from a computer, without Companion. Search, sort processes by name or PID, filter service states, and refresh automatically every five seconds while visible.
+- Confirm process termination and service start/stop/restart, warn for critical system components and Mesh Agent, and re-read agent state before reporting success. View-only grants cannot mutate, even when combined with remote control.
+- Show offline, unsupported, timeout and unverified-result states. Add all 23 locales and protocol, permission, controller and screen tests.
+
+## User chat
+
+- Add native text chat with the person at an online computer. Open the standard MeshCentral messenger window from the device menu, exchange plain text, request the window again and close the conversation.
+- Keep up to 200 messages in session memory, limit messages to 4096 UTF-16 code units, preserve the session across Activity recreation, and show private background-message notifications when Android permits them. No chat history is written to the event feed or disk.
+- Use the existing pinned TLS transport and user auth cookie; require current chat and routing rights and hide unsupported official Android agents. Include all 23 locales. Files, audio/video, WebRTC and push messaging are not supported by the native chat.
+- Keep active conversations in a `remoteMessaging` foreground service; preserve chat/history through agent offline and transient control or network loss, and show unread badges even over the desktop. Confirm the browser before enabling send. If the server retains an abandoned connection, show that state and retry without opening another window every 5 seconds for up to 20 minutes.
+- Keep recovery status and the retry action visible while scrolling long conversations. Refresh IP-bound chat authorization on an explicit retry after a passive network change, replace old waiting sockets, and stop ordinary recovery after five consecutive transport failures.
+- Mark truncated incoming messages, decline file offers, send with Enter/IME Send, provide Back without closing and confirm history removal. Manual retries probe for an existing browser before opening a window; an unanswered invitation has its own status with a local 20-second deadline. Coalesce notification bursts to keep the final unread count and preserve scroll position during recovery.
+
+## Device invitations and administration
+
+- Use the server-advertised invitation hostname, port and protocol, show the destination without the cookie, use QR error correction M, and clear only the matching invitation clipboard when the dialog closes or the link expires (Android 9+).
+- Coalesce group/move events into one active and one pending list refresh. Device edits send only fields changed since the form opened, use the web client's 64-character name/description limits, reject control/direction formatting characters and compare group types for moves.
+
+- Invite a device into an agent group with a time-limited installation link, a QR code, copying and Android sharing. Explain public enrollment and expiration; show the action only to eligible group managers, including in empty groups.
+- Edit device names, descriptions and tags, save notes, and move devices between compatible groups with permission checks, review and confirmation. Re-read changes before reporting success and update device lists on server move events.
+- Add all new strings in the 23 supported locales and tests for the 1.3.1 protocol, permissions, delayed replies, dialogs, QR decoding, sharing, RTL and large fonts.
+
+## Port forwarding
+
+- Forward remote TCP services through a connected Mesh Agent to IPv4/IPv6 loopback ports (127.0.0.1 and ::1) on Android. Save per-profile/device rules with RDP, VNC, SSH, HTTP, HTTPS or custom presets; copy the local address or open an installed client.
+- Keep user-started routes active with a foreground notification and Stop all. Close routes on sign-out, profile/session loss or revoked rights; never restore them automatically. Bound concurrent routes/connections and queued outgoing data, using the existing server TLS trust and pin policy.
+- Reserve both loopback address families, reset failed TCP streams, isolate dropped connections, and stop unused rules after five minutes. Update notifications only when their visible rule list changes; stop only the current device from its screen.
+- Preserve uploads under backpressure with a 120-second write timeout and bounded queue draining before graceful close. Preserve existing connections when a new relay fails to pair, allow fixed-port restart on Android, show connection counts, and manage saved rules of unavailable devices from Settings.
+- Wait for native accept completion before releasing a forwarding rule on Linux, support IPv4-only hosts, coalesce notification bursts without losing the final count, and renew the upload-drain timeout while its queue shrinks.
+## Launcher integration and settings backup
+
+- Open up to four recently used devices from the app icon. Shortcuts and favorite-widget taps pass through the app lock and recheck the current account and device list; logout and profile deletion revoke them.
+- Add a Favorites home-screen widget with a scrollable device list, last known online/offline state and update time. Refresh reuses the control channel or makes a bounded temporary connection that always closes; it never keeps a background session alive.
+- Export settings through Android's document picker and preview imports before adding new profiles. Optional server login keys require explicit selection and password encryption; existing profiles and credentials are never overwritten. All new text is translated into 23 locales.
+- Cancel stale launcher destinations on manual navigation, keep private pinned shortcuts usable behind the lock, and preserve the main session after HTTP 429.
+- Distinguish widget cooldown from failure, tolerate wall-clock corrections, identify legacy backup drafts before password entry, and detect duplicate endpoints within an import.
+- Treat imported server keys as untrusted expectations requiring explicit TLS confirmation; add duplicate skipping, atomic settings import, detailed previews and separate backup format errors.
+- Authenticate exact backup header bytes with AES-GCM and use PBKDF2-HMAC-SHA256 at 600,000 iterations; skip unknown extension sections with a notice.
+- Preserve device shortcuts across profile switches, queue launcher updates off Main, add optional lock privacy, and prevent widget sign-in with PIN or after a rejected background attempt.
+- Ignore history-launch intents, preserve revoked shortcut messages, and retain only the remaining widget cooldown after reboot with visible retry feedback.
+
+## Large servers
+
+- Bound and coalesce filtered-membership checks during event bursts, cancel stale candidates and keep current actions available after a verification failure. Skip redundant on-page retained-device reads and reset subscriptions after addressed reads only when the domain limit is one.
+- Apply addressed results before subscription acknowledgements, bound removal tracking to pending reads, and confirm empty results before closing a device chat. Restore the browser query and requested page with a saved card; handle notification lookup timeouts and retry missing cards without recollecting a current list.
+- Restore saved browser filters/search into a fresh client and resolve saved cards, notification targets and transfer retries outside the current page by device ID.
+- Restore global device events after collected/ID snapshots, including a domain limit of one. Observe power and retained devices with addressed reads; identical pending refreshes no longer restart collection.
+- Keep server search matches under database collation, including subsequent metadata/rename events. Hide off-page empty groups while retaining invitations in a group picker, and show only one connection retry notice.
+- Browse servers using `maxdeviceview` with previous/next pages and server-reported device totals. Search all devices by name on MeshCentral 1.3.1; ordinary servers retain offline search across names, groups, addresses and systems.
+- Preserve the page and filter when returning from details or reconnecting. Ordinary server refreshes keep rows and scroll position; selected devices remain available when a page boundary moves.
+- Read favorites and recents by device ID. Online, attention and legacy-search snapshots are collected on query changes, explicit refresh or structural group events, never on a polling clock. Missing search-filter echo falls back to a full local name search with a matching result count.
+- Keep paging compatible with device administration: serialize coalesced group refreshes, verify edits by device ID, and update the selected device's group immediately on a move event.
+- Reconcile only an actual visible server page every 15 seconds while foreground. Ignore unrelated core-info events; update collected rows incrementally. Keep timeout errors actionable, reconnect only on explicit retry, and finish disconnected inspector reads as failures instead of cancelling their observation loop.
+- Use localized plurals for page counts and invalidate Android input capability on transport loss.
+- Keep devices with open chats available across page changes while still closing chats on explicit removal or revoked rights.
+- Add JVM and Android tests, Arabic RTL and large-font coverage, a reproducible 2000-device isolated fixture, and before/after performance measurements.
+
+## Terminal and file queues
+
+- Stop cancelled archive downloads with `download stop`, discard late blocks until the next listing, and delete the temporary archive in the same session. An unreadable or over-limit queued folder listing now fails only its own row.
+- Retry a ZIP that started but never produced an archive file-by-file using a `zippingFile` idle timeout instead of a hard 600-second deadline. File deletes compare type only, verified documents survive providers without rename support, zero-length special entries are not opened remotely, and folder deletion warns about followed links.
+- Accept the first explicit retry or new selection after an idle notification by waiting for the previous queue job to finish; cover both folder and single-document retry at this exact boundary.
+- Correct recoverable download-refusal messages: keep the active session and explain that the remote file's permissions/type need checking. Translate the message in all 23 locales.
+- Add opt-in real OpenSSH acceptance through MeshCentral 1.3.1, independent source/download SHA-256 comparison, hostile filesystem fixtures, explicit retries, cancellation and deletion type-swap checks. Document the upstream disconnect on unreadable directories and missing special-file metadata.
+- Harden file queues: recover per-file refusals, pause on disconnect, label incomplete folders, retain SAF grants until replacement/close, and throttle lazy progress rows. Single files use CreateDocument.
+- Recheck each delete group immediately before sending separate nonrecursive-file and recursive-directory requests. Disable unsafe Windows aliases.
+- Validate ZIP/ZIP64 structure with bounded metadata, fall back to recursive copying if ZIP never starts, cancel archives before closing the relay, and report orphan paths without repeating successful downloads.
+- Keep upload retry working after the 31-second cancellation deadline; restore terminal history clearing after the first input following reconnect.
+- Reconnect Agent and SSH terminals explicitly after a disconnect while keeping local scrollback and the scroll position. Mark each new shell; never replay commands or submitted SSH credentials.
+- Select computer files and folders with a long press. Download selected items sequentially to a SAF folder, or delete a confirmed list and verify its absence.
+- Download Agent folders as temporary ZIP archives using the audited MeshCentral 1.3.1 protocol; copy SFTP folders recursively. Verify file size and local SHA-256 readback; remove a completed temporary remote archive.
+- Show queue progress, cancellation and explicit retry for downloads and confirmed computer uploads. Retry creates a fresh download document or restarts an explicitly confirmed upload, with a fresh relay when necessary.
+- Add regression, native UI/SAF and opt-in local-bench tests, with new strings in all 23 locales.
+
+## Desktop controls
+
+- Send no binary data or input before the KVM protocol number. Applying the saved quality as the screen opened reached the agent first; the agent read it as the protocol and never started the session, which stayed at "Negotiating KVM (protocol 2)".
+- Share app-lock state across all Activity instances; expire passive PiP on its deadline, hide locked frames and prevent foreground/reconnect from resuming a locked stream.
+- Keep visible split-screen windows unlocked until they actually stop, and preserve touchpad pinch/scroll gestures without mouse buttons.
+- Cover automatic PiP, screen off/on, share tasks and desktop settings wiring in regression tests.
+
+- Fix PiP app-lock timeout enforcement, persist automatic PiP with an off default, and preserve normal Activity recreation.
+- Prevent disabled pinch/scroll gestures from right-clicking, restore mouse taps on Android devices, and handle mouse-source trackpads.
+- Match physical key flags to the target OS and wheel steps to the web client; distinguish requested display settings from observed tile update rates.
+
+- Add three-finger remote scrolling, a per-session two-finger scroll/pan choice, and a pinch-to-zoom switch while retaining the original default gestures and stylus paths.
+- Save JPEG quality, remote image scale and capture-rate limits per profile/device. Convert frames per second to the agent's millisecond capture interval; show incoming bytes and approximate image updates per second.
+- Support physical mouse hover, three buttons, dragging, vertical wheel and compatible Shift+wheel horizontal scrolling. Capture hardware key pairs, modifiers and function keys before the software keyboard; release held input on focus/access loss.
+- Add passive desktop picture-in-picture, automatic entry when leaving the app, and restoration of session controls. PiP accepts no remote input. Android/DeX may reserve system shortcuts; the existing key menu remains available.
+- Add byte-level, gesture, physical-input, quality-menu, preference-isolation and PiP checks, with strings in all 23 locales.
+
+## Android 16
+
+- Target and compile against Android 16 (API 36), retaining Android 8.0 (API 26) as the minimum. Use AGP 8.10.1 and Gradle 8.11.1; Kotlin, Compose and Build Tools versions are unchanged.
+- Add local-fixture acceptance for platform Back navigation through settings, dialogs, WebView, device tools and desktop, plus tablet rotation with a retained terminal session.
+- Keep synthetic stylus tests valid under Android 16 input validation: finish hover/contact streams between tests and explicitly cancel a contact before switching the injected input source.
+- Enable platform Back callbacks on Android 13+; let Android handle Back and volume keys while remote keyboard capture is active. Cover monitor-menu dismissal, active keyboard Back and cancelled gestures, and allow rotation with or without Activity recreation.
+
 # 0.8.4 — 2026-10-26
 
 - Same app as 0.8.3, which was built and tested but never reached GitHub Releases: the release runner can no longer reach github.com on port 22, so the snapshot upload failed. Publication now uses ssh.github.com on port 443 with the same pinned host keys.

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">گفتگو با کاربر</string>
+    <string name="chat_connecting">در حال اتصال به گفتگو…</string>
+    <string name="chat_waiting">در انتظار اینکه کاربر پنجره گفتگو را باز کند</string>
+    <string name="chat_connected">کاربر در گفتگو است</string>
+    <string name="chat_peer_left">کاربر گفتگو را ترک کرد یا اتصال قطع شد</string>
+    <string name="chat_failed">اتصال گفتگو قطع شد. برای اتصال دوباره، پنجره را دوباره درخواست کنید.</string>
+    <string name="chat_closed">گفتگو بسته شد. آن را از منوی دستگاه دوباره باز کنید.</string>
+    <string name="chat_request">درخواست مجدد پنجره گفتگو</string>
+    <string name="chat_close">بستن گفتگو</string>
+    <string name="chat_message">پیام</string>
+    <string name="chat_send">ارسال پیام</string>
+    <string name="chat_send_failed">پیام ارسال نشد. متن شما هنوز اینجاست؛ دوباره تلاش کنید.</string>
+    <string name="chat_length">حداکثر تعداد نویسه: %1$d</string>
+    <string name="chat_recorded">سرور این گفتگو را ضبط می‌کند</string>
+    <string name="chat_you">شما</string>
+    <string name="chat_user">کاربر</string>
+    <string name="chat_empty">پیام‌ها تا زمانی که گفتگو را ببندید اینجا می‌مانند.</string>
+    <string name="chat_notification">پیام جدید گفتگو</string>
+    <string name="chat_notifications_enable">فعال‌کردن اعلان‌های گفتگو</string>
+    <string name="chat_notifications_unavailable">اعلان‌ها در تنظیمات Android غیرفعال هستند.</string>
+    <string name="chat_truncated">پیام کوتاه شد</string>
+    <string name="chat_reconnecting">در حال اتصال مجدد به گفتگو…</string>
+    <string name="chat_not_opened">کاربر پنجره گفتگو را باز نکرد</string>
+    <string name="chat_invite_unavailable">رایانه یا اتصال کنترل آفلاین است. بعداً دوباره درخواست پنجره را امتحان کنید.</string>
+    <string name="chat_unread">پیام‌های خوانده‌نشده گفتگو: %1$d</string>
+    <string name="chat_service_channel">گفتگوهای فعال</string>
+    <string name="chat_service_active">گفتگو فعال است</string>
+    <string name="chat_service_description">گفتگوی شما را هنگام استفاده از برنامه‌های دیگر متصل نگه می‌دارد.</string>
+    <string name="chat_service_failed">امکان ادامه اجرای گفتگو نبود. زمانی که برنامه نمایان است آن را دوباره باز کنید.</string>
+    <string name="chat_back">بازگشت</string>
+    <string name="chat_close_confirm">این گفتگو بسته و پیام‌هایش پاک شود؟</string>
+</resources>

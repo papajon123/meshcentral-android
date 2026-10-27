@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical" android:padding="12dp" android:background="@drawable/widget_background">
+    <TextView android:id="@+id/widget_title" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:textSize="18sp" android:textStyle="bold" android:textColor="@color/widget_text" />
+    <TextView android:id="@+id/widget_updated" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:textSize="12sp" android:textColor="@color/widget_secondary" />
+    <TextView android:id="@+id/widget_hint" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:textSize="12sp" android:textColor="@color/widget_secondary" />
+    <ListView android:id="@+id/widget_rows" android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1" android:divider="@android:color/transparent" android:dividerHeight="4dp" />
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal">
+        <Button android:id="@+id/widget_refresh" android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:minHeight="48dp" android:textSize="12sp" android:textAllCaps="false"
+            android:backgroundTint="@color/widget_action" android:textColor="@color/widget_on_action" />
+    </LinearLayout>
+    <Button android:id="@+id/widget_open" android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:minHeight="48dp" android:textSize="12sp" android:textAllCaps="false"
+        android:backgroundTint="@color/widget_action" android:textColor="@color/widget_on_action" />
+</LinearLayout>

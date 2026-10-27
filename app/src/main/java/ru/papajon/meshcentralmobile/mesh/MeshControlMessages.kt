@@ -15,9 +15,12 @@ object MeshControlMessages {
 
     fun meshes(): JSONObject = JSONObject().put("action", "meshes")
 
-    fun nodes(responseId: String? = null): JSONObject {
+    fun nodes(responseId: String? = null, skip: Int? = null, limit: Int? = null, filter: String? = null): JSONObject {
         val json = JSONObject().put("action", "nodes")
         if (responseId != null) json.put("responseid", responseId)
+        if (skip != null) json.put("skip", skip.coerceAtLeast(0))
+        if (limit != null && limit > 0) json.put("limit", limit)
+        if (filter != null) json.put("filter", filter.take(128))
         return json
     }
 

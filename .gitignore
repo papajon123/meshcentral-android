@@ -35,3 +35,6 @@ Thumbs.db
 dist/
 verification/
 .gradle-ci/
+
+# GitLab CI cache of Android Build Tools (restored into the project directory)
+.android-sdk-cache/

@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">మునుపటి</string>
+    <string name="devices_page_next">తదుపరి</string>
+    <plurals name="devices_page_count">
+        <item quantity="one">%3$d పరికరంలో %1$d–%2$d</item>
+        <item quantity="other">%3$d పరికరాలలో %1$d–%2$d</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="one">పరికరం %1$d–%2$d</item>
+        <item quantity="other">పరికరాలు %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">కనుగొన్న పరికరాలు: %1$d</string>
+    <string name="devices_server_search">పేరు ద్వారా అన్ని పరికరాలను వెతకండి</string>
+    <string name="devices_page_failed">పరికరాలను లోడ్ చేయలేకపోయాం. మళ్లీ ప్రయత్నించండి.</string>
     <string name="biometric_unlock_title">MeshPilotను అన్లాక్ చేయి</string>
     <string name="biometric_unlock_subtitle">యాప్ను తెరవడానికి పరికరం బయోమెట్రిక్తో మీ గుర్తింపును నిర్ధారించండి.</string>
     <string name="cancel">రద్దు చేయి</string>
@@ -314,4 +327,6 @@
     <string name="settings_update_supporting">సంతకం చేసిన APKలు GitHub రిలీజ్లలో అందుబాటులో ఉన్నాయి. కొత్త వెర్షన్ను ప్రస్తుత వెర్షన్ పైన ఇన్స్టాల్ చేయండి.</string>
     <string name="settings_update_action">అప్డేట్ను డౌన్లోడ్ చేయి</string>
     <string name="settings_update_unavailable">బ్రౌజర్ను తెరవలేకపోయాం. https://github.com/papajon123/meshcentral-android/releases మాన్యువల్గా తెరవండి.</string>
+    <string name="chat_verifying_peer">వినియోగదారుతో చాట్ కనెక్షన్ తనిఖీ చేస్తోంది…</string>
+    <string name="chat_server_retained">సర్వర్ ఇంతకుముందు కనెక్షన్‌ను ఇంకా ఉంచుకుంది. 20 నిమిషాల వరకు మళ్లీ ప్రయత్నిస్తోంది…</string>
 </resources>

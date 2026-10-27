@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">Gerät einladen</string>
+    <string name="admin_invite_help">Jeder mit diesem Link kann einen Agenten in „%1$s“ installieren. Teilen Sie ihn nur mit der Person, der Sie helfen möchten.</string>
+    <string name="admin_invite_mode">Erlaubt die Installation jedes verfügbaren Agenten im Hintergrund und interaktiv.</string>
+    <string name="admin_expiry">Gültigkeitsdauer des Links</string>
+    <string name="admin_create_link">Link erstellen</string>
+    <string name="admin_expires_at">Läuft ab: %1$s</string>
+    <string name="admin_expired">Dieser Link ist abgelaufen. Erstellen Sie einen neuen Link.</string>
+    <string name="admin_qr">Scannen, um die Agenten-Installationsseite zu öffnen</string>
+    <string name="admin_share">Link teilen</string>
+    <string name="admin_copy">Link kopieren</string>
+    <string name="admin_copied">Link kopiert</string>
+    <string name="admin_close">Schließen</string>
+    <string name="admin_cancel">Abbrechen</string>
+    <string name="admin_confirm">Bestätigen</string>
+    <string name="admin_review">Änderungen prüfen</string>
+    <string name="admin_edit">Gerät bearbeiten</string>
+    <string name="admin_name">Name</string>
+    <string name="admin_description">Beschreibung</string>
+    <string name="admin_tags">Tags, durch Kommas getrennt</string>
+    <string name="admin_notes">Notizen</string>
+    <string name="admin_save_notes">Notizen speichern</string>
+    <string name="admin_move">In eine andere Gruppe verschieben</string>
+    <string name="admin_move_confirm">„%1$s“ nach „%2$s“ verschieben? Der Zugriff richtet sich nach der Zielgruppe.</string>
+    <string name="admin_edit_confirm">Diese Änderungen an „%1$s“ speichern?</string>
+    <string name="admin_notes_confirm">Die Notizen für „%1$s“ ersetzen?</string>
+    <string name="admin_saved">Änderungen vom Server bestätigt</string>
+    <string name="admin_failed">Die Änderung konnte nicht bestätigt werden. Aktualisieren Sie die Ansicht und prüfen Sie das Gerät, bevor Sie es erneut versuchen.</string>
+    <string name="admin_invite_failed">Der Link konnte nicht erstellt werden. Prüfen Sie Ihre Verbindung und die Gruppenberechtigungen und versuchen Sie es erneut.</string>
+    <string name="admin_loading">Warten auf den Server…</string>
+    <string name="admin_invalid">Name: 1–64 Zeichen. Beschreibung: bis zu 64 Zeichen. Jeder Tag: bis zu 63 Zeichen; insgesamt: bis zu 4096. Verwenden Sie einzeiligen Text ohne Steuerzeichen oder Zeichen zur Textrichtungsformatierung.</string>
+    <string name="admin_endpoint">Server: %1$s</string>
+    <string name="admin_unavailable">Stellen Sie die Verbindung wieder her und aktualisieren Sie die Ansicht, um dieses Gerät zu verwalten. Ihr Konto benötigt die erforderlichen Berechtigungen.</string>
+    <string name="admin_notes_limit">Notizen: bis zu 16.000 Zeichen.</string>
+    <string name="admin_no_destinations">Keine kompatiblen Gruppen mit der Berechtigung, dieses Gerät zu verschieben.</string>
+</resources>

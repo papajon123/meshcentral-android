@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">سرور نے اس فائل کو مسترد کر دیا۔ دوبارہ کوشش کرنے سے پہلے اس کی اجازتیں اور قسم جانچیں۔</string>
+</resources>

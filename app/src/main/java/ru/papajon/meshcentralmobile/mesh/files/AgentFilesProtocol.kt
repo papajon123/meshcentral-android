@@ -3,9 +3,9 @@ package ru.papajon.meshcentralmobile.mesh.files
 import org.json.JSONObject
 
 data class RemoteFile(val name: String, val type: Int, val size: Long = 0, val sizeKnown: Boolean = true,
-    val listingIndex: Int? = null, val ambiguousName: Boolean = false) {
+    val listingIndex: Int? = null, val ambiguousName: Boolean = false, val platformSafe: Boolean = true) {
     val directory: Boolean get() = type == 1 || type == 2
-    val actionable: Boolean get() = !ambiguousName && AgentFilesProtocol.usableExistingName(name, type) && (directory || sizeKnown)
+    val actionable: Boolean get() = platformSafe && !ambiguousName && AgentFilesProtocol.usableExistingName(name, type) && (directory || sizeKnown)
     /** Escape control/format characters so an unsupported entry cannot forge lines or bidi labels. */
     val displayName: String get() = buildString {
         name.take(1024).forEach { character ->
@@ -57,7 +57,7 @@ internal object AgentFilesProtocol {
 
     fun isMediaCategory(path: String): Boolean = path in setOf("Images", "Audio", "Videos")
 
-    fun entries(message: JSONObject, phoneMedia: Boolean = false): List<RemoteFile> {
+    fun entries(message: JSONObject, phoneMedia: Boolean = false, requestedPath: String = message.optString("path")): List<RemoteFile> {
         val array = requireNotNull(message.optJSONArray("dir")) { "Directory unavailable" }
         require(array.length() <= MAX_LIST_ENTRIES) { "Directory limit" }
         val entries = ArrayList<RemoteFile>(array.length())
@@ -77,7 +77,8 @@ internal object AgentFilesProtocol {
             val rawSize = item.opt("s")
             val size = (rawSize as? Number)?.toLong() ?: 0
             val sizeKnown = rawSize is Number && size in 0..9_007_199_254_740_991L && rawSize.toString() == size.toString()
-            entries += RemoteFile(name, type, if (sizeKnown) size else 0, sizeKnown, if (phoneMedia) i else null)
+            entries += RemoteFile(name, type, if (sizeKnown) size else 0, sizeKnown, if (phoneMedia) i else null,
+                platformSafe = validDrive || !(WindowsFileNames.isWindowsPath(requestedPath) || WindowsFileNames.isWindowsPath(message.optString("path"))) || WindowsFileNames.safeComponent(name))
         }
         val duplicates = if (phoneMedia) entries.groupingBy { it.name }.eachCount().filterValues { it > 1 }.keys else emptySet()
         return entries.map { if (it.name in duplicates) it.copy(ambiguousName = true) else it }

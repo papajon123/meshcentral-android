@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Signal palette for the launcher-owned RemoteViews surface. -->
+    <color name="widget_surface">#F5FAF5</color>
+    <color name="widget_text">#17201C</color>
+    <color name="widget_secondary">#404A44</color>
+    <color name="widget_action">#006A63</color>
+    <color name="widget_on_action">#FFFFFF</color>
+</resources>

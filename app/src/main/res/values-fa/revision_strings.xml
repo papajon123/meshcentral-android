@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">این قالب پیش‌نویس پشتیبان پشتیبانی نمی‌شود. در برنامه‌ای که آن را صادر کرده است، پشتیبان جدیدی ایجاد کنید.</string>
+    <string name="backup_key_approval_title">تأیید کلید سرور واردشده</string>
+    <string name="backup_key_matches">کلید سرور با نسخه پشتیبان مطابقت دارد. پیش از ورود، تأیید کنید که به آن اعتماد دارید.</string>
+    <string name="backup_key_mismatch">هشدار: کلید سرور با نسخه پشتیبان مطابقت ندارد. پیش از اعتماد، اثر انگشت را با مدیر خود بررسی کنید.</string>
+    <string name="backup_key_expected">کلید مورد انتظار از نسخه پشتیبان: %1$s</string>
+    <string name="backup_error_newer">این فایل متعلق به نسخه جدیدتری از MeshPilot است. برای وارد کردن آن، برنامه را به‌روزرسانی کنید.</string>
+    <string name="backup_error_auth">گذرواژه نادرست است یا فایل رمزگذاری‌شده تغییر کرده است.</string>
+    <string name="backup_error_corrupt">نسخه پشتیبان آسیب دیده است یا قالب آن نامعتبر است.</string>
+    <string name="backup_error_limit">نسخه پشتیبان از محدودیت‌های اندازه یا تعداد اقلام پشتیبانی‌شده فراتر می‌رود.</string>
+    <string name="backup_extension_skipped">بخشی از نسخه جدیدتر نادیده گرفته شد: %1$s. داده‌های آن وارد نخواهد شد.</string>
+    <string name="backup_duplicate">نمایه‌ای برای این سرور از قبل وجود دارد.</string>
+    <string name="backup_skip_duplicates">نمایه‌هایی که سرورشان از قبل وجود دارد نادیده گرفته شود</string>
+    <string name="backup_value_on">روشن</string>
+    <string name="backup_value_off">خاموش</string>
+    <string name="backup_preferences_preview">محافظت از تصاویر صفحه: %1$s\nتأخیر قفل خودکار: %2$d ثانیه\nپوسته: %3$s\nرنگ‌های سیستم: %4$s\nدقت قلم: %5$s\nراهنمای قلم قبلاً نمایش داده شده: %6$s\nپنهان کردن دستگاه‌ها هنگام قفل: %7$s</string>
+    <string name="integration_privacy_setting">پنهان کردن دستگاه‌ها در ویجت‌ها و میان‌برها هنگام قفل بودن برنامه</string>
+    <string name="integration_privacy_help">هنگام استفاده از PIN یا زیست‌سنجی، نام و وضعیت دستگاه‌ها را هنگام قفل بودن یا بیرون از برنامه پنهان کنید.</string>
+    <string name="integration_private_hidden">برای مشاهده دستگاه‌ها، قفل برنامه را باز کنید</string>
+    <string name="integration_private_device">دستگاه محافظت‌شده</string>
+    <string name="integration_retry_seconds">%1$d ثانیه دیگر دوباره امتحان کنید</string>
+</resources>

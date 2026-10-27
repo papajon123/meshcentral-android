@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">双指手势</string>
+    <string name="desktop_gesture_default">原始行为</string>
+    <string name="desktop_gesture_scroll">滚动远程窗口</string>
+    <string name="desktop_gesture_pan">平移图像</string>
+    <string name="desktop_pinch">双指捏合缩放</string>
+    <string name="desktop_three_fingers">三指可滚动远程窗口。</string>
+    <string name="desktop_scale">所请求的图像缩放：%1$d%%</string>
+    <string name="desktop_pip">画中画</string>
+    <string name="desktop_pip_auto">离开应用后继续观看</string>
+    <string name="desktop_stream_rate">≈ %1$.1f 更新/秒 · %2$d B/s</string>
+    <string name="desktop_input_help">硬件键盘和鼠标可在桌面上使用。Android 可能会保留 Alt+Tab 或 Meta 键；此时请使用按键菜单。在支持的情况下，水平滚轮通过 Shift + 滚轮实现。</string>
+    <string name="desktop_rate_help">画质、缩放和帧数上限都是所请求的设置。其他查看者可以提高画质、缩放或更新频率。计数器统计的是瓦片更新次数，而不是完整帧。</string>
+    <string name="desktop_keyboard_capture">捕获物理键盘</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc 可释放键盘并打开会话选项。</string>
+</resources>

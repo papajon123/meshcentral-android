@@ -11,6 +11,7 @@ data class AppSettings(
     val lockTimeoutSeconds: Long = DEFAULT_LOCK_TIMEOUT_SECONDS,
     val stylusPrecisionEnabled: Boolean = true,
     val stylusHintSeen: Boolean = false,
+    val hideDevicesWhenLocked: Boolean = false,
 )
 
 /** No personal server is baked in: the first launch asks the user for their own HTTPS address. */

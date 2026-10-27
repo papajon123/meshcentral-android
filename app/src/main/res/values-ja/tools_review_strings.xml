@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">検証できませんでした：%1$s</string>
+    <string name="review_paused">一時停止中：接続が失われました</string>
+    <string name="review_retry_all">未完了の項目を再試行</string>
+    <string name="review_cleanup_title">リモートアーカイブのクリーンアップ</string>
+    <string name="review_archive_left">コンピューターに一時的なアーカイブが残っている可能性があります：%1$s。アーカイブ操作が実行されていないときに確認して削除してください。</string>
+    <string name="review_archive_space">ZIP を作成するには、完全なアーカイブ用の空き領域がリモートのコピー元フォルダーに必要です。エージェントが開始できない場合、ファイルは個別にコピーされます。未完了のローカルフォルダーには .partial 接尾辞が付きます。</string>
+    <string name="review_grant_failed">このプロバイダーはキューのアクセス権を保持できませんでした。別の保存場所を選択してください。</string>
+    <string name="review_zip_invalid">アーカイブが破損しているか、不完全か、サポートされている構造の制限を超えています。</string>
+    <string name="review_source_changed">選択した項目が変更されました。フォルダーを更新し、選択を再度確定してください。</string>
+    <string name="review_sftp_types">このサーバーは SFTP 一覧でシンボリックリンクや特殊ファイルを識別しません。検証できないファイルはパスで通知されます。接続が切れるとキューは一時停止します。未完了のフォルダーには .partial が付いたままです。</string>
+    <string name="review_skipped">サポートされていない項目をスキップしました：%1$s</string>
+    <string name="review_folder_unavailable">フォルダにアクセスできません: %1$s。キューの残りは続行します。</string>
+    <string name="review_local_failed">ローカルの Android ドキュメントを書き込むか読み戻すことができませんでした。ファイルセッションは接続されたままです。この項目を再試行してください。</string>
+    <string name="review_local_no_rename">このプロバイダーはドキュメントの名前を変更できません。一部のファイルは .partial 接尾辞のまま残ります。Android のファイルで名前を変更してください。</string>
+    <string name="review_source_changed_deleted">すでに削除済み: %1$s。残りの選択は削除されていません。フォルダを更新して再確認してください。</string>
+    <string name="files_delete_follow_links">フォルダの再帰削除はシンボリックリンクとジャンクションをたどります。選択したフォルダ外の対象も消去される可能性があります。確認前に MeshCentral でフォルダを確認してください。</string>
+</resources>

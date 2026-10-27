@@ -13,6 +13,24 @@ import ru.papajon.meshcentralmobile.mesh.MouseButton
 @RunWith(AndroidJUnit4::class)
 class NativeKeyboardRepeatTest {
     @Test
+    fun systemKeysFallThroughWithoutRemotePackets() {
+        val instrumentation = InstrumentationRegistry.getInstrumentation()
+        val sink = RecordingSink()
+        instrumentation.runOnMainSync {
+            val field = RemoteInputField(instrumentation.targetContext, sink)
+            val platformField = android.widget.EditText(instrumentation.targetContext)
+            for (key in listOf(KeyEvent.KEYCODE_BACK, KeyEvent.KEYCODE_VOLUME_UP,
+                KeyEvent.KEYCODE_VOLUME_DOWN, KeyEvent.KEYCODE_VOLUME_MUTE)) {
+                val down = KeyEvent(KeyEvent.ACTION_DOWN, key)
+                val up = KeyEvent(KeyEvent.ACTION_UP, key)
+                assertEquals("System key down $key", platformField.onKeyDown(key, down), field.onKeyDown(key, down))
+                assertEquals("System key up $key", platformField.onKeyUp(key, up), field.onKeyUp(key, up))
+            }
+        }
+        assertEquals(emptyList<Int>(), sink.keys)
+    }
+
+    @Test
     fun inputConnectionStillForwardsFunctionKeys() {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
         val sink = RecordingSink()

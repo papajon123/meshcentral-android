@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">यह ड्राफ़्ट बैकअप फ़ॉर्मैट समर्थित नहीं है। जिस ऐप ने इसे निर्यात किया है, उसमें नया बैकअप बनाएँ।</string>
+    <string name="backup_key_approval_title">आयातित सर्वर कुंजी की पुष्टि करें</string>
+    <string name="backup_key_matches">सर्वर कुंजी बैकअप से मेल खाती है। साइन इन करने से पहले इस पर भरोसा करने की पुष्टि करें।</string>
+    <string name="backup_key_mismatch">चेतावनी: सर्वर कुंजी बैकअप से मेल नहीं खाती। भरोसा करने से पहले प्रशासक के साथ फ़िंगरप्रिंट सत्यापित करें।</string>
+    <string name="backup_key_expected">बैकअप से अपेक्षित कुंजी: %1$s</string>
+    <string name="backup_error_newer">यह फ़ाइल MeshPilot के नए संस्करण से है। इसे आयात करने के लिए ऐप को अपडेट करें।</string>
+    <string name="backup_error_auth">पासवर्ड गलत है या एन्क्रिप्टेड फ़ाइल बदल दी गई है।</string>
+    <string name="backup_error_corrupt">बैकअप क्षतिग्रस्त है या उसका प्रारूप अमान्य है।</string>
+    <string name="backup_error_limit">बैकअप समर्थित आकार या आइटम सीमा से अधिक है।</string>
+    <string name="backup_extension_skipped">नए संस्करण का अनुभाग छोड़ा गया: %1$s। उसका डेटा आयात नहीं किया जाएगा।</string>
+    <string name="backup_duplicate">इस सर्वर के लिए प्रोफ़ाइल पहले से मौजूद है।</string>
+    <string name="backup_skip_duplicates">ऐसी प्रोफ़ाइल छोड़ें जिनका सर्वर पहले से मौजूद है</string>
+    <string name="backup_value_on">चालू</string>
+    <string name="backup_value_off">बंद</string>
+    <string name="backup_preferences_preview">स्क्रीनशॉट सुरक्षा: %1$s\nऑटो-लॉक विलंब: %2$d सेकंड\nथीम: %3$s\nसिस्टम रंग: %4$s\nस्टाइलस सटीकता: %5$s\nस्टाइलस संकेत पहले ही दिखाया गया: %6$s\nलॉक होने पर डिवाइस छिपाएँ: %7$s</string>
+    <string name="integration_privacy_setting">ऐप लॉक होने पर विजेट और शॉर्टकट में डिवाइस छिपाएँ</string>
+    <string name="integration_privacy_help">PIN या बायोमेट्रिक सुरक्षा के साथ, लॉक होने पर या ऐप के बाहर डिवाइस के नाम और स्थिति छिपाएँ।</string>
+    <string name="integration_private_hidden">डिवाइस देखने के लिए ऐप अनलॉक करें</string>
+    <string name="integration_private_device">संरक्षित डिवाइस</string>
+    <string name="integration_retry_seconds">%1$d सेकंड में फिर से प्रयास करें</string>
+</resources>

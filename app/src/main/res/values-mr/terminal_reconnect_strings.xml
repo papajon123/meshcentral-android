@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_reconnect">पुन्हा कनेक्ट करा</string>
+    <string name="terminal_new_session">नवीन टर्मिनल सत्र</string>
+</resources>

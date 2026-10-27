@@ -11,7 +11,7 @@ This is a small, preliminary Android project. Small, focused changes with clear 
 
 ## Build
 
-Requirements: JDK 17, Android SDK platform 35, build-tools 35.0.0.
+Requirements: JDK 17, Android SDK platform 36, build-tools 35.0.0.
 
 Windows PowerShell:
 

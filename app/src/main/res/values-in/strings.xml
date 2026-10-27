@@ -1,5 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">Sebelumnya</string>
+    <string name="devices_page_next">Berikutnya</string>
+    <plurals name="devices_page_count">
+        <item quantity="other">%1$d–%2$d dari %3$d perangkat</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="other">Perangkat %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">Perangkat ditemukan: %1$d</string>
+    <string name="devices_server_search">Cari semua perangkat berdasarkan nama</string>
+    <string name="devices_page_failed">Tidak dapat memuat perangkat. Coba lagi.</string>
     <string name="biometric_unlock_title">Buka kunci MeshPilot</string>
     <string name="biometric_unlock_subtitle">Konfirmasi identitas Anda dengan biometrik perangkat untuk membuka aplikasi.</string>
     <string name="cancel">Batal</string>
@@ -314,4 +325,6 @@
     <string name="settings_update_supporting">APK bertanda tangan tersedia dalam rilis GitHub. Instal versi baru di atas versi saat ini.</string>
     <string name="settings_update_action">Unduh pembaruan</string>
     <string name="settings_update_unavailable">Tidak dapat membuka browser. Buka https://github.com/papajon123/meshcentral-android/releases secara manual.</string>
+    <string name="chat_verifying_peer">Memeriksa koneksi obrolan dengan pengguna…</string>
+    <string name="chat_server_retained">Server masih mempertahankan koneksi sebelumnya. Mencoba lagi hingga 20 menit…</string>
 </resources>

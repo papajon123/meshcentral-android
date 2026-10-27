@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">두 손가락 제스처</string>
+    <string name="desktop_gesture_default">원래 동작</string>
+    <string name="desktop_gesture_scroll">원격 창 스크롤</string>
+    <string name="desktop_gesture_pan">이미지 이동</string>
+    <string name="desktop_pinch">핀치하여 확대/축소</string>
+    <string name="desktop_three_fingers">세 손가락으로 원격 창을 스크롤합니다.</string>
+    <string name="desktop_scale">요청된 이미지 배율: %1$d%%</string>
+    <string name="desktop_pip">화면 속 화면</string>
+    <string name="desktop_pip_auto">앱을 나가도 계속 보기</string>
+    <string name="desktop_stream_rate">≈ %1$.1f 업데이트/초 · %2$d B/s</string>
+    <string name="desktop_input_help">하드웨어 키보드와 마우스는 데스크톱에서 작동합니다. Android에서 Alt+Tab 또는 Meta를 예약할 수 있습니다. 이 경우 키 메뉴를 사용하세요. 가로 휠은 지원되는 경우 Shift + 휠로 작동합니다.</string>
+    <string name="desktop_rate_help">품질, 배율, 프레임 제한은 요청 설정입니다. 다른 시청자는 품질, 배율 또는 업데이트 속도를 높일 수 있습니다. 카운터는 타일 업데이트를 측정하며 전체 프레임은 측정하지 않습니다.</string>
+    <string name="desktop_keyboard_capture">물리 키보드 캡처</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc를 누르면 키보드가 해제되고 세션 옵션이 열립니다.</string>
+</resources>

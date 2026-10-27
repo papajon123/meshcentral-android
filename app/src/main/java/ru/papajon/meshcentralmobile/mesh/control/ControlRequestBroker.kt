@@ -32,6 +32,7 @@ class ControlRequestBroker(
     private val pending = linkedMapOf<String, Pending>()
     private val gates = mutableMapOf<Pair<String, String?>, Gate>()
     private var generation = 0L
+    private val uncertainNotes = mutableSetOf<String?>()
     // toast sends ok before its asynchronous rights check; keep bounded correlation after the ack.
     private val acknowledged = linkedMapOf<String, Pending>()
 
@@ -40,17 +41,20 @@ class ControlRequestBroker(
         responseAction: String,
         nodeId: String? = null,
         timeoutMillis: Long = 15_000,
+        isolatedSnapshot: Boolean = false,
     ): JSONObject {
+        require(!isolatedSnapshot || responseAction == "nodes")
         require(timeoutMillis in 1..120_000)
         require(command.toString().toByteArray().size <= 65_536)
         val slot = responseAction to nodeId
         val (gate, requestGeneration) = synchronized(lock) {
+            if (responseAction == "getNotes" && nodeId in uncertainNotes) throw ControlRequestException("reconnect_required")
             if (gates.values.sumOf { it.users } >= 32) throw ControlRequestException("too_many_requests")
             gates.getOrPut(slot) { Gate() }.also { it.users++ } to generation
         }
         try {
             return gate.mutex.withLock {
-                val id = "android-rpc-" + UUID.randomUUID()
+                val id = (if (isolatedSnapshot) SNAPSHOT_PREFIX else "android-rpc-") + UUID.randomUUID()
                 val commandAction = command.getString("action")
                 val payload = JSONObject(command.toString()).put("tag", id)
                 // 1.3.1 sends Denied unconditionally when software has responseid.
@@ -64,11 +68,16 @@ class ControlRequestBroker(
                 try {
                     val sent = synchronized(lock) {
                         if (requestGeneration != generation) throw ControlRequestException("disconnected")
+                        if (responseAction == "getNotes" && nodeId in uncertainNotes) throw ControlRequestException("reconnect_required")
                         pending[id] = request
                         send(payload)
                     }
                     if (!sent) throw ControlRequestException("send_failed")
                     withTimeout(timeoutMillis) { request.reply.await() }
+                } catch (cancelled: kotlinx.coroutines.CancellationException) {
+                    // getNotes has no correlation id. A late reply must not verify a later write.
+                    if (responseAction == "getNotes") synchronized(lock) { uncertainNotes.add(nodeId) }
+                    throw cancelled
                 } finally {
                     synchronized(lock) {
                         pending.remove(id)
@@ -88,7 +97,7 @@ class ControlRequestBroker(
         val action = message.optText("action")
         val tags = sequenceOf("requestId", "tag", "responseid")
             .map { message.optText(it) }.filter { it.isNotBlank() }.toList()
-        val nodeId = message.optText("nodeid").takeIf { it.isNotBlank() }
+        val nodeId = message.optText(if (action == "getNotes") "id" else "nodeid").takeIf { it.isNotBlank() }
         val request = synchronized(lock) {
             val candidate = if (tags.isNotEmpty()) tags.firstNotNullOfOrNull { pending[it] ?: acknowledged[it] } else if (action in UNTAGGED_READ_ACTIONS) {
                 pending.values.singleOrNull { it.action == action && it.nodeId == nodeId }
@@ -123,14 +132,17 @@ class ControlRequestBroker(
     }
 
     fun disconnected() {
-        val requests = synchronized(lock) { generation++; acknowledged.clear(); pending.values.toList().also { pending.clear() } }
+        val requests = synchronized(lock) { generation++; acknowledged.clear(); uncertainNotes.clear(); pending.values.toList().also { pending.clear() } }
         requests.forEach { it.reply.completeExceptionally(ControlRequestException("disconnected")) }
     }
 
     internal fun pendingCount(): Int = synchronized(lock) { pending.size }
 
     companion object {
-        private val UNTAGGED_READ_ACTIONS = setOf("getnetworkinfo", "lastconnect", "software")
+        private const val SNAPSHOT_PREFIX = "android-snapshot-rpc-"
+        fun isIsolatedSnapshot(message: JSONObject): Boolean = message.optText("action") == "nodes" &&
+            message.optText("responseid").startsWith(SNAPSHOT_PREFIX)
+        private val UNTAGGED_READ_ACTIONS = setOf("getnetworkinfo", "lastconnect", "software", "getNotes")
     }
 }
 

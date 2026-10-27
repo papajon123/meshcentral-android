@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">ఎంచుకున్నవి: %1$d</string>
+    <string name="tools_clear_selection">ఎంపికను తొలగించు</string>
+    <string name="tools_download_selected">ఎంచుకున్నవాటిని డౌన్‌లోడ్ చేయి</string>
+    <string name="tools_delete_selected">ఎంచుకున్నవాటిని తొలగించు</string>
+    <string name="tools_select_hint">అనేక అంశాలను ఎంచుకోవడానికి నొక్కి పట్టుకోండి</string>
+    <string name="tools_download_folder">ఫోల్డర్‌ను డౌన్‌లోడ్ చేయి</string>
+    <string name="tools_folder_notice">Mesh Agent ఫోల్డర్‌లు ZIP ఆర్కైవ్‌లుగా డౌన్‌లోడ్ అవుతాయి. SFTP ఫోల్డర్‌లు ఫైల్ వారీగా కాపీ అవుతాయి. గమ్యస్థాన ఫోల్డర్‌ను ఎంచుకోండి.</string>
+    <string name="tools_batch_progress">పూర్తయింది: %1$d / %2$d · %3$d బైట్లు</string>
+    <string name="tools_retry">మళ్లీ ప్రయత్నించు</string>
+    <string name="tools_queued">క్యూలో ఉంది</string>
+    <string name="tools_active">డౌన్‌లోడ్ అవుతోంది</string>
+    <string name="tools_succeeded">ధృవీకరించబడింది</string>
+    <string name="tools_failed">విఫలమైంది</string>
+    <string name="tools_cancelled">రద్దు చేయబడింది</string>
+    <string name="tools_archiving">రిమోట్ ఆర్కైవ్ సృష్టించబడుతోంది…</string>
+    <string name="tools_archive_failed">ఆర్కైవ్‌ను సృష్టించడం లేదా ధృవీకరించడం సాధ్యపడలేదు.</string>
+    <string name="tools_archive_left">డౌన్‌లోడ్ విఫలమైంది. మూల ఫోల్డర్‌లో తాత్కాలిక meshpilot-*.zip ఆర్కైవ్ మిగిలి ఉండవచ్చు. దాన్ని శుభ్రం చేసి మళ్లీ డౌన్‌లోడ్ చేయడానికి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="tools_batch_failed">ఒక డౌన్‌లోడ్ విఫలమైంది. మళ్లీ ప్రయత్నించినప్పుడు కొత్త స్థానిక ఫైల్‌లో మొదటి నుంచి ప్రారంభమవుతుంది.</string>
+    <string name="tools_delete_list">ఈ అంశాలను తొలగించాలా? దీన్ని వెనక్కి తీసుకోలేరు.</string>
+</resources>

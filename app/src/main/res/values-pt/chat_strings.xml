@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">Chat com o usuário</string>
+    <string name="chat_connecting">Conectando ao chat…</string>
+    <string name="chat_waiting">Aguardando o usuário abrir a janela de chat</string>
+    <string name="chat_connected">O usuário está no chat</string>
+    <string name="chat_peer_left">O usuário saiu do chat ou a conexão foi interrompida</string>
+    <string name="chat_failed">A conexão com o chat foi interrompida. Solicite a janela novamente para reconectar.</string>
+    <string name="chat_closed">O chat foi fechado. Abra-o novamente pelo menu do dispositivo.</string>
+    <string name="chat_request">Solicitar novamente a janela de chat</string>
+    <string name="chat_close">Fechar chat</string>
+    <string name="chat_message">Mensagem</string>
+    <string name="chat_send">Enviar mensagem</string>
+    <string name="chat_send_failed">Mensagem não enviada. Seu texto continua aqui; tente novamente.</string>
+    <string name="chat_length">Número máximo de caracteres: %1$d</string>
+    <string name="chat_recorded">O servidor está gravando este chat</string>
+    <string name="chat_you">Você</string>
+    <string name="chat_user">Usuário</string>
+    <string name="chat_empty">As mensagens ficam aqui até você fechar o chat.</string>
+    <string name="chat_notification">Nova mensagem de chat</string>
+    <string name="chat_notifications_enable">Ativar notificações de chat</string>
+    <string name="chat_notifications_unavailable">As notificações estão desativadas nas configurações do Android.</string>
+    <string name="chat_truncated">Mensagem encurtada</string>
+    <string name="chat_reconnecting">Reconectando ao chat…</string>
+    <string name="chat_not_opened">O usuário não abriu a janela de chat</string>
+    <string name="chat_invite_unavailable">O computador ou a conexão de controle está offline. Tente solicitar a janela novamente mais tarde.</string>
+    <string name="chat_unread">Mensagens de chat não lidas: %1$d</string>
+    <string name="chat_service_channel">Chats ativos</string>
+    <string name="chat_service_active">O chat está ativo</string>
+    <string name="chat_service_description">Mantém a sua conversa conectada enquanto usa outros aplicativos.</string>
+    <string name="chat_service_failed">Não foi possível manter o chat em execução. Reabra-o enquanto o aplicativo estiver visível.</string>
+    <string name="chat_back">Voltar</string>
+    <string name="chat_close_confirm">Fechar este chat e apagar as suas mensagens?</string>
+</resources>

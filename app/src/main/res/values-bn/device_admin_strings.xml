@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">ডিভাইস আমন্ত্রণ করুন</string>
+    <string name="admin_invite_help">যার কাছে এই লিঙ্কটি আছে, সেই যে কেউ “%1$s”-এ একটি এজেন্ট ইনস্টল করতে পারেন। আপনি যাকে সাহায্য করতে চান শুধু তার সঙ্গেই এটি শেয়ার করুন।</string>
+    <string name="admin_invite_mode">যেকোনো উপলব্ধ এজেন্ট ব্যাকগ্রাউন্ডে ও ইন্টারঅ্যাকটিভভাবে ইনস্টল করার অনুমতি দেয়।</string>
+    <string name="admin_expiry">লিঙ্কের মেয়াদ</string>
+    <string name="admin_create_link">লিঙ্ক তৈরি করুন</string>
+    <string name="admin_expires_at">মেয়াদ শেষ: %1$s</string>
+    <string name="admin_expired">এই লিঙ্কের মেয়াদ শেষ হয়েছে। নতুন লিঙ্ক তৈরি করুন।</string>
+    <string name="admin_qr">এজেন্ট ইনস্টলেশন পেজ খুলতে স্ক্যান করুন</string>
+    <string name="admin_share">লিঙ্ক শেয়ার করুন</string>
+    <string name="admin_copy">লিঙ্ক কপি করুন</string>
+    <string name="admin_copied">লিঙ্ক কপি হয়েছে</string>
+    <string name="admin_close">বন্ধ করুন</string>
+    <string name="admin_cancel">বাতিল করুন</string>
+    <string name="admin_confirm">নিশ্চিত করুন</string>
+    <string name="admin_review">পরিবর্তন দেখুন</string>
+    <string name="admin_edit">ডিভাইস সম্পাদনা করুন</string>
+    <string name="admin_name">নাম</string>
+    <string name="admin_description">বিবরণ</string>
+    <string name="admin_tags">ট্যাগ, কমা দিয়ে আলাদা করুন</string>
+    <string name="admin_notes">নোট</string>
+    <string name="admin_save_notes">নোট সংরক্ষণ করুন</string>
+    <string name="admin_move">অন্য গ্রুপে সরান</string>
+    <string name="admin_move_confirm">“%1$s” কে “%2$s”-এ সরাবেন? অ্যাক্সেস গন্তব্য গ্রুপ অনুসরণ করবে।</string>
+    <string name="admin_edit_confirm">“%1$s”-এ এই পরিবর্তনগুলি সংরক্ষণ করবেন?</string>
+    <string name="admin_notes_confirm">“%1$s”-এর নোট প্রতিস্থাপন করবেন?</string>
+    <string name="admin_saved">সার্ভার পরিবর্তনগুলি নিশ্চিত করেছে</string>
+    <string name="admin_failed">পরিবর্তন নিশ্চিত করা যায়নি। আবার চেষ্টা করার আগে রিফ্রেশ করে ডিভাইসটি দেখুন।</string>
+    <string name="admin_invite_failed">লিঙ্ক তৈরি করা যায়নি। আপনার সংযোগ ও গ্রুপের অনুমতি দেখে আবার চেষ্টা করুন।</string>
+    <string name="admin_loading">সার্ভারের জন্য অপেক্ষা করা হচ্ছে…</string>
+    <string name="admin_invalid">নাম: 1–64 অক্ষর। বিবরণ: সর্বোচ্চ 64 অক্ষর। প্রতিটি ট্যাগ: সর্বোচ্চ 63 অক্ষর; মোট: সর্বোচ্চ 4096। নিয়ন্ত্রণ বা লেখার দিক বিন্যাসের অক্ষর ছাড়া একলাইনের লেখা ব্যবহার করুন।</string>
+    <string name="admin_endpoint">সার্ভার: %1$s</string>
+    <string name="admin_unavailable">এই ডিভাইস পরিচালনা করতে আবার সংযোগ করুন ও রিফ্রেশ করুন। আপনার অ্যাকাউন্টে প্রয়োজনীয় অনুমতি থাকতে হবে।</string>
+    <string name="admin_notes_limit">নোট: সর্বোচ্চ 16000 অক্ষর।</string>
+    <string name="admin_no_destinations">এই ডিভাইস সরানোর অনুমতিসহ কোনো উপযুক্ত গ্রুপ নেই।</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">Impossible de vérifier : %1$s</string>
+    <string name="review_paused">En pause : connexion perdue</string>
+    <string name="review_retry_all">Réessayer les éléments inachevés</string>
+    <string name="review_cleanup_title">Nettoyage de l’archive distante</string>
+    <string name="review_archive_left">Une archive temporaire peut subsister sur l’ordinateur : %1$s. Vérifiez-la et supprimez-la lorsque aucune opération d’archive n’est en cours.</string>
+    <string name="review_archive_space">La création d’un ZIP nécessite de l’espace libre dans le dossier source distant pour une archive complète. Si l’agent ne peut pas la lancer, les fichiers seront copiés individuellement. Les dossiers locaux incomplets conservent le suffixe .partial.</string>
+    <string name="review_grant_failed">Ce fournisseur n’a pas pu conserver l’accès pour la file d’attente. Choisissez un autre emplacement.</string>
+    <string name="review_zip_invalid">L’archive est endommagée, incomplète ou dépasse les limites de structure prises en charge.</string>
+    <string name="review_source_changed">L’élément sélectionné a changé. Actualisez le dossier et confirmez à nouveau la sélection.</string>
+    <string name="review_sftp_types">Ce serveur n’identifie pas les liens symboliques ni les fichiers spéciaux dans les listes SFTP. Les fichiers non vérifiables sont signalés par leur chemin ; la file d’attente se met en pause en cas de déconnexion. Les dossiers incomplets restent marqués .partial.</string>
+    <string name="review_skipped">Élément non pris en charge ignoré : %1$s</string>
+    <string name="review_folder_unavailable">Accès refusé au dossier : %1$s. Le reste de la file continue.</string>
+    <string name="review_local_failed">Le document Android local n\'a pas pu être écrit ni relu. La session de fichiers reste connectée ; réessayez cet élément.</string>
+    <string name="review_local_no_rename">Ce fournisseur ne peut pas renommer les documents. Certains fichiers gardent le suffixe .partial ; renommez-les dans Fichiers Android.</string>
+    <string name="review_source_changed_deleted">Déjà supprimé : %1$s. Le reste de la sélection n\'a pas été supprimé ; actualisez le dossier et confirmez à nouveau.</string>
+    <string name="files_delete_follow_links">La suppression récursive d\'un dossier suit les liens symboliques et les jonctions. Des cibles hors du dossier sélectionné peuvent aussi être effacées ; vérifiez le dossier dans MeshCentral avant de confirmer.</string>
+</resources>

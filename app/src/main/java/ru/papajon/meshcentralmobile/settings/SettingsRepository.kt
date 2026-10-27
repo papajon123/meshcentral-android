@@ -21,7 +21,7 @@ import java.security.MessageDigest
 import java.util.UUID
 import java.util.Locale
 
-class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME) {
+class SettingsRepository(context: Context, private val preferencesName: String = PREFS_NAME) {
     val appContext: Context = context.applicationContext
     private val prefs = appContext.getSharedPreferences(preferencesName, Context.MODE_PRIVATE)
 
@@ -58,6 +58,7 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
 
     fun activateProfile(id: String): Boolean {
         if (profilesState.value.none { it.id == id }) return false
+        if (id != activeProfileIdState.value) ru.papajon.meshcentralmobile.integration.LauncherCoordinator.activate(appContext, id)
         if (id != activeProfileIdState.value) SecureVault(appContext, activeProfileIdState.value).rememberedDevice.clear()
         persistProfiles(profilesState.value, id)
         return true
@@ -71,9 +72,11 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
 
     fun removeProfile(id: String): Boolean {
         if (profilesState.value.size <= 1 || profilesState.value.none { it.id == id }) return false
+        ru.papajon.meshcentralmobile.integration.LauncherCoordinator.clear(appContext, id)
         SecureVault(appContext, id).rememberedDevice.clear()
         val remaining = profilesState.value.filterNot { it.id == id }
         val active = activeProfileIdState.value.takeIf { it != id } ?: remaining.first().id
+        if (activeProfileIdState.value == id) ru.papajon.meshcentralmobile.integration.LauncherCoordinator.activate(appContext, active)
         val editor = prefs.edit()
         prefs.all.keys.filter { it.startsWith("profile_favorites.$id.") }.forEach(editor::remove)
         editor.apply()
@@ -127,6 +130,7 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
 
     fun updateServerUrl(url: String) {
         if (!CredentialScope.matches(activeProfile.serverUrl, url)) {
+            ru.papajon.meshcentralmobile.integration.LauncherCoordinator.clear(appContext, activeProfile.id)
             SecureVault(appContext, activeProfile.id).rememberedDevice.clear()
         }
         updateActiveProfile { it.withServerUrl(url) }
@@ -135,7 +139,7 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
     fun updatePinnedServerKey(spkiSha256: String?) {
         require(spkiSha256 == null || spkiSha256.matches(Regex("[0-9a-f]{64}")))
         SecureVault(appContext, activeProfile.id).rememberedDevice.clear()
-        updateActiveProfile { it.copy(pinnedSpkiSha256 = spkiSha256) }
+        updateActiveProfile { it.copy(pinnedSpkiSha256 = spkiSha256, expectedSpkiSha256 = null) }
     }
 
     fun completeOnboarding() {
@@ -174,7 +178,11 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
     }
 
     fun markStylusHintSeen() {
-        prefs.edit().putBoolean(KEY_STYLUS_HINT_SEEN, true).apply()
+        updateStylusHintSeen(true)
+    }
+
+    fun updateStylusHintSeen(seen: Boolean) {
+        prefs.edit().putBoolean(KEY_STYLUS_HINT_SEEN, seen).apply()
         settingsState.value = loadSettings()
     }
 
@@ -183,6 +191,71 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
     }
 
     fun getLastBackgroundAt(): Long = prefs.getLong(KEY_LAST_BACKGROUND_AT, 0L)
+
+    fun updateHideDevicesWhenLocked(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_HIDE_DEVICES, enabled).apply()
+        settingsState.value = loadSettings()
+        ru.papajon.meshcentralmobile.integration.LauncherCoordinator.render(appContext)
+    }
+
+    internal fun readAppearance() = ru.papajon.meshcentralmobile.ui.theme.AppearancePreferences(appContext, preferencesName).read()
+
+    fun favoritesForProfile(profile: ServerProfile): List<FavoriteLink> = loadFavorites(profile)
+
+    /** Add a validated backup in one preference transaction. Never replace an existing profile. */
+    suspend fun appendImportedProfiles(entries: List<Pair<ServerProfile, List<FavoriteLink>>>,
+        preferences: ru.papajon.meshcentralmobile.backup.BackupPreferences? = null,
+        commit: (SharedPreferences.Editor) -> Boolean = { it.commit() }) {
+        val combined = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+        readAppearance() // Migrate existing appearance before making the single import transaction.
+        val current = loadProfiles()
+        require(current.size + entries.size <= ProfileCatalog.MAX_PROFILES)
+        require(entries.map { it.first.id }.distinct().size == entries.size)
+        require(entries.none { pair -> current.any { it.id == pair.first.id } })
+        val combined = current + entries.map { it.first }
+        val editor = prefs.edit().putString(KEY_PROFILES, ProfileCatalog.encode(combined))
+            .putString(KEY_PROFILES_BACKUP, ProfileCatalog.encode(current))
+        val affected = mutableSetOf(KEY_PROFILES, KEY_PROFILES_BACKUP)
+        entries.forEach { (profile, favorites) ->
+            affected += favoriteKey(profile)
+            editor.putString(favoriteKey(profile), JSONArray().apply {
+                favorites.forEach { put(JSONObject().put("name", it.name).put("url", it.url)) }
+            }.toString())
+        }
+        preferences?.let { values ->
+            editor.putBoolean(KEY_BLOCK_SCREENSHOTS, values.blockScreenshots)
+                .putLong(KEY_LOCK_TIMEOUT_SECONDS, values.lockTimeoutSeconds)
+                .putBoolean(KEY_STYLUS_PRECISION, values.stylusPrecisionEnabled)
+                .putBoolean(KEY_STYLUS_HINT_SEEN, values.stylusHintSeen)
+                .putBoolean(KEY_HIDE_DEVICES, values.hideDevicesWhenLocked)
+                .putString("theme_mode", values.themeMode).putBoolean("dynamic_color", values.dynamicColor)
+            affected += setOf(KEY_BLOCK_SCREENSHOTS, KEY_LOCK_TIMEOUT_SECONDS, KEY_STYLUS_PRECISION, KEY_STYLUS_HINT_SEEN,
+                KEY_HIDE_DEVICES, "theme_mode", "dynamic_color")
+        }
+        val previous = prefs.all.filterKeys { it in affected }
+        try { check(commit(editor)) { "Import storage unavailable" } }
+        catch (error: Exception) {
+            // SharedPreferences may publish its memory map before a failed disk commit. Restore
+            // only this transaction's keys, never unrelated timestamps or concurrent preferences.
+            val rollback = prefs.edit()
+            affected.forEach { key -> when (val value = previous[key]) {
+                is String -> rollback.putString(key, value)
+                is Boolean -> rollback.putBoolean(key, value)
+                is Long -> rollback.putLong(key, value)
+                else -> rollback.remove(key)
+            } }
+            rollback.commit()
+            throw error
+        }
+        combined
+        }
+        profilesState.value = combined
+        settingsState.value = loadSettings()
+    }
+
+    // Lock policy is process-wide even when another Activity owns a different UI repository.
+    internal fun currentBiometricUnlockEnabled(): Boolean = prefs.getBoolean(KEY_BIOMETRIC_UNLOCK, false)
+    internal fun currentLockTimeoutSeconds(): Long = prefs.getLong(KEY_LOCK_TIMEOUT_SECONDS, DEFAULT_LOCK_TIMEOUT_SECONDS)
 
     fun addFavorite(name: String, url: String) {
         val updated = favoritesState.value
@@ -207,6 +280,7 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
             lockTimeoutSeconds = prefs.getLong(KEY_LOCK_TIMEOUT_SECONDS, DEFAULT_LOCK_TIMEOUT_SECONDS),
             stylusPrecisionEnabled = prefs.getBoolean(KEY_STYLUS_PRECISION, true),
             stylusHintSeen = prefs.getBoolean(KEY_STYLUS_HINT_SEEN, false),
+            hideDevicesWhenLocked = prefs.getBoolean(KEY_HIDE_DEVICES, false),
         )
     }
 
@@ -281,7 +355,7 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
             // apply a new endpoint's key to the previous endpoint.
             previous.copy(pinnedSpkiSha256 = current?.pinnedSpkiSha256?.takeIf {
                 CredentialScope.matches(previous.serverUrl, current.serverUrl)
-            })
+            }, expectedSpkiSha256 = current?.expectedSpkiSha256?.takeIf { CredentialScope.matches(previous.serverUrl, current.serverUrl) })
         }
         if (backup.isNotEmpty()) editor.putString(KEY_PROFILES_BACKUP, ProfileCatalog.encode(backup))
         editor.putString(KEY_PROFILES, ProfileCatalog.encode(profiles))
@@ -311,6 +385,7 @@ class SettingsRepository(context: Context, preferencesName: String = PREFS_NAME)
         private const val KEY_LAST_BACKGROUND_AT = "last_background_at"
         private const val KEY_STYLUS_PRECISION = "stylus_precision"
         private const val KEY_STYLUS_HINT_SEEN = "stylus_hint_seen"
+        private const val KEY_HIDE_DEVICES = "hide_devices_when_locked"
         private const val KEY_FAVORITES = "favorites"
         private const val KEY_PROFILES = "server_profiles_v1"
         private const val KEY_PROFILES_BACKUP = "server_profiles_v1_previous"

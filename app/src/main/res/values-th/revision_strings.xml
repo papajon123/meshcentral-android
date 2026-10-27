@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">ไม่รองรับรูปแบบข้อมูลสำรองฉบับร่างนี้ โปรดสร้างข้อมูลสำรองใหม่ในแอปที่ส่งออกข้อมูลนี้</string>
+    <string name="backup_key_approval_title">ยืนยันคีย์เซิร์ฟเวอร์ที่นำเข้า</string>
+    <string name="backup_key_matches">คีย์เซิร์ฟเวอร์ตรงกับข้อมูลสำรอง ยืนยันว่าคุณไว้วางใจคีย์นี้ก่อนลงชื่อเข้าใช้</string>
+    <string name="backup_key_mismatch">คำเตือน: คีย์เซิร์ฟเวอร์ไม่ตรงกับข้อมูลสำรอง ตรวจสอบลายนิ้วมือกับผู้ดูแลระบบก่อนเชื่อถือ</string>
+    <string name="backup_key_expected">คีย์ที่คาดหวังจากข้อมูลสำรอง: %1$s</string>
+    <string name="backup_error_newer">ไฟล์นี้มาจาก MeshPilot เวอร์ชันใหม่กว่า อัปเดตแอปเพื่อนำเข้า</string>
+    <string name="backup_error_auth">รหัสผ่านไม่ถูกต้องหรือไฟล์ที่เข้ารหัสถูกแก้ไข</string>
+    <string name="backup_error_corrupt">ข้อมูลสำรองเสียหายหรือมีรูปแบบไม่ถูกต้อง</string>
+    <string name="backup_error_limit">ข้อมูลสำรองเกินขีดจำกัดขนาดหรือจำนวนรายการที่รองรับ</string>
+    <string name="backup_extension_skipped">ข้ามส่วนจากเวอร์ชันใหม่กว่า: %1$s ข้อมูลของส่วนนี้จะไม่ถูกนำเข้า</string>
+    <string name="backup_duplicate">มีโปรไฟล์สำหรับเซิร์ฟเวอร์นี้อยู่แล้ว</string>
+    <string name="backup_skip_duplicates">ข้ามโปรไฟล์ที่เซิร์ฟเวอร์มีอยู่แล้ว</string>
+    <string name="backup_value_on">เปิด</string>
+    <string name="backup_value_off">ปิด</string>
+    <string name="backup_preferences_preview">การป้องกันภาพหน้าจอ: %1$s\nหน่วงเวลาล็อกอัตโนมัติ: %2$d วินาที\nธีม: %3$s\nสีของระบบ: %4$s\nความแม่นยำของสไตลัส: %5$s\nแสดงคำแนะนำสไตลัสแล้ว: %6$s\nซ่อนอุปกรณ์เมื่อล็อก: %7$s</string>
+    <string name="integration_privacy_setting">ซ่อนอุปกรณ์ในวิดเจ็ตและทางลัดขณะแอปล็อกอยู่</string>
+    <string name="integration_privacy_help">เมื่อใช้ PIN หรือไบโอเมตริก ให้ซ่อนชื่อและสถานะอุปกรณ์ขณะแอปล็อกหรืออยู่นอกแอป</string>
+    <string name="integration_private_hidden">ปลดล็อกแอปเพื่อดูอุปกรณ์</string>
+    <string name="integration_private_device">อุปกรณ์ที่ได้รับการป้องกัน</string>
+    <string name="integration_retry_seconds">ลองอีกครั้งใน %1$d วินาที</string>
+</resources>

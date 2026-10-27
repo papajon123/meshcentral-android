@@ -123,13 +123,14 @@ internal fun PointerInputChange.isPen() = type == PointerType.Stylus || type == 
 /** Only actual fingers participate; a pen plus a palm is not a pinch. Never sends remote input. */
 internal fun transformWithFingers(
     event: PointerEvent, viewport: RemoteViewport, onViewportChanged: (Float, Float, Float) -> Unit,
+    pinchEnabled: Boolean = true,
 ) {
     val fingers = event.changes.filter { it.type == PointerType.Touch && (it.pressed || it.previousPressed) }
     if (fingers.count { it.pressed } < 2) return
     val touch = PointerEvent(fingers)
     val center = touch.calculateCentroid()
     val pan = touch.calculatePan()
-    val factor = touch.calculateZoom()
+    val factor = if (pinchEnabled) touch.calculateZoom() else 1f
     if (!center.x.isFinite() || !center.y.isFinite() || !factor.isFinite()) return
     val result = viewport.zoomAround(center.x, center.y, viewport.zoom * factor)
     val clamped = viewport.copy(zoom = result.zoom).clampPan(result.panX + pan.x, result.panY + pan.y)

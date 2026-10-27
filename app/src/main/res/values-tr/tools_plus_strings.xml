@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">Seçilen: %1$d</string>
+    <string name="tools_clear_selection">Seçimi temizle</string>
+    <string name="tools_download_selected">Seçilenleri indir</string>
+    <string name="tools_delete_selected">Seçilenleri sil</string>
+    <string name="tools_select_hint">Birden fazla öğe seçmek için basılı tutun</string>
+    <string name="tools_download_folder">Klasörü indir</string>
+    <string name="tools_folder_notice">Mesh Agent klasörleri ZIP arşivleri olarak indirilir. SFTP klasörleri dosya dosya kopyalanır. Bir hedef klasör seçin.</string>
+    <string name="tools_batch_progress">Tamamlanan: %1$d / %2$d · %3$d bayt</string>
+    <string name="tools_retry">Yeniden dene</string>
+    <string name="tools_queued">Sırada</string>
+    <string name="tools_active">İndiriliyor</string>
+    <string name="tools_succeeded">Doğrulandı</string>
+    <string name="tools_failed">Başarısız</string>
+    <string name="tools_cancelled">İptal edildi</string>
+    <string name="tools_archiving">Uzak arşiv oluşturuluyor…</string>
+    <string name="tools_archive_failed">Arşiv oluşturulamadı veya doğrulanamadı.</string>
+    <string name="tools_archive_left">İndirme başarısız oldu. Kaynak klasörde geçici bir meshpilot-*.zip arşivi kalmış olabilir. Temizleyip yeniden indirmek için yeniden deneyin.</string>
+    <string name="tools_batch_failed">Bir indirme başarısız oldu. Yeniden denemek, yeni bir yerel dosyada baştan başlatır.</string>
+    <string name="tools_delete_list">Bu öğeler silinsin mi? Bu geri alınamaz.</string>
+</resources>

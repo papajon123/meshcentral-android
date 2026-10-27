@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">Inviter un appareil</string>
+    <string name="admin_invite_help">Toute personne disposant de ce lien peut installer un agent dans « %1$s ». Ne le partagez qu’avec la personne que vous souhaitez aider.</string>
+    <string name="admin_invite_mode">Autorise l’installation en arrière-plan et interactive de tout agent disponible.</string>
+    <string name="admin_expiry">Durée de vie du lien</string>
+    <string name="admin_create_link">Créer un lien</string>
+    <string name="admin_expires_at">Expire : %1$s</string>
+    <string name="admin_expired">Ce lien a expiré. Créez un nouveau lien.</string>
+    <string name="admin_qr">Scannez pour ouvrir la page d’installation de l’agent</string>
+    <string name="admin_share">Partager le lien</string>
+    <string name="admin_copy">Copier le lien</string>
+    <string name="admin_copied">Lien copié</string>
+    <string name="admin_close">Fermer</string>
+    <string name="admin_cancel">Annuler</string>
+    <string name="admin_confirm">Confirmer</string>
+    <string name="admin_review">Vérifier les modifications</string>
+    <string name="admin_edit">Modifier l’appareil</string>
+    <string name="admin_name">Nom</string>
+    <string name="admin_description">Description</string>
+    <string name="admin_tags">Étiquettes séparées par des virgules</string>
+    <string name="admin_notes">Notes</string>
+    <string name="admin_save_notes">Enregistrer les notes</string>
+    <string name="admin_move">Déplacer vers un autre groupe</string>
+    <string name="admin_move_confirm">Déplacer « %1$s » vers « %2$s » ? L’accès suivra le groupe de destination.</string>
+    <string name="admin_edit_confirm">Enregistrer ces modifications pour « %1$s » ?</string>
+    <string name="admin_notes_confirm">Remplacer les notes de « %1$s » ?</string>
+    <string name="admin_saved">Modifications confirmées par le serveur</string>
+    <string name="admin_failed">Impossible de confirmer la modification. Actualisez et vérifiez l’appareil avant de réessayer.</string>
+    <string name="admin_invite_failed">Impossible de créer le lien. Vérifiez votre connexion et les autorisations du groupe, puis réessayez.</string>
+    <string name="admin_loading">En attente du serveur…</string>
+    <string name="admin_invalid">Nom : 1–64 caractères. Description : jusqu’à 64 caractères. Chaque étiquette : jusqu’à 63 caractères ; au total : jusqu’à 4096. Utilisez un texte sur une seule ligne, sans caractères de contrôle ni de formatage de direction du texte.</string>
+    <string name="admin_endpoint">Serveur : %1$s</string>
+    <string name="admin_unavailable">Reconnectez-vous et actualisez pour gérer cet appareil. Votre compte doit disposer des autorisations requises.</string>
+    <string name="admin_notes_limit">Notes : jusqu’à 16 000 caractères.</string>
+    <string name="admin_no_destinations">Aucun groupe compatible avec l’autorisation de déplacer cet appareil.</string>
+</resources>

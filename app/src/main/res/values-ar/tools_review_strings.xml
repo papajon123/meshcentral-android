@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">تعذّر التحقق: %1$s</string>
+    <string name="review_paused">متوقف مؤقتًا: انقطع الاتصال</string>
+    <string name="review_retry_all">إعادة محاولة العناصر غير المكتملة</string>
+    <string name="review_cleanup_title">تنظيف الأرشيف البعيد</string>
+    <string name="review_archive_left">قد يبقى أرشيف مؤقت على الكمبيوتر: %1$s. افحصه واحذفه عندما لا تكون أي عملية أرشيف قيد التشغيل.</string>
+    <string name="review_archive_space">يتطلب إنشاء ZIP مساحة حرة في المجلد المصدر البعيد لأرشيف كامل. إذا تعذّر على الوكيل بدءه، فستُنسخ الملفات منفردة. تحتفظ المجلدات المحلية غير المكتملة باللاحقة .partial.</string>
+    <string name="review_grant_failed">تعذّر على هذا المزوّد الاحتفاظ بالوصول لقائمة الانتظار. اختر موقعًا آخر.</string>
+    <string name="review_zip_invalid">الأرشيف تالف أو غير مكتمل أو يتجاوز حدود البنية المدعومة.</string>
+    <string name="review_source_changed">تغيّر العنصر المحدد. حدّث المجلد وأكّد التحديد مجددًا.</string>
+    <string name="review_sftp_types">لا يحدد هذا الخادم الروابط الرمزية أو الملفات الخاصة في قوائم SFTP. تُبلّغ الملفات غير القابلة للتحقق بمسارها؛ وتتوقف قائمة الانتظار عند انقطاع الاتصال. تبقى المجلدات غير المكتملة معلّمة بـ .partial.</string>
+    <string name="review_skipped">تم تخطي عنصر غير مدعوم: %1$s</string>
+    <string name="review_folder_unavailable">لا يمكن الوصول إلى المجلد: %1$s. يستمر باقي قائمة الانتظار.</string>
+    <string name="review_local_failed">تعذّر كتابة مستند Android المحلي أو إعادة قراءته. جلسة الملفات ما زالت متصلة؛ أعد محاولة هذا العنصر.</string>
+    <string name="review_local_no_rename">لا يدعم هذا المزوّد إعادة تسمية المستندات. ستحتفظ بعض الملفات باللاحقة .partial؛ أعد تسميتها في تطبيق ملفات Android.</string>
+    <string name="review_source_changed_deleted">تم الحذف بالفعل: %1$s. لم يُحذف باقي التحديد؛ حدّث المجلد وأكّد مرة أخرى.</string>
+    <string name="files_delete_follow_links">الحذف المتكرر للمجلد يتابع الروابط الرمزية ونقاط الربط. قد تُمسح أيضًا أهداف خارج المجلد المحدد؛ راجع المجلد في MeshCentral قبل التأكيد.</string>
+</resources>

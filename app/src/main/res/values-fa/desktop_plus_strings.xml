@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">ژست دو انگشتی</string>
+    <string name="desktop_gesture_default">رفتار اصلی</string>
+    <string name="desktop_gesture_scroll">اسکرول پنجره راه دور</string>
+    <string name="desktop_gesture_pan">جابه‌جایی تصویر</string>
+    <string name="desktop_pinch">برای بزرگ‌نمایی دو انگشت را جمع کنید</string>
+    <string name="desktop_three_fingers">سه انگشت پنجره راه دور را اسکرول می‌کنند.</string>
+    <string name="desktop_scale">مقیاس تصویر درخواستی: %1$d%%</string>
+    <string name="desktop_pip">تصویر در تصویر</string>
+    <string name="desktop_pip_auto">هنگام خروج از برنامه تماشا را ادامه دهید</string>
+    <string name="desktop_stream_rate">≈ %1$.1f به‌روزرسانی/ثانیه · %2$d بایت/ث</string>
+    <string name="desktop_input_help">صفحه‌کلید و ماوس سخت‌افزاری روی دسکتاپ کار می‌کنند. ممکن است Android کلیدهای Alt+Tab یا Meta را رزرو کند؛ در این صورت از منوی کلیدها استفاده کنید. چرخ افقی با Shift + چرخ، در صورت پشتیبانی، کار می‌کند.</string>
+    <string name="desktop_rate_help">کیفیت، مقیاس و محدودیت فریم تنظیماتی هستند که درخواست می‌شوند. بینندگان دیگر می‌توانند کیفیت، مقیاس یا نرخ به‌روزرسانی را بالا ببرند. شمارنده به‌روزرسانی‌های کاشی را می‌شمارد، نه فریم‌های کامل.</string>
+    <string name="desktop_keyboard_capture">گرفتن صفحه‌کلید فیزیکی</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc صفحه‌کلید را آزاد می‌کند و گزینه‌های نشست را باز می‌کند.</string>
+</resources>

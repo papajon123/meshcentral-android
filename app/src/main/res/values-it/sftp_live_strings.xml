@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">Il server ha rifiutato questo file. Controlla i relativi permessi e il tipo prima di riprovare.</string>
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">Tidak dapat memverifikasi: %1$s</string>
+    <string name="review_paused">Dijeda: koneksi terputus</string>
+    <string name="review_retry_all">Coba lagi item yang belum selesai</string>
+    <string name="review_cleanup_title">Pembersihan arsip jarak jauh</string>
+    <string name="review_archive_left">Arsip sementara mungkin tertinggal di komputer: %1$s. Periksa dan hapus saat tidak ada operasi arsip yang berjalan.</string>
+    <string name="review_archive_space">Membuat ZIP memerlukan ruang kosong di folder sumber jarak jauh untuk arsip lengkap. Jika agen tidak dapat memulainya, file akan disalin satu per satu. Folder lokal yang belum selesai mempertahankan akhiran .partial.</string>
+    <string name="review_grant_failed">Penyedia ini tidak dapat mempertahankan akses untuk antrean. Pilih lokasi lain.</string>
+    <string name="review_zip_invalid">Arsip rusak, tidak lengkap, atau melebihi batas struktur yang didukung.</string>
+    <string name="review_source_changed">Item yang dipilih berubah. Segarkan folder dan konfirmasi pilihan lagi.</string>
+    <string name="review_sftp_types">Server ini tidak mengidentifikasi tautan simbolis atau file khusus dalam daftar SFTP. File yang tidak dapat diverifikasi dilaporkan berdasarkan jalur; antrean dijeda jika koneksi terputus. Folder yang belum selesai tetap ditandai .partial.</string>
+    <string name="review_skipped">Item yang tidak didukung dilewati: %1$s</string>
+    <string name="review_folder_unavailable">Tidak ada akses ke folder: %1$s. Sisa antrean berlanjut.</string>
+    <string name="review_local_failed">Dokumen Android lokal tidak dapat ditulis atau dibaca ulang. Sesi file masih terhubung; coba lagi item ini.</string>
+    <string name="review_local_no_rename">Penyedia ini tidak dapat mengganti nama dokumen. Beberapa file mempertahankan akhiran .partial; ganti namanya di File Android.</string>
+    <string name="review_source_changed_deleted">Sudah dihapus: %1$s. Sisa pilihan tidak dihapus; segarkan folder dan konfirmasi lagi.</string>
+    <string name="files_delete_follow_links">Penghapusan folder secara rekursif mengikuti tautan simbolik dan junction. Target di luar folder yang dipilih juga dapat terhapus; periksa folder di MeshCentral sebelum mengonfirmasi.</string>
+</resources>

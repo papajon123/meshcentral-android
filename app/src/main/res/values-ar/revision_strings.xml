@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">تنسيق النسخة الاحتياطية الأولي غير مدعوم. أنشئ نسخة احتياطية جديدة في التطبيق الذي صدّرها.</string>
+    <string name="backup_key_approval_title">تأكيد مفتاح الخادم المستورد</string>
+    <string name="backup_key_matches">مفتاح الخادم يطابق النسخة الاحتياطية. أكّد أنك تثق به قبل تسجيل الدخول.</string>
+    <string name="backup_key_mismatch">تحذير: مفتاح الخادم لا يطابق النسخة الاحتياطية. تحقّق من البصمة مع المسؤول قبل الوثوق به.</string>
+    <string name="backup_key_expected">المفتاح المتوقع من النسخة الاحتياطية: %1$s</string>
+    <string name="backup_error_newer">هذا الملف من إصدار أحدث من MeshPilot. حدّث التطبيق لاستيراده.</string>
+    <string name="backup_error_auth">كلمة المرور غير صحيحة أو تم تعديل الملف المشفّر.</string>
+    <string name="backup_error_corrupt">النسخة الاحتياطية تالفة أو بتنسيق غير صالح.</string>
+    <string name="backup_error_limit">تتجاوز النسخة الاحتياطية حدود الحجم أو عدد العناصر المدعومة.</string>
+    <string name="backup_extension_skipped">تم تخطي قسم من إصدار أحدث: %1$s. لن يتم استيراد بياناته.</string>
+    <string name="backup_duplicate">يوجد بالفعل ملف تعريف لهذا الخادم.</string>
+    <string name="backup_skip_duplicates">تخطي الملفات التعريفية التي خادمها موجود بالفعل</string>
+    <string name="backup_value_on">مفعّل</string>
+    <string name="backup_value_off">متوقف</string>
+    <string name="backup_preferences_preview">حماية لقطات الشاشة: %1$s\nتأخير القفل التلقائي: %2$d ثانية\nالمظهر: %3$s\nألوان النظام: %4$s\nدقة القلم: %5$s\nتلميح القلم معروض مسبقًا: %6$s\nإخفاء الأجهزة أثناء القفل: %7$s</string>
+    <string name="integration_privacy_setting">إخفاء الأجهزة في الودجات والاختصارات أثناء قفل التطبيق</string>
+    <string name="integration_privacy_help">مع الحماية برمز PIN أو البيانات الحيوية، أخفِ أسماء الأجهزة وحالتها أثناء القفل أو خارج التطبيق.</string>
+    <string name="integration_private_hidden">ألغِ قفل التطبيق لعرض الأجهزة</string>
+    <string name="integration_private_device">جهاز محمي</string>
+    <string name="integration_retry_seconds">أعد المحاولة بعد %1$d ث</string>
+</resources>

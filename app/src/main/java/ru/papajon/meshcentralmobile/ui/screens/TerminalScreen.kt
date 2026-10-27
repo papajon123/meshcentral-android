@@ -72,6 +72,7 @@ fun TerminalScreen(controller: TerminalController, onBack: () -> Unit, modifier:
     val inputLabel = stringResource(R.string.terminal_input_label)
     val outputLabel = stringResource(R.string.terminal_accessibility_output_limit)
     val copyLabel = stringResource(R.string.terminal_clipboard_label)
+    val reconnectMarker = stringResource(R.string.terminal_new_session)
     val fontSize = (16 * LocalDensity.current.fontScale).toInt()
     LaunchedEffect(controller) { controller.connect() }
     LaunchedEffect(renderer, background, foreground, fontSize, inputLabel, outputLabel) {
@@ -177,13 +178,20 @@ fun TerminalScreen(controller: TerminalController, onBack: () -> Unit, modifier:
             }
         }
         if (ended) {
-            onReopen?.let { action -> TextButton(onClick = action) { Text(stringResource(R.string.workspace_reopen)) } }
-            if (onReopen == null) Text(
-                text = stringResource(R.string.terminal_reopen_hint),
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
+            when {
+                state.canReconnect -> TextButton(onClick = { controller.reconnect(reconnectMarker) }) {
+                    Text(stringResource(R.string.terminal_reconnect))
+                }
+                // A controller with a factory owns reconnect; onReopen is only for legacy callers.
+                (state.reopenRequired || !controller.supportsReconnect) && onReopen != null ->
+                    TextButton(onClick = onReopen) { Text(stringResource(R.string.workspace_reopen)) }
+                state.reopenRequired || !controller.supportsReconnect -> Text(
+                    text = stringResource(R.string.terminal_reopen_hint),
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
         TextButton(onClick = { renderer?.inputDialog(true); favoritesOpen = true }) { Text(stringResource(R.string.parity2_favorites)) }
         if (renderer != null) {

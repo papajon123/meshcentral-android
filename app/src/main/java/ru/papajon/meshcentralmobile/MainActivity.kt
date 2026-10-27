@@ -11,6 +11,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.CompositionLocalProvider
+import android.content.res.Configuration
+import ru.papajon.meshcentralmobile.ui.screens.session.DesktopPipHost
+import ru.papajon.meshcentralmobile.ui.screens.session.LocalDesktopPip
 import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -24,6 +28,8 @@ class MainActivity : ComponentActivity() {
     private lateinit var settingsRepository: SettingsRepository
     private lateinit var secureVault: SecureVault
     private lateinit var appLockController: AppLockController
+    private var handledChatDelivery = -1L
+    private val desktopPip by lazy { DesktopPipHost(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,13 +40,25 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) window.isNavigationBarContrastEnforced = false
 
+        val workspace = ConnectionWorkspace.get(application)
         settingsRepository = SettingsRepository(applicationContext)
-        secureVault = SecureVault(applicationContext)
-        appLockController = AppLockController(settingsRepository, secureVault)
+        secureVault = workspace.appLockVault
+        appLockController = workspace.appLock
+        if (savedInstanceState == null) intent?.let(::acceptLauncherIntent)
+        else savedInstanceState.getString("pendingLauncherToken")?.let {
+            ConnectionWorkspace.get(application).restoreLauncherDestination(it,
+                savedInstanceState.getBoolean("launcherActivationAttempted", false))
+        }
         applyScreenshotBlocking(settingsRepository.getSettings().blockScreenshots)
-        if (savedInstanceState == null) intent?.let { ConnectionWorkspace.get(application).acceptShare(it) }
+        handledChatDelivery = savedInstanceState?.getLong("handledChatDelivery", -1L) ?: -1L
+        val delivery = intent?.getLongExtra(ru.papajon.meshcentralmobile.mesh.chat.ChatNotifier.EXTRA_DELIVERY, -1L) ?: -1L
+        if (savedInstanceState == null || (delivery >= 0 && delivery != handledChatDelivery)) {
+            intent?.let { ConnectionWorkspace.get(application).acceptShare(it) }
+            handledChatDelivery = delivery
+        }
 
         setContent {
+            CompositionLocalProvider(LocalDesktopPip provides desktopPip) {
             MeshCentralMobileTheme {
                 MeshCentralApp(
                     settingsRepository = settingsRepository,
@@ -51,27 +69,64 @@ class MainActivity : ComponentActivity() {
                     onRemoteFullscreenChanged = ::applyRemoteFullscreen,
                 )
             }
+            }
         }
     }
 
+    override fun onUserLeaveHint() {
+        super.onUserLeaveHint()
+        desktopPip.onUserLeaveHint()
+    }
+
+    override fun onPictureInPictureModeChanged(isInPictureInPictureMode: Boolean, newConfig: Configuration) {
+        appLockController.onPipChanged(this, isInPictureInPictureMode)
+        desktopPip.onModeChanged(isInPictureInPictureMode)
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+    }
+
     override fun onStart() {
+        appLockController.onWindowStarted(this, isInPictureInPictureMode)
         super.onStart()
-        if (::appLockController.isInitialized) {
-            appLockController.onAppForegrounded()
-        }
+    }
+
+    override fun onResume() {
+        // This also checks an expired deadline when PiP becomes visible after screen off.
+        appLockController.onWindowStarted(this, isInPictureInPictureMode)
+        super.onResume()
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        acceptLauncherIntent(intent)
         ConnectionWorkspace.get(application).acceptShare(intent)
+        handledChatDelivery = intent.getLongExtra(ru.papajon.meshcentralmobile.mesh.chat.ChatNotifier.EXTRA_DELIVERY, -1L)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        // Only a local delivery sequence is saved, never chat text or authentication material.
+        outState.putLong("handledChatDelivery", handledChatDelivery)
+        // Save only an unconsumed destination; never replay Activity.intent after recreation.
+        outState.putString("pendingLauncherToken", ConnectionWorkspace.get(application).launcherDestination)
+        outState.putBoolean("launcherActivationAttempted", ConnectionWorkspace.get(application).launcherActivationAttempted)
+        super.onSaveInstanceState(outState)
+    }
+
+    private fun acceptLauncherIntent(intent: Intent) {
+        if (!ru.papajon.meshcentralmobile.workspace.IncomingIntentPolicy.accepts(intent.flags)) return
+        ru.papajon.meshcentralmobile.integration.DeviceShortcuts.token(intent)?.let {
+            ConnectionWorkspace.get(application).launcherDestination = it
+        }
     }
 
     override fun onStop() {
-        if (::appLockController.isInitialized) {
-            appLockController.onAppBackgrounded()
-        }
+        appLockController.onWindowStopped(this, isChangingConfigurations)
         super.onStop()
+    }
+
+    override fun onDestroy() {
+        appLockController.onWindowStopped(this, isChangingConfigurations)
+        super.onDestroy()
     }
 
     private fun applyScreenshotBlocking(enabled: Boolean) {

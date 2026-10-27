@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">Định dạng bản sao lưu nháp này không được hỗ trợ. Hãy tạo bản sao lưu mới trong ứng dụng đã xuất bản sao lưu này.</string>
+    <string name="backup_key_approval_title">Xác nhận khóa máy chủ đã nhập</string>
+    <string name="backup_key_matches">Khóa máy chủ khớp với bản sao lưu. Xác nhận rằng bạn tin tưởng khóa này trước khi đăng nhập.</string>
+    <string name="backup_key_mismatch">Cảnh báo: khóa máy chủ KHÔNG khớp với bản sao lưu. Hãy xác minh dấu vân tay với quản trị viên trước khi tin tưởng nó.</string>
+    <string name="backup_key_expected">Khóa mong đợi từ bản sao lưu: %1$s</string>
+    <string name="backup_error_newer">Tệp này đến từ phiên bản MeshPilot mới hơn. Hãy cập nhật ứng dụng để nhập tệp.</string>
+    <string name="backup_error_auth">Mật khẩu không đúng hoặc tệp được mã hóa đã bị sửa đổi.</string>
+    <string name="backup_error_corrupt">Bản sao lưu bị hỏng hoặc có định dạng không hợp lệ.</string>
+    <string name="backup_error_limit">Bản sao lưu vượt quá giới hạn kích thước hoặc số mục được hỗ trợ.</string>
+    <string name="backup_extension_skipped">Đã bỏ qua phần từ phiên bản mới hơn: %1$s. Dữ liệu của phần này sẽ không được nhập.</string>
+    <string name="backup_duplicate">Đã có hồ sơ cho máy chủ này.</string>
+    <string name="backup_skip_duplicates">Bỏ qua hồ sơ có máy chủ đã tồn tại</string>
+    <string name="backup_value_on">Bật</string>
+    <string name="backup_value_off">Tắt</string>
+    <string name="backup_preferences_preview">Bảo vệ ảnh chụp màn hình: %1$s\nĐộ trễ tự động khóa: %2$d giây\nChủ đề: %3$s\nMàu hệ thống: %4$s\nĐộ chính xác của bút: %5$s\nĐã hiển thị gợi ý bút: %6$s\nẨn thiết bị khi khóa: %7$s</string>
+    <string name="integration_privacy_setting">Ẩn thiết bị trong tiện ích và lối tắt khi ứng dụng bị khóa</string>
+    <string name="integration_privacy_help">Với bảo vệ bằng PIN hoặc sinh trắc học, hãy ẩn tên và trạng thái thiết bị khi ứng dụng bị khóa hoặc khi bạn ở ngoài ứng dụng.</string>
+    <string name="integration_private_hidden">Mở khóa ứng dụng để xem thiết bị</string>
+    <string name="integration_private_device">Thiết bị được bảo vệ</string>
+    <string name="integration_retry_seconds">Thử lại sau %1$d giây</string>
+</resources>

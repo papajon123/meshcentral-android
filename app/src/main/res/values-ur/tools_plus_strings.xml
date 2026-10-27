@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">منتخب: %1$d</string>
+    <string name="tools_clear_selection">انتخاب صاف کریں</string>
+    <string name="tools_download_selected">منتخب اشیاء ڈاؤن لوڈ کریں</string>
+    <string name="tools_delete_selected">منتخب اشیاء حذف کریں</string>
+    <string name="tools_select_hint">متعدد اشیاء منتخب کرنے کے لیے دبا کر رکھیں</string>
+    <string name="tools_download_folder">فولڈر ڈاؤن لوڈ کریں</string>
+    <string name="tools_folder_notice">Mesh Agent فولڈرز ZIP آرکائیوز کے طور پر ڈاؤن لوڈ ہوتے ہیں۔ SFTP فولڈرز فائل بہ فائل کاپی ہوتے ہیں۔ منزل کا فولڈر منتخب کریں۔</string>
+    <string name="tools_batch_progress">مکمل: %2$d میں سے %1$d · %3$d بائٹس</string>
+    <string name="tools_retry">دوبارہ کوشش کریں</string>
+    <string name="tools_queued">قطار میں</string>
+    <string name="tools_active">ڈاؤن لوڈ ہو رہا ہے</string>
+    <string name="tools_succeeded">تصدیق شدہ</string>
+    <string name="tools_failed">ناکام</string>
+    <string name="tools_cancelled">منسوخ</string>
+    <string name="tools_archiving">ریموٹ آرکائیو بنایا جا رہا ہے…</string>
+    <string name="tools_archive_failed">آرکائیو بنایا یا تصدیق نہیں کیا جا سکا۔</string>
+    <string name="tools_archive_left">ڈاؤن لوڈ ناکام ہوا۔ ماخذ فولڈر میں عارضی meshpilot-*.zip آرکائیو رہ سکتا ہے۔ اسے صاف کر کے دوبارہ ڈاؤن لوڈ کرنے کے لیے دوبارہ کوشش کریں۔</string>
+    <string name="tools_batch_failed">ایک ڈاؤن لوڈ ناکام ہوا۔ دوبارہ کوشش کرنے پر یہ نئی مقامی فائل میں دوبارہ شروع ہوگا۔</string>
+    <string name="tools_delete_list">یہ اشیاء حذف کریں؟ اسے واپس نہیں کیا جا سکتا۔</string>
+</resources>

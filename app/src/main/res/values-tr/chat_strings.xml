@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">Kullanıcıyla sohbet</string>
+    <string name="chat_connecting">Sohbete bağlanılıyor…</string>
+    <string name="chat_waiting">Kullanıcının sohbet penceresini açması bekleniyor</string>
+    <string name="chat_connected">Kullanıcı sohbette</string>
+    <string name="chat_peer_left">Kullanıcı sohbetten ayrıldı veya bağlantı kesildi</string>
+    <string name="chat_failed">Sohbet bağlantısı kesildi. Yeniden bağlanmak için pencereyi tekrar isteyin.</string>
+    <string name="chat_closed">Sohbet kapatıldı. Cihaz menüsünden yeniden açın.</string>
+    <string name="chat_request">Sohbet penceresini tekrar iste</string>
+    <string name="chat_close">Sohbeti kapat</string>
+    <string name="chat_message">Mesaj</string>
+    <string name="chat_send">Mesaj gönder</string>
+    <string name="chat_send_failed">Mesaj gönderilmedi. Metniniz hâlâ burada; tekrar deneyin.</string>
+    <string name="chat_length">En fazla %1$d karakter</string>
+    <string name="chat_recorded">Sunucu bu sohbeti kaydediyor</string>
+    <string name="chat_you">Siz</string>
+    <string name="chat_user">Kullanıcı</string>
+    <string name="chat_empty">Sohbeti kapatana kadar mesajlar burada kalır.</string>
+    <string name="chat_notification">Yeni sohbet mesajı</string>
+    <string name="chat_notifications_enable">Sohbet bildirimlerini aç</string>
+    <string name="chat_notifications_unavailable">Bildirimler Android ayarlarında kapalı.</string>
+    <string name="chat_truncated">Mesaj kısaltıldı</string>
+    <string name="chat_reconnecting">Sohbete yeniden bağlanılıyor…</string>
+    <string name="chat_not_opened">Kullanıcı sohbet penceresini açmadı</string>
+    <string name="chat_invite_unavailable">Bilgisayar veya denetim bağlantısı çevrimdışı. Pencereyi daha sonra tekrar istemeyi deneyin.</string>
+    <string name="chat_unread">Okunmamış sohbet mesajları: %1$d</string>
+    <string name="chat_service_channel">Etkin sohbetler</string>
+    <string name="chat_service_active">Sohbet etkin</string>
+    <string name="chat_service_description">Diğer uygulamaları kullanırken görüşmenizin bağlı kalmasını sağlar.</string>
+    <string name="chat_service_failed">Sohbet çalışır durumda tutulamadı. Uygulama görünürken yeniden açın.</string>
+    <string name="chat_back">Geri</string>
+    <string name="chat_close_confirm">Bu sohbet kapatılsın ve mesajları silinsin mi?</string>
+</resources>

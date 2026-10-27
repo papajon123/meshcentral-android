@@ -31,12 +31,12 @@ class FileTransferService : Service() {
         }
         return START_NOT_STICKY
     }
-    private fun activeTransfers(): Boolean = workspace.transfers.hasPending || workspace.sessions.any {
-        it.files?.state?.value?.let { state -> state.busy && state.transferName != null } == true
+    private fun activeTransfers(): Boolean = cleanups.get() > 0 || workspace.transfers.hasPending || workspace.sessions.any {
+        it.files?.state?.value?.let { state -> state.batchBusy || (state.busy && state.transferName != null) } == true
     }
     private fun cancelTransfers() {
         workspace.transfers.cancelAll()
-        workspace.sessions.forEach { it.files?.let { files -> if (files.state.value.transferName != null) files.cancel() } }
+        workspace.sessions.forEach { it.files?.let { files -> if (files.state.value.batchBusy) files.cancel() else if (files.state.value.transferName != null) files.cancel() } }
     }
     private fun notification(finished: Boolean): Notification {
         val open = PendingIntent.getActivity(this, 701, Intent(this, MainActivity::class.java).setAction("show-transfers"), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
@@ -54,5 +54,9 @@ class FileTransferService : Service() {
     override fun onTimeout(startId: Int, fgsType: Int) { cancelTransfers(); finish() }
     override fun onDestroy() { if (!completedNormally) cancelTransfers(); scope.cancel(); super.onDestroy() }
     override fun onBind(intent: Intent?): IBinder? = null
-    companion object { private const val CHANNEL = "file-transfers"; private const val ID = 701; private const val COMPLETE_ID = 702; private const val CANCEL = "cancel-file-transfers" }
+    companion object {
+        private val cleanups = java.util.concurrent.atomic.AtomicInteger()
+        fun beginCleanup() { cleanups.incrementAndGet() }
+        fun endCleanup() { cleanups.decrementAndGet() }
+        private const val CHANNEL = "file-transfers"; private const val ID = 701; private const val COMPLETE_ID = 702; private const val CANCEL = "cancel-file-transfers" }
 }

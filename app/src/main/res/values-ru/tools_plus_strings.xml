@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">Выбрано: %1$d</string>
+    <string name="tools_clear_selection">Снять выделение</string>
+    <string name="tools_download_selected">Скачать выбранное</string>
+    <string name="tools_delete_selected">Удалить выбранное</string>
+    <string name="tools_select_hint">Коснитесь и удерживайте, чтобы выбрать несколько элементов</string>
+    <string name="tools_download_folder">Скачать папку</string>
+    <string name="tools_folder_notice">Папки Mesh Agent скачиваются ZIP-архивами. Папки SFTP копируются файл за файлом. Выберите папку назначения.</string>
+    <string name="tools_batch_progress">Готово: %1$d из %2$d · %3$d байт</string>
+    <string name="tools_retry">Повторить</string>
+    <string name="tools_queued">В очереди</string>
+    <string name="tools_active">Скачивание</string>
+    <string name="tools_succeeded">Проверено</string>
+    <string name="tools_failed">Ошибка</string>
+    <string name="tools_cancelled">Отменено</string>
+    <string name="tools_archiving">Создаём удалённый архив…</string>
+    <string name="tools_archive_failed">Не удалось создать или проверить архив.</string>
+    <string name="tools_archive_left">Не удалось скачать. В исходной папке может остаться временный архив meshpilot-*.zip. Повторите, чтобы удалить его и скачать заново.</string>
+    <string name="tools_batch_failed">Не удалось скачать. При повторе загрузка начнётся заново в новом локальном файле.</string>
+    <string name="tools_delete_list">Удалить эти элементы? Отменить это действие нельзя.</string>
+</resources>

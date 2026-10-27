@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">محادثة مع المستخدم</string>
+    <string name="chat_connecting">جارٍ الاتصال بالمحادثة…</string>
+    <string name="chat_waiting">في انتظار أن يفتح المستخدم نافذة المحادثة</string>
+    <string name="chat_connected">المستخدم في المحادثة</string>
+    <string name="chat_peer_left">غادر المستخدم المحادثة أو انقطع الاتصال</string>
+    <string name="chat_failed">انقطع الاتصال بالمحادثة. اطلب النافذة مرة أخرى لإعادة الاتصال.</string>
+    <string name="chat_closed">أُغلقت المحادثة. أعد فتحها من قائمة الجهاز.</string>
+    <string name="chat_request">اطلب نافذة المحادثة مرة أخرى</string>
+    <string name="chat_close">إغلاق المحادثة</string>
+    <string name="chat_message">الرسالة</string>
+    <string name="chat_send">إرسال رسالة</string>
+    <string name="chat_send_failed">لم تُرسل الرسالة. ما زال نصك هنا؛ حاول مرة أخرى.</string>
+    <string name="chat_length">الحد الأقصى لعدد الأحرف: %1$d</string>
+    <string name="chat_recorded">الخادم يسجل هذه المحادثة</string>
+    <string name="chat_you">أنت</string>
+    <string name="chat_user">المستخدم</string>
+    <string name="chat_empty">تبقى الرسائل هنا حتى تغلق المحادثة.</string>
+    <string name="chat_notification">رسالة محادثة جديدة</string>
+    <string name="chat_notifications_enable">تفعيل إشعارات المحادثة</string>
+    <string name="chat_notifications_unavailable">الإشعارات معطلة في إعدادات Android.</string>
+    <string name="chat_truncated">تم تقصير الرسالة</string>
+    <string name="chat_reconnecting">إعادة الاتصال بالمحادثة…</string>
+    <string name="chat_not_opened">لم يفتح المستخدم نافذة المحادثة</string>
+    <string name="chat_invite_unavailable">الكمبيوتر أو اتصال التحكم غير متصل. حاول طلب النافذة مرة أخرى لاحقًا.</string>
+    <string name="chat_unread">رسائل المحادثة غير المقروءة: %1$d</string>
+    <string name="chat_service_channel">المحادثات النشطة</string>
+    <string name="chat_service_active">المحادثة نشطة</string>
+    <string name="chat_service_description">يبقي محادثتك متصلة أثناء استخدامك لتطبيقات أخرى.</string>
+    <string name="chat_service_failed">تعذر إبقاء المحادثة قيد التشغيل. أعد فتحها أثناء ظهور التطبيق.</string>
+    <string name="chat_back">رجوع</string>
+    <string name="chat_close_confirm">هل تريد إغلاق هذه المحادثة ومحو رسائلها؟</string>
+</resources>

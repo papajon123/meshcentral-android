@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">MeshPilot を支援</string>
+    <string name="support_body">MeshPilot は無料・オープンソースで広告もありません。Boosty での定期支援や1回限りの支援が新しいバージョンの開発につながります。</string>
+    <string name="support_action">Boosty で支援する</string>
+    <string name="support_link_copied">ブラウザーが見つかりません。Boosty のリンクをコピーしました。</string>
+</resources>

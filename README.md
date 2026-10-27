@@ -15,10 +15,11 @@
   <a href="https://github.com/papajon123/meshcentral-android/releases"><img src="https://img.shields.io/github/v/release/papajon123/meshcentral-android?include_prereleases&label=release" alt="Latest release, including pre-releases"></a>
   <img src="https://img.shields.io/badge/License-Apache_2.0-blue" alt="Apache License 2.0">
   <img src="https://img.shields.io/badge/Android-8%2B%20%28API%2026%29-3DDC84" alt="Android 8 or newer, API 26 minimum">
+  <a href="https://boosty.to/papajon123"><img src="https://img.shields.io/badge/Boosty-support-F15F2C?logo=boosty&amp;logoColor=white" alt="Support MeshPilot on Boosty"></a>
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 Android locale variants">
 </p>
 
-> **Version 0.8.4** renames the app to MeshPilot and adds sign-in with login tokens and login keys. The 0.8 line adds stylus and S Pen input, phone viewing and files, phone control with an input-capable agent, server-key pinning, remembered two-factor sign-in and expanded computer tools. See the [changelog](CHANGELOG.md) and [validation](docs/RELEASE_0_8_0_VALIDATION.md).
+> **Version 0.9.0** adds chat with the person at a computer, port forwarding, paged large servers, process and service tools, terminal reconnect, verified folder downloads, desktop picture-in-picture with touchpad gestures and DeX input, device invitations and administration, launcher shortcuts, a Favorites widget, encrypted settings backups and Android 16 targeting. The 0.8 line added MeshPilot naming, sign-in with login tokens and login keys, stylus and S Pen input, phone viewing and files, phone control with an input-capable agent, server-key pinning, remembered two-factor sign-in and expanded computer tools. See the [changelog](CHANGELOG.md) and [validation](docs/RELEASE_0_8_0_VALIDATION.md).
 
 This is a client: you manage computers and phones *from* your phone. The managed phone needs the official [MeshCentral Android agent](https://github.com/Ylianst/MeshCentralAndroidAgent), which shares its screen after Android consent and remains view-only. Remote touch, navigation and text entry require a modified agent with input support, enabled accessibility and sufficient rights. That agent support is not yet in the upstream project. See [how the options compare](docs/COMPARISON.md) and [how this app is built](AI_POLICY.md).
 
@@ -155,7 +156,7 @@ Read [Privacy](PRIVACY.md) and the [Security policy](SECURITY.md).
 <details>
 <summary>Build from source</summary>
 
-Requirements: JDK 17, Android SDK platform 35, build-tools 35.0.0. The Gradle wrapper downloads Gradle 8.10.2.
+Requirements: JDK 17, Android SDK platform 36, build-tools 35.0.0. The Gradle wrapper downloads Gradle 8.11.1.
 
 ```bash
 export JAVA_HOME=/path/to/jdk-17
@@ -180,6 +181,13 @@ On Windows use `.\gradlew.bat` and set the same environment variables. The debug
 The same values are kept in [ci/release-identity.json](ci/release-identity.json).
 
 </details>
+
+## Support the project
+
+MeshPilot is free, open source and has no ads, analytics or paid features. If it saves you time, you can support
+development on **[Boosty](https://boosty.to/papajon123)** with a subscription or a one-time tip; Boosty accepts Russian
+and international cards. The same link is in the app under **Settings → Support MeshPilot**. Support never unlocks
+features: everything stays in the open-source app.
 
 ## License
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">రెండు వేలు సంజ్ఞ</string>
+    <string name="desktop_gesture_default">అసలు ప్రవర్తన</string>
+    <string name="desktop_gesture_scroll">రిమోట్ విండోను స్క్రోల్ చేయండి</string>
+    <string name="desktop_gesture_pan">చిత్రాన్ని పాన్ చేయండి</string>
+    <string name="desktop_pinch">జూమ్ చేయడానికి పించ్ చేయండి</string>
+    <string name="desktop_three_fingers">మూడు వేళ్లు రిమోట్ విండోను స్క్రోల్ చేస్తాయి.</string>
+    <string name="desktop_scale">అభ్యర్థించిన చిత్ర స్కేల్: %1$d%%</string>
+    <string name="desktop_pip">చిత్రంలో చిత్రం</string>
+    <string name="desktop_pip_auto">యాప్ నుండి బయటకు వెళ్లినప్పుడు చూడటం కొనసాగించండి</string>
+    <string name="desktop_stream_rate">≈ %1$.1f నవీకరణలు/సె · %2$d B/s</string>
+    <string name="desktop_input_help">హార్డ్‌వేర్ కీబోర్డ్ మరియు మౌస్ డెస్క్‌టాప్‌లో పనిచేస్తాయి. Android Alt+Tab లేదా Metaను రిజర్వ్ చేయవచ్చు; ఆ సందర్భంలో కీ మెనూను ఉపయోగించండి. మద్దతు ఉంటే సమాంతర చక్రం Shift + చక్రంతో పనిచేస్తుంది.</string>
+    <string name="desktop_rate_help">నాణ్యత, స్కేల్ మరియు ఫ్రేమ్ పరిమితి అభ్యర్థించిన సెట్టింగ్‌లు. ఇతర వీక్షకులు నాణ్యత, స్కేల్ లేదా నవీకరణ రేటును పెంచవచ్చు. కౌంటర్ టైల్ నవీకరణలను లెక్కిస్తుంది, పూర్తి ఫ్రేమ్‌లను కాదు.</string>
+    <string name="desktop_keyboard_capture">భౌతిక కీబోర్డ్‌ను క్యాప్చర్ చేయండి</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc కీబోర్డ్‌ను విడుదల చేసి సెషన్ ఎంపికలను తెరుస్తుంది.</string>
+</resources>

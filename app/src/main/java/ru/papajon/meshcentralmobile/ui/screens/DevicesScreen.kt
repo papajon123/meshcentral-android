@@ -49,9 +49,14 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
+import kotlinx.coroutines.delay
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -75,6 +80,11 @@ import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.mesh.MeshCentralClient
 import ru.papajon.meshcentralmobile.mesh.MeshClientState
 import ru.papajon.meshcentralmobile.mesh.MeshDevice
+import ru.papajon.meshcentralmobile.mesh.DevicePage
+import ru.papajon.meshcentralmobile.mesh.DeviceBrowserFilter as DeviceFilter
+import ru.papajon.meshcentralmobile.mesh.DeviceListQuery
+import ru.papajon.meshcentralmobile.mesh.DeviceListPolicy
+import androidx.compose.ui.res.pluralStringResource
 import ru.papajon.meshcentralmobile.model.ConnectionState
 import ru.papajon.meshcentralmobile.model.FavoriteLink
 import ru.papajon.meshcentralmobile.ui.components.ConnectionNotice
@@ -86,13 +96,14 @@ import ru.papajon.meshcentralmobile.ui.theme.MeshMono
 import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 import ru.papajon.meshcentralmobile.ui.theme.PillShape
 
-private enum class DeviceFilter(@StringRes val labelRes: Int) {
-    All(R.string.devices_filter_all),
-    Online(R.string.devices_filter_online),
-    Favorites(R.string.devices_filter_favorites),
-    Recent(R.string.browser_filter_recent),
-    NeedsAttention(R.string.parity_needs_attention),
-}
+private val DeviceFilter.labelRes: Int
+    get() = when (this) {
+        DeviceFilter.All -> R.string.devices_filter_all
+        DeviceFilter.Online -> R.string.devices_filter_online
+        DeviceFilter.Favorites -> R.string.devices_filter_favorites
+        DeviceFilter.Recent -> R.string.browser_filter_recent
+        DeviceFilter.NeedsAttention -> R.string.parity_needs_attention
+    }
 
 private const val MAX_SEARCH_LENGTH = 200
 
@@ -117,15 +128,28 @@ fun DevicesScreen(
     updateBanner: (@Composable () -> Unit)? = null,
 ) {
     val clientState by meshClient.clientState.collectAsState()
+    var invitationGroup by remember { mutableStateOf<String?>(null) }
+    invitationGroup?.let { id ->
+        ru.papajon.meshcentralmobile.ui.screens.management.DeviceInviteDialog(meshClient, id) { invitationGroup = null }
+    }
+    DisposableEffect(meshClient) {
+        meshClient.setDeviceListVisible(true)
+        onDispose { meshClient.setDeviceListVisible(false) }
+    }
     DevicesContent(
         clientState, favorites, onAddFavorite, onRemoveFavorite,
         onConnect = onConnectDevice ?: { device -> meshClient.connectDesktop(device); onOpenRemote() },
-        onRefresh = meshClient::refreshDevices,
+        onRefresh = meshClient::retryDevices,
         onOpenSettings = onOpenSettings, onSignIn = onSignIn, modifier = modifier,
         onOpenDevice = onOpenDevice,
         recentDeviceIds = recentDeviceIds,
         onClearRecents = onClearRecents,
         updateBanner = updateBanner,
+        onInvite = { invitationGroup = it },
+        onServerQuery = meshClient::searchDevices,
+        onBrowserFilterChange = meshClient::setDeviceBrowserFilter,
+        onBrowserSearchChange = meshClient::setDeviceBrowserSearch,
+        onPage = meshClient::changeDevicePage,
     )
 }
 
@@ -144,30 +168,61 @@ internal fun DevicesContent(
     recentDeviceIds: List<String> = emptyList(),
     onClearRecents: () -> Unit = {},
     updateBanner: (@Composable () -> Unit)? = null,
+    onInvite: ((String) -> Unit)? = null,
+    onServerQuery: (String, Boolean, Set<String>?) -> Unit = { _, _, _ -> },
+    onBrowserFilterChange: (DeviceFilter) -> Unit = {},
+    onBrowserSearchChange: (String) -> Unit = {},
+    onPage: (Boolean) -> Unit = {},
 ) {
-    var filter by rememberSaveable { mutableStateOf(DeviceFilter.All) }
-    var query by rememberSaveable { mutableStateOf("") }
-    val favoriteIds = favorites.map { it.url }.toSet()
+    var filter by rememberSaveable { mutableStateOf(clientState.deviceBrowserFilter) }
+    var query by rememberSaveable { mutableStateOf(clientState.deviceBrowserSearch ?: clientState.deviceQuery.filter) }
+    val favoriteIds = remember(favorites) { favorites.map { it.url }.toSet() }
+    val page = clientState.devicePage
+    val pageDevices = remember(clientState.devices, page.nodeIds) {
+        page.nodeIds?.let { ids -> clientState.devices.filter { it.nodeId in ids } } ?: clientState.devices
+    }
+    val serverSearch = page.serverLimited
+    LaunchedEffect(filter) { onBrowserFilterChange(filter) }
+    LaunchedEffect(query) { onBrowserSearchChange(query) }
 
     val signedIn = clientState.socketConnected
     val current = signedIn && clientState.devicesCurrent
-    val effectiveFilter = if (!current && filter == DeviceFilter.Online) DeviceFilter.All else filter
-    val onlineCount = clientState.devices.count { it.online }
-    val recentOrder = recentDeviceIds.withIndex().associate { it.value to it.index }
-    val recentCount = clientState.devices.count { it.nodeId in recentOrder }
+    val effectiveFilter = if (!serverSearch && !current && filter == DeviceFilter.Online) DeviceFilter.All else filter
+    val onlineCount = remember(pageDevices) { pageDevices.count { it.online } }
+    val recentOrder = remember(recentDeviceIds) { recentDeviceIds.withIndex().associate { it.value to it.index } }
+    val recentCount = pageDevices.count { it.nodeId in recentOrder }
     val queryActive = DeviceSearch.hasQuery(query)
+    val request = DeviceListQuery(query,
+        collect = effectiveFilter == DeviceFilter.Online || effectiveFilter == DeviceFilter.NeedsAttention,
+        ids = when (effectiveFilter) {
+            DeviceFilter.Favorites -> favoriteIds
+            DeviceFilter.Recent -> recentDeviceIds.toSet()
+            else -> null
+        }).normalized()
+    LaunchedEffect(request, serverSearch, signedIn) {
+        if (serverSearch && signedIn && DeviceListPolicy.queryChanged(request, clientState.deviceQuery)) {
+            delay(300)
+            onServerQuery(request.filter, request.collect, request.ids)
+        }
+    }
+    val hidingRows = serverSearch && page.loading
+    val pageFailed = (clientState.lastError as? ru.papajon.meshcentralmobile.localization.UiText.Resource)?.id == R.string.devices_page_failed
     val subtitle = when {
-        !current && clientState.devices.isNotEmpty() -> stringResource(R.string.devices_saved_count, clientState.devices.size)
+        !current && pageDevices.isNotEmpty() -> stringResource(R.string.devices_saved_count, pageDevices.size)
         !signedIn -> stringResource(R.string.devices_subtitle_signed_out)
-        clientState.devices.isEmpty() -> stringResource(R.string.common_status_online)
+        serverSearch -> page.totalCount?.let { stringResource(R.string.devices_server_total, it) }
+            ?: stringResource(R.string.common_status_online)
+        pageDevices.isEmpty() -> stringResource(R.string.common_status_online)
         else -> stringResource(
             R.string.devices_subtitle_counts,
             onlineCount,
-            clientState.devices.size,
+            pageDevices.size,
             clientState.serverName ?: clientState.userId ?: "",
         )
     }
-    val visibleDevices = clientState.devices
+    val visibleDevices = remember(pageDevices, clientState.groups, effectiveFilter, favoriteIds, recentOrder, query, serverSearch, page.filter,
+        current, clientState.agentInstallAllowed, clientState.serverCapabilities) {
+        pageDevices
         .filter { device ->
             when (effectiveFilter) {
                 DeviceFilter.All -> true
@@ -177,7 +232,8 @@ internal fun DevicesContent(
                 DeviceFilter.NeedsAttention -> NeedsAttentionFilter.matches(device)
             }
         }
-        .let { devices -> DeviceSearch.filter(devices, query, clientState.groups) }
+        .let { devices -> if (serverSearch) devices
+            else DeviceSearch.filter(devices, query, clientState.groups) }
         .let { devices ->
             if (effectiveFilter == DeviceFilter.Recent) {
                 devices.sortedBy { device -> recentOrder[device.nodeId] ?: Int.MAX_VALUE }
@@ -186,6 +242,13 @@ internal fun DevicesContent(
             }
         }
         .groupBy { if (effectiveFilter == DeviceFilter.Recent) "" else it.meshId }
+        .toMutableMap().apply {
+            if (!serverSearch && effectiveFilter == DeviceFilter.All && query.isBlank() && current) {
+                clientState.groups.filter { ru.papajon.meshcentralmobile.management.DeviceAdmin.canInvite(it, clientState) }
+                    .forEach { putIfAbsent(it.id, emptyList()) }
+            }
+        }
+    }
     val emptyTitleRes = when {
         queryActive -> R.string.browser_search_empty_title
         effectiveFilter == DeviceFilter.Recent -> R.string.browser_recent_empty_title
@@ -209,7 +272,7 @@ internal fun DevicesContent(
             onSettings = onOpenSettings,
         )
 
-        if (clientState.devices.isEmpty() || !signedIn && clientState.requiresSignIn) updateBanner?.invoke()
+        if (pageDevices.isEmpty() || !signedIn && clientState.requiresSignIn) updateBanner?.invoke()
 
         when {
             !signedIn && clientState.requiresSignIn -> EmptyState(
@@ -221,7 +284,7 @@ internal fun DevicesContent(
                 modifier = Modifier.weight(1f).fillMaxWidth().verticalScroll(rememberScrollState()),
             )
 
-            clientState.devices.isEmpty() && clientState.connectionState in setOf(ConnectionState.Connecting, ConnectionState.Reconnecting) ->
+            pageDevices.isEmpty() && clientState.connectionState in setOf(ConnectionState.Connecting, ConnectionState.Reconnecting) ->
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -230,7 +293,7 @@ internal fun DevicesContent(
                     }
                 }
 
-            clientState.devices.isEmpty() -> EmptyState(
+            pageDevices.isEmpty() && visibleDevices.isEmpty() && !serverSearch -> EmptyState(
                 icon = Icons.Outlined.DesktopWindows,
                 title = stringResource(R.string.devices_empty_title),
                 description = clientState.lastError?.asString()
@@ -244,24 +307,54 @@ internal fun DevicesContent(
                 // Everything above the devices scrolls with the single LazyColumn, so short
                 // screens can always reach the cards instead of being clipped by fixed chrome.
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxSize().testTag("devices-list"),
                     contentPadding = PaddingValues(top = 2.dp, bottom = 24.dp),
                 ) {
                     if (updateBanner != null) item(key = "devices-update") { updateBanner() }
                     item(key = "devices-search") {
-                        DeviceSearchField(query = query, onQueryChange = { query = it })
+                        DeviceSearchField(query = query, onQueryChange = { query = it }, serverSearch = serverSearch)
                     }
                     item(key = "devices-filter") {
                         FilterRow(
                             filter = effectiveFilter,
-                            onFilterChange = { filter = it },
-                            totalCount = clientState.devices.size,
+                            onFilterChange = { filter = it; onBrowserFilterChange(it) },
+                            totalCount = pageDevices.size,
                             onlineCount = onlineCount,
                             current = current,
-                            favoritesCount = clientState.devices.count { it.nodeId in favoriteIds },
+                            favoritesCount = pageDevices.count { it.nodeId in favoriteIds },
                             recentCount = recentCount,
-                            attentionCount = clientState.devices.count(NeedsAttentionFilter::matches),
+                            attentionCount = pageDevices.count(NeedsAttentionFilter::matches),
+                            showCounts = !serverSearch || page.completeSnapshot && page.requestedIds == null && !page.loading,
                         )
+                    }
+                    if (serverSearch) item(key = "devices-pages") {
+                        DevicePageControls(page, signedIn, onPage)
+                    }
+                    if (serverSearch && onInvite != null && clientState.groups.any {
+                        ru.papajon.meshcentralmobile.management.DeviceAdmin.canInvite(it, clientState)
+                    }) item(key = "devices-invite") {
+                        var expanded by remember { mutableStateOf(false) }
+                        Box(Modifier.padding(horizontal = 20.dp)) {
+                            TextButton(onClick = { expanded = true }, modifier = Modifier.testTag("devices-invite-group")) {
+                                Text(stringResource(R.string.admin_invite))
+                            }
+                            androidx.compose.material3.DropdownMenu(expanded, onDismissRequest = { expanded = false }) {
+                                clientState.groups.filter { ru.papajon.meshcentralmobile.management.DeviceAdmin.canInvite(it, clientState) }.forEach { group ->
+                                    androidx.compose.material3.DropdownMenuItem(text = { Text(group.name) }, onClick = {
+                                        expanded = false; onInvite(group.id)
+                                    }, modifier = Modifier.testTag("devices-invite-target-${group.id}"))
+                                }
+                            }
+                        }
+                    }
+                    if (hidingRows) item(key = "devices-page-loading") {
+                        Row(Modifier.fillMaxWidth().padding(20.dp), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                            MeshLoadingIndicator()
+                            Text(stringResource(R.string.devices_syncing))
+                        }
+                    }
+                    if (pageFailed) item(key = "devices-page-error") {
+                        ConnectionNotice(stringResource(R.string.devices_page_failed), Modifier.padding(horizontal = 20.dp), onRetry = onRefresh)
                     }
                     if (effectiveFilter == DeviceFilter.Recent && recentDeviceIds.isNotEmpty()) {
                         item(key = "devices-clear-recent") {
@@ -275,7 +368,7 @@ internal fun DevicesContent(
                             }
                         }
                     }
-                    if (!current) {
+                    if (!current && !pageFailed) {
                         item(key = "devices-connection-notice") {
                             ConnectionNotice(
                                 message = if (signedIn) stringResource(R.string.devices_syncing) else
@@ -288,7 +381,7 @@ internal fun DevicesContent(
                             )
                         }
                     }
-                    if (visibleDevices.isEmpty()) {
+                    if (visibleDevices.isEmpty() && !hidingRows) {
                         item(key = "devices-empty") {
                             Box(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
                                 EmptyState(
@@ -303,7 +396,7 @@ internal fun DevicesContent(
                             }
                         }
                     }
-                    visibleDevices.forEach { (meshId, devices) ->
+                    if (!hidingRows) visibleDevices.forEach { (meshId, devices) ->
                         if (effectiveFilter != DeviceFilter.Recent) item(key = "group-$meshId") {
                             val reportedGroup = clientState.groups.firstOrNull { it.id == meshId }?.name
                             val groupName = when {
@@ -311,7 +404,7 @@ internal fun DevicesContent(
                                 meshId.isNotBlank() -> meshId
                                 else -> stringResource(R.string.devices_group_ungrouped)
                             }
-                            Box(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
+                            Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp)) {
                                 GroupHeader(
                                     name = groupName,
                                     count = if (!current) stringResource(R.string.devices_group_saved_count, devices.size) else stringResource(
@@ -320,6 +413,13 @@ internal fun DevicesContent(
                                         devices.size,
                                     ),
                                 )
+                                clientState.groups.firstOrNull { it.id == meshId }?.let { group ->
+                                    if (onInvite != null && ru.papajon.meshcentralmobile.management.DeviceAdmin.canInvite(group, clientState)) {
+                                        TextButton(onClick = { onInvite(group.id) }, modifier = Modifier.testTag("admin_invite_${group.id}")) {
+                                            Text(stringResource(R.string.admin_invite))
+                                        }
+                                    }
+                                }
                             }
                         }
                         itemsIndexed(
@@ -406,12 +506,12 @@ private fun DeviceHeaderActions(refreshEnabled: Boolean, onRefresh: () -> Unit, 
 }
 
 @Composable
-private fun DeviceSearchField(query: String, onQueryChange: (String) -> Unit) {
+private fun DeviceSearchField(query: String, onQueryChange: (String) -> Unit, serverSearch: Boolean = false) {
     val focusManager = LocalFocusManager.current
     val searchLabel = stringResource(R.string.browser_search_label)
     OutlinedTextField(
         value = query,
-        onValueChange = { onQueryChange(it.take(MAX_SEARCH_LENGTH)) },
+        onValueChange = { onQueryChange(it.take(if (serverSearch) 128 else MAX_SEARCH_LENGTH)) },
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 4.dp)
@@ -419,7 +519,7 @@ private fun DeviceSearchField(query: String, onQueryChange: (String) -> Unit) {
         singleLine = true,
         shape = PillShape,
         label = { Text(searchLabel) },
-        placeholder = { Text(stringResource(R.string.browser_search_hint)) },
+        placeholder = { Text(stringResource(if (serverSearch) R.string.devices_server_search else R.string.browser_search_hint)) },
         leadingIcon = { Icon(Icons.Outlined.Search, contentDescription = null) },
         trailingIcon = if (query.isEmpty()) {
             null
@@ -453,6 +553,7 @@ private fun FilterRow(
     favoritesCount: Int,
     recentCount: Int,
     attentionCount: Int,
+    showCounts: Boolean = true,
 ) {
     Row(
         modifier = Modifier
@@ -476,9 +577,25 @@ private fun FilterRow(
                 onClick = { onFilterChange(entry) },
                 shape = PillShape,
                 label = {
-                    Text("${stringResource(entry.labelRes)} ${if (!current && entry == DeviceFilter.Online) "—" else count}")
+                    Text(if (!showCounts) stringResource(entry.labelRes) else "${stringResource(entry.labelRes)} ${if (!current && entry == DeviceFilter.Online) "—" else count}")
                 },
             )
+        }
+    }
+}
+
+@Composable
+private fun DevicePageControls(page: DevicePage, signedIn: Boolean, onPage: (Boolean) -> Unit) {
+    Column(Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp)) {
+        val start = if (page.returnedCount == 0) 0 else page.skip + 1
+        val end = page.skip + page.returnedCount
+        Text(if (page.totalCount != null) pluralStringResource(R.plurals.devices_page_count, page.totalCount, start, end, page.totalCount)
+            else pluralStringResource(R.plurals.devices_page_count_unknown, page.returnedCount, start, end), style = MaterialTheme.typography.bodySmall)
+        if (!page.completeSnapshot) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            TextButton(onClick = { onPage(false) }, enabled = signedIn && !page.loading && page.hasPrevious,
+                modifier = Modifier.weight(1f).testTag("devices-page-previous")) { Text(stringResource(R.string.devices_page_previous)) }
+            TextButton(onClick = { onPage(true) }, enabled = signedIn && !page.loading && page.hasNext,
+                modifier = Modifier.weight(1f).testTag("devices-page-next")) { Text(stringResource(R.string.devices_page_next)) }
         }
     }
 }

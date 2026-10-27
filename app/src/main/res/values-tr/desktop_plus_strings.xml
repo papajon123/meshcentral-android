@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">İki parmak hareketi</string>
+    <string name="desktop_gesture_default">Özgün davranış</string>
+    <string name="desktop_gesture_scroll">Uzak pencereyi kaydır</string>
+    <string name="desktop_gesture_pan">Görüntüyü kaydır</string>
+    <string name="desktop_pinch">Yakınlaştırmak için sıkıştır</string>
+    <string name="desktop_three_fingers">Üç parmak uzak pencereyi kaydırır.</string>
+    <string name="desktop_scale">İstenen görüntü ölçeği: %1$d%%</string>
+    <string name="desktop_pip">Resim içinde resim</string>
+    <string name="desktop_pip_auto">Uygulamadan ayrılınca izlemeye devam et</string>
+    <string name="desktop_stream_rate">≈ %1$.1f güncelleme/sn · %2$d B/s</string>
+    <string name="desktop_input_help">Donanım klavyesi ve faresı masaüstünde çalışır. Android, Alt+Tab veya Meta tuşlarını ayırabilir; bu durumda tuş menüsünü kullanın. Yatay tekerlek, destekleniyorsa Shift + tekerlek ile çalışır.</string>
+    <string name="desktop_rate_help">Kalite, ölçek ve kare sınırı istenen ayarlardır. Diğer izleyiciler kaliteyi, ölçeği veya güncelleme hızını artırabilir. Sayaç karo güncellemelerini ölçer, tam kareleri değil.</string>
+    <string name="desktop_keyboard_capture">Fiziksel klavyeyi yakala</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc klavyeyi serbest bırakır ve oturum seçeneklerini açar.</string>
+</resources>

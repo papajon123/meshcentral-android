@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">Trò chuyện với người dùng</string>
+    <string name="chat_connecting">Đang kết nối đến cuộc trò chuyện…</string>
+    <string name="chat_waiting">Đang chờ người dùng mở cửa sổ trò chuyện</string>
+    <string name="chat_connected">Người dùng đang ở trong cuộc trò chuyện</string>
+    <string name="chat_peer_left">Người dùng đã rời cuộc trò chuyện hoặc kết nối bị ngắt</string>
+    <string name="chat_failed">Đã mất kết nối với cuộc trò chuyện. Hãy yêu cầu lại cửa sổ để kết nối lại.</string>
+    <string name="chat_closed">Cuộc trò chuyện đã đóng. Hãy mở lại từ menu thiết bị.</string>
+    <string name="chat_request">Yêu cầu lại cửa sổ trò chuyện</string>
+    <string name="chat_close">Đóng cuộc trò chuyện</string>
+    <string name="chat_message">Tin nhắn</string>
+    <string name="chat_send">Gửi tin nhắn</string>
+    <string name="chat_send_failed">Tin nhắn chưa được gửi. Văn bản của bạn vẫn còn ở đây; hãy thử lại.</string>
+    <string name="chat_length">Tối đa %1$d ký tự</string>
+    <string name="chat_recorded">Máy chủ đang ghi lại cuộc trò chuyện này</string>
+    <string name="chat_you">Bạn</string>
+    <string name="chat_user">Người dùng</string>
+    <string name="chat_empty">Tin nhắn vẫn ở đây cho đến khi bạn đóng cuộc trò chuyện.</string>
+    <string name="chat_notification">Tin nhắn trò chuyện mới</string>
+    <string name="chat_notifications_enable">Bật thông báo trò chuyện</string>
+    <string name="chat_notifications_unavailable">Thông báo đã bị tắt trong cài đặt Android.</string>
+    <string name="chat_truncated">Tin nhắn đã được rút gọn</string>
+    <string name="chat_reconnecting">Đang kết nối lại với cuộc trò chuyện…</string>
+    <string name="chat_not_opened">Người dùng không mở cửa sổ trò chuyện</string>
+    <string name="chat_invite_unavailable">Máy tính hoặc kết nối điều khiển đang ngoại tuyến. Hãy thử yêu cầu cửa sổ lại sau.</string>
+    <string name="chat_unread">Tin nhắn trò chuyện chưa đọc: %1$d</string>
+    <string name="chat_service_channel">Các cuộc trò chuyện đang hoạt động</string>
+    <string name="chat_service_active">Trò chuyện đang hoạt động</string>
+    <string name="chat_service_description">Giữ cuộc hội thoại của bạn luôn kết nối khi bạn dùng ứng dụng khác.</string>
+    <string name="chat_service_failed">Không thể giữ cuộc trò chuyện chạy tiếp. Hãy mở lại khi ứng dụng đang hiển thị.</string>
+    <string name="chat_back">Quay lại</string>
+    <string name="chat_close_confirm">Đóng cuộc trò chuyện này và xóa các tin nhắn của nó?</string>
+</resources>

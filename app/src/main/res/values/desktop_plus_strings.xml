@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">Two-finger gesture</string>
+    <string name="desktop_gesture_default">Original behavior</string>
+    <string name="desktop_gesture_scroll">Scroll remote window</string>
+    <string name="desktop_gesture_pan">Pan image</string>
+    <string name="desktop_pinch">Pinch to zoom</string>
+    <string name="desktop_three_fingers">Three fingers scroll the remote window.</string>
+    <string name="desktop_scale">Requested image scale: %1$d%%</string>
+    <string name="desktop_pip">Picture-in-picture</string>
+    <string name="desktop_pip_auto">Keep viewing when leaving the app</string>
+    <string name="desktop_stream_rate">≈ %1$.1f updates/s · %2$d B/s</string>
+    <string name="desktop_input_help">Hardware keyboard and mouse work on the desktop. Android may reserve Alt+Tab or Meta; use the key menu in that case. Horizontal wheel uses Shift + wheel where supported.</string>
+    <string name="desktop_rate_help">Quality, scale and frame limit are requested settings. Other viewers can raise quality, scale or update rate. The counter measures tile updates, not full frames.</string>
+    <string name="desktop_keyboard_capture">Capture physical keyboard</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc releases the keyboard and opens session options.</string>
+</resources>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">यह डिवाइस अब उपलब्ध नहीं है। ऐप खोलें।</string>
+    <string name="integration_favorites">पसंदीदा</string>
+    <string name="integration_updated">अपडेट: %1$s</string>
+    <string name="integration_widget_empty">ऐप खोलें और पसंदीदा डिवाइस जोड़ें।</string>
+    <string name="integration_widget_description">पसंदीदा डिवाइस और उनकी अंतिम ज्ञात उपलब्धता</string>
+    <string name="integration_last_known">अंतिम ज्ञात स्थिति</string>
+    <string name="integration_open_to_refresh">कनेक्ट और रीफ़्रेश करने के लिए ऐप खोलें।</string>
+    <string name="integration_refresh">रीफ़्रेश करें</string>
+    <string name="integration_open_app">ऐप खोलें</string>
+    <string name="backup_title">सेटिंग्स का बैकअप</string>
+    <string name="backup_description">सर्वर प्रोफ़ाइल, पसंदीदा, कीबोर्ड शॉर्टकट, कमांड स्निपेट और ऐप प्राथमिकताएँ एक्सपोर्ट करें। पासवर्ड, सत्र टोकन, याद रखे गए डिवाइस की कुकीज़ और ऐप PIN शामिल नहीं हैं। कमांड स्निपेट में आपका दर्ज किया गया टेक्स्ट हो सकता है; साझा करने से पहले उन्हें जाँचें।</string>
+    <string name="backup_export">फ़ाइल एक्सपोर्ट करें</string>
+    <string name="backup_import">फ़ाइल इम्पोर्ट करें</string>
+    <string name="backup_include_keys">सर्वर लॉगिन कुंजियाँ शामिल करें (केवल एन्क्रिप्टेड)</string>
+    <string name="backup_password">बैकअप पासवर्ड (कम से कम 8 अक्षर)</string>
+    <string name="backup_password_hint">पासवर्ड पूरी फ़ाइल को एन्क्रिप्ट करता है। इसे सुरक्षित रखें; इसे रिकवर नहीं किया जा सकता।</string>
+    <string name="backup_confirm_password">पासवर्ड की पुष्टि करें</string>
+    <string name="backup_password_mismatch">पासवर्ड मेल खाने चाहिए और 8–1024 अक्षरों के होने चाहिए।</string>
+    <string name="backup_busy">प्रोसेस हो रहा है…</string>
+    <string name="backup_saved">बैकअप फ़ाइल सहेजी गई।</string>
+    <string name="backup_failed">बैकअप प्रोसेस नहीं हो सका। फ़ाइल, फ़ॉर्मेट संस्करण, पासवर्ड और स्टोरेज एक्सेस जाँचें।</string>
+    <string name="backup_preview">इम्पोर्ट की समीक्षा करें</string>
+    <string name="backup_preview_explanation">प्रोफ़ाइल नए प्रोफ़ाइल के रूप में जोड़े जाएँगे। मौजूदा प्रोफ़ाइल, क्रेडेंशियल और PIN यथावत रहेंगे। पुष्टि करने से पहले सर्वर पते और पिन की गई कुंजियाँ जाँचें।</string>
+    <string name="backup_profile_details">%1$d पसंदीदा · %2$d शॉर्टकट · %3$d कमांड</string>
+    <string name="backup_pinned_key">पिन की गई सर्वर कुंजी: %1$s</string>
+    <string name="backup_contains_key">इसमें एन्क्रिप्टेड सर्वर लॉगिन कुंजी शामिल है</string>
+    <string name="backup_apply_preferences">रूप-रंग, स्क्रीनशॉट सुरक्षा, ऑटो-लॉक देरी और स्टाइलस प्राथमिकताएँ भी बदलें</string>
+    <string name="backup_confirm_import">प्रोफ़ाइल जोड़ें</string>
+    <string name="backup_imported">%1$d प्रोफ़ाइल जोड़े गए। कोई प्रोफ़ाइल चुनें और साइन इन करें।</string>
+    <string name="backup_capacity">प्रोफ़ाइल के लिए पर्याप्त खाली स्थान नहीं है। इम्पोर्ट करने से पहले अप्रयुक्त प्रोफ़ाइल हटाएँ।</string>
+    <string name="backup_decrypt">बैकअप डिक्रिप्ट करें</string>
+    <string name="backup_no_profiles">एक्सपोर्ट करने से पहले HTTPS सर्वर प्रोफ़ाइल कॉन्फ़िगर करें।</string>
+</resources>

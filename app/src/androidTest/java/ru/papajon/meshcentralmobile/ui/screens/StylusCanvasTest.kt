@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.Assert.*
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import ru.papajon.meshcentralmobile.input.NativeRemoteInputSink
@@ -48,8 +49,39 @@ class StylusCanvasTest {
     private var used = 0
     private var downTime = 0L
     private var originalWindowCallback: Window.Callback? = null
+    private var activeHover: MotionEvent? = null
+    private var activeTouch: MotionEvent? = null
+
+    @Before fun clearPreviousInjectedPointerState() = releaseInjectedPointerState()
+
+    private fun releaseInjectedPointerState() {
+        // UiAutomation uses a shared virtual device across test Activities. Android 16 keeps
+        // its hover/contact state even after a window closes; release both streams explicitly.
+        val now = SystemClock.uptimeMillis()
+        val properties = arrayOf(MotionEvent.PointerProperties().apply { id = 0; toolType = MotionEvent.TOOL_TYPE_STYLUS })
+        val coordinates = arrayOf(MotionEvent.PointerCoords().apply { x = origin.x + 100.5f; y = origin.y + 200.5f })
+        for (action in listOf(MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_HOVER_EXIT)) {
+            val event = MotionEvent.obtain(now, now, action, 1, properties, coordinates, 0, 0,
+                1f, 1f, 0, 0, InputDevice.SOURCE_STYLUS, 0)
+            try { InstrumentationRegistry.getInstrumentation().uiAutomation.injectInputEvent(event, true) }
+            finally { event.recycle() }
+            // No active stream is also a valid cleanup state; actual test events still assert delivery.
+        }
+    }
 
     @After fun restoreWindowCallback() {
+        // Android 16 validates injected streams across Activity/test boundaries. Finish both
+        // streams even when an assertion failed, otherwise the next test inherits a held pointer.
+        val automation = InstrumentationRegistry.getInstrumentation().uiAutomation
+        activeTouch?.let { event ->
+            try { event.action = MotionEvent.ACTION_CANCEL; automation.injectInputEvent(event, true) }
+            finally { event.recycle(); activeTouch = null }
+        }
+        activeHover?.let { event ->
+            try { event.action = MotionEvent.ACTION_HOVER_EXIT; automation.injectInputEvent(event, true) }
+            finally { event.recycle(); activeHover = null }
+        }
+        releaseInjectedPointerState()
         originalWindowCallback?.let { original ->
             compose.runOnUiThread { compose.activity.window.callback = original }
         }
@@ -241,6 +273,9 @@ class StylusCanvasTest {
     @Test fun palmFromTouchscreenDuringPenStrokeDoesNotClick() {
         canvas()
         event(MotionEvent.ACTION_DOWN, 100f, 200f)
+        // Separate physical sources cancel the old stream. UiAutomation injects both through
+        // one virtual device, so deliver that cancellation before starting its replacement.
+        event(MotionEvent.ACTION_CANCEL, 100f, 200f)
         event(MotionEvent.ACTION_DOWN, 150f, 250f, MotionEvent.TOOL_TYPE_FINGER,
             source = InputDevice.SOURCE_TOUCHSCREEN)
         event(MotionEvent.ACTION_UP, 150f, 250f, MotionEvent.TOOL_TYPE_FINGER,
@@ -351,8 +386,9 @@ class StylusCanvasTest {
         compose.mainClock.advanceTimeBy(600)
         compose.runOnIdle { assertEquals("Replay must have completed", 2, input.packets.size) }
         compose.runOnIdle { input.packets.clear() }
-        // A pen resting on the canvas during replay must still suppress the replacement palm
-        // stream after replay completes, even though that pen could not start a remote gesture.
+        // Release UiAutomation's virtual stream before replacing its source. cancelContact
+        // preserves an existing physical contact; it cannot restore one incorrectly lost on replay.
+        event(MotionEvent.ACTION_CANCEL, 110f, 210f)
         event(MotionEvent.ACTION_DOWN, 150f, 250f, MotionEvent.TOOL_TYPE_FINGER,
             source = InputDevice.SOURCE_TOUCHSCREEN)
         event(MotionEvent.ACTION_UP, 150f, 250f, MotionEvent.TOOL_TYPE_FINGER,
@@ -428,6 +464,18 @@ class StylusCanvasTest {
     private fun pointers(action: Int, points: List<Point>, buttons: Int = 0, source: Int = InputDevice.SOURCE_STYLUS,
         eventTimeMillis: Long? = null) {
         compose.waitForIdle()
+        if (action == MotionEvent.ACTION_DOWN && activeTouch?.source?.let { it != source } == true) {
+            // Injected pen and touchscreen events share virtual device -1. Android 16 rejects
+            // a replacement DOWN before the view can cancel the old source. Send that source-
+            // change cancellation explicitly, through the same real system input dispatcher.
+            val previous = requireNotNull(activeTouch)
+            previous.action = MotionEvent.ACTION_CANCEL
+            try {
+                assertTrue("System rejected source-change cancellation",
+                    InstrumentationRegistry.getInstrumentation().uiAutomation.injectInputEvent(previous, true))
+            } finally { previous.recycle(); activeTouch = null }
+            compose.waitForIdle()
+        }
         compose.runOnUiThread { canvasCoordinates?.takeIf { it.isAttached }?.let { origin = it.localToScreen(Offset.Zero) } }
         val now = eventTimeMillis ?: SystemClock.uptimeMillis()
         SystemClock.sleep((now - SystemClock.uptimeMillis()).coerceAtLeast(0L))
@@ -439,7 +487,27 @@ class StylusCanvasTest {
         } }.toTypedArray()
         val event = MotionEvent.obtain(downTime, now, action, points.size, properties, coordinates, 0,
             buttons, 1f, 1f, 0, 0, source, 0)
-        try { assertTrue(InstrumentationRegistry.getInstrumentation().uiAutomation.injectInputEvent(event, true)) }
+        try {
+            assertTrue("System rejected injected action ${event.actionMasked}",
+                InstrumentationRegistry.getInstrumentation().uiAutomation.injectInputEvent(event, true))
+            when (event.actionMasked) {
+                MotionEvent.ACTION_HOVER_ENTER, MotionEvent.ACTION_HOVER_MOVE -> {
+                    activeHover?.recycle(); activeHover = MotionEvent.obtain(event)
+                }
+                MotionEvent.ACTION_HOVER_EXIT -> { activeHover?.recycle(); activeHover = null }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> { activeTouch?.recycle(); activeTouch = null }
+                MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE, MotionEvent.ACTION_POINTER_DOWN -> {
+                    activeTouch?.recycle(); activeTouch = MotionEvent.obtain(event)
+                }
+                MotionEvent.ACTION_POINTER_UP -> {
+                    val remaining = (0 until points.size).filter { it != event.actionIndex }
+                    activeTouch?.recycle()
+                    activeTouch = MotionEvent.obtain(downTime, now, MotionEvent.ACTION_MOVE,
+                        remaining.size, remaining.map { properties[it] }.toTypedArray(),
+                        remaining.map { coordinates[it] }.toTypedArray(), 0, buttons, 1f, 1f, 0, 0, source, 0)
+                }
+            }
+        }
         finally { event.recycle() }
         compose.waitForIdle()
     }

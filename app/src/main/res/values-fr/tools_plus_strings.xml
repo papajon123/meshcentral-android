@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">Sélectionnés : %1$d</string>
+    <string name="tools_clear_selection">Effacer la sélection</string>
+    <string name="tools_download_selected">Télécharger la sélection</string>
+    <string name="tools_delete_selected">Supprimer la sélection</string>
+    <string name="tools_select_hint">Maintenez appuyé pour sélectionner plusieurs éléments</string>
+    <string name="tools_download_folder">Télécharger le dossier</string>
+    <string name="tools_folder_notice">Les dossiers Mesh Agent sont téléchargés sous forme d’archives ZIP. Les dossiers SFTP sont copiés fichier par fichier. Choisissez un dossier de destination.</string>
+    <string name="tools_batch_progress">Terminé : %1$d sur %2$d · %3$d octets</string>
+    <string name="tools_retry">Réessayer</string>
+    <string name="tools_queued">En file d’attente</string>
+    <string name="tools_active">Téléchargement</string>
+    <string name="tools_succeeded">Vérifié</string>
+    <string name="tools_failed">Échec</string>
+    <string name="tools_cancelled">Annulé</string>
+    <string name="tools_archiving">Création de l’archive distante…</string>
+    <string name="tools_archive_failed">L’archive n’a pas pu être créée ni vérifiée.</string>
+    <string name="tools_archive_left">Le téléchargement a échoué. Une archive temporaire meshpilot-*.zip peut rester dans le dossier source. Réessayez pour la supprimer et relancer le téléchargement.</string>
+    <string name="tools_batch_failed">Un téléchargement a échoué. Réessayer le relance dans un nouveau fichier local.</string>
+    <string name="tools_delete_list">Supprimer ces éléments ? Cette action est irréversible.</string>
+</resources>

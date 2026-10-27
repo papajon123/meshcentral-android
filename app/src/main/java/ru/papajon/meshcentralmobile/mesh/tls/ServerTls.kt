@@ -18,11 +18,12 @@ internal class ServerTls(
     private val pinnedSpkiSha256: String?,
     debugAllowSelfSigned: Boolean = false,
     platform: X509TrustManager = platformTrustManager(),
+    private val expectedSpkiSha256: String? = null,
 ) {
-    private val debugBypass = BuildConfig.DEBUG && debugAllowSelfSigned && pinnedSpkiSha256 == null
+    private val debugBypass = BuildConfig.DEBUG && debugAllowSelfSigned && pinnedSpkiSha256 == null && expectedSpkiSha256 == null
     private val serverAddress = server?.newBuilder()?.username("")?.password("")
         ?.query(null)?.fragment(null)?.build()?.toString().orEmpty()
-    private val trustManager = ServerPinTrustManager(server, pinnedSpkiSha256, serverAddress, debugBypass, platform)
+    private val trustManager = ServerPinTrustManager(server, pinnedSpkiSha256, serverAddress, debugBypass, platform, expectedSpkiSha256)
 
     fun applyTo(builder: OkHttpClient.Builder) {
         val context = SSLContext.getInstance("TLS")
@@ -44,7 +45,7 @@ internal class ServerTls(
                 null
             } ?: return@hostnameVerifier false
             if (hostname != server?.host || session.peerPort != server.port) return@hostnameVerifier false
-            val decision = evaluateServerTrust(true, leaf, pinnedSpkiSha256, serverAddress)
+            val decision = evaluateServerTrust(true, leaf, pinnedSpkiSha256, serverAddress, expectedSpkiSha256)
             if (decision is ServerTrustDecision.Rejected) throw peerFailure(decision.failure)
             if (decision == ServerTrustDecision.PinnedKey || debugBypass) return@hostnameVerifier true
             if (!standardVerifier.verify(hostname, session)) {
@@ -69,6 +70,7 @@ internal class ServerPinTrustManager(
     private val address: String,
     private val debugBypass: Boolean,
     private val platform: X509TrustManager,
+    private val expected: String? = null,
 ) : X509TrustManager {
     // Dalvik includes ART. On Android, failure to obtain host-aware platform validation is fatal;
     // do not silently drop Network Security Config domain rules. JVM tests use their real JDK TM.
@@ -90,6 +92,16 @@ internal class ServerPinTrustManager(
         if (chain.isEmpty()) throw CertificateException("Empty server certificate chain")
         if (host != server?.host) throw CertificateException("TLS policy belongs to a different host")
         val leaf = chain.first()
+        // Reject before HTTP authentication headers, even if the platform would trust this key.
+        if (expected != null) {
+            val decision = evaluateServerTrust(false, chain.toList(), null, address, expected) as ServerTrustDecision.Rejected
+            if (!decision.failure.canApprove) throw ServerCertificateException(decision.failure)
+            // Platform validation only supplies truthful issuer metadata. It never grants trust
+            // to the imported expectation or permits any HTTP authentication headers.
+            val platformTrusted = try { platformChain(chain, authType, host); true }
+                catch (_: CertificateException) { false }
+            throw ServerCertificateException(if (platformTrusted) decision.failure.copy(issuerExplanation = null) else decision.failure)
+        }
         // Saved pins keep their strict supplied-chain checks. With no pin, let Android build
         // the trusted path first: servers can send unrelated or obsolete cross certificates.
         val preliminary = if (pin != null || debugBypass) evaluateServerTrust(false, chain.toList(), pin, address) else null
@@ -98,10 +110,7 @@ internal class ServerPinTrustManager(
         }
         if (preliminary == ServerTrustDecision.PinnedKey || debugBypass) return chain.toList()
         val validatedChain = try {
-            platformExtensions?.checkServerTrusted(chain, authType, host) ?: run {
-                platform.checkServerTrusted(chain, authType)
-                chain.toList()
-            }
+            platformChain(chain, authType, host)
         } catch (cause: CertificateException) {
             // Platform rejection alone never grants trust. Validate the supplied private chain
             // before offering explicit approval, including dates, usage and key strength.
@@ -114,6 +123,12 @@ internal class ServerPinTrustManager(
         if (decision is ServerTrustDecision.Rejected) throw ServerCertificateException(decision.failure)
         return validatedChain
     }
+
+    private fun platformChain(chain: Array<X509Certificate>, authType: String, host: String): List<X509Certificate> =
+        platformExtensions?.checkServerTrusted(chain, authType, host) ?: run {
+            platform.checkServerTrusted(chain, authType)
+            chain.toList()
+        }
 }
 
 private fun platformTrustManager(): X509TrustManager {

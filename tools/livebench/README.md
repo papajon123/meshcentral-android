@@ -4,6 +4,33 @@ An isolated Windows/WSL/Android test fixture for the public mobile client. It us
 MeshCentral **1.3.1**, the official Android agent **1.0.23**, and the upstream
 Linux x64 agent from **legacy-1.2.6**. It never administers a production server.
 
+## Opt-in OpenSSH acceptance
+
+`sftp_fixture.py create --root <owned-root>/jail/fixture --uid <temporary-uid> --gid <temporary-gid>`
+creates the hostile Unix tree used by `SftpLiveAcceptanceTest`; it requires a new,
+owned root and refuses symlink ancestors. `repair --root <same-root>` changes only
+the known hazards after validating its marker and file contents. It does not
+install/start SSH, create users or delete the test environment.
+
+The Android test is skipped unless `-e sftpLive true` is supplied. It requires an
+isolated SSH-enabled MeshCentral 1.3.1 at `https://10.0.2.2:4467/`, its own agent
+and SSH node, and a loopback-only metadata bridge at `http://10.0.2.2:19867/`.
+`GET /fixture` supplies `serverUrl`, `sshNodeId`, `directory` (`/fixture`) and
+`manifest` (relative path to `{size, sha256}`). Bounded `POST /op/reset` and
+`/op/repair` return `manifests` for `source` and `cancel-test`; `/op/swap`,
+`/op/inspect` and `/op/allow-directory` affect only the synthetic deletion and
+permission fixtures. Never point this bridge at arbitrary paths or production.
+
+Seed `cache/sftp-live-auth.json` into the debug app's private directory through
+`adb -s <owned-serial> shell run-as ...` stdin with mode 0600. Its keys are
+`serverUsername`, `serverPassword`, `serverPin` (SHA-256 SPKI), `sshUsername` and
+`sshPassword`. Generate temporary credentials outside the repository; do not put
+them in command arguments, test output or the HTTP bridge. After pulling test
+evidence, delete this file and verify absence before stopping the owned emulator;
+remove the temporary server, SSH process/user/keys and filesystem tree as well.
+The test uses the real Files screen, SAF picker and relay; the HTTP bridge only
+controls owned fixtures and provides independently computed source hashes.
+
 ## Requirements
 
 - Windows, PowerShell 7, Node.js/npm, Python 3, and WSL `Ubuntu-24.04` with systemd.

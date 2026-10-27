@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.outlined.Memory
+import androidx.compose.material.icons.outlined.MiscellaneousServices
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ExpandMore
@@ -26,6 +28,7 @@ import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.SupportAgent
+import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.SwapHoriz
 import androidx.compose.material.icons.outlined.Terminal
 import androidx.compose.material.icons.outlined.VpnKey
@@ -55,6 +58,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.R
+import ru.papajon.meshcentralmobile.forward.canForwardPorts
 import ru.papajon.meshcentralmobile.localization.asString
 import ru.papajon.meshcentralmobile.mesh.MeshDevice
 import ru.papajon.meshcentralmobile.mesh.MeshServerCapabilities
@@ -79,16 +83,23 @@ fun DeviceScreen(
     onBack: () -> Unit,
     onWebPanel: () -> Unit,
     modifier: Modifier = Modifier,
+    hasChat: Boolean = false,
+    taskToolsSupported: Boolean = ru.papajon.meshcentralmobile.management.tasks.TaskToolsProtocol.visible(device),
     sessionContent: @Composable () -> Unit,
 ) {
-    if (selected == DeviceTab.System || selected == DeviceTab.Help) {
+    if (selected == DeviceTab.Processes || selected == DeviceTab.Services || selected == DeviceTab.System || selected == DeviceTab.Help || selected == DeviceTab.Chat) {
         sessionContent()
         return
     }
     var toolsMenuExpanded by remember { mutableStateOf(false) }
+    val tabs = DeviceTab.entries.filter { taskToolsSupported || it !in setOf(DeviceTab.Processes, DeviceTab.Services) }.filter { it != DeviceTab.Chat ||
+        ru.papajon.meshcentralmobile.mesh.chat.ChatProtocol.allowed(device, current) || hasChat || selected == DeviceTab.Chat }
     fun available(tab: DeviceTab): Boolean = when (tab) {
+        DeviceTab.Processes, DeviceTab.Services -> taskToolsSupported
         DeviceTab.Overview -> true
         DeviceTab.System, DeviceTab.Help -> current
+        DeviceTab.Chat -> hasChat || ru.papajon.meshcentralmobile.mesh.chat.ChatProtocol.allowed(device, current)
+        DeviceTab.PortForwarding -> current && device.canForwardPorts()
         DeviceTab.Desktop -> current && device.canOpenNativeDesktop
         else -> current && device.sessionAvailability(tab.protocol!!, server).canAttempt
     }
@@ -145,7 +156,7 @@ fun DeviceScreen(
                     Icon(Icons.Outlined.ExpandMore, contentDescription = stringResource(R.string.workspace_tools))
                 }
                 DropdownMenu(expanded = toolsMenuExpanded, onDismissRequest = { toolsMenuExpanded = false }) {
-                    DeviceTab.entries.forEach { tab ->
+                    tabs.forEach { tab ->
                         DropdownMenuItem(
                             text = { Text(stringResource(tab.labelRes)) },
                             leadingIcon = { Icon(tab.icon(), contentDescription = null) },
@@ -158,11 +169,11 @@ fun DeviceScreen(
         }
         ScrollableTabRow(
             modifier = Modifier.fillMaxWidth(),
-            selectedTabIndex = selected.ordinal,
+            selectedTabIndex = tabs.indexOf(selected).coerceAtLeast(0),
             edgePadding = 4.dp,
             containerColor = MaterialTheme.colorScheme.surface,
         ) {
-            DeviceTab.entries.forEach { tab ->
+            tabs.forEach { tab ->
                 Tab(
                     selected = selected == tab,
                     onClick = { onSelect(tab) },
@@ -177,6 +188,7 @@ fun DeviceScreen(
                 server = server,
                 current = current,
                 available = { tab -> available(tab) },
+                taskToolsSupported = taskToolsSupported,
                 onSelect = onSelect,
                 onWebPanel = onWebPanel,
             )
@@ -192,6 +204,7 @@ private fun DeviceOverview(
     server: MeshServerCapabilities,
     current: Boolean,
     available: (DeviceTab) -> Boolean,
+    taskToolsSupported: Boolean,
     onSelect: (DeviceTab) -> Unit,
     onWebPanel: () -> Unit,
 ) {
@@ -221,7 +234,7 @@ private fun DeviceOverview(
                     color = MaterialTheme.colorScheme.tertiary,
                 )
             }
-            val tools = DeviceTab.entries.filter { it != DeviceTab.Overview }
+            val tools = DeviceTab.entries.filter { taskToolsSupported || it !in setOf(DeviceTab.Processes, DeviceTab.Services) }.filter { it != DeviceTab.Overview && (it != DeviceTab.Chat || available(it)) }
             if (twoColumns) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     for (rowTabs in tools.chunked(2)) {
@@ -449,6 +462,16 @@ private fun toolReason(
     current: Boolean,
 ): String {
     if (!current) return stringResource(R.string.device_signin_needed)
+    if (tab == DeviceTab.PortForwarding) {
+        val availability = when {
+            device.canForwardPorts() -> SessionAvailability.Available
+            device.rights == null -> SessionAvailability.Unknown
+            device.isAndroidAgent || device.mtype !in setOf(0, 2) -> SessionAvailability.Unsupported
+            device.rights != -1 && device.rights and 0x00200008 == 0 -> SessionAvailability.Denied
+            else -> SessionAvailability.Offline
+        }
+        return availability.label.asString()
+    }
     if (tab == DeviceTab.Desktop && !device.canOpenNativeDesktop) {
         return desktopCapabilityReason(device.desktopCapability)
     }
@@ -463,6 +486,10 @@ private fun DeviceTab.icon(): ImageVector = when (this) {
     DeviceTab.Files -> Icons.Outlined.Folder
     DeviceTab.Ssh -> Icons.Outlined.VpnKey
     DeviceTab.Sftp -> Icons.Outlined.SwapHoriz
+    DeviceTab.Processes -> Icons.Outlined.Memory
+    DeviceTab.Services -> Icons.Outlined.MiscellaneousServices
     DeviceTab.System -> Icons.Outlined.Info
     DeviceTab.Help -> Icons.Outlined.SupportAgent
+    DeviceTab.Chat -> Icons.Outlined.ChatBubbleOutline
+    DeviceTab.PortForwarding -> Icons.Outlined.SwapHoriz
 }

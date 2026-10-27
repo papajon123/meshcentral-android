@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">Жест двумя пальцами</string>
+    <string name="desktop_gesture_default">Исходное поведение</string>
+    <string name="desktop_gesture_scroll">Прокрутка удалённого окна</string>
+    <string name="desktop_gesture_pan">Перемещение изображения</string>
+    <string name="desktop_pinch">Масштабирование щипком</string>
+    <string name="desktop_three_fingers">Три пальца прокручивают удалённое окно.</string>
+    <string name="desktop_scale">Запрошенный масштаб: %1$d%%</string>
+    <string name="desktop_pip">Картинка в картинке</string>
+    <string name="desktop_pip_auto">Не прерывать просмотр при выходе из приложения</string>
+    <string name="desktop_stream_rate">≈ %1$.1f обновл./с · %2$d Б/с</string>
+    <string name="desktop_input_help">Аппаратная клавиатура и мышь работают на рабочем столе. Android может резервировать Alt+Tab или Meta; в этом случае используйте меню клавиш. Горизонтальная прокрутка колёсиком выполняется через Shift + колесо, если поддерживается.</string>
+    <string name="desktop_rate_help">Качество, масштаб и ограничение кадров — это запрашиваемые параметры. Другие зрители могут повысить качество, масштаб или частоту обновлений. Счётчик считает обновления фрагментов, а не полные кадры.</string>
+    <string name="desktop_keyboard_capture">Захватывать физическую клавиатуру</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc освобождает клавиатуру и открывает параметры сеанса.</string>
+</resources>

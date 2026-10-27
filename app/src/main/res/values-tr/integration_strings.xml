@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">Bu cihaz artık kullanılamıyor. Uygulamayı açın.</string>
+    <string name="integration_favorites">Sık kullanılanlar</string>
+    <string name="integration_updated">Güncellendi: %1$s</string>
+    <string name="integration_widget_empty">Uygulamayı açın ve sık kullanılan cihazları ekleyin.</string>
+    <string name="integration_widget_description">Sık kullanılan cihazlar ve bilinen son kullanılabilirlik durumları</string>
+    <string name="integration_last_known">Bilinen son durum</string>
+    <string name="integration_open_to_refresh">Bağlanmak ve yenilemek için uygulamayı açın.</string>
+    <string name="integration_refresh">Yenile</string>
+    <string name="integration_open_app">Uygulamayı aç</string>
+    <string name="backup_title">Ayarlar yedeği</string>
+    <string name="backup_description">Sunucu profillerini, sık kullanılanları, klavye kısayollarını, komut parçacıklarını ve uygulama tercihlerini dışa aktarın. Parolalar, oturum belirteçleri, hatırlanan cihaz çerezleri ve uygulama PIN\'i hariç tutulur. Komut parçacıkları girdiğiniz metni içerebilir; paylaşmadan önce inceleyin.</string>
+    <string name="backup_export">Dosyayı dışa aktar</string>
+    <string name="backup_import">Dosyayı içe aktar</string>
+    <string name="backup_include_keys">Sunucu oturum açma anahtarlarını dahil et (yalnızca şifrelenmiş)</string>
+    <string name="backup_password">Yedek parolası (en az 8 karakter)</string>
+    <string name="backup_password_hint">Parola dosyanın tamamını şifreler. Güvenli bir yerde saklayın; parola kurtarılamaz.</string>
+    <string name="backup_confirm_password">Parolayı onayla</string>
+    <string name="backup_password_mismatch">Parolalar eşleşmeli ve 8–1024 karakter içermelidir.</string>
+    <string name="backup_busy">İşleniyor…</string>
+    <string name="backup_saved">Yedek dosyası kaydedildi.</string>
+    <string name="backup_failed">Yedek işlenemedi. Dosyayı, biçim sürümünü, parolayı ve depolama erişimini kontrol edin.</string>
+    <string name="backup_preview">İçe aktarmayı incele</string>
+    <string name="backup_preview_explanation">Profiller yeni profil olarak eklenecek. Mevcut profiller, kimlik bilgileri ve PIN yerinde kalacak. Onaylamadan önce sunucu adreslerini ve sabitlenmiş anahtarları inceleyin.</string>
+    <string name="backup_profile_details">%1$d sık kullanılan · %2$d kısayol · %3$d komut</string>
+    <string name="backup_pinned_key">Sabitlenmiş sunucu anahtarı: %1$s</string>
+    <string name="backup_contains_key">Şifrelenmiş bir sunucu oturum açma anahtarı içerir</string>
+    <string name="backup_apply_preferences">Görünümü, ekran görüntüsü korumasını, otomatik kilit gecikmesini ve dokunmatik kalem tercihlerini de değiştir</string>
+    <string name="backup_confirm_import">Profil ekle</string>
+    <string name="backup_imported">%1$d profil eklendi. Bir profil seçip oturum açın.</string>
+    <string name="backup_capacity">Yeterli boş profil yuvası yok. İçe aktarmadan önce kullanılmayan profilleri kaldırın.</string>
+    <string name="backup_decrypt">Yedeğin şifresini çöz</string>
+    <string name="backup_no_profiles">Dışa aktarmadan önce bir HTTPS sunucu profili yapılandırın.</string>
+</resources>

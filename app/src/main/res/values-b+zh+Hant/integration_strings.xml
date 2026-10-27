@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">此裝置已無法使用。請開啟應用程式。</string>
+    <string name="integration_favorites">我的最愛</string>
+    <string name="integration_updated">已更新：%1$s</string>
+    <string name="integration_widget_empty">開啟應用程式並加入我的最愛裝置。</string>
+    <string name="integration_widget_description">我的最愛裝置及其上次已知的可用狀態</string>
+    <string name="integration_last_known">上次已知狀態</string>
+    <string name="integration_open_to_refresh">開啟應用程式以連線並重新整理。</string>
+    <string name="integration_refresh">重新整理</string>
+    <string name="integration_open_app">開啟應用程式</string>
+    <string name="backup_title">設定備份</string>
+    <string name="backup_description">匯出伺服器設定檔、我的最愛、鍵盤快速鍵、指令片段與應用程式偏好設定。不包含密碼、工作階段權杖、已記住裝置的 Cookie 與應用程式 PIN。指令片段可能包含您輸入的文字；分享前請先檢查。</string>
+    <string name="backup_export">匯出檔案</string>
+    <string name="backup_import">匯入檔案</string>
+    <string name="backup_include_keys">包含伺服器登入金鑰（僅限加密形式）</string>
+    <string name="backup_password">備份密碼（至少 8 個字元）</string>
+    <string name="backup_password_hint">密碼會加密整個檔案。請妥善保管；密碼無法復原。</string>
+    <string name="backup_confirm_password">確認密碼</string>
+    <string name="backup_password_mismatch">密碼必須一致，且長度為 8–1024 個字元。</string>
+    <string name="backup_busy">正在處理…</string>
+    <string name="backup_saved">備份檔案已儲存。</string>
+    <string name="backup_failed">無法處理備份。請檢查檔案、格式版本、密碼與儲存空間存取權限。</string>
+    <string name="backup_preview">檢閱匯入內容</string>
+    <string name="backup_preview_explanation">設定檔將以新設定檔加入。現有設定檔、憑證與 PIN 將維持不變。確認前請檢查伺服器位址與固定金鑰。</string>
+    <string name="backup_profile_details">%1$d 個我的最愛 · %2$d 個快速鍵 · %3$d 個指令</string>
+    <string name="backup_pinned_key">固定的伺服器金鑰：%1$s</string>
+    <string name="backup_contains_key">包含加密的伺服器登入金鑰</string>
+    <string name="backup_apply_preferences">同時取代外觀、螢幕擷取保護、自動鎖定延遲與觸控筆偏好設定</string>
+    <string name="backup_confirm_import">新增設定檔</string>
+    <string name="backup_imported">已新增 %1$d 個設定檔。請選擇設定檔並登入。</string>
+    <string name="backup_capacity">可用設定檔位置不足。匯入前請先移除未使用的設定檔。</string>
+    <string name="backup_decrypt">解密備份</string>
+    <string name="backup_no_profiles">匯出前請先設定 HTTPS 伺服器設定檔。</string>
+</resources>

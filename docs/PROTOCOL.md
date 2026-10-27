@@ -8,6 +8,105 @@ Line numbers below refer to MeshCentral 1.2.5 and can drift between releases. Th
 
 ## 1. Control channel
 
+### Large device lists (audited against MeshCentral 1.3.1)
+
+`meshuser.js:122,661,723-912` advertises `serverinfo.maxdeviceview` and accepts
+`{action:"nodes",responseid:"unique-id",skip:25,limit:25,filter:"workstation"}`.
+`filter` is a trimmed, case-insensitive **name substring**, truncated to 128 UTF-16 characters;
+it is not the richer offline search and there is no separate `search` or online/favorites option.
+`skip`, `limit` and `filter` persist on the control socket. Send `filter:""` to clear it and
+`skip:0` when changing the query. `limit` is capped by the domain limit. `meshid`/`meshname`
+and singular `id` are supported; an array of favorite IDs is not.
+
+Responses contain `nodes` grouped by mesh ID, echoed `responseid`, optional `skip`, `limit`,
+`filter`, and `totalcount`. A short first page omits `totalcount`; a short later page reports
+`skip + returned count`. A full page can omit the count if the database cannot count:
+the client keeps Next available until a short/empty page, without inventing a total.
+NeDB filters before sorting by name and applying skip/limit (`db.js:3125-3140`);
+literal search escaping is defined at `db.js:4469-4472`. This is offset pagination, not a
+transactionally consistent snapshot: simultaneous inserts/deletes can shift page boundaries.
+
+The web UI uses the same state (`views/default.handlebars:2360,2785,6725-6733`).
+This client serializes nodes requests, including inspector reads: MeshCentral's asynchronous
+DB callbacks read the socket's mutable paging state, so response IDs alone cannot prevent
+concurrent requests from producing the wrong offsets. Superseded search results are discarded.
+Pages replace the visible page; selected detail devices, open chats and active relay devices are retained outside its membership so
+changing pages cannot revoke Android input or invalidate an existing file/terminal session.
+Favorites/recents issue sequential singular `id` reads, not a full scan. Online/attention filters
+collect an ID-deduplicated snapshot on query changes or explicit refresh, never on a polling clock.
+Structural group/permission events also trigger the shared coalesced snapshot refresh; its nodes
+read joins the same paging queue. Administration verification uses an isolated singular `id`
+read with an explicit zero offset and empty filter, so it cannot verify the wrong page.
+A normalized query
+equal to the latest requested query never resets the current offset, including screen re-entry.
+Repeating an identical in-flight intention also preserves collection progress. Saved UI filter
+and text are copied into a fresh client before later screen entries rely on its state.
+If a nonempty filter is not echoed (for example MeshCentral 1.3.0), collect all pages and filter
+names locally; the final count is the matching local count, not the unfiltered server count.
+An empty final page moves back. Untagged snapshots remain accepted only for unpaged legacy
+servers. Error replies retain the previous result; retry uses the last requested query.
+Cancelling or timing out an inspector read keeps its wire slot occupied until the late response
+is drained. A cancelled inspector which never sent a read does not restart an ongoing collection.
+A 30-second list timeout keeps the slot and actionable error; a new queued intent rearms its
+deadline without clearing the error. Only explicit UI Retry may replace that stuck control
+connection. Automatic inspector refresh never reconnects it. A disconnect completes a pending
+read with `ControlRequestException("disconnected")`, allowing the observation loop to finish.
+
+Events use `{action:"event",event:{action:"nodeconnect"|"changenode"|"addnode"|"removenode",...}}`.
+Connectivity/removal identify `nodeid`; add/change carry `node._id`. Partial changes retain
+agent capabilities and connectivity when absent. A single row is inserted at its sorted
+position instead of parsing or sorting the complete device list again.
+**Server limitation:** `meshuser.js:436,8978-8986` drops events whose node IDs are outside
+`visibleDevices`, including new nodes. The last collection page would otherwise leave that
+subscription narrowed. Before publishing a collected/ID snapshot, the client sends a serialized
+`nodes` read with a fresh absent `id`, `skip:0`, and `filter:""`. A zero-row first page clears
+`visibleDevices` (`meshuser.js:889`) even at `maxdeviceview=1`; a known ID does not always do so.
+External inspector reads apply their primary reply immediately. Only a domain limit of one needs
+another subscription reset while a complete snapshot is displayed; the wire slot stays reserved
+until that reset finishes, without holding back the primary reply or replaying it over later events.
+At larger limits a single-ID result is already shorter than the limit and clears the subscription.
+Delivered events then update collected rows
+without periodic full scans. Only an actual server page is reconciled every 15 seconds,
+while visible, foreground, connected and idle; a short first page receives global events already.
+Delivered visible-device events apply immediately. Metadata-only updates and removals outside
+page membership do not reload it; a relevant rename or addition can reconcile its boundaries.
+This does not open another control connection. Counts and off-page state are snapshots between
+reconciliations, and are not described as globally live.
+
+Server-filtered page membership is authoritative: database collations can match `Café` for `cafe`.
+The UI does not apply a second Kotlin substring check. For a server-filtered collected snapshot,
+metadata preserves membership. Renamed members and outside names containing the filter after
+case/diacritic folding are candidates for `nodes {id,skip:0,filter}` verification against the original
+server filter. One foreground worker coalesces at most 16 candidates, waits for 500 ms of quiet,
+and spaces reads by 750 ms behind user reads. Query changes discard queued work; later renames
+invalidate an active result even if the new name is no longer a candidate. Overflow or read failure
+keeps rows/actions current and offers explicit refresh, rather than starting another full scan.
+Thus an overflowing burst may leave membership incomplete until refresh. Local fallback searches
+and ID selections keep their explicit local matching rules. A stale query or transport generation
+cannot send or apply the verification result.
+
+Missing detail/notification/transfer targets are resolved by `nodes {id,skip:0,filter:""}` without
+replacing the browser's page or query. Selected devices, chats and relay targets receive addressed
+refreshes every 10 seconds while foreground and current when their updates are not covered by a
+complete snapshot. On-page retained IDs are skipped when the domain limit exceeds one. At limit
+one another addressed read can replace their subscription, so they still need polling.
+Power observation uses addressed reads too; it never repeatedly scans the full browser collection.
+Because 1.3.1 also returns empty nodes on DB failure, absence needs two consecutive empty addressed
+replies at least one second apart, or an explicit removal event. One empty reply preserves the
+target and chat; a transport error is not confirmed absence. Removal/addition invalidation tokens
+exist only for outstanding reads and are released on every completion path.
+
+Saved card state includes the browser filter, raw search, normalized query and requested offset,
+including an offset still in flight. A notification lookup has a 15-second total deadline including
+queue wait; timeout opens the missing-target card and consumes the destination. Retrying that card
+reads only its ID while the browser snapshot is current.
+
+Android input capability is retained only within a current limited-server snapshot; transport
+loss invalidates it. Ordinary full snapshots keep their previous capability-refresh behavior.
+
+Verification: `DeviceListPolicyTest`, `NodesPagerTest`, `DeviceListBenchmarkTest`, `LargeServerUiTest`,
+`LargeServerLiveTest`; fixture instructions in `tools/livebench/LARGE_SERVERS.md`.
+
 `wss://<host>/control.ashx`, one JSON object per text frame.
 
 ### Authentication
@@ -257,6 +356,77 @@ Completed gestures reuse `PhoneTouchGesture`'s bounded timing/trajectory replay 
 rules below; the phone owner's consent is still mandatory. Pressure and tilt are ignored locally.
 See [implementation and validation](STYLUS.md) and the
 [Android MotionEvent reference](https://developer.android.com/reference/android/view/MotionEvent).
+
+### Desktop controls, stream settings and PiP (MeshCentral 1.3.1)
+
+The references in this subsection are to the **1.3.1 npm package**, plus the explicitly pinned
+[MeshAgent legacy-1.2.6 decoder](https://github.com/Ylianst/MeshAgent/blob/legacy-1.2.6/meshcore/KVM/Windows/kvm.c).
+The local bench uses that Linux-agent release; a server version alone does not identify its agents.
+
+| Setting / action | Audited encoding and source |
+|---|---|
+| JPEG quality, scale, capture interval | `00 05 00 0A 01 quality scale:u16 timer:u16`, big-endian; `public/scripts/agent-desktop-0.0.2.js:190–195` |
+| Remote scale | 1024 = full resolution, 512 = 50%, 256 = 25%; `views/default.handlebars:1495–1503`; requests the transmitted image scale, independently of local zoom |
+| Frame timer | **Milliseconds**, not fps; web options 20/50/100/400/1000 ms, `views/default.handlebars:1508–1514`; Windows decoder `meshcore/KVM/Windows/kvm.c:538–555` accepts 20–5000 ms and scale 64–4096 |
+| Initial / resized screen | Re-send compression settings, `public/scripts/agent-desktop-0.0.2.js:202–212`; UI applies them with `SendCompressionLevel` at `views/default.handlebars:10176` |
+| Physical pointer / buttons | Existing ten-byte command 2; `public/scripts/agent-desktop-0.0.2.js:582–626`; no extra mouse or pen protocol |
+| Wheel | Existing twelve-byte command 2, delta only; `public/scripts/agent-desktop-0.0.2.js:605–624`, agent `meshcore/KVM/Windows/kvm.c:512–535` |
+| Physical keyboard / secure attention | Existing commands 1 and 10; `public/scripts/agent-desktop-0.0.2.js:521,542` |
+
+The native menu offers 1–50 fps and sends `ceil(1000 / fps)` milliseconds. JPEG quality, fps and
+remote scale are **requested**, non-secret local preferences isolated by profile and node. The server
+desktop multiplexer takes
+the maximum quality and scale and the minimum capture interval across viewers
+(`meshdesktopmultiplex.js:597–616`). Another viewer can therefore raise effective settings.
+The menu labels the requested scale and explains that all three settings are requests; incoming
+screen dimensions remain the observed dimensions. No effective JPEG quality or full-frame rate is
+reported by the protocol. Reconnecting and changing
+screen size keep the chosen settings. Updating a setting also requests a refresh. The counter reports
+incoming binary payload bytes/s and **approximate** decoded framebuffer updates/s, including tile/copy
+updates: KVM does not expose a full-frame boundary. Idle rates return to zero.
+
+Three fingers scroll remotely. The per-session two-finger choice can retain the original behavior,
+scroll the remote window, or pan locally. The pinch switch also applies during pen/palm rejection;
+it does not enable rejected finger input. Phone defaults remain local pan/zoom. Mouse motion bypasses
+finger gesture recognition and uses absolute framebuffer coordinates even in trackpad mode.
+
+No native horizontal-wheel field was found in this protocol. `AXIS_HSCROLL` is mapped to the
+compatible **Shift + vertical wheel** convention, restoring only the temporary modifier the client
+pressed. Applications that do not implement that convention cannot scroll horizontally through this
+path. Hardware key pairs and repeats are captured before the IME; focus, permission and session loss
+release held inputs. Android/DeX may reserve Alt+Tab or Meta before delivery to the app, so the key menu
+retains the explicit shortcuts, including Ctrl+Alt+Del.
+`Ctrl+Alt+Shift+Esc` releases physical-key capture and opens local session options; the capture chip
+re-enables it. Tab/Enter can then operate local controls. Right Alt/Ctrl, numpad Enter/Divide use
+extended key actions and right Shift uses VK 161 **only for Windows**, as in
+`agent-desktop-0.0.2.js:385,411–430` and `views/default.handlebars:9785`. Other OSes receive generic
+Shift/Ctrl/Alt (16/17/18) without extended actions. Mouse-source trackpads using `TOOL_TYPE_FINGER`
+share the mouse path only for hover, wheel and held-button streams. Buttonless contacts remain
+available to the touch gesture recognizer. Android 14+ one-pointer native touchpad gestures use
+`AXIS_GESTURE_SCROLL_X/Y_DISTANCE` (pixel deltas) and `AXIS_GESTURE_PINCH_SCALE_FACTOR` (relative scale),
+including historical samples. Native axes are consumed once at the window callback: Compose 1.7
+can filter a MOVE with unchanged cursor coordinates or replay it after layout. DOWN is first hit-tested
+by Compose so local panels covering the canvas cannot control the covered desktop. Pending finger taps
+are cancelled when Android classifies a native gesture after DOWN; see [MotionEvent axes](https://developer.android.com/reference/android/view/MotionEvent#AXIS_GESTURE_PINCH_SCALE_FACTOR).
+`AXIS_SCROLL` is a wheel fallback. A wheel detent maps to 360 units, matching the web
+normalization (`agent-desktop-0.0.2.js:606`). Hover and the first click do not require window focus;
+losing focus still releases owned buttons.
+
+PiP is a local Android presentation mode, not a KVM command. Only the framebuffer is drawn, input is
+suppressed at the relay, and owned held keys/buttons are released on entry. The stream continues while
+the Activity is visible in PiP (`ON_PAUSE`); `ON_STOP` retains the normal background-pause policy.
+The application workspace owns one lock flag, deadline and visible-window registry for the process.
+Entering PiP or stopping the last visible window starts the deadline once; another Activity (including
+ACTION_SEND) cannot restart it. ON_PAUSE alone does not start it, preserving visible split-screen
+sessions on Android 8–10. A main-thread timer checks the deadline while PiP remains visible, and
+ON_START/ON_RESUME check it again, including after screen off. Locked PiP shows a text placeholder.
+The relay's separate app-lock gate pauses the stream, clears the published framebuffer, discards late
+tiles and prevents unpause/input even across reconnect or another window's foreground callbacks.
+PIN/biometric unlock is shared by all windows. New processes still start locked. Configuration
+recreation remains enabled; the process-owned lock and session survive it.
+Automatic PiP is persisted locally and defaults **off**. Only a connected, visible, unlocked desktop
+can arm automatic PiP; an open sheet disarms automatic entry. See
+[Android's PiP lifecycle guidance](https://developer.android.com/develop/ui/views/picture-in-picture).
 
 ### Keepalive and close
 
@@ -834,7 +1004,216 @@ Two-finger right click already existed in M5's base: `SessionGesturePolicy.onUp`
 reimplemented. Tests cover direct touch/trackpad, scroll/pinch suppression, PanZoom/Scroll modes and
 preventing a duplicate right click after long press. Physical touch acceptance remains separate.
 
-## Compatibility
+## Device invitations and administration (MeshCentral 1.3.1)
+
+Audited source: upstream MeshCentral **1.3.1**, `meshuser.js` and `views/default.handlebars`.
+These are native control-channel operations, including for offline devices; agent connectivity is
+not required. Fresh authenticated lists and known permissions are required by the mobile UI.
+
+- `createInviteLink`: `meshuser.js:4400–4445`; web options/request at
+  `views/default.handlebars:5794–5826`, response at `4070–4085`. Send `meshid`, `expire` in **hours**,
+  `flags:0` (background and interactive installation), `agents:0` (all available agents), and a
+  generated `responseid`. The server validates expire 0–99999 and flags 0–256, and checks the group
+  is viewable; it does **not** require Manage Computers here. The mobile client intentionally uses
+  a stricter enrollment policy: agent group `mtype:2`, effective **group** Manage Computers (4),
+  no user site restriction 4096 (except full administrator), and no LAN-only feature flag 2.
+  User-group grants and manage-all-groups administrators are resolved through the existing rights
+  resolver, without borrowing direct device grants. UI entry conditions in the web reference are
+  at `default.handlebars:5587–5589` and `15295–15297`.
+- Only 1, 8, 24 and 168 hours are offered; there is no unlimited link. The success response has
+  `action`, `meshid`, `expire`, `url`, `cookie`, `responseid` and `tag`; errors have `result`.
+  Validate the correlated action/group/duration and cookie, then construct `agentinvite?c=...`
+  with `serverinfo.name`, `serverinfo.port` and `serverinfo.https`, preserving the authenticated
+  domain path. Exactly like `default.handlebars:4072–4082`, use the connection hostname only
+  when the advertised name has no dot or the LAN-only feature flag is set. The response `url`
+  does not override these audited rules. The dialog shows the resulting host and port without
+  the cookie, including explicit default ports. Missing advertised fields fall back to the
+  configured endpoint for older servers.
+  Like the web UI, a configured domain `loginKey` is included for the explicitly shared invitation
+  page. Invitations are sensitive; neither URL nor cookie is logged or persisted in saved state.
+  Expiry is conservatively measured from request start, displayed as local date/time, and checked
+  again when copying/sharing. Closing the dialog discards the link. Sharing is an Android
+  `ACTION_SEND` text/plain intent within `ACTION_CHOOSER`; clipboard data is marked sensitive.
+  On API 28+, close/disposal and expiration clear the clipboard only if its single text item is
+  still this exact invitation; later unrelated clipboard content is preserved. Expired content
+  is also checked on return to the foreground, where Android permits clipboard access.
+  ZXing Core 3.5.3 (Apache-2.0, no runtime dependencies) produces QR codes locally with level M.
+- `changedevice`: `meshuser.js:3512–3666`. Send `nodeid`, `name`, `desc`, `tags` (array) and
+  `responseid`. Requires effective node Manage Computers (4). Empty array clears tags; nonempty
+  tags are trimmed, deduplicated and sorted, each at most 63 characters. Name and description are
+  bounded to 64 characters, tag input to 4096 (`default.handlebars:9462`). These are single-line
+  fields and reject ISO controls plus U+202A–202E/U+2066–2069 before trimming. The form retains its
+  opening snapshot and sends only changed fields (`default.handlebars:9494–9498`), while checking
+  permissions against the current device. Unchanged fields modified by another administrator
+  are never reverted. `result:"ok"` acknowledges the operation; errors such as `Access Denied`
+  fail it. Read `nodes` once with a fresh correlation id and match only the sent fields before
+  reporting success (no five-read polling loop). These reads use a distinct correlation-id prefix
+  and update only the verified target; they never replace the full cached list or reset other
+  devices' transient session capabilities. Late verification replies are also isolated. Normal
+  `changenode` events update the list.
+- Notes are a **separate field**, not `desc`: `setNotes` at `meshuser.js:3779–3798` requires
+  Set Notes (128); send `id` and `notes`, an empty string removes the note. `getNotes` at
+  `4343–4365` requires visibility and returns `{action:"getNotes", id, notes}` where `notes:null`
+  means empty. Neither command echoes `responseid`; set has no success reply and emits no node
+  change event. Reads are serialized/correlated by `id`, validate the response shape, and repeat
+  after writes until the expected text is observed. After a read timeout/cancellation that node's
+  untagged read lane refuses further requests until reconnect, so a late reply cannot falsely
+  confirm a subsequent save. The dialog offers an explicit Reconnect action and disables further
+  saves until recovery. The editor cannot save before the initial read succeeds. The client
+  bounds note writes to 16000 characters and preserves the draft on failure. An oversized draft
+  shows the length limit and disables Save without showing a permission/reconnection error.
+- `changeDeviceMesh`: `meshuser.js:2844–2962`. Send one node in `nodeids`, destination `meshid`
+  and `responseid`. Destination needs Manage Computers (4) (`2866`), source **node** and destination
+  need Edit Mesh (1) (`2901–2905`), and the source/destination **group** types must match
+  (`2895–2897`), independently of a stale or absent `node.mtype`. This differs from
+  merely checking Manage Computers on both groups. The confirmation names the destination and
+  warns that access follows it. `result:"ok"` is followed by a fresh nodes read. The server event
+  at `2951` is `nodemeshchange` with `node`, `oldMeshId`, `newMeshId` and **no `meshid` at event
+  level**. Move/group events coalesce through a 200 ms queue: at most one group/node snapshot
+  runs and one trailing snapshot waits. Only `meshes` and `nodes` are requested, never repeated
+  `serverinfo`/`authcookie`. Disconnect discards pending work. This recomputes names, rights and
+  visibility (including a device moved out of accessible groups) without a read storm.
+
+All mutation commands recheck fresh permissions immediately before sending. Dialog confirmation
+is separate from editing, cancellation sends nothing, disconnected/stale state disables writes,
+and failures/timeouts never produce a success message. Bounded server rejection reasons are shown
+through the existing localized error renderer. No automatic mutation retries are made.
+
+The opt-in `DeviceAdminLiveTest` accepts only `https://10.0.2.2:4443/` and a UI-authenticated local
+administrator held in SecureVault. It checks the real invitation installation page, edits an offline
+synthetic device, verifies notes and a move, then independently restores group, metadata and notes
+in `finally`. It is disabled unless the runner receives `deviceAdminLive=true`.
+
+## Agent TCP port forwarding (MeshCentral 1.3.1)
+
+The authenticated control channel supplies `authcookie.cookie` (`meshuser.js:6689–6695`),
+bound to the user, domain and client IP. Each accepted local TCP connection opens a distinct
+`meshrelay.ashx?auth=…&nodeid=…&tcpport=…&p=14[&tcpaddr=…]` WebSocket under the same base path.
+The server generates the pairing ID and agent-side `rauth` cookie and sends the tunnel command
+itself (`meshrelay.js:945–989`). No separate control tunnel command, `getcookie`, reconnect or
+alternative authorization path is attempted. Cookies/complete URLs never enter stored rules or logs.
+
+`p=14` is the Web-TCP audit label (`meshrelay.js:54`). The server permits either Remote Control
+(`0x8`) or Relay (`0x200000`) rights; full administrators also qualify (`meshrelay.js:951–954`).
+The protocol-rights filter at `meshrelay.js:73–80` has no dedicated TCP denial bit. The domain's
+SSH/SFTP/RDP/VNC UI feature flags are not TCP authorization checks. `tcpaddr` is passed to the
+agent without an additional domain filter; omitted means `127.0.0.1` (`meshrelay.js:964`).
+The Android UI fails closed while rights/device state are unknown and excludes Android agents
+and server-local (`mtype=3`) devices. The server remains authoritative on every connection.
+
+Pairing sends text `c` or recorded-session `cr` (`meshrelay.js:399–417,564–581`). This confirms
+the two WebSocket peers, not a successful connection to the TCP target. The agent attempts
+`tcpaddr:tcpport`, discards the pairing marker, and pipes binary WebSocket frames as raw
+TCP bytes (`agents/meshcore.js:2511–2519,2575–2587`). The viewer sends no terminal usage
+number and injects no WebSocket control text into the TCP stream. Recording status is not
+interpreted as end-to-end encryption: the MeshCentral server and agent handle plaintext TCP.
+
+Denied permissions or missing nodes may close without a useful reason (`meshrelay.js:948,953–954`).
+A 20-second deadline covers pairing only. In 1.3.1 the agent's `net.createConnection` has no
+target-error handler (`agents/meshcore.js:2510–2518`): an unreachable target can remain open
+after `c` and occupy a connection slot indefinitely. The UI says “Local port open”, explains
+this condition, and offers explicit stop. No target-data timeout is invented for legitimate
+idle protocols such as SSH. Clients may apply their own timeout.
+
+A refusal or timeout before pairing stops the rule only when it has no other connections.
+Existing siblings retain the listener; a certificate/TLS-policy failure remains fatal to the rule.
+No failed connection is retried automatically.
+After pairing, a transport failure or buffer limit resets only that local TCP connection and
+leaves its siblings and listeners open. Failed and cancelled streams use `SO_LINGER=0` (RST),
+so a client which reads until EOF receives an error rather than a successful short response.
+Normal remote closure (including MeshCentral's bare 1005 close) remains FIN; an explicit
+WebSocket error close is a connection failure. Local client disconnects never stop siblings.
+Control loss or rights revocation stops affected rules; a fresh sign-in never restarts them.
+
+The alternative cookie-routing path is `meshuser.js:6917–6933` and `meshrelay.js:894–944`;
+`getcookie` itself requires Remote Control, not merely Relay. `localrelay.ashx` is different:
+the server connects to `node.host`, ignoring `tcpaddr`, and is registered only outside WAN-only
+mode (`webserver.js:7657–7665`, `meshrelay.js:1203–1218,1337–1349`). Neither path is used here.
+
+Each rule exclusively binds `127.0.0.1` and available `::1` on the same port, never a wildcard.
+IPv4-only hosts (no configured/up IPv6 loopback, or an IPv4-only JVM) retain the IPv4 listener.
+An occupied IPv6 port is not an availability fallback: both bindings must then be released.
+Android/Linux uses SO_REUSEADDR for restart after TIME_WAIT, not SO_REUSEPORT. Windows JVM
+tooling retains exclusive binding because its address-reuse semantics differ.
+All required binds must succeed before the rule is published; a failure releases them all. The
+port is immediately reusable after stop: the manager waits for any native accept operation to
+return before reporting stopped, without waiting for a callback that needs the manager lock. An automatic
+port may try up to 16 local port candidates to resolve IPv6 collisions. There are at most
+eight active rules and 16 total connections across both families. Outgoing reads pause at
+256 KiB of OkHttp queued data with a 5–100 ms exponential polling delay. Incoming callbacks
+write directly to the local socket; individual frames over 1 MiB are rejected.
+
+TCP relay Ping runs every 120 seconds, while the control channel retains its 30-second
+heartbeat and the same TLS policy governs both. The raw relay write timeout is explicitly
+120 seconds; the control client keeps its default. OkHttp otherwise times out WebSocket writes
+after ten seconds under backpressure. The longer Ping interval tolerates short reader
+backpressure, but cannot keep an idle connection alive behind a proxy with a 60-second idle
+timeout. Such a failure is isolated to that connection. Clients can use their own protocol
+keepalive; the app never injects application bytes or reconnects failed streams.
+
+After local EOF, the app waits for the outgoing queue, renewing its 120-second stall deadline
+whenever the queue shrinks. A progressing upload is not limited to 120 seconds in total.
+Expiry or remote EOF with unsent bytes resets the client. An empty queue confirms transport
+writes, not acknowledgement by the target application. Normal completion uses WebSocket
+close(1000), not cancel(). After queue drain, it allows five seconds of quiet time from the last received frame
+(and an initial five-second grace period). An in-progress blocked local write also defers
+closure. Replies which continue arriving for more than five seconds are therefore drained.
+There is still no upstream FIN frame: protocols which need remote FIN before replying are unsupported.
+
+Rules automatically stop after five minutes with no local TCP connections. The timer starts
+at enablement and restarts after the last connection ends. An open connection, even an idle
+SSH session or an unreachable paired target, prevents this rule-level timeout. Timers are
+cancelled on admission and stop, and never restore a rule after process death.
+
+The user-started Android foreground service uses `connectedDevice` and declares
+`FOREGROUND_SERVICE_CONNECTED_DEVICE` plus `CHANGE_NETWORK_STATE`, matching ongoing
+communication with external devices over a network. It returns `START_NOT_STICKY`, has no
+boot receiver and stops with the last route. Notifications are rebuilt only when active rule
+names, ports or connection counts change; bytes and repeated starts do not cause reposts.
+Updates are conflated and spaced at least one second apart, retaining the latest trailing count.
+Repeated service starts do not reset this limit. Initial foreground publication remains immediate.
+Settings lists all saved rules of the current profile even without a server/device list;
+inactive rules can be deleted to reclaim slots. PIN/biometric locking protects the UI only:
+existing tunnels continue for external clients, with notification stop still available.
+The notification stops all routes; the device screen stops only the selected profile/device's
+routes. See the [Android foreground service types](https://developer.android.com/develop/background-work/services/fgs/service-types#connected-device).
+
+External launch links contain only the actual local endpoint. Microsoft RDP uses
+`rdp://full%20address=s:127.0.0.1:<port>` as specified by the
+[Microsoft Android-compatible URI contract](https://learn.microsoft.com/en-us/windows-server/remote/remote-desktop-services/remote-desktop-uri#legacy-rdp-uri-scheme).
+VNC and SSH handlers use `vnc://` and `ssh://`; absent handlers produce a local hint.
+
+## Manual terminal reconnect and computer file batches (MeshCentral 1.3.1)
+
+A reconnect constructs a **new** Agent p1 or SSH p11 relay from the current control session after checking the same profile/account/device and its current rights. The terminal renderer is retained. An ordered local marker resets parser/modes without clearing scrollback, and restores the viewport. Old collectors/timers are cancelled; generation checks reject late output and WebView input. No command or submitted credential is stored for reconnect. SSH follows its normal authentication exchange again; input stays disabled until shell output proves readiness.
+
+Before accepting fresh output, the old screen tail and boundary marker are scrolled into history. Grid resizing preserves a reader's viewport. After reconnect the local xterm parser consumes ED 3 (`ESC[3J`) only until the first accepted input, protecting history from shell startup. After input, explicit `clear` can erase history again; ED 0/1/2 retain their normal screen semantics. Native tests cover both sides of that boundary.
+
+The archive protocol was checked against upstream **1.3.1**:
+
+- `agents/meshcore.js:4309-4336`: p5 request `{action:"zip", path, files:[name], output}`. The Agent creates `path/output` using `zip-writer`, with `path` as the base path. It silently ignores an empty/missing source set and concurrent ZIP requests.
+- `agents/meshcore.js:4320-4335`: binary UTF-8 JSON replies `dialogmessage/zipping`, optional `dialogmessage/zippingFile`, then `dialogmessage` with explicit JSON `msg:null` and `refresh` when the output stream closes. These messages carry no request ID. The controller allows one archive operation and requires start, explicit close, then refresh; missing `msg` is not completion.
+- `agents/meshcore.js:4356-4359`: `{action:"cancel"}` cancels ZIP work. Cleanup can race the final stream-close callback; loss of the relay is not proof of cleanup.
+- `views/default.handlebars:12649-12660`: the web UI sends the same `zip/path/files/output` fields and adds `.zip` to the output name.
+- `apprelays.js:2092-2108`: SFTP `rm` starts asynchronous `unlink` and optionally `rmdir`, without an acknowledgement. This relay has no ZIP action. SFTP folders are enumerated recursively with `ls` and downloaded using the existing exact-size/stop/postflight exchange. Nonempty SFTP directory deletion remains server-dependent.
+
+The client uses a UUID temporary archive name and checks it is absent before creation. A fresh listing must confirm that exact actionable regular file of at least 22 bytes. Downloads check size, reread the owned SAF document to compare SHA-256 with received bytes, then re-list the remote parent. ZIP validation checks EOCD/ZIP64, central/local header consistency and bounds, with at most 65,535 entries and 32 MiB of metadata. It does not decompress members or verify their CRC. A missing start signal after five seconds triggers cancel and a fresh-listing absence fence before recursive fallback. The UI warns that ZIP creation needs space and write access on the remote disk; the protocol provides no trustworthy disk-space preflight.
+
+Cancellation waits up to five seconds for archive close/refresh before relay teardown, then checks and removes the exact owned temporary name when possible. A leftover produces an exact-path in-app notice and, if permitted, a private notification. Cleanup failure after a verified download is a success with warning, not a reason to download again. No remote checksum API or ZIP capability flag is invented.
+
+Multi-delete separates files (`rec:false`) and directories (`rec:true`). Immediately before each group, a fresh listing must match each confirmed name, type and file size; a mismatch aborts the group. Fresh listings then verify absence, with at most ten metadata polls for asynchronous SFTP completion and no repeated `rm`. This bounds the confirmed operation but is not an atomic server-side compare-and-delete. Windows aliases including all-dot names, trailing dots/spaces, device names and alternate stream syntax remain visible without actions.
+
+Batch reservations prevent overlap. SAF selection, pending work and asynchronous closing cleanup keep the foreground service active. Queues lease persistable URI permissions, preserve pre-existing grants and release only acquired bits on replacement/close. Queue metadata remains process-local. Single files use CreateDocument; groups use a tree. A refused file keeps the relay usable; a dead or unsynchronised relay pauses remaining rows before creating documents. Retry is explicit and can cover all unfinished items. Upload retry retains the original content URI and confirmed target; its 31-second cancellation fallback stops only relay readers, preserving the worker for reconnect.
+
+`apprelays.js:2047,2051-2052` closes SFTP on readdir errors and maps every nondirectory entry to `t:3`, exposing size but discarding `longname`/mode. The client cannot reliably identify links/FIFOs. It attempts these entries as files, checks exact size, reports refusal/mismatch with the path, and pauses on a stalled open. A link target matching the advertised size is indistinguishable from a regular file. Recursive folders remain `name.partial` until every descendant succeeds; completed contents are retained on failure. Progress publication is capped at 10 Hz with exact final bytes; queue rows are lazy.
+
+Native tests cover queue selection/retry/cancel, SAF ownership, recursive SFTP, ZIP reply ordering/cleanup, deletion confirmation and terminal history/viewport/credentials. Opt-in `ToolsPlusLiveTest` uses a dedicated emulator's prior UI login and only `https://10.0.2.2:4443/`; it checks a synthetic 30-file ZIP by independent SHA-256 and deletes two owned test files. `ToolsPlusLiveTerminalTest` disables and restores only that emulator's Wi-Fi/mobile data and checks the remote command counter after manual reconnect. These tests do not establish physical-device or general server-version acceptance.
+
+`SftpLiveAcceptanceTest` is separately opt-in (`-e sftpLive true`). It uses real OpenSSH through an isolated MeshCentral 1.3.1 relay on `https://10.0.2.2:4467/`, the real Files UI and Android's SAF picker. Its local metadata bridge on port 19867 provides synthetic fixture metadata, filesystem SHA-256 manifests and bounded fixture mutations; credentials are seeded separately into the debug app's private cache via stdin and must be removed before teardown. `tools/livebench/sftp_fixture.py` creates 200 ordinary files (including eight empty files and a 24 MiB file), Unicode/spaced names, four links, permission failures and a FIFO. Source hashes are computed independently of the Android download path. Whole-folder failures retain `.partial`; explicit retry checks all regular files. Additional cases cover per-file recovery, denied-directory disconnect, FIFO deadline, cancellation and confirmed deletion after a file-to-directory replacement.
+
+The real OpenSSH check confirms the upstream boundary above: `apprelays.js:2047` calls `obj.close()` on a failed `readdir`, while `:2051-2052` collapses all nondirectory types to `t:3`. An independent relay-only probe reproduced this before Android acceptance. A recoverable `download/cancel` now reports a file refusal without falsely saying the session ended; size mismatch and timeout retain their separate reasons. No automatic SSH credential replay or server modification is introduced.
+
+## Compatibility summary
 
 The client supports native Mesh Agent desktop, terminal and files, plus server-mediated SSH/SFTP.
 Intel AMT KVM, Web-RDP, Web-VNC and WebRTC remain unimplemented.
@@ -843,3 +1222,140 @@ A domain access key (`loginKey`) is supported as described in the 1.3.1 authenti
 A server that blocks tool clients with `notools` or requires browser SSO can still refuse the native
 sign-in path. The app surfaces that refusal; it does not bypass these policies. Verify each protocol
 detail against the upstream source for the server version you run; a general support matrix is not claimed.
+
+## Native user-to-computer chat (MeshCentral 1.3.1)
+
+Sources below refer to the upstream 1.3.1 package, not approximate APIs.
+
+- `views/default.handlebars:8644–8653` opens the administrator messenger and sends
+  `{"action":"meshmessenger","nodeid":"node//example"}` on `control.ashx`.
+  `meshuser.js:2198–2214` requires `MESHRIGHT_CHATNOTIFY` (16384) and routes `openUrl`
+  with `/messenger?id=meshmessenger/<nodeid>/<userid>` to the agent. In addition,
+  `meshuser.js:277–293` requires Remote Control (8) or Remote View (256) for routing.
+  LAN-only mode rejects this action (`meshuser.js:2194`).
+- `agents/meshcore.js:2079–2084` opens the user's browser and returns success/failure.
+  This client does not interpret successful control-channel send as proof that the
+  user opened a browser. Only the paired-relay handshake confirms another participant.
+  Official Android agent id 14 is hidden: its console link operation is a separate
+  protocol, and support for this computer-agent `openUrl` path is not established.
+- `webserver.js:4017–4067` validates the messenger ID shape (seven slash-delimited
+  segments). `views/messenger.handlebars:756–775` opens
+  `meshrelay.ashx?id=meshmessenger/node/<domain>/<node>/user/<domain>/<user>&auth=<cookie>`.
+  The administrator uses **`authcookie.cookie`**, containing `userid`, `domainid` and
+  IP (`meshuser.js:6689–6695`); `rcookie`/`rauth` belongs to the agent side of other
+  tunnels and does not authenticate the administrator here. The common client refreshes
+  this cookie during the signed-in control session. It is never logged or persisted.
+- `webserver.js:9412–9427` accepts that encrypted query cookie for WebSocket authentication,
+  validates domain and optional IP binding and applies a 60-minute age limit. Existing
+  session cookies are also supported by the server. The native chat uses the same
+  immutable TLS policy, pinned server key and non-redirecting OkHttp socket factory as
+  the other relays; it never adds `x-meshauth` or remembered-device credentials to chat.
+- `meshrelay.js:338–377` pairs by ID and requires at least one authenticated side.
+  Node-to-user pairing has an upstream TODO for verifying the exact authenticated
+  user (`:346–348`); the app therefore derives IDs only from its current authenticated
+  user and currently authorized device. Chat is server-relayed, not end-to-end encrypted.
+- Raw text `c` means two relay sockets paired; `cr` also indicates server recording
+  (`views/messenger.handlebars:763–775`). The screen displays recording explicitly.
+  Text is `{"action":"chat","msg":"raw Unicode text"}` (`:254–264`, `:432`).
+  Quotes, newlines and HTML-looking content are JSON-escaped on the wire and rendered
+  as plain selectable text. There are no actionable links or HTML interpretation.
+- `{"ctrlChannel":"102938","type":"ping"}` receives a matching `pong` (`:421–428`).
+  A valid `random` frame confirms the browser without starting WebRTC. Typing, WebRTC negotiation,
+  image, push-status and unknown frames are ignored. File offers (`file`/`fileUploadStart`) receive `fileUploadCancel` with the same numeric
+  id, provided it is finite and in [0, 1), matching `messenger.handlebars:453–489`. `action:close` is treated as a refusal. No WebRTC negotiation is sent, so
+  browser text remains on the WebSocket rather than switching transports.
+- No message acknowledgement or delivery ID exists. A successful send means OkHttp
+  accepted the text, not that the remote user read it. Messages are never replayed.
+  Sending before browser confirmation is disabled (`messenger.handlebars:391` is the web equivalent).
+- There is no distinct goodbye frame. Socket close after pairing means the peer left
+  **or** the connection ended; failure is reported separately without asserting why the
+  person disappeared. `meshrelay.js:656` gives an unpaired relay a 15-second timeout
+  outside Firebase mode. An unpaired first invitation ends in an explicit “user did not open”
+  state. A paired transport loss first reconnects silently; an already-open browser itself
+  retries after 500 ms (`messenger.handlebars:371–375`). A manual window request probes the
+  relay for 2.5 seconds before inviting; `c`/`cr` suspends that pending invitation. Requests are
+  limited to one per five seconds. An initial/manual invitation that has not yet been sent
+  survives transport failure during connection/probing, and is sent at most once; automatic
+  recovery after an established conversation never opens another browser window. Recovery
+  has a 20-minute retained-pair deadline and at most 120 seconds waiting for fresh control credentials.
+  `c`/`cr` only proves two sockets were paired: the server can pair two authenticated sockets
+  (`meshrelay.js:366–412`). The app enters Verifying and requires browser `random`
+  (`messenger.handlebars:772`) or a first text/file frame within 3 seconds. Neither ping nor pong
+  proves a browser: the server can emit both itself (`meshrelay.js:325–330,433–434`), and the
+  browser's pong has no challenge identifier. This deliberately uses the first-browser-frame
+  confirmation path, preventing server keepalives from confirming a ghost pair.
+  Missing proof or closure within 3 seconds of opening without `c` enters ServerRetained:
+  MeshCentral rejects a third socket (`meshrelay.js:622–624`) while the old TCP pair may live for
+  240 seconds plus keepalive probes (`meshrelay.js:335`). Retries run every 5 seconds, with the
+  same 20-minute budget, no extra window and sending disabled; deadline exhaustion becomes Failed.
+  Every unpaired socket also has a local 20-second deadline, including Firebase servers without
+  a server timeout (`meshrelay.js:635–652`). Normal unpaired expiry becomes NotOpened/PeerLeft.
+  Five consecutive transport/proxy failures stop ordinary recovery; browser confirmation resets
+  that count. Duplicate-close recovery uses its separate 20-minute budget, allowing the Linux TCP
+  retransmission window to expire. A manual request reuses only an unpaired socket younger than
+  five seconds; an older socket is replaced before probing/inviting, so its old deadline cannot
+  cancel the new request. No messages are replayed or queued for offline/push delivery; callbacks
+  are attempt-fenced.
+
+The client retains at most 200 messages and a draft in memory for the session, with
+local send/receipt timestamps. Outbound text is a single line, limited to 4096 UTF-16 code
+units; IME Send and Enter send it. Longer incoming text is displayed as a bounded prefix
+with an explicit truncation marker, without splitting a surrogate pair. The streaming JSON
+scanner bounds decoded text/metadata and nesting, including escaped strings and huge unknown
+fields. Parsing runs on the WebSocket reader, not Main. OkHttp has already buffered the raw
+message: this bounds additional parsing/history memory, not the transport's frame buffer.
+
+Agent connectivity is required only to send an invitation. The browser relay remains usable
+when the agent goes offline. A temporary control disconnect or network change preserves the
+conversation, draft and unread count. A replacement relay waits for a fresh authcookie from
+the restored control connection. The default-network tracker ignores a late onLost for the
+previous network; a network handoff refreshes control authentication and its IP-bound cookie
+only while a chat is active. Passive chat history does not tear down other tools. Every network
+handoff marks the chat cookie stale, including late cookie replies on the old control connection;
+the next explicit chat request refreshes control before a new relay can use the replacement cookie.
+Fresh snapshots recheck grants/deletion, even when the agent is offline. Logout, identity/
+server/key changes, rejected authentication, revoked rights or explicit closure still close
+the relay and erase the conversation. Back only navigates; closing with history/draft requires
+confirmation. Neither process restart nor a notification automatically creates a conversation.
+
+Unread counts increase whenever the chat screen is not visible, including another foreground
+tool. They appear in the session list, the main session action, and over the desktop. Opening
+the resumed chat clears the count. Generic private notifications use the existing channel,
+`app_name` and `setOnlyAlertOnce(true)`; updates are coalesced to at most one per second per
+conversation with a trailing latest count. Reading/closing cannot resurrect a pending notice.
+Chat text is never included or written to the event feed.
+An immutable intent identifies the existing profile/session and a local delivery sequence
+prevents replay on Activity rotation while accepting a new notification after restoration.
+
+An explicit foreground chat action starts a non-exported, non-sticky `ChatService`. It declares
+`remoteMessaging` and `FOREGROUND_SERVICE_REMOTE_MESSAGING` and passes the corresponding service
+type on API 34+. A low-importance ongoing notification keeps the waiting, connected or recovering
+conversation visible to Android; a StateFlow of active conversations stops the service when
+none remain, without polling. Recovery does not reset the transcript scroll position. Outside Connected, the status and retry
+action stay pinned outside the transcript, including a long conversation scrolled to its end.
+With a landscape keyboard they share the composer row: status labels the draft field and retry
+replaces the disabled send action, preserving room for the draft, Back and Close. It
+never restarts a conversation after process death. This follows the Android
+[remote messaging foreground-service contract](https://developer.android.com/develop/background-work/services/fgs/service-types#remote-messaging).
+Background message notifications still require Android notification permission; process death,
+force-stop or device network/power policies are not durable-delivery guarantees.
+
+Not supported: user-to-user administration chat, official Android agent chat, files,
+audio/video, WebRTC, images, typing indicators, exports and Firebase push chat. Server-side
+logging/recording follows MeshCentral configuration independently of local memory-only history.
+
+## Native processes and services (MeshCentral 1.3.1)
+
+The existing authenticated, TLS-pinned `control.ashx` socket carries `{action:"msg", type, nodeid}`. Types `ps` and `services` read lists; `psinfo` adds numeric `pid`. Replies have `action:"msg"`, the same type, `nodeid`, and `value` as JSON text for lists (meshcore 1.3.1); `psinfo` returns an object. The parser also accepts already-decoded objects/arrays. `psinfo` also returns `pid`. The agent does not echo `tag`/`responseid`; routing acknowledgements do not contain results. `TaskToolsBroker` isolates pending reads by node/type (plus PID for details). Ordinary cancellation retains an abandoned slot for up to 15 seconds to consume its late reply, preventing another request of that type from being sent first. Once consumed, fresh reads and mutations resume without reconnecting; pending-slot errors are retried by the visible screen. A real request timeout or an expired abandoned slot releases the slot but makes subsequent replies display-only until the agent goes offline or the control connection changes. A possibly delayed old reply never verifies a new request.
+
+`ps` is an object keyed by PID, each entry containing `cmd` and optional `user`/`path` (the live Linux agent also includes `pid`). `services` is an array or numeric-keyed object. Windows entries contain `name`, `displayName`, optional `status.state`/`status.pid` and `startType`. Live Linux entries contain `name`, `serviceType`, `escname`, `conf`, `description` and sometimes top-level `state`. Missing fields stay unknown; malformed lists are errors, never empty verification snapshots. A Linux `ps` header is ignored only when its key/pid are `PID` and user is `USER`, and at least one real process remains. Identical duplicate Linux service rows are collapsed; conflicting duplicates fail closed.
+
+`pskill` sends `value:"<pid>|<name>"`; service mutations use `serviceStart`, `serviceStop`, `serviceRestart` and exact `serviceName`. There is no success acknowledgement. The client confirms selection, checks current permissions/connectivity again, reads a fresh preflight list, dispatches once, then polls within a 10-second (process) or 15-second (service) window. The deadline is checked between polls: an in-flight read finishes or reaches its own 15-second timeout, so total verification can exceed the window by one read. Process success requires a nonempty snapshot retaining a strict majority of pre-command identities and absence of the previous PID. Only Windows may also infer termination from a changed name at the same PID; on Linux/macOS/unknown platforms that change remains unverified. Service start/stop requires explicit state or the guarded systemd observation described below; restart requires a stopped-to-running observation or a changed nonzero service PID. Missing/late/malformed data never proves completion. No automatic retry of mutations. A confirmation dialog pauses periodic refresh. A confirmed action waits for an already-active read; cancellation before dispatch never says that a command was sent.
+
+Server `meshuser.js` allows routing with REMOTECONTROL (8) or REMOTEVIEWONLY (256); `agents/meshcore.js` does not enforce mutation rights here. The client therefore requires known current rights: either bit permits reading; mutations require bit 8 with all of 256, 4096 and 65536 absent, or FULL (-1). As in `default.handlebars:9605`, agent 14 remains read-only even after a successful list probe. The server input-disable flag `features2 & 0x2000` forbids mutations even for FULL; absent `features2` is zero, matching the web client's JavaScript bitwise test. `MeshRights.allowsUnrestrictedInput` is shared with the existing phone-input check. Null rights fail closed. PIN locking removes the screen; lifecycle pause stops polling and cancels work. Error states hide the periodic-refresh claim; uncertain data is identified by its error, not mislabeled as missing mutation rights.
+
+Opening a service's Details sends `service` with `serviceName`. The agent also falls through to a `services` reply. The broker reserves both slots and consumes both replies in either order. If either part times out, its slot is released but future replies of that type become display-only until reconnection, so an unconsumed fallthrough cannot verify a later action. Details must identify the requested service. Startup type is retained for the screen session when enumeration omits it and refreshed on opening Details again. Missing fields stay unknown.
+
+Sources: MeshCentral 1.3.1 `meshuser.js:277-299,1021-1104`, `agents/meshcore.js:1498-1625`, and `views/default.handlebars` task-tools functions. Sanitized live Linux and synthetic Windows fixtures are in `app/src/test/resources/task-tools/`.
+
+The distributed Linux agent's embedded `service-manager` builds a table with `systemctl --type=service --state=running`. Its JSON error path returns an empty table, while enumeration still returns unit files. Thus absence of `RUNNING` is not unconditional proof of stopping. The client infers a transition only for a previously running systemd unit still present in a majority-preserving list, with a majority of the other running units surviving as witnesses. A completely empty running table remains unknown. The corresponding upstream module is [service-manager.js](https://github.com/Ylianst/MeshAgent/blob/master/modules/service-manager.js); review evidence also records the exact embedded module extracted from the tested binary.

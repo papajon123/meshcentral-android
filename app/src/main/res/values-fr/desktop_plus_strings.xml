@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">Geste à deux doigts</string>
+    <string name="desktop_gesture_default">Comportement d\'origine</string>
+    <string name="desktop_gesture_scroll">Faire défiler la fenêtre distante</string>
+    <string name="desktop_gesture_pan">Déplacer l\'image</string>
+    <string name="desktop_pinch">Pincer pour zoomer</string>
+    <string name="desktop_three_fingers">Trois doigts font défiler la fenêtre distante.</string>
+    <string name="desktop_scale">Échelle de l\'image demandée : %1$d%%</string>
+    <string name="desktop_pip">Image dans l\'image</string>
+    <string name="desktop_pip_auto">Continuer à regarder en quittant l\'application</string>
+    <string name="desktop_stream_rate">≈ %1$.1f mises à jour/s · %2$d B/s</string>
+    <string name="desktop_input_help">Le clavier et la souris physiques fonctionnent sur le bureau. Android peut réserver Alt+Tab ou Meta ; utilisez le menu des touches dans ce cas. La molette horizontale utilise Maj + molette lorsqu\'elle est prise en charge.</string>
+    <string name="desktop_rate_help">La qualité, l\'échelle et la limite de trames sont des réglages demandés. D\'autres spectateurs peuvent augmenter la qualité, l\'échelle ou la fréquence de mise à jour. Le compteur mesure les mises à jour de tuiles, et non les trames complètes.</string>
+    <string name="desktop_keyboard_capture">Capturer le clavier physique</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc libère le clavier et ouvre les options de session.</string>
+</resources>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">2本指のジェスチャー</string>
+    <string name="desktop_gesture_default">元の動作</string>
+    <string name="desktop_gesture_scroll">リモートウィンドウをスクロール</string>
+    <string name="desktop_gesture_pan">画像をパン</string>
+    <string name="desktop_pinch">ピンチでズーム</string>
+    <string name="desktop_three_fingers">3本指でリモートウィンドウをスクロールします。</string>
+    <string name="desktop_scale">要求された画像スケール: %1$d%%</string>
+    <string name="desktop_pip">ピクチャーインピクチャー</string>
+    <string name="desktop_pip_auto">アプリを離れても表示を続ける</string>
+    <string name="desktop_stream_rate">≈ %1$.1f 更新/秒 · %2$d B/s</string>
+    <string name="desktop_input_help">ハードウェアキーボードとマウスはデスクトップで動作します。Android が Alt+Tab や Meta を予約している場合があります。その場合はキーメニューを使用してください。水平ホイールは、対応している場合、Shift + ホイールで動作します。</string>
+    <string name="desktop_rate_help">画質、スケール、フレーム上限は要求設定です。他の閲覧者は画質、スケール、更新レートを上げられます。カウンターはタイル更新を数えており、フレーム全体ではありません。</string>
+    <string name="desktop_keyboard_capture">物理キーボードをキャプチャ</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc でキーボードを解放し、セッション オプションを開きます。</string>
+</resources>

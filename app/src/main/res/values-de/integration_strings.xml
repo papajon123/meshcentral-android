@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">Dieses Gerät ist nicht mehr verfügbar. Öffnen Sie die App.</string>
+    <string name="integration_favorites">Favoriten</string>
+    <string name="integration_updated">Aktualisiert: %1$s</string>
+    <string name="integration_widget_empty">Öffnen Sie die App und fügen Sie Favoritengeräte hinzu.</string>
+    <string name="integration_widget_description">Favoritengeräte und ihre zuletzt bekannte Verfügbarkeit</string>
+    <string name="integration_last_known">Zuletzt bekannter Status</string>
+    <string name="integration_open_to_refresh">Öffnen Sie die App, um eine Verbindung herzustellen und zu aktualisieren.</string>
+    <string name="integration_refresh">Aktualisieren</string>
+    <string name="integration_open_app">App öffnen</string>
+    <string name="backup_title">Sicherung der Einstellungen</string>
+    <string name="backup_description">Exportieren Sie Serverprofile, Favoriten, Tastenkombinationen, Befehlsausschnitte und App-Einstellungen. Passwörter, Sitzungstoken, Cookies gemerkter Geräte und die App-PIN sind ausgeschlossen. Befehlsausschnitte können von Ihnen eingegebenen Text enthalten; prüfen Sie sie vor dem Teilen.</string>
+    <string name="backup_export">Datei exportieren</string>
+    <string name="backup_import">Datei importieren</string>
+    <string name="backup_include_keys">Server-Anmeldeschlüssel einschließen (nur verschlüsselt)</string>
+    <string name="backup_password">Sicherungspasswort (mindestens 8 Zeichen)</string>
+    <string name="backup_password_hint">Ein Passwort verschlüsselt die gesamte Datei. Bewahren Sie es sicher auf; es kann nicht wiederhergestellt werden.</string>
+    <string name="backup_confirm_password">Passwort bestätigen</string>
+    <string name="backup_password_mismatch">Die Passwörter müssen übereinstimmen und 8–1024 Zeichen enthalten.</string>
+    <string name="backup_busy">Wird verarbeitet…</string>
+    <string name="backup_saved">Sicherungsdatei gespeichert.</string>
+    <string name="backup_failed">Die Sicherung konnte nicht verarbeitet werden. Prüfen Sie Datei, Formatversion, Passwort und Speicherzugriff.</string>
+    <string name="backup_preview">Import prüfen</string>
+    <string name="backup_preview_explanation">Profile werden als neue Profile hinzugefügt. Bestehende Profile, Anmeldedaten und PIN bleiben erhalten. Prüfen Sie die Serveradressen und angehefteten Schlüssel vor dem Bestätigen.</string>
+    <string name="backup_profile_details">%1$d Favoriten · %2$d Tastenkombinationen · %3$d Befehle</string>
+    <string name="backup_pinned_key">Angehefteter Serverschlüssel: %1$s</string>
+    <string name="backup_contains_key">Enthält einen verschlüsselten Server-Anmeldeschlüssel</string>
+    <string name="backup_apply_preferences">Auch Darstellung, Screenshot-Schutz, Verzögerung der automatischen Sperre und Stift-Einstellungen ersetzen</string>
+    <string name="backup_confirm_import">Profile hinzufügen</string>
+    <string name="backup_imported">%1$d Profile hinzugefügt. Wählen Sie ein Profil aus und melden Sie sich an.</string>
+    <string name="backup_capacity">Nicht genügend freie Profileplätze. Entfernen Sie ungenutzte Profile vor dem Import.</string>
+    <string name="backup_decrypt">Sicherung entschlüsseln</string>
+    <string name="backup_no_profiles">Konfigurieren Sie vor dem Export ein HTTPS-Serverprofil.</string>
+</resources>

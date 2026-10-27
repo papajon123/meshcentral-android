@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">डिवाइस आमंत्रित करें</string>
+    <string name="admin_invite_help">जिसके पास यह लिंक है, वह कोई भी व्यक्ति “%1$s” में एजेंट इंस्टॉल कर सकता है। इसे केवल उसी व्यक्ति के साथ साझा करें जिसकी आप मदद करना चाहते हैं।</string>
+    <string name="admin_invite_mode">किसी भी उपलब्ध एजेंट को बैकग्राउंड में और इंटरैक्टिव तरीके से इंस्टॉल करने की अनुमति देता है।</string>
+    <string name="admin_expiry">लिंक की अवधि</string>
+    <string name="admin_create_link">लिंक बनाएं</string>
+    <string name="admin_expires_at">समाप्ति: %1$s</string>
+    <string name="admin_expired">यह लिंक समाप्त हो गया है। नया लिंक बनाएं।</string>
+    <string name="admin_qr">एजेंट इंस्टॉलेशन पेज खोलने के लिए स्कैन करें</string>
+    <string name="admin_share">लिंक साझा करें</string>
+    <string name="admin_copy">लिंक कॉपी करें</string>
+    <string name="admin_copied">लिंक कॉपी हो गया</string>
+    <string name="admin_close">बंद करें</string>
+    <string name="admin_cancel">रद्द करें</string>
+    <string name="admin_confirm">पुष्टि करें</string>
+    <string name="admin_review">बदलाव देखें</string>
+    <string name="admin_edit">डिवाइस संपादित करें</string>
+    <string name="admin_name">नाम</string>
+    <string name="admin_description">विवरण</string>
+    <string name="admin_tags">टैग, कॉमा से अलग करें</string>
+    <string name="admin_notes">नोट्स</string>
+    <string name="admin_save_notes">नोट्स सहेजें</string>
+    <string name="admin_move">दूसरे समूह में ले जाएं</string>
+    <string name="admin_move_confirm">“%1$s” को “%2$s” में ले जाएं? एक्सेस गंतव्य समूह के अनुसार होगा।</string>
+    <string name="admin_edit_confirm">“%1$s” में ये बदलाव सहेजें?</string>
+    <string name="admin_notes_confirm">“%1$s” के नोट्स बदलें?</string>
+    <string name="admin_saved">सर्वर ने बदलावों की पुष्टि की</string>
+    <string name="admin_failed">बदलाव की पुष्टि नहीं हो सकी। दोबारा कोशिश करने से पहले रीफ़्रेश करके डिवाइस जांचें।</string>
+    <string name="admin_invite_failed">लिंक नहीं बनाया जा सका। अपना कनेक्शन और समूह अनुमतियां जांचें, फिर दोबारा कोशिश करें।</string>
+    <string name="admin_loading">सर्वर की प्रतीक्षा हो रही है…</string>
+    <string name="admin_invalid">नाम: 1–64 अक्षर। विवरण: अधिकतम 64 अक्षर। प्रत्येक टैग: अधिकतम 63 अक्षर; कुल: अधिकतम 4096। एकल पंक्ति वाला टेक्स्ट उपयोग करें, जिसमें नियंत्रण या टेक्स्ट-दिशा स्वरूपण अक्षर न हों।</string>
+    <string name="admin_endpoint">सर्वर: %1$s</string>
+    <string name="admin_unavailable">इस डिवाइस को प्रबंधित करने के लिए फिर से कनेक्ट करें और रीफ़्रेश करें। आपके खाते के पास आवश्यक अनुमतियां होनी चाहिए।</string>
+    <string name="admin_notes_limit">नोट्स: अधिकतम 16000 अक्षर।</string>
+    <string name="admin_no_destinations">इस डिवाइस को ले जाने की अनुमति वाले कोई संगत समूह नहीं हैं।</string>
+</resources>

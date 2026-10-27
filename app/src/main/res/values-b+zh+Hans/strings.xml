@@ -1,5 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">上一页</string>
+    <string name="devices_page_next">下一页</string>
+    <plurals name="devices_page_count">
+        <item quantity="other">%1$d–%2$d，共 %3$d 台设备</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="other">设备 %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">找到 %1$d 台设备</string>
+    <string name="devices_server_search">按名称搜索所有设备</string>
+    <string name="devices_page_failed">无法加载设备。请重试。</string>
     <string name="biometric_unlock_title">解锁 MeshPilot</string>
     <string name="biometric_unlock_subtitle">使用设备生物识别验证身份，以打开应用。</string>
     <string name="cancel">取消</string>
@@ -314,4 +325,6 @@
     <string name="settings_update_supporting">GitHub Releases 中提供已签名的 APK。请在当前版本上安装新版本。</string>
     <string name="settings_update_action">下载更新</string>
     <string name="settings_update_unavailable">无法打开浏览器。请手动打开 https://github.com/papajon123/meshcentral-android/releases。</string>
+    <string name="chat_verifying_peer">正在检查与用户的聊天连接…</string>
+    <string name="chat_server_retained">服务器仍保留着之前的连接。正在重试，最长 20 分钟…</string>
 </resources>

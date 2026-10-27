@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">सर्वर ने इस फ़ाइल को अस्वीकार कर दिया। फिर से प्रयास करने से पहले इसकी अनुमतियाँ और प्रकार जाँचें।</string>
+</resources>

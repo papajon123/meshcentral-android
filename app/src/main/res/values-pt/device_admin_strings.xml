@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">Convidar dispositivo</string>
+    <string name="admin_invite_help">Qualquer pessoa com este link pode instalar um agente em «%1$s». Compartilhe-o apenas com quem você quer ajudar.</string>
+    <string name="admin_invite_mode">Permite a instalação em segundo plano e interativa de qualquer agente disponível.</string>
+    <string name="admin_expiry">Validade do link</string>
+    <string name="admin_create_link">Criar link</string>
+    <string name="admin_expires_at">Expira em: %1$s</string>
+    <string name="admin_expired">Este link expirou. Crie um novo link.</string>
+    <string name="admin_qr">Escaneie para abrir a página de instalação do agente</string>
+    <string name="admin_share">Compartilhar link</string>
+    <string name="admin_copy">Copiar link</string>
+    <string name="admin_copied">Link copiado</string>
+    <string name="admin_close">Fechar</string>
+    <string name="admin_cancel">Cancelar</string>
+    <string name="admin_confirm">Confirmar</string>
+    <string name="admin_review">Revisar alterações</string>
+    <string name="admin_edit">Editar dispositivo</string>
+    <string name="admin_name">Nome</string>
+    <string name="admin_description">Descrição</string>
+    <string name="admin_tags">Tags separadas por vírgulas</string>
+    <string name="admin_notes">Notas</string>
+    <string name="admin_save_notes">Salvar notas</string>
+    <string name="admin_move">Mover para outro grupo</string>
+    <string name="admin_move_confirm">Mover «%1$s» para «%2$s»? O acesso seguirá o grupo de destino.</string>
+    <string name="admin_edit_confirm">Salvar estas alterações em «%1$s»?</string>
+    <string name="admin_notes_confirm">Substituir as notas de «%1$s»?</string>
+    <string name="admin_saved">Alterações confirmadas pelo servidor</string>
+    <string name="admin_failed">Não foi possível confirmar a alteração. Atualize e verifique o dispositivo antes de tentar novamente.</string>
+    <string name="admin_invite_failed">Não foi possível criar o link. Verifique a conexão e as permissões do grupo e tente novamente.</string>
+    <string name="admin_loading">Aguardando o servidor…</string>
+    <string name="admin_invalid">Nome: 1–64 caracteres. Descrição: até 64 caracteres. Cada tag: até 63 caracteres; total: até 4096. Use texto de uma única linha sem caracteres de controle ou de formatação de direção do texto.</string>
+    <string name="admin_endpoint">Servidor: %1$s</string>
+    <string name="admin_unavailable">Reconecte-se e atualize para gerenciar este dispositivo. Sua conta precisa das permissões necessárias.</string>
+    <string name="admin_notes_limit">Notas: até 16.000 caracteres.</string>
+    <string name="admin_no_destinations">Nenhum grupo compatível com permissão para mover este dispositivo.</string>
+</resources>

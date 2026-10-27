@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">Thiết bị này không còn khả dụng. Hãy mở ứng dụng.</string>
+    <string name="integration_favorites">Yêu thích</string>
+    <string name="integration_updated">Đã cập nhật: %1$s</string>
+    <string name="integration_widget_empty">Mở ứng dụng và thêm thiết bị yêu thích.</string>
+    <string name="integration_widget_description">Các thiết bị yêu thích và tình trạng khả dụng gần nhất đã biết</string>
+    <string name="integration_last_known">Trạng thái gần nhất đã biết</string>
+    <string name="integration_open_to_refresh">Mở ứng dụng để kết nối và làm mới.</string>
+    <string name="integration_refresh">Làm mới</string>
+    <string name="integration_open_app">Mở ứng dụng</string>
+    <string name="backup_title">Sao lưu cài đặt</string>
+    <string name="backup_description">Xuất hồ sơ máy chủ, mục yêu thích, phím tắt, đoạn lệnh và tùy chọn ứng dụng. Mật khẩu, mã phiên, cookie thiết bị đã ghi nhớ và PIN ứng dụng không được bao gồm. Đoạn lệnh có thể chứa văn bản bạn đã nhập; hãy xem lại trước khi chia sẻ.</string>
+    <string name="backup_export">Xuất tệp</string>
+    <string name="backup_import">Nhập tệp</string>
+    <string name="backup_include_keys">Bao gồm khóa đăng nhập máy chủ (chỉ dạng mã hóa)</string>
+    <string name="backup_password">Mật khẩu sao lưu (ít nhất 8 ký tự)</string>
+    <string name="backup_password_hint">Mật khẩu mã hóa toàn bộ tệp. Hãy giữ an toàn; không thể khôi phục mật khẩu.</string>
+    <string name="backup_confirm_password">Xác nhận mật khẩu</string>
+    <string name="backup_password_mismatch">Mật khẩu phải khớp và chứa 8–1024 ký tự.</string>
+    <string name="backup_busy">Đang xử lý…</string>
+    <string name="backup_saved">Đã lưu tệp sao lưu.</string>
+    <string name="backup_failed">Không thể xử lý bản sao lưu. Kiểm tra tệp, phiên bản định dạng, mật khẩu và quyền truy cập bộ nhớ.</string>
+    <string name="backup_preview">Xem lại nội dung nhập</string>
+    <string name="backup_preview_explanation">Hồ sơ sẽ được thêm dưới dạng hồ sơ mới. Hồ sơ, thông tin đăng nhập và PIN hiện có sẽ được giữ nguyên. Xem lại địa chỉ máy chủ và khóa đã ghim trước khi xác nhận.</string>
+    <string name="backup_profile_details">%1$d mục yêu thích · %2$d phím tắt · %3$d lệnh</string>
+    <string name="backup_pinned_key">Khóa máy chủ đã ghim: %1$s</string>
+    <string name="backup_contains_key">Bao gồm khóa đăng nhập máy chủ đã mã hóa</string>
+    <string name="backup_apply_preferences">Đồng thời thay thế giao diện, bảo vệ ảnh chụp màn hình, thời gian tự động khóa và tùy chọn bút cảm ứng</string>
+    <string name="backup_confirm_import">Thêm hồ sơ</string>
+    <string name="backup_imported">Đã thêm %1$d hồ sơ. Chọn một hồ sơ và đăng nhập.</string>
+    <string name="backup_capacity">Không đủ chỗ trống cho hồ sơ. Xóa các hồ sơ không dùng trước khi nhập.</string>
+    <string name="backup_decrypt">Giải mã bản sao lưu</string>
+    <string name="backup_no_profiles">Định cấu hình hồ sơ máy chủ HTTPS trước khi xuất.</string>
+</resources>

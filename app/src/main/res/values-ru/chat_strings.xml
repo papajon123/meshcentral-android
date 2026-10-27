@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="chat_title">Чат с пользователем</string>
+    <string name="chat_connecting">Подключение к чату…</string>
+    <string name="chat_waiting">Ждём, пока пользователь откроет окно чата</string>
+    <string name="chat_connected">Пользователь в чате</string>
+    <string name="chat_peer_left">Пользователь вышел из чата или связь прервалась</string>
+    <string name="chat_failed">Чат отключён. Запросите окно ещё раз, чтобы подключиться снова.</string>
+    <string name="chat_closed">Чат закрыт. Откройте его снова из меню устройства.</string>
+    <string name="chat_request">Запросить окно чата ещё раз</string>
+    <string name="chat_close">Закрыть чат</string>
+    <string name="chat_message">Сообщение</string>
+    <string name="chat_send">Отправить сообщение</string>
+    <string name="chat_send_failed">Сообщение не отправлено. Ваш текст ещё здесь; попробуйте снова.</string>
+    <string name="chat_length">Максимум символов: %1$d</string>
+    <string name="chat_recorded">Сервер записывает этот чат</string>
+    <string name="chat_you">Вы</string>
+    <string name="chat_user">Пользователь</string>
+    <string name="chat_empty">Сообщения остаются здесь, пока вы не закроете чат.</string>
+    <string name="chat_notification">Новое сообщение в чате</string>
+    <string name="chat_notifications_enable">Включить уведомления чата</string>
+    <string name="chat_notifications_unavailable">Уведомления отключены в настройках Android.</string>
+    <string name="chat_truncated">Сообщение сокращено</string>
+    <string name="chat_reconnecting">Повторное подключение к чату…</string>
+    <string name="chat_not_opened">Пользователь не открыл окно чата</string>
+    <string name="chat_invite_unavailable">Компьютер или канал управления не в сети. Попробуйте запросить окно позже.</string>
+    <string name="chat_unread">Непрочитанных сообщений: %1$d</string>
+    <string name="chat_service_channel">Активные чаты</string>
+    <string name="chat_service_active">Чат активен</string>
+    <string name="chat_service_description">Поддерживает подключение к беседе, пока вы используете другие приложения.</string>
+    <string name="chat_service_failed">Не удалось оставить чат работающим. Откройте его снова, пока приложение на экране.</string>
+    <string name="chat_back">Назад</string>
+    <string name="chat_close_confirm">Закрыть этот чат и удалить его сообщения?</string>
+</resources>

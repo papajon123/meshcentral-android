@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">Ausgewählt: %1$d</string>
+    <string name="tools_clear_selection">Auswahl aufheben</string>
+    <string name="tools_download_selected">Auswahl herunterladen</string>
+    <string name="tools_delete_selected">Auswahl löschen</string>
+    <string name="tools_select_hint">Zum Auswählen mehrerer Elemente gedrückt halten</string>
+    <string name="tools_download_folder">Ordner herunterladen</string>
+    <string name="tools_folder_notice">Mesh-Agent-Ordner werden als ZIP-Archive heruntergeladen. SFTP-Ordner werden Datei für Datei kopiert. Wählen Sie einen Zielordner.</string>
+    <string name="tools_batch_progress">Abgeschlossen: %1$d von %2$d · %3$d Byte</string>
+    <string name="tools_retry">Wiederholen</string>
+    <string name="tools_queued">In Warteschlange</string>
+    <string name="tools_active">Wird heruntergeladen</string>
+    <string name="tools_succeeded">Verifiziert</string>
+    <string name="tools_failed">Fehlgeschlagen</string>
+    <string name="tools_cancelled">Abgebrochen</string>
+    <string name="tools_archiving">Remote-Archiv wird erstellt…</string>
+    <string name="tools_archive_failed">Das Archiv konnte nicht erstellt oder geprüft werden.</string>
+    <string name="tools_archive_left">Der Download ist fehlgeschlagen. Im Quellordner kann ein temporäres meshpilot-*.zip-Archiv zurückbleiben. Wiederholen Sie den Vorgang, um es zu entfernen und erneut herunterzuladen.</string>
+    <string name="tools_batch_failed">Ein Download ist fehlgeschlagen. Bei „Wiederholen“ wird er in einer neuen lokalen Datei neu gestartet.</string>
+    <string name="tools_delete_list">Diese Elemente löschen? Dies kann nicht rückgängig gemacht werden.</string>
+</resources>

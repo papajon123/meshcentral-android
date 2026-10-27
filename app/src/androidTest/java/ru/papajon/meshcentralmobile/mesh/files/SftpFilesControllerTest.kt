@@ -95,7 +95,8 @@ class SftpFilesControllerTest {
         downloadStart(nextJson().getInt("id"))
         nextJson() // stop
         fileReply(nextJson().getInt("reqid"), "source.bin", 1)
-        waitFor { !controller.state.value.connected }
+        waitFor { !controller.state.value.busy }
+        assertTrue(controller.state.value.connected)
         assertEquals(UiText.resource(R.string.files_sftp_unverified), controller.state.value.message)
     }
 
@@ -185,7 +186,9 @@ class SftpFilesControllerTest {
         downloadStart(nextJson().getInt("id"))
         nextJson() // startack
         relay.frames.send(RelayFrame.Binary(byteArrayOf(1, 0, 0, 1, 1, 2)))
-        waitFor { !controller.state.value.connected }
+        assertEquals("stop", nextJson().getString("sub"))
+        waitFor { !controller.state.value.busy }
+        assertTrue(controller.state.value.connected)
         assertEquals(UiText.resource(R.string.files_sftp_unverified), controller.state.value.message)
     }
 

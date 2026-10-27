@@ -15,6 +15,7 @@
   <a href="https://github.com/papajon123/meshcentral-android/releases"><img src="https://img.shields.io/github/v/release/papajon123/meshcentral-android?include_prereleases&label=release" alt="Последний выпуск, включая предварительные"></a>
   <img src="https://img.shields.io/badge/License-Apache_2.0-blue" alt="Лицензия Apache 2.0">
   <img src="https://img.shields.io/badge/Android-8%2B%20%28API%2026%29-3DDC84" alt="Android 8 или новее, минимум API 26">
+  <a href="https://boosty.to/papajon123"><img src="https://img.shields.io/badge/Boosty-support-F15F2C?logo=boosty&amp;logoColor=white" alt="Поддержать MeshPilot на Boosty"></a>
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 варианта локали Android">
 </p>
 
@@ -153,7 +154,7 @@
 <details>
 <summary>Сборка из исходников</summary>
 
-Требования: JDK 17, Android SDK platform 35, build-tools 35.0.0. Gradle wrapper скачает Gradle 8.10.2.
+Требования: JDK 17, Android SDK platform 36, build-tools 35.0.0. Gradle wrapper скачает Gradle 8.11.1.
 
 ```bash
 export JAVA_HOME=/path/to/jdk-17
@@ -178,6 +179,13 @@ python3 ci/check_translations.py
 Те же значения хранятся в [ci/release-identity.json](ci/release-identity.json).
 
 </details>
+
+## Поддержать проект
+
+MeshPilot бесплатный, открытый, без рекламы, аналитики и платных функций. Если приложение экономит вам время, разработку
+можно поддержать на **[Boosty](https://boosty.to/papajon123)** подпиской или разовым донатом; Boosty принимает карты
+российских и зарубежных банков. Та же ссылка есть в приложении: **Настройки → Поддержать MeshPilot**. Поддержка не
+открывает функций: всё остаётся в открытом приложении.
 
 ## Лицензия
 

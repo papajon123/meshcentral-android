@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">无法验证：%1$s</string>
+    <string name="review_paused">已暂停：连接已断开</string>
+    <string name="review_retry_all">重试未完成的项目</string>
+    <string name="review_cleanup_title">远程压缩包清理</string>
+    <string name="review_archive_left">计算机上可能残留临时压缩包：%1$s。请在没有任何压缩包操作运行时检查并删除它。</string>
+    <string name="review_archive_space">创建 ZIP 需要在远程源文件夹中为完整压缩包预留可用空间。如果代理程序无法启动该操作，文件将逐个复制。未完成的本地文件夹会保留 .partial 后缀。</string>
+    <string name="review_grant_failed">此提供程序无法为队列保留访问权限。请选择其他位置。</string>
+    <string name="review_zip_invalid">压缩包已损坏、不完整，或超出支持的结构限制。</string>
+    <string name="review_source_changed">所选项目已更改。请刷新文件夹并重新确认选择。</string>
+    <string name="review_sftp_types">此服务器无法在 SFTP 列表中识别符号链接或特殊文件。无法验证的文件将按路径报告；连接断开时队列会暂停。未完成的文件夹仍会标记为 .partial。</string>
+    <string name="review_skipped">已跳过不受支持的项目：%1$s</string>
+    <string name="review_folder_unavailable">无法访问文件夹：%1$s。队列的其余部分继续处理。</string>
+    <string name="review_local_failed">无法写入或重新读取本地 Android 文档。文件会话仍保持连接；请重试此项目。</string>
+    <string name="review_local_no_rename">此提供程序无法重命名文档。部分文件会保留 .partial 后缀；请在 Android 文件中重命名。</string>
+    <string name="review_source_changed_deleted">已删除：%1$s。其余选择未被删除；请刷新文件夹并重新确认。</string>
+    <string name="files_delete_follow_links">递归删除文件夹会跟随符号链接和联接点。所选文件夹之外的目标也可能被清除；确认前请在 MeshCentral 中检查该文件夹。</string>
+</resources>

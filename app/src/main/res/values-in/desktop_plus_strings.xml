@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">Gestur dua jari</string>
+    <string name="desktop_gesture_default">Perilaku asli</string>
+    <string name="desktop_gesture_scroll">Gulir jendela jarak jauh</string>
+    <string name="desktop_gesture_pan">Geser gambar</string>
+    <string name="desktop_pinch">Cubit untuk memperbesar</string>
+    <string name="desktop_three_fingers">Tiga jari menggulir jendela jarak jauh.</string>
+    <string name="desktop_scale">Skala gambar yang diminta: %1$d%%</string>
+    <string name="desktop_pip">Gambar dalam gambar</string>
+    <string name="desktop_pip_auto">Tetap menonton saat meninggalkan aplikasi</string>
+    <string name="desktop_stream_rate">≈ %1$.1f pembaruan/dtk · %2$d B/s</string>
+    <string name="desktop_input_help">Keyboard dan mouse fisik berfungsi di desktop. Android mungkin menyimpan Alt+Tab atau Meta; gunakan menu tombol dalam kasus tersebut. Roda horizontal menggunakan Shift + roda jika didukung.</string>
+    <string name="desktop_rate_help">Kualitas, skala, dan batas frame adalah pengaturan yang diminta. Penampil lain dapat menaikkan kualitas, skala, atau laju pembaruan. Penghitung mengukur pembaruan petak, bukan frame penuh.</string>
+    <string name="desktop_keyboard_capture">Tangkap keyboard fisik</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc melepaskan keyboard dan membuka opsi sesi.</string>
+</resources>

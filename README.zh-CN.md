@@ -15,6 +15,7 @@
   <a href="https://github.com/papajon123/meshcentral-android/releases"><img src="https://img.shields.io/github/v/release/papajon123/meshcentral-android?include_prereleases&label=release" alt="最新发行版（含预发布）"></a>
   <img src="https://img.shields.io/badge/License-Apache_2.0-blue" alt="Apache 2.0 许可证">
   <img src="https://img.shields.io/badge/Android-8%2B%20%28API%2026%29-3DDC84" alt="Android 8 或更高版本，最低 API 26">
+  <a href="https://boosty.to/papajon123"><img src="https://img.shields.io/badge/Boosty-support-F15F2C?logo=boosty&amp;logoColor=white" alt="在 Boosty 上支持 MeshPilot"></a>
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 个 Android 区域变体">
 </p>
 
@@ -152,7 +153,7 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 <details>
 <summary>从源码构建</summary>
 
-要求：JDK 17、Android SDK platform 35、build-tools 35.0.0。Gradle wrapper 会下载 Gradle 8.10.2。
+要求：JDK 17、Android SDK platform 36、build-tools 35.0.0。Gradle wrapper 会下载 Gradle 8.11.1。
 
 ```bash
 export JAVA_HOME=/path/to/jdk-17
@@ -177,6 +178,12 @@ Windows 上使用 `.\gradlew.bat`，并设置相同的环境变量。调试 APK 
 相同值保存在 [ci/release-identity.json](ci/release-identity.json)。
 
 </details>
+
+## 支持项目
+
+MeshPilot 免费、开源，没有广告、分析或付费功能。如果它为你节省了时间，可以在 **[Boosty](https://boosty.to/papajon123)**
+上通过订阅或一次性打赏支持开发；Boosty 接受俄罗斯和其他国家银行的卡。应用内也有同样的链接：**设置 → 支持 MeshPilot**。
+支持不会解锁任何功能：所有功能都保留在开源应用中。
 
 ## 许可证
 

@@ -165,7 +165,8 @@ class DeviceInspectorController(private val client: MeshCentralClient, val nodeI
         repeat(6) {
             delay(2_000)
             try {
-                val reply = client.requestControl(JSONObject().put("action", "nodes"), "nodes", timeoutMillis = 5_000)
+                val reply = client.requestControl(JSONObject().put("action", "nodes")
+                    .put("id", nodeId).put("skip", 0).put("filter", ""), "nodes", timeoutMillis = 5_000)
                 observation = DeviceRemovalCommand.observeReply(action, nodeId, reply, client.clientState.value.socketConnected)
             } catch (_: TimeoutCancellationException) { observation = RemovalObservation.Unknown }
               catch (cancelled: CancellationException) { throw cancelled }
@@ -213,7 +214,12 @@ class DeviceInspectorController(private val client: MeshCentralClient, val nodeI
         var observedReturn = false
         repeat(30) {
             delay(2_000)
-            if (it % 5 == 0) client.refreshDevices()
+            if (it % 5 == 0) {
+                try { client.resolveDevice(nodeId, refresh = true, timeoutMillis = 5_000) }
+                catch (_: TimeoutCancellationException) { /* Keep observing, without restarting the browser query. */ }
+                catch (cancelled: CancellationException) { throw cancelled }
+                catch (_: Exception) { /* A missing observation cannot prove a power transition. */ }
+            }
             val snapshot = client.clientState.value
             val fresh = snapshot.devices.firstOrNull { d -> d.nodeId == nodeId }
             if (snapshot.devicesCurrent && fresh != null) {

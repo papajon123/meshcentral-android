@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_reconnect">Riconnetti</string>
+    <string name="terminal_new_session">Nuova sessione del terminale</string>
+</resources>

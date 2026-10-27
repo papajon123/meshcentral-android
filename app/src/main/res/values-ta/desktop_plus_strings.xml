@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">இரண்டு விரல் சைகை</string>
+    <string name="desktop_gesture_default">அசல் நடத்தை</string>
+    <string name="desktop_gesture_scroll">தொலை சாளரத்தை உருட்டு</string>
+    <string name="desktop_gesture_pan">படத்தை நகர்த்து</string>
+    <string name="desktop_pinch">பெரிதாக்க இரு விரல்களால் கிள்ளு</string>
+    <string name="desktop_three_fingers">மூன்று விரல்கள் தொலை சாளரத்தை உருட்டும்.</string>
+    <string name="desktop_scale">கோரப்பட்ட பட அளவு: %1$d%%</string>
+    <string name="desktop_pip">படத்தில் படம்</string>
+    <string name="desktop_pip_auto">பயன்பாட்டை விட்டு வெளியேறியும் பார்க்கத் தொடரவும்</string>
+    <string name="desktop_stream_rate">≈ %1$.1f புதுப்பிப்புகள்/வி · %2$d B/s</string>
+    <string name="desktop_input_help">வன்பொருள் விசைப்பலகையும் சுட்டியும் டெஸ்க்டாப்பில் வேலை செய்யும். Android Alt+Tab அல்லது Meta-வை ஒதுக்கலாம்; அந்த நிலையில் விசை மெனுவைப் பயன்படுத்தவும். ஆதரிக்கப்பட்டால் கிடைமட்ட சக்கரம் Shift + சக்கரம் மூலம் வேலை செய்யும்.</string>
+    <string name="desktop_rate_help">தரம், அளவு மற்றும் சட்டக வரம்பு ஆகியவை கோரப்பட்ட அமைப்புகள். பிற பார்வையாளர்கள் தரம், அளவு அல்லது புதுப்பிப்பு வீதத்தை உயர்த்தலாம். கணக்கீடு ஓடு புதுப்பிப்புகளை அளவிடுகிறது, முழு சட்டகங்களை அல்ல.</string>
+    <string name="desktop_keyboard_capture">இயற்பியல் விசைப்பலகையைப் பிடிக்கவும்</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc விசைப்பலகையை விடுவித்து அமர்வு விருப்பங்களைத் திறக்கும்.</string>
+</resources>

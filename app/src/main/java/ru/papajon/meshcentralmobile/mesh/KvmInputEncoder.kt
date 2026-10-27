@@ -16,6 +16,7 @@ object KvmInputEncoder {
      * `00 05 00 0A type level scaling:u16 frameTimer:u16`
      * (`obj.SendCompressionLevel`, agent-desktop-0.0.2.js:190).
      * Compression types: 1 = JPEG, 2 = PNG, 3 = TIFF, 4 = WebP.
+     * Historical parameter name `frameRate` means the wire capture interval in milliseconds.
      */
     fun compression(
         compressionType: Int = COMPRESSION_JPEG,
@@ -27,7 +28,7 @@ object KvmInputEncoder {
             KvmPacketParser.COMMAND_COMPRESSION,
             byteArrayOf(compressionType.byte(), jpegQuality.coerceIn(1, 100).byte()) +
                 u16(scaling.coerceIn(128, 4096)) +
-                u16(frameRate.coerceIn(1, 200)),
+                u16(frameRate.coerceIn(20, 5000)),
         )
     }
 
@@ -65,8 +66,9 @@ object KvmInputEncoder {
     fun initialisationSequence(
         jpegQuality: Int = 60,
         frameRate: Int = 30,
+        scaling: Int = 1024,
     ): List<ByteArray> = buildList {
-        add(compression(jpegQuality = jpegQuality, frameRate = frameRate))
+        add(compression(jpegQuality = jpegQuality, frameRate = frameRate, scaling = scaling))
         add(pause(paused = false))
         add(inputLockQuery())
         addAll(clearStuckModifiers())

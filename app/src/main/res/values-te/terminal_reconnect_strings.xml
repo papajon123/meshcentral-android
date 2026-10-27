@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_reconnect">మళ్లీ కనెక్ట్ చేయి</string>
+    <string name="terminal_new_session">కొత్త టెర్మినల్ సెషన్</string>
+</resources>

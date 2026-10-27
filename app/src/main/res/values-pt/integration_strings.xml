@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">Este dispositivo não está mais disponível. Abra o aplicativo.</string>
+    <string name="integration_favorites">Favoritos</string>
+    <string name="integration_updated">Atualizado: %1$s</string>
+    <string name="integration_widget_empty">Abra o aplicativo e adicione dispositivos favoritos.</string>
+    <string name="integration_widget_description">Dispositivos favoritos e a última disponibilidade conhecida</string>
+    <string name="integration_last_known">Último estado conhecido</string>
+    <string name="integration_open_to_refresh">Abra o aplicativo para conectar e atualizar.</string>
+    <string name="integration_refresh">Atualizar</string>
+    <string name="integration_open_app">Abrir aplicativo</string>
+    <string name="backup_title">Backup das configurações</string>
+    <string name="backup_description">Exporte perfis de servidor, favoritos, atalhos de teclado, trechos de comando e preferências do aplicativo. Senhas, tokens de sessão, cookies de dispositivos lembrados e o PIN do aplicativo não são incluídos. Os trechos de comando podem conter texto que você digitou; revise-os antes de compartilhar.</string>
+    <string name="backup_export">Exportar arquivo</string>
+    <string name="backup_import">Importar arquivo</string>
+    <string name="backup_include_keys">Incluir chaves de login do servidor (somente criptografadas)</string>
+    <string name="backup_password">Senha do backup (pelo menos 8 caracteres)</string>
+    <string name="backup_password_hint">Uma senha criptografa o arquivo inteiro. Guarde-a em local seguro; ela não pode ser recuperada.</string>
+    <string name="backup_confirm_password">Confirmar senha</string>
+    <string name="backup_password_mismatch">As senhas devem coincidir e ter entre 8 e 1024 caracteres.</string>
+    <string name="backup_busy">Processando…</string>
+    <string name="backup_saved">Arquivo de backup salvo.</string>
+    <string name="backup_failed">Não foi possível processar o backup. Verifique o arquivo, a versão do formato, a senha e o acesso ao armazenamento.</string>
+    <string name="backup_preview">Revisar importação</string>
+    <string name="backup_preview_explanation">Os perfis serão adicionados como novos perfis. Perfis, credenciais e PIN existentes permanecerão. Revise os endereços dos servidores e as chaves fixadas antes de confirmar.</string>
+    <string name="backup_profile_details">%1$d favoritos · %2$d atalhos · %3$d comandos</string>
+    <string name="backup_pinned_key">Chave fixada do servidor: %1$s</string>
+    <string name="backup_contains_key">Inclui uma chave de login do servidor criptografada</string>
+    <string name="backup_apply_preferences">Substituir também aparência, proteção contra capturas de tela, atraso do bloqueio automático e preferências da caneta</string>
+    <string name="backup_confirm_import">Adicionar perfis</string>
+    <string name="backup_imported">%1$d perfis adicionados. Selecione um perfil e entre.</string>
+    <string name="backup_capacity">Não há espaços livres suficientes para perfis. Remova os perfis não usados antes de importar.</string>
+    <string name="backup_decrypt">Descriptografar backup</string>
+    <string name="backup_no_profiles">Configure um perfil de servidor HTTPS antes de exportar.</string>
+</resources>

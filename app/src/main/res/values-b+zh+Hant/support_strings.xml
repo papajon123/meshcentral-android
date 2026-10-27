@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">支持 MeshPilot</string>
+    <string name="support_body">MeshPilot 免費、開源且無廣告。在 Boosty 上訂閱或一次性贊助，可以幫助推出新版本。</string>
+    <string name="support_action">在 Boosty 上支持</string>
+    <string name="support_link_copied">找不到瀏覽器。已複製 Boosty 連結。</string>
+</resources>

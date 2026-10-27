@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">सत्यापित करता आले नाही: %1$s</string>
+    <string name="review_paused">थांबवले: कनेक्शन तुटले</string>
+    <string name="review_retry_all">अपूर्ण आयटम पुन्हा प्रयत्न करा</string>
+    <string name="review_cleanup_title">दूरस्थ संग्रहाची साफसफाई</string>
+    <string name="review_archive_left">संगणकावर तात्पुरता संग्रह राहू शकतो: %1$s. कोणतेही संग्रह ऑपरेशन सुरू नसताना तो तपासून काढून टाका.</string>
+    <string name="review_archive_space">पूर्ण संग्रहासाठी दूरस्थ स्रोत फोल्डरमध्ये ZIP तयार करण्यास मोकळी जागा आवश्यक आहे. एजंट ते सुरू करू शकत नसेल, तर फाइली स्वतंत्रपणे कॉपी होतील. अपूर्ण स्थानिक फोल्डर .partial प्रत्यय ठेवतात.</string>
+    <string name="review_grant_failed">हा प्रदाता रांगेसाठी प्रवेश टिकवू शकला नाही. वेगळे ठिकाण निवडा.</string>
+    <string name="review_zip_invalid">संग्रह खराब, अपूर्ण आहे किंवा समर्थित रचना मर्यादा ओलांडतो.</string>
+    <string name="review_source_changed">निवडलेला आयटम बदलला. फोल्डर रिफ्रेश करा आणि निवड पुन्हा निश्चित करा.</string>
+    <string name="review_sftp_types">हा सर्व्हर SFTP सूचींमध्ये प्रतीकात्मक दुवे किंवा विशेष फाइली ओळखत नाही. सत्यापित करता न येणाऱ्या फाइली मार्गाने नोंदवल्या जातात; कनेक्शन तुटल्यास रांग थांबते. अपूर्ण फोल्डर .partial असे चिन्हांकित राहतात.</string>
+    <string name="review_skipped">असमर्थित आयटम वगळला: %1$s</string>
+    <string name="review_folder_unavailable">फोल्डरमध्ये प्रवेश नाही: %1$s. उर्वरित रांग सुरू राहते.</string>
+    <string name="review_local_failed">स्थानिक Android दस्तऐवज लिहिला किंवा पुन्हा वाचला जाऊ शकला नाही. फाइल सत्र अजूनही जोडलेले आहे; हा घटक पुन्हा प्रयत्न करा.</string>
+    <string name="review_local_no_rename">हा प्रदाता दस्तऐवजांचे नाव बदलू शकत नाही. काही फाइल्स .partial प्रत्यय ठेवतील; त्यांचे नाव Android फाइल्समध्ये बदला.</string>
+    <string name="review_source_changed_deleted">आधीच हटवले: %1$s. उर्वरित निवड हटवली गेली नाही; फोल्डर रिफ्रेश करा आणि पुन्हा पुष्टी करा.</string>
+    <string name="files_delete_follow_links">फोल्डरचे आवर्ती हटवणे सांकेतिक दुवे आणि जंक्शन्सचा पाठपुरावा करते. निवडलेल्या फोल्डरबाहेरील लक्ष्येही पुसली जाऊ शकतात; पुष्टी करण्यापूर्वी MeshCentral मध्ये फोल्डर तपासा.</string>
+</resources>

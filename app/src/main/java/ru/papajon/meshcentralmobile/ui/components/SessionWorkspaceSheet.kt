@@ -21,9 +21,13 @@ fun SessionWorkspaceSheet(sessions: List<OpenSession>, onSelect: (String) -> Uni
             item { Text(stringResource(R.string.workspace_session_hint), style = MaterialTheme.typography.bodyMedium) }
             if (sessions.isEmpty()) item { Text(stringResource(R.string.workspace_empty)) }
             items(sessions, key = { it.id }) { session ->
+                val chatState = session.chat?.state?.collectAsState()?.value
                 Column(Modifier.fillMaxWidth()) {
                     Text(session.deviceName, style = MaterialTheme.typography.titleMedium)
-                    Text(stringResource(session.tab.labelRes), style = MaterialTheme.typography.bodyMedium)
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(stringResource(session.tab.labelRes), style = MaterialTheme.typography.bodyMedium)
+                        ChatUnreadBadge(chatState?.unreadCount ?: 0)
+                    }
                     Row {
                         TextButton(onClick = { onSelect(session.id) }) { Text(stringResource(R.string.workspace_switch)) }
                         TextButton(onClick = { closing = session }) { Text(stringResource(R.string.device_close_session)) }

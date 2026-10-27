@@ -6,20 +6,23 @@ plugins {
 
 android {
     namespace = "ru.papajon.meshcentralmobile"
-    compileSdk = 35
+    compileSdk = 36
     buildToolsVersion = "35.0.0"
 
     defaultConfig {
         applicationId = "io.github.papajon123.meshcentral"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 23
-        versionName = "0.8.4"
+        targetSdk = 36
+        versionCode = 24
+        versionName = "0.9.0"
         // Keep dependency-only locales from taking precedence over a supported system fallback.
         resourceConfigurations.addAll(listOf(
             "en", "ru", "zh", "b+zh+Hans", "b+zh+Hant", "es", "fr", "pt", "de", "ar", "hi", "bn", "ur",
             "ja", "ko", "in", "tr", "vi", "th", "it", "fa", "ta", "te", "mr",
         ))
+
+        // Donation page shown in Settings; an empty value hides the card (e.g. for a store with payment rules).
+        buildConfigField("String", "SUPPORT_URL", "\"https://boosty.to/papajon123\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
@@ -70,6 +73,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.zxing:core:3.5.3")
     implementation(platform("androidx.compose:compose-bom:2024.12.01"))
     implementation("androidx.activity:activity-compose:1.9.3")
     implementation("androidx.compose.material3:material3")
@@ -94,6 +98,7 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.7.0")
     androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
     androidTestImplementation("com.squareup.okhttp3:okhttp-tls:4.12.0")
 }

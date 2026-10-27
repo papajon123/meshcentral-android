@@ -1,5 +1,18 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">Önceki</string>
+    <string name="devices_page_next">Sonraki</string>
+    <plurals name="devices_page_count">
+        <item quantity="one">%1$d–%2$d / %3$d cihaz</item>
+        <item quantity="other">%1$d–%2$d / %3$d cihaz</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="one">Cihaz %1$d–%2$d</item>
+        <item quantity="other">Cihazlar %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">Bulunan cihazlar: %1$d</string>
+    <string name="devices_server_search">Tüm cihazlarda ada göre arama yap</string>
+    <string name="devices_page_failed">Cihazlar yüklenemedi. Tekrar deneyin.</string>
     <string name="biometric_unlock_title">MeshPilot kilidini aç</string>
     <string name="biometric_unlock_subtitle">Uygulamayı açmak için cihaz biyometrisiyle kimliğinizi doğrulayın.</string>
     <string name="cancel">İptal</string>
@@ -314,4 +327,6 @@
     <string name="settings_update_supporting">İmzalı APK\'lar GitHub sürümlerinde bulunur. Yeni sürümü mevcut sürümün üzerine yükleyin.</string>
     <string name="settings_update_action">Güncellemeyi indir</string>
     <string name="settings_update_unavailable">Tarayıcı açılamadı. https://github.com/papajon123/meshcentral-android/releases adresini el ile açın.</string>
+    <string name="chat_verifying_peer">Kullanıcının sohbet bağlantısı kontrol ediliyor…</string>
+    <string name="chat_server_retained">Sunucu hâlâ önceki bağlantıyı tutuyor. En fazla 20 dakika yeniden deneniyor…</string>
 </resources>

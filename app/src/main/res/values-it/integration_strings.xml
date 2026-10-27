@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">Questo dispositivo non è più disponibile. Apri l’app.</string>
+    <string name="integration_favorites">Preferiti</string>
+    <string name="integration_updated">Aggiornato: %1$s</string>
+    <string name="integration_widget_empty">Apri l’app e aggiungi i dispositivi preferiti.</string>
+    <string name="integration_widget_description">Dispositivi preferiti e ultima disponibilità nota</string>
+    <string name="integration_last_known">Ultimo stato noto</string>
+    <string name="integration_open_to_refresh">Apri l’app per connetterti e aggiornare.</string>
+    <string name="integration_refresh">Aggiorna</string>
+    <string name="integration_open_app">Apri app</string>
+    <string name="backup_title">Backup delle impostazioni</string>
+    <string name="backup_description">Esporta profili server, preferiti, scorciatoie da tastiera, frammenti di comandi e preferenze dell’app. Password, token di sessione, cookie dei dispositivi memorizzati e PIN dell’app sono esclusi. I frammenti di comandi possono contenere testo inserito da te; controllali prima di condividerli.</string>
+    <string name="backup_export">Esporta file</string>
+    <string name="backup_import">Importa file</string>
+    <string name="backup_include_keys">Includi chiavi di accesso al server (solo crittografate)</string>
+    <string name="backup_password">Password del backup (almeno 8 caratteri)</string>
+    <string name="backup_password_hint">La password crittografa l’intero file. Conservala in un luogo sicuro; non può essere recuperata.</string>
+    <string name="backup_confirm_password">Conferma password</string>
+    <string name="backup_password_mismatch">Le password devono coincidere e contenere 8–1024 caratteri.</string>
+    <string name="backup_busy">Elaborazione…</string>
+    <string name="backup_saved">File di backup salvato.</string>
+    <string name="backup_failed">Impossibile elaborare il backup. Controlla il file, la versione del formato, la password e l’accesso allo spazio di archiviazione.</string>
+    <string name="backup_preview">Rivedi importazione</string>
+    <string name="backup_preview_explanation">I profili verranno aggiunti come nuovi profili. I profili, le credenziali e il PIN esistenti rimarranno invariati. Controlla gli indirizzi dei server e le chiavi bloccate prima di confermare.</string>
+    <string name="backup_profile_details">%1$d preferiti · %2$d scorciatoie · %3$d comandi</string>
+    <string name="backup_pinned_key">Chiave server bloccata: %1$s</string>
+    <string name="backup_contains_key">Include una chiave di accesso al server crittografata</string>
+    <string name="backup_apply_preferences">Sostituisci anche aspetto, protezione degli screenshot, ritardo del blocco automatico e preferenze dello stilo</string>
+    <string name="backup_confirm_import">Aggiungi profili</string>
+    <string name="backup_imported">Aggiunti %1$d profili. Seleziona un profilo e accedi.</string>
+    <string name="backup_capacity">Spazio insufficiente per i profili. Rimuovi i profili inutilizzati prima di importare.</string>
+    <string name="backup_decrypt">Decifra backup</string>
+    <string name="backup_no_profiles">Configura un profilo server HTTPS prima di esportare.</string>
+</resources>

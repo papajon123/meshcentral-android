@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">تصدیق نہیں کی جا سکی: %1$s</string>
+    <string name="review_paused">موقوف: رابطہ منقطع ہو گیا</string>
+    <string name="review_retry_all">نامکمل آئٹمز دوبارہ آزمائیں</string>
+    <string name="review_cleanup_title">ریموٹ آرکائیو کی صفائی</string>
+    <string name="review_archive_left">کمپیوٹر پر ایک عارضی آرکائیو رہ سکتا ہے: %1$s۔ جب کوئی آرکائیو کارروائی نہ چل رہی ہو تو اسے جانچیں اور ہٹا دیں۔</string>
+    <string name="review_archive_space">مکمل آرکائیو کے لیے ZIP بنانے کے لیے ریموٹ ماخذ فولڈر میں خالی جگہ درکار ہے۔ اگر ایجنٹ اسے شروع نہیں کر سکتا تو فائلیں الگ الگ نقل ہوں گی۔ نامکمل مقامی فولڈرز .partial لاحقہ برقرار رکھتے ہیں۔</string>
+    <string name="review_grant_failed">یہ فراہم کنندہ قطار کے لیے رسائی برقرار نہیں رکھ سکا۔ کوئی دوسرا مقام منتخب کریں۔</string>
+    <string name="review_zip_invalid">آرکائیو خراب یا نامکمل ہے، یا معاون ساخت کی حدود سے تجاوز کرتا ہے۔</string>
+    <string name="review_source_changed">منتخب کردہ آئٹم بدل گیا۔ فولڈر تازہ کریں اور انتخاب کی دوبارہ تصدیق کریں۔</string>
+    <string name="review_sftp_types">یہ سرور SFTP فہرستوں میں علامتی روابط یا خصوصی فائلوں کی شناخت نہیں کرتا۔ ناقابلِ تصدیق فائلیں راستے کے ذریعے بتائی جاتی ہیں؛ رابطہ منقطع ہونے پر قطار رک جاتی ہے۔ نامکمل فولڈرز .partial کے ساتھ نشان زد رہتے ہیں۔</string>
+    <string name="review_skipped">غیر معاون آئٹم چھوڑ دیا گیا: %1$s</string>
+    <string name="review_folder_unavailable">فولڈر تک رسائی نہیں: %1$s۔ باقی قطار جاری رہتی ہے۔</string>
+    <string name="review_local_failed">مقامی Android دستاویز لکھی یا دوبارہ پڑھی نہیں جا سکی۔ فائل سیشن اب بھی منسلک ہے؛ اس آئٹم کو دوبارہ آزمائیں۔</string>
+    <string name="review_local_no_rename">یہ فراہم کنندہ دستاویزات کا نام نہیں بدل سکتا۔ کچھ فائلیں .partial لاحقہ رکھیں گی؛ انہیں Android Files میں نام بدلیں۔</string>
+    <string name="review_source_changed_deleted">پہلے ہی حذف ہو چکا: %1$s۔ باقی انتخاب حذف نہیں ہوا؛ فولڈر ریفریش کریں اور دوبارہ تصدیق کریں۔</string>
+    <string name="files_delete_follow_links">فولڈر کو تکراری طور پر حذف کرنا علامتی لنکس اور جنکشن کی پیروی کرتا ہے۔ منتخب فولڈر سے باہر کے اہداف بھی مٹ سکتے ہیں؛ تصدیق سے پہلے MeshCentral میں فولڈر کی جانچ کریں۔</string>
+</resources>

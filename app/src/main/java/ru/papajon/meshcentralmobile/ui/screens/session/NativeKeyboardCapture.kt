@@ -89,7 +89,12 @@ fun NativeKeyboardCapture(
                 field.value = view
             }
         },
-        update = { view -> view.sink = input },
+        update = { view ->
+            // An inactive invisible editor must not take Tab focus or forward a late IME event.
+            view.sink = if (active) input else null
+            view.isFocusable = active
+            view.isFocusableInTouchMode = active
+        },
     )
 }
 
@@ -142,6 +147,11 @@ internal class RemoteInputField(context: Context, var sink: NativeRemoteInputSin
 
     /** Hardware keys arrive on the view rather than through the input connection. */
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        // System navigation and volume belong to Android, including legacy Back on API 26–32.
+        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
+            keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_MUTE) {
+            return super.onKeyDown(keyCode, event)
+        }
         val virtualKey = mapKeyCode(keyCode)
             ?: RemoteKeyCodeMapper.toVirtualKeyCode(keyCode).takeIf { event.unicodeChar == 0 }
         if (virtualKey != null) {

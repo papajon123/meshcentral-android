@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">தேர்ந்தெடுக்கப்பட்டவை: %1$d</string>
+    <string name="tools_clear_selection">தேர்வை அழி</string>
+    <string name="tools_download_selected">தேர்ந்தெடுத்தவற்றைப் பதிவிறக்கு</string>
+    <string name="tools_delete_selected">தேர்ந்தெடுத்தவற்றை நீக்கு</string>
+    <string name="tools_select_hint">பல உருப்படிகளைத் தேர்ந்தெடுக்க அழுத்திப் பிடிக்கவும்</string>
+    <string name="tools_download_folder">கோப்புறையைப் பதிவிறக்கு</string>
+    <string name="tools_folder_notice">Mesh Agent கோப்புறைகள் ZIP காப்பகங்களாகப் பதிவிறக்கப்படும். SFTP கோப்புறைகள் கோப்பு வாரியாக நகலெடுக்கப்படும். இலக்கு கோப்புறையைத் தேர்ந்தெடுக்கவும்.</string>
+    <string name="tools_batch_progress">முடிந்தது: %1$d / %2$d · %3$d பைட்</string>
+    <string name="tools_retry">மீண்டும் முயற்சி செய்</string>
+    <string name="tools_queued">வரிசையில்</string>
+    <string name="tools_active">பதிவிறக்கப்படுகிறது</string>
+    <string name="tools_succeeded">சரிபார்க்கப்பட்டது</string>
+    <string name="tools_failed">தோல்வி</string>
+    <string name="tools_cancelled">ரத்து செய்யப்பட்டது</string>
+    <string name="tools_archiving">தொலைக் காப்பகம் உருவாக்கப்படுகிறது…</string>
+    <string name="tools_archive_failed">காப்பகத்தை உருவாக்கவோ சரிபார்க்கவோ முடியவில்லை.</string>
+    <string name="tools_archive_left">பதிவிறக்கம் தோல்வியடைந்தது. மூலக் கோப்புறையில் தற்காலிக meshpilot-*.zip காப்பகம் இருக்கலாம். அதை அழித்துவிட்டு மீண்டும் பதிவிறக்க மீண்டும் முயற்சி செய்யவும்.</string>
+    <string name="tools_batch_failed">ஒரு பதிவிறக்கம் தோல்வியடைந்தது. மீண்டும் முயற்சித்தால் புதிய உள்ளூர் கோப்பில் மீண்டும் தொடங்கும்.</string>
+    <string name="tools_delete_list">இந்த உருப்படிகளை நீக்கவா? இதை மீளச் செய்ய முடியாது.</string>
+</resources>

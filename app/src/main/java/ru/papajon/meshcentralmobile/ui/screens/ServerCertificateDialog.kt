@@ -49,12 +49,20 @@ internal fun ServerCertificateDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(when {
             !failure.canApprove -> R.string.tls_blocked_title
+            failure.expectedSpkiSha256 != null -> R.string.backup_key_approval_title
             confirmingReplacement -> R.string.tls_replace_title
             changed -> R.string.tls_changed_title
             else -> R.string.tls_untrusted_title
         })) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(MeshTheme.spacing.md)) {
+                failure.expectedSpkiSha256?.let { expected ->
+                    val matches = expected == failure.spkiSha256
+                    Text(stringResource(if (matches) R.string.backup_key_matches else R.string.backup_key_mismatch),
+                        color = if (matches) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.error)
+                    Text(stringResource(R.string.backup_key_expected, ""))
+                    ServerKeyFingerprint(expected)
+                }
                 Text(stringResource(when {
                     !failure.canApprove -> MeshConnectionError.describeCertificate(failure).id
                     changed -> R.string.tls_replace_warning

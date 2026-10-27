@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">Selecionados: %1$d</string>
+    <string name="tools_clear_selection">Limpar seleção</string>
+    <string name="tools_download_selected">Baixar selecionados</string>
+    <string name="tools_delete_selected">Excluir selecionados</string>
+    <string name="tools_select_hint">Toque e segure para selecionar vários itens</string>
+    <string name="tools_download_folder">Baixar pasta</string>
+    <string name="tools_folder_notice">As pastas do Mesh Agent são baixadas como arquivos ZIP. As pastas SFTP são copiadas arquivo por arquivo. Escolha uma pasta de destino.</string>
+    <string name="tools_batch_progress">Concluído: %1$d de %2$d · %3$d bytes</string>
+    <string name="tools_retry">Tentar novamente</string>
+    <string name="tools_queued">Na fila</string>
+    <string name="tools_active">Baixando</string>
+    <string name="tools_succeeded">Verificado</string>
+    <string name="tools_failed">Falhou</string>
+    <string name="tools_cancelled">Cancelado</string>
+    <string name="tools_archiving">Criando o arquivo compactado remoto…</string>
+    <string name="tools_archive_failed">Não foi possível criar ou verificar o arquivo compactado.</string>
+    <string name="tools_archive_left">O download falhou. Um arquivo temporário meshpilot-*.zip pode permanecer na pasta de origem. Tente novamente para removê-lo e baixar de novo.</string>
+    <string name="tools_batch_failed">Um download falhou. Tentar novamente recomeça em um novo arquivo local.</string>
+    <string name="tools_delete_list">Excluir estes itens? Não é possível desfazer.</string>
+</resources>

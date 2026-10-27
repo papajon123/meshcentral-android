@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_two_fingers">دو انگلیوں کا اشارہ</string>
+    <string name="desktop_gesture_default">اصل رویہ</string>
+    <string name="desktop_gesture_scroll">ریموٹ ونڈو اسکرول کریں</string>
+    <string name="desktop_gesture_pan">تصویر کو پین کریں</string>
+    <string name="desktop_pinch">زوم کرنے کے لیے پنچ کریں</string>
+    <string name="desktop_three_fingers">تین انگلیاں ریموٹ ونڈو اسکرول کرتی ہیں۔</string>
+    <string name="desktop_scale">درخواست کردہ تصویر کا پیمانہ: %1$d%%</string>
+    <string name="desktop_pip">تصویر میں تصویر</string>
+    <string name="desktop_pip_auto">ایپ چھوڑتے وقت بھی دیکھنا جاری رکھیں</string>
+    <string name="desktop_stream_rate">≈ %1$.1f اپ ڈیٹ/سیکنڈ · %2$d B/s</string>
+    <string name="desktop_input_help">ہارڈویئر کی بورڈ اور ماؤس ڈیسک ٹاپ پر کام کرتے ہیں۔ Android Alt+Tab یا Meta محفوظ رکھ سکتا ہے؛ اس صورت میں کلید مینو استعمال کریں۔ افقی پہیہ معاون ہونے پر Shift + پہیہ سے کام کرتا ہے۔</string>
+    <string name="desktop_rate_help">معیار، پیمانہ اور فریم کی حد درخواست کردہ ترتیبات ہیں۔ دیگر ناظرین معیار، پیمانہ یا اپ ڈیٹ کی شرح بڑھا سکتے ہیں۔ کاؤنٹر ٹائل اپ ڈیٹس گنتا ہے، مکمل فریم نہیں۔</string>
+    <string name="desktop_keyboard_capture">فزیکل کی بورڈ کیپچر کریں</string>
+    <string name="desktop_keyboard_release">Ctrl+Alt+Shift+Esc کی بورڈ چھوڑ کر سیشن کے اختیارات کھولتا ہے۔</string>
+</resources>

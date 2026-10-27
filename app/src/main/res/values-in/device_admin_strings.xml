@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">Undang perangkat</string>
+    <string name="admin_invite_help">Siapa pun yang memiliki tautan ini dapat memasang agen ke “%1$s”. Bagikan hanya kepada orang yang ingin Anda bantu.</string>
+    <string name="admin_invite_mode">Memungkinkan pemasangan latar belakang dan interaktif untuk agen apa pun yang tersedia.</string>
+    <string name="admin_expiry">Masa berlaku tautan</string>
+    <string name="admin_create_link">Buat tautan</string>
+    <string name="admin_expires_at">Kedaluwarsa: %1$s</string>
+    <string name="admin_expired">Tautan ini telah kedaluwarsa. Buat tautan baru.</string>
+    <string name="admin_qr">Pindai untuk membuka halaman pemasangan agen</string>
+    <string name="admin_share">Bagikan tautan</string>
+    <string name="admin_copy">Salin tautan</string>
+    <string name="admin_copied">Tautan disalin</string>
+    <string name="admin_close">Tutup</string>
+    <string name="admin_cancel">Batal</string>
+    <string name="admin_confirm">Konfirmasi</string>
+    <string name="admin_review">Tinjau perubahan</string>
+    <string name="admin_edit">Edit perangkat</string>
+    <string name="admin_name">Nama</string>
+    <string name="admin_description">Deskripsi</string>
+    <string name="admin_tags">Tag, dipisahkan koma</string>
+    <string name="admin_notes">Catatan</string>
+    <string name="admin_save_notes">Simpan catatan</string>
+    <string name="admin_move">Pindahkan ke grup lain</string>
+    <string name="admin_move_confirm">Pindahkan “%1$s” ke “%2$s”? Akses akan mengikuti grup tujuan.</string>
+    <string name="admin_edit_confirm">Simpan perubahan ini ke “%1$s”?</string>
+    <string name="admin_notes_confirm">Ganti catatan untuk “%1$s”?</string>
+    <string name="admin_saved">Perubahan dikonfirmasi oleh server</string>
+    <string name="admin_failed">Tidak dapat mengonfirmasi perubahan. Muat ulang dan periksa perangkat sebelum mencoba lagi.</string>
+    <string name="admin_invite_failed">Tidak dapat membuat tautan. Periksa koneksi dan izin grup, lalu coba lagi.</string>
+    <string name="admin_loading">Menunggu server…</string>
+    <string name="admin_invalid">Nama: 1–64 karakter. Deskripsi: hingga 64 karakter. Setiap tag: hingga 63 karakter; total: hingga 4096. Gunakan teks satu baris tanpa karakter kontrol atau pemformatan arah teks.</string>
+    <string name="admin_endpoint">Server: %1$s</string>
+    <string name="admin_unavailable">Sambungkan kembali dan muat ulang untuk mengelola perangkat ini. Akun Anda harus memiliki izin yang diperlukan.</string>
+    <string name="admin_notes_limit">Catatan: hingga 16000 karakter.</string>
+    <string name="admin_no_destinations">Tidak ada grup yang kompatibel dengan izin untuk memindahkan perangkat ini.</string>
+</resources>

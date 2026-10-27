@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_file_failed">ตรวจสอบไม่ได้: %1$s</string>
+    <string name="review_paused">หยุดชั่วคราว: การเชื่อมต่อขาดหาย</string>
+    <string name="review_retry_all">ลองรายการที่ยังไม่เสร็จอีกครั้ง</string>
+    <string name="review_cleanup_title">ล้างไฟล์เก็บถาวรระยะไกล</string>
+    <string name="review_archive_left">อาจมีไฟล์เก็บถาวรชั่วคราวเหลืออยู่ในคอมพิวเตอร์: %1$s ตรวจสอบและลบเมื่อไม่มีการดำเนินการกับไฟล์เก็บถาวรอยู่</string>
+    <string name="review_archive_space">การสร้าง ZIP ต้องใช้พื้นที่ว่างในโฟลเดอร์ต้นทางระยะไกลสำหรับไฟล์เก็บถาวรแบบเต็ม หากเอเจนต์เริ่มไม่ได้ ไฟล์จะถูกคัดลอกทีละไฟล์ โฟลเดอร์ภายในเครื่องที่ยังไม่เสร็จจะคงส่วนต่อท้าย .partial ไว้</string>
+    <string name="review_grant_failed">ผู้ให้บริการรายนี้ไม่สามารถรักษาการเข้าถึงสำหรับคิวไว้ได้ เลือกตำแหน่งอื่น</string>
+    <string name="review_zip_invalid">ไฟล์เก็บถาวรเสียหาย ไม่สมบูรณ์ หรือเกินขีดจำกัดโครงสร้างที่รองรับ</string>
+    <string name="review_source_changed">รายการที่เลือกเปลี่ยนไป รีเฟรชโฟลเดอร์และยืนยันการเลือกอีกครั้ง</string>
+    <string name="review_sftp_types">เซิร์ฟเวอร์นี้ไม่ระบุลิงก์สัญลักษณ์หรือไฟล์พิเศษในรายการ SFTP ไฟล์ที่ตรวจสอบไม่ได้จะถูกรายงานตามพาธ คิวจะหยุดชั่วคราวเมื่อการเชื่อมต่อขาดหาย โฟลเดอร์ที่ยังไม่เสร็จจะยังคงมีเครื่องหมาย .partial</string>
+    <string name="review_skipped">ข้ามรายการที่ไม่รองรับ: %1$s</string>
+    <string name="review_folder_unavailable">เข้าถึงโฟลเดอร์ไม่ได้: %1$s คิวที่เหลือจะดำเนินต่อ</string>
+    <string name="review_local_failed">ไม่สามารถเขียนหรืออ่านเอกสาร Android ภายในเครื่องซ้ำได้ เซสชันไฟล์ยังเชื่อมต่ออยู่ ลองรายการนี้อีกครั้ง</string>
+    <string name="review_local_no_rename">ผู้ให้บริการรายนี้เปลี่ยนชื่อเอกสารไม่ได้ ไฟล์บางไฟล์จะคงนามสกุล .partial โปรดเปลี่ยนชื่อในไฟล์ของ Android</string>
+    <string name="review_source_changed_deleted">ลบแล้ว: %1$s ส่วนที่เหลือของรายการที่เลือกยังไม่ถูกลบ โปรดรีเฟรชโฟลเดอร์และยืนยันอีกครั้ง</string>
+    <string name="files_delete_follow_links">การลบโฟลเดอร์แบบเรียกซ้ำจะตามลิงก์สัญลักษณ์และจุดเชื่อมต่อ เป้าหมายนอกโฟลเดอร์ที่เลือกอาจถูกลบด้วย ตรวจสอบโฟลเดอร์ใน MeshCentral ก่อนยืนยัน</string>
+</resources>

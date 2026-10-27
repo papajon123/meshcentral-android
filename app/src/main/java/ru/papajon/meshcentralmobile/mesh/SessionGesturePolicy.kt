@@ -93,15 +93,28 @@ object SessionGesturePolicy {
         totalPanXDp: Float,
         totalPanYDp: Float,
         totalZoom: Float,
+        pointerCount: Int = 2,
+        twoFingerAction: TwoFingerAction = TwoFingerAction.Default,
+        pinchEnabled: Boolean = true,
     ): SessionGestureAction = when {
+        pointerCount >= 3 -> if (kotlin.math.abs(totalPanYDp) >= MULTI_TOUCH_SLOP_DP)
+            SessionGestureAction.RemoteScroll else SessionGestureAction.Pending
+        pinchEnabled && kotlin.math.abs(totalZoom - 1f) >= PINCH_SLOP -> SessionGestureAction.ViewPan
+        twoFingerAction == TwoFingerAction.Pan -> SessionGestureAction.ViewPan
+        twoFingerAction == TwoFingerAction.Scroll -> if (kotlin.math.abs(totalPanYDp) >= MULTI_TOUCH_SLOP_DP)
+            SessionGestureAction.RemoteScroll else SessionGestureAction.Pending
         mode == RemoteControlMode.PanZoom -> SessionGestureAction.ViewPan
-        kotlin.math.abs(totalZoom - 1f) >= PINCH_SLOP -> SessionGestureAction.ViewPan
         kotlin.math.abs(totalPanYDp) >= MULTI_TOUCH_SLOP_DP &&
             kotlin.math.abs(totalPanYDp) > kotlin.math.abs(totalPanXDp) * 1.2f ->
             SessionGestureAction.RemoteScroll
         kotlin.math.abs(totalPanXDp) >= MULTI_TOUCH_SLOP_DP -> SessionGestureAction.ViewPan
         else -> SessionGestureAction.Pending
     }
+
+    /** Raw motion, independent of whether the chosen mode applies pan/zoom. Latched by the caller. */
+    fun multiTouchMoved(panXDp: Float, panYDp: Float, rawZoom: Float): Boolean =
+        !rawZoom.isFinite() || kotlin.math.hypot(panXDp, panYDp) >= MULTI_TOUCH_SLOP_DP ||
+            kotlin.math.abs(rawZoom - 1f) >= PINCH_SLOP
 
     /** Finger lifted. */
     fun onUp(
@@ -111,12 +124,13 @@ object SessionGesturePolicy {
         wasMultiTouch: Boolean,
         viewPanning: Boolean,
         rightClickSent: Boolean = false,
+        multiTouchMoved: Boolean = false,
     ): SessionGestureAction = when {
         rightClickSent -> SessionGestureAction.Pending
         mode == RemoteControlMode.Scroll -> SessionGestureAction.Pending
         mode == RemoteControlMode.PanZoom -> SessionGestureAction.Pending
         // A short two-finger tap (no pan and no scroll) is a right click in input modes.
-        wasMultiTouch -> if (viewPanning) SessionGestureAction.Pending else SessionGestureAction.RightClick
+        wasMultiTouch -> if (viewPanning || multiTouchMoved) SessionGestureAction.Pending else SessionGestureAction.RightClick
 
         // The timer normally sends this while the finger is still down. This is a fallback for
         // a release that wins the scheduling race with the timer.
@@ -151,3 +165,6 @@ object SessionGesturePolicy {
         return (current * gestureZoom).coerceIn(MIN_ZOOM, MAX_ZOOM)
     }
 }
+
+/** Default preserves the original computer/phone gesture behavior. Explicit choices last a session. */
+enum class TwoFingerAction { Default, Scroll, Pan }

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sftp_live_download_refused">Sunucu bu dosyayı reddetti. Yeniden denemeden önce izinlerini ve türünü kontrol edin.</string>
+</resources>

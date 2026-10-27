@@ -49,6 +49,16 @@ Capture actual production Composables with synthetic data before and after. Cove
 
 Evidence, source versions, commands and known gaps live in `docs/redesign/`; external guides are referenced with pinned commits and their original licenses. Screenshots use example hosts and synthetic identities only.
 
+## Launcher and settings portability
+
+The settings backup screen follows the existing quiet Material 3 form: one export action, a separate import action, masked passwords, error/busy states and an explicit import preview. Preview/profile state lives only in an Activity ViewModel; document callbacks remain registered behind the lock without exposing content or confirmation controls. Existing profiles are never overwritten.
+
+The preview flags existing server endpoints, offers to skip them, lists skipped future extension sections, and shows each imported global value before the optional preferences checkbox. Password input is cleared on operation start, lock, background and disposal. Imported key confirmation uses the normal certificate dialog, with a match notice or prominent mismatch warning. Launcher privacy is opt-in and hides names/status outside the unlocked app; ordinary profile switching preserves pinned destinations.
+
+The native favorites widget uses RemoteViews and a scrollable ListView/RemoteViewsService, with at least 48dp row/action targets, localized status text and last-update time. It shows the active profile only. Its light/dark XML colors mirror the surface/onSurface/onSurfaceVariant/primary/onPrimary roles in `ui/theme/Color.kt`; XML is required because the launcher renders this surface outside Compose. A bounded explicit refresh has no permanent background connection. Empty and unavailable-refresh states offer an app entry point.
+
+Platform references: [collection widgets](https://developer.android.com/develop/ui/views/appwidgets/collections), [widget updates](https://developer.android.com/develop/ui/views/appwidgets/advanced), [revoking shortcuts](https://developer.android.com/develop/ui/compose/system/shortcuts/managing-shortcuts).
+
 ## Reference refinement
 
 Actual app screenshots from Termius and Solid Explorer on Google Play were reviewed on 2026-10-21. Borrow the task-oriented hierarchy: short toolbars, meaningful row metadata, clear selection, actions next to their object. Do not copy promotional artwork or brand assets. Setup is a utility form with a compact app signature, not a marketing hero. Avoid repeated explanatory copy and oversized colored panels. See the reference links in the redesign report.

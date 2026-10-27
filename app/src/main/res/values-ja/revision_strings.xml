@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">この下書きバックアップ形式はサポートされていません。このバックアップをエクスポートしたアプリで新しいバックアップを作成してください。</string>
+    <string name="backup_key_approval_title">インポートしたサーバーキーを確認</string>
+    <string name="backup_key_matches">サーバーキーはバックアップと一致しています。サインインする前に、このキーを信頼してよいか確認してください。</string>
+    <string name="backup_key_mismatch">警告：サーバーキーはバックアップと一致しません。信頼する前に、管理者とフィンガープリントを照合してください。</string>
+    <string name="backup_key_expected">バックアップの想定キー：%1$s</string>
+    <string name="backup_error_newer">このファイルは新しいバージョンの MeshPilot で作成されています。インポートするにはアプリを更新してください。</string>
+    <string name="backup_error_auth">パスワードが正しくないか、暗号化されたファイルが変更されています。</string>
+    <string name="backup_error_corrupt">バックアップが破損しているか、形式が無効です。</string>
+    <string name="backup_error_limit">バックアップがサポートされているサイズまたは項目数の上限を超えています。</string>
+    <string name="backup_extension_skipped">新しいバージョンのセクションをスキップしました：%1$s。このデータはインポートされません。</string>
+    <string name="backup_duplicate">このサーバーのプロファイルはすでに存在します。</string>
+    <string name="backup_skip_duplicates">サーバーがすでに存在するプロファイルをスキップ</string>
+    <string name="backup_value_on">オン</string>
+    <string name="backup_value_off">オフ</string>
+    <string name="backup_preferences_preview">スクリーンショット保護：%1$s\n自動ロックの遅延：%2$d 秒\nテーマ：%3$s\nシステムの色：%4$s\nペンの精度：%5$s\nペンのヒント表示済み：%6$s\nロック中にデバイスを隠す：%7$s</string>
+    <string name="integration_privacy_setting">アプリのロック中はウィジェットとショートカットでデバイスを隠す</string>
+    <string name="integration_privacy_help">PIN または生体認証による保護を有効にすると、ロック中やアプリ外でデバイス名と状態を隠します。</string>
+    <string name="integration_private_hidden">アプリのロックを解除してデバイスを表示</string>
+    <string name="integration_private_device">保護されたデバイス</string>
+    <string name="integration_retry_seconds">%1$d 秒後に再試行</string>
+</resources>

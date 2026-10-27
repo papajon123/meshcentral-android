@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">Это устройство больше недоступно. Откройте приложение.</string>
+    <string name="integration_favorites">Избранное</string>
+    <string name="integration_updated">Обновлено: %1$s</string>
+    <string name="integration_widget_empty">Откройте приложение и добавьте избранные устройства.</string>
+    <string name="integration_widget_description">Избранные устройства и их последняя известная доступность</string>
+    <string name="integration_last_known">Последнее известное состояние</string>
+    <string name="integration_open_to_refresh">Откройте приложение, чтобы подключиться и обновить данные.</string>
+    <string name="integration_refresh">Обновить</string>
+    <string name="integration_open_app">Открыть приложение</string>
+    <string name="backup_title">Резервная копия настроек</string>
+    <string name="backup_description">Экспорт профилей серверов, избранного, сочетаний клавиш, избранных команд и настроек приложения. Пароли, токены сеансов, cookie «запомнить устройство» и PIN приложения не включаются. Команды могут содержать секреты, которые вы вписали сами. Проверьте их перед передачей файла.</string>
+    <string name="backup_export">Экспортировать файл</string>
+    <string name="backup_import">Импортировать файл</string>
+    <string name="backup_include_keys">Включить ключи входа на сервер (только в зашифрованном виде)</string>
+    <string name="backup_password">Пароль резервной копии (не менее 8 символов)</string>
+    <string name="backup_password_hint">Пароль шифрует весь файл. Храните его надёжно; восстановить его невозможно.</string>
+    <string name="backup_confirm_password">Подтвердите пароль</string>
+    <string name="backup_password_mismatch">Пароли должны совпадать и содержать 8–1024 символа.</string>
+    <string name="backup_busy">Обработка…</string>
+    <string name="backup_saved">Файл резервной копии сохранён.</string>
+    <string name="backup_failed">Не удалось обработать резервную копию. Проверьте файл, версию формата, пароль и доступ к хранилищу.</string>
+    <string name="backup_preview">Проверить импорт</string>
+    <string name="backup_preview_explanation">Профили будут добавлены как новые. Существующие профили, учётные данные и PIN останутся на месте. Перед подтверждением проверьте адреса серверов и закреплённые ключи.</string>
+    <string name="backup_profile_details">%1$d избранных · %2$d сочетаний клавиш · %3$d команд</string>
+    <string name="backup_pinned_key">Закреплённый ключ сервера: %1$s</string>
+    <string name="backup_contains_key">Содержит зашифрованный ключ входа на сервер</string>
+    <string name="backup_apply_preferences">Также заменить оформление, защиту от скриншотов, задержку автоблокировки и настройки стилуса</string>
+    <string name="backup_confirm_import">Добавить профили</string>
+    <string name="backup_imported">Добавлено профилей: %1$d. Выберите профиль и войдите.</string>
+    <string name="backup_capacity">Недостаточно свободных мест для профилей. Удалите неиспользуемые профили перед импортом.</string>
+    <string name="backup_decrypt">Расшифровать резервную копию</string>
+    <string name="backup_no_profiles">Перед экспортом настройте профиль HTTPS-сервера.</string>
+</resources>

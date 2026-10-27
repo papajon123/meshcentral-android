@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="support_title">Ủng hộ MeshPilot</string>
+    <string name="support_body">MeshPilot miễn phí, mã nguồn mở và không có quảng cáo. Đăng ký hoặc ủng hộ một lần trên Boosty giúp phát hành phiên bản mới.</string>
+    <string name="support_action">Ủng hộ trên Boosty</string>
+    <string name="support_link_copied">Không tìm thấy trình duyệt. Đã sao chép liên kết Boosty.</string>
+</resources>

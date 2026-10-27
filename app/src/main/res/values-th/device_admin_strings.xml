@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">เชิญอุปกรณ์</string>
+    <string name="admin_invite_help">ใครก็ตามที่มีลิงก์นี้สามารถติดตั้งเอเจนต์ลงใน “%1$s” ได้ แบ่งปันเฉพาะกับคนที่คุณต้องการช่วยเท่านั้น</string>
+    <string name="admin_invite_mode">อนุญาตให้ติดตั้งเอเจนต์ที่พร้อมใช้งานใดก็ได้ทั้งเบื้องหลังและแบบโต้ตอบ</string>
+    <string name="admin_expiry">อายุการใช้งานของลิงก์</string>
+    <string name="admin_create_link">สร้างลิงก์</string>
+    <string name="admin_expires_at">หมดอายุ: %1$s</string>
+    <string name="admin_expired">ลิงก์นี้หมดอายุแล้ว สร้างลิงก์ใหม่</string>
+    <string name="admin_qr">สแกนเพื่อเปิดหน้าติดตั้งเอเจนต์</string>
+    <string name="admin_share">แชร์ลิงก์</string>
+    <string name="admin_copy">คัดลอกลิงก์</string>
+    <string name="admin_copied">คัดลอกลิงก์แล้ว</string>
+    <string name="admin_close">ปิด</string>
+    <string name="admin_cancel">ยกเลิก</string>
+    <string name="admin_confirm">ยืนยัน</string>
+    <string name="admin_review">ตรวจสอบการเปลี่ยนแปลง</string>
+    <string name="admin_edit">แก้ไขอุปกรณ์</string>
+    <string name="admin_name">ชื่อ</string>
+    <string name="admin_description">คำอธิบาย</string>
+    <string name="admin_tags">แท็ก คั่นด้วยจุลภาค</string>
+    <string name="admin_notes">โน้ต</string>
+    <string name="admin_save_notes">บันทึกโน้ต</string>
+    <string name="admin_move">ย้ายไปยังกลุ่มอื่น</string>
+    <string name="admin_move_confirm">ย้าย “%1$s” ไปยัง “%2$s” หรือไม่ การเข้าถึงจะเป็นไปตามกลุ่มปลายทาง</string>
+    <string name="admin_edit_confirm">บันทึกการเปลี่ยนแปลงเหล่านี้กับ “%1$s” หรือไม่</string>
+    <string name="admin_notes_confirm">แทนที่โน้ตของ “%1$s” หรือไม่</string>
+    <string name="admin_saved">เซิร์ฟเวอร์ยืนยันการเปลี่ยนแปลงแล้ว</string>
+    <string name="admin_failed">ไม่สามารถยืนยันการเปลี่ยนแปลงได้ รีเฟรชและตรวจสอบอุปกรณ์ก่อนลองอีกครั้ง</string>
+    <string name="admin_invite_failed">ไม่สามารถสร้างลิงก์ได้ ตรวจสอบการเชื่อมต่อและสิทธิ์ของกลุ่ม แล้วลองอีกครั้ง</string>
+    <string name="admin_loading">กำลังรอเซิร์ฟเวอร์…</string>
+    <string name="admin_invalid">ชื่อ: 1–64 อักขระ คำอธิบาย: สูงสุด 64 อักขระ แต่ละแท็ก: สูงสุด 63 อักขระ ทั้งหมด: สูงสุด 4096 ใช้ข้อความบรรทัดเดียวโดยไม่มีอักขระควบคุมหรืออักขระจัดรูปแบบทิศทางข้อความ</string>
+    <string name="admin_endpoint">เซิร์ฟเวอร์: %1$s</string>
+    <string name="admin_unavailable">เชื่อมต่อใหม่และรีเฟรชเพื่อจัดการอุปกรณ์นี้ บัญชีของคุณต้องมีสิทธิ์ที่จำเป็น</string>
+    <string name="admin_notes_limit">โน้ต: สูงสุด 16000 อักขระ</string>
+    <string name="admin_no_destinations">ไม่มีกลุ่มที่เข้ากันได้ซึ่งมีสิทธิ์ย้ายอุปกรณ์นี้</string>
+</resources>

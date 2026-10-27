@@ -1,0 +1,6 @@
+{
+  "action": "msg",
+  "type": "services",
+  "nodeid": "node//fixture",
+  "value": "[{\"name\":\"FixtureService\",\"displayName\":\"Fixture Service\",\"status\":{\"state\":\"RUNNING\",\"pid\":120,\"isOwnProcess\":true},\"startType\":\"AUTO_START\"},{\"name\":\"StoppedFixture\",\"displayName\":\"Stopped Fixture\",\"status\":{\"state\":\"STOPPED\",\"pid\":0},\"startType\":\"DEMAND_START\"}]"
+}

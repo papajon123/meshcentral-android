@@ -1,5 +1,16 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
+    <string name="devices_page_previous">ก่อนหน้า</string>
+    <string name="devices_page_next">ถัดไป</string>
+    <plurals name="devices_page_count">
+        <item quantity="other">%1$d–%2$d จาก %3$d อุปกรณ์</item>
+    </plurals>
+    <plurals name="devices_page_count_unknown">
+        <item quantity="other">อุปกรณ์ %1$d–%2$d</item>
+    </plurals>
+    <string name="devices_server_total">พบอุปกรณ์: %1$d</string>
+    <string name="devices_server_search">ค้นหาอุปกรณ์ทั้งหมดตามชื่อ</string>
+    <string name="devices_page_failed">โหลดอุปกรณ์ไม่สำเร็จ ลองอีกครั้ง</string>
     <string name="biometric_unlock_title">ปลดล็อก MeshPilot</string>
     <string name="biometric_unlock_subtitle">ยืนยันตัวตนด้วยไบโอเมตริกของอุปกรณ์เพื่อเปิดแอป</string>
     <string name="cancel">ยกเลิก</string>
@@ -314,4 +325,6 @@
     <string name="settings_update_supporting">APK ที่ลงนามมีอยู่ใน GitHub Releases ติดตั้งเวอร์ชันใหม่ทับเวอร์ชันปัจจุบัน</string>
     <string name="settings_update_action">ดาวน์โหลดอัปเดต</string>
     <string name="settings_update_unavailable">เปิดเบราว์เซอร์ไม่สำเร็จ เปิด https://github.com/papajon123/meshcentral-android/releases ด้วยตนเอง</string>
+    <string name="chat_verifying_peer">กำลังตรวจสอบการเชื่อมต่อแชทกับผู้ใช้…</string>
+    <string name="chat_server_retained">เซิร์ฟเวอร์ยังคงเก็บการเชื่อมต่อเดิมไว้ กำลังลองใหม่นานสูงสุด 20 นาที…</string>
 </resources>

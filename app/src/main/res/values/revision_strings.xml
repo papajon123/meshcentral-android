@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">This draft backup format is not supported. Create a new backup in the app that exported it.</string>
+    <string name="backup_key_approval_title">Confirm the imported server key</string>
+    <string name="backup_key_matches">The server key matches the backup. Confirm trust before signing in.</string>
+    <string name="backup_key_mismatch">Warning: the server key DOES NOT match the backup. Verify the fingerprint with your administrator before trusting it.</string>
+    <string name="backup_key_expected">Expected key from backup: %1$s</string>
+    <string name="backup_error_newer">This file is from a newer version of MeshPilot. Update the app to import it.</string>
+    <string name="backup_error_auth">The password is incorrect or the encrypted file has been modified.</string>
+    <string name="backup_error_corrupt">The backup is damaged or has an invalid format.</string>
+    <string name="backup_error_limit">The backup exceeds the supported size or item limits.</string>
+    <string name="backup_extension_skipped">Section from a newer version skipped: %1$s. Its data will not be imported.</string>
+    <string name="backup_duplicate">A profile for this server already exists.</string>
+    <string name="backup_skip_duplicates">Skip profiles whose server already exists</string>
+    <string name="backup_value_on">On</string>
+    <string name="backup_value_off">Off</string>
+    <string name="backup_preferences_preview">Screenshot protection: %1$s\nAuto-lock delay: %2$d seconds\nTheme: %3$s\nDynamic colors: %4$s\nStylus precision: %5$s\nStylus hint already seen: %6$s\nHide devices while locked: %7$s</string>
+    <string name="integration_privacy_setting">Hide devices in widgets and shortcuts while the app is locked</string>
+    <string name="integration_privacy_help">With PIN or biometric protection, hide device names and status while locked or outside the app.</string>
+    <string name="integration_private_hidden">Unlock the app to view devices</string>
+    <string name="integration_private_device">Protected device</string>
+    <string name="integration_retry_seconds">Try again in %1$d s</string>
+</resources>

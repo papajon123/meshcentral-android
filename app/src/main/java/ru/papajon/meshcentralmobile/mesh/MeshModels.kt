@@ -38,6 +38,11 @@ object MeshRights {
 
     /** Site administrators receive this value in `meshes[].links[userid].rights`. */
     const val FULL = -1
+
+    /** Shared restrictive input policy for phone input and task-tool mutations. */
+    fun allowsUnrestrictedInput(rights: Int?): Boolean = rights == FULL ||
+        (rights != null && rights >= 0 && rights and REMOTE_CONTROL != 0 &&
+            rights and (REMOTE_VIEW or DESKTOP_LIMITED_INPUT or NO_DESKTOP) == 0)
 }
 
 data class MeshGroup(
@@ -47,6 +52,9 @@ data class MeshGroup(
     /** Raw `links` map from the control channel: MeshCentral user id -> rights bitmask. */
     val rightsByUser: Map<String, Int> = emptyMap(),
     val relayNodeId: String? = null,
+    val mtype: Int = 0,
+    /** Effective group grant, excluding direct device grants. */
+    val rights: Int? = null,
 ) {
     fun rightsFor(userId: String?): Int? {
         if (userId.isNullOrBlank()) return null
@@ -84,6 +92,8 @@ data class MeshDevice(
     val lastBootMillis: Long? = null,
     val lastBootKnown: Boolean = false,
     val remoteInput: PhoneRemoteInput = PhoneRemoteInput.Unknown,
+    val description: String = "",
+    val tags: List<String> = emptyList(),
 ) {
     fun sessionAvailability(protocol: RelayProtocol, serverCapabilities: MeshServerCapabilities = MeshServerCapabilities()): SessionAvailability =
         availabilityFor(this, protocol, serverCapabilities)
@@ -110,10 +120,7 @@ data class MeshDevice(
     val phoneInputAllowed: Boolean
         get() {
             if (!isAndroidAgent || !connectivityKnown || conn and 1 == 0 || !supportsRemoteInput) return false
-            val value = rights ?: return false
-            if (value == MeshRights.FULL) return true
-            return value >= 0 && value and MeshRights.REMOTE_CONTROL != 0 &&
-                value and (MeshRights.REMOTE_VIEW or MeshRights.DESKTOP_LIMITED_INPUT or MeshRights.NO_DESKTOP) == 0
+            return MeshRights.allowsUnrestrictedInput(rights)
         }
 
     /** 256 = view-only, unless the account also holds remote control (8) or full rights. */
@@ -212,6 +219,11 @@ data class MeshServerCapabilities(
     val linuxShell: String? = null,
     val domainSuffix: String? = null,
     val manageAllDeviceGroups: Boolean = false,
+    val features: Long? = null,
+    val advertisedName: String? = null,
+    val advertisedPort: Int? = null,
+    val advertisedHttps: Boolean? = null,
+    val maxDeviceView: Int? = null,
 ) {
     val sshEnabled: Boolean? get() = features2?.let { it and 0x200L != 0L }
     val sftpEnabled: Boolean? get() = features2?.let { it and 0x200L != 0L && it and 0x800000L == 0L }
@@ -226,6 +238,9 @@ data class MeshClientState(
     val lastError: UiText? = null,
     val groups: List<MeshGroup> = emptyList(),
     val devices: List<MeshDevice> = emptyList(),
+    val devicePage: DevicePage = DevicePage(),
+    val deviceQuery: DeviceListQuery = DeviceListQuery(),
+    val deviceBrowserFilter: DeviceBrowserFilter = DeviceBrowserFilter.All,
     val userId: String? = null,
     val twoFactorChallenge: TwoFactorChallenge? = null,
     val rememberedDeviceExpiresAt: Long? = null,
@@ -234,7 +249,10 @@ data class MeshClientState(
     val requiresSignIn: Boolean = true,
     /** False until a fresh nodes snapshot arrives after reconnecting. */
     val devicesCurrent: Boolean = false,
+    val resolvingDeviceIds: Set<String> = emptySet(),
+    val deviceBrowserSearch: String? = null,
     val serverCapabilities: MeshServerCapabilities = MeshServerCapabilities(),
+    val agentInstallAllowed: Boolean = false,
 ) {
     val authenticated: Boolean
         get() = connectionState == ConnectionState.Authenticated ||
@@ -283,6 +301,9 @@ data class RemoteDesktopState(
     val keyboardState: Int = 0,
     val viewOnly: Boolean = false,
     val bytesReceived: Long = 0L,
+    val bytesPerSecond: Long = 0L,
+    val framesPerSecond: Float = 0f,
+    val quality: DesktopQuality = DesktopQuality(),
     val clipboard: ClipboardTransfer? = null,
     val attempt: Int = 0,
 ) {
@@ -316,9 +337,12 @@ data class RemoteDesktopState(
 sealed interface MeshControlEvent {
     data class ServerInfo(val name: String?, val domain: String?, val capabilities: MeshServerCapabilities = MeshServerCapabilities()) : MeshControlEvent
     data class UserInfo(val userId: String?, val name: String?, val siteAdmin: Boolean,
-        val userGroupIds: Set<String> = emptySet(), val removeRights: Int? = null) : MeshControlEvent
+        val userGroupIds: Set<String> = emptySet(), val removeRights: Int? = null,
+        val agentInstallAllowed: Boolean = false) : MeshControlEvent
     data class Meshes(val groups: List<MeshGroup>) : MeshControlEvent
-    data class Nodes(val devices: List<MeshDevice>) : MeshControlEvent
+    data class Nodes(val devices: List<MeshDevice>, val responseId: String? = null,
+        val skip: Int? = null, val limit: Int? = null, val totalCount: Int? = null,
+        val filter: String? = null, val result: String? = null) : MeshControlEvent
     data class AuthCookie(val cookie: String?, val relayCookie: String?) : MeshControlEvent
     class TwoFactorCookie(val cookie: String?) : MeshControlEvent {
         override fun toString(): String = "TwoFactorCookie(redacted)"
@@ -349,7 +373,7 @@ sealed interface MeshNodeEvent {
     data class NodeChanged(val device: MeshDevice) : MeshNodeEvent
     data class NodeAdded(val device: MeshDevice) : MeshNodeEvent
     data class NodeRemoved(val nodeId: String) : MeshNodeEvent
-    data class MeshChanged(val meshId: String?) : MeshNodeEvent
+    data class MeshChanged(val meshId: String?, val nodeId: String? = null) : MeshNodeEvent
 }
 
 /** KVM commands received from the Mesh Agent through the relay. */

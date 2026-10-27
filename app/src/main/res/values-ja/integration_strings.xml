@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="integration_unavailable">このデバイスは利用できなくなりました。アプリを開いてください。</string>
+    <string name="integration_favorites">お気に入り</string>
+    <string name="integration_updated">更新: %1$s</string>
+    <string name="integration_widget_empty">アプリを開いてお気に入りのデバイスを追加してください。</string>
+    <string name="integration_widget_description">お気に入りのデバイスと最後に確認された可用性</string>
+    <string name="integration_last_known">最後に確認された状態</string>
+    <string name="integration_open_to_refresh">接続して更新するにはアプリを開いてください。</string>
+    <string name="integration_refresh">更新</string>
+    <string name="integration_open_app">アプリを開く</string>
+    <string name="backup_title">設定のバックアップ</string>
+    <string name="backup_description">サーバープロファイル、お気に入り、キーボードショートカット、コマンドスニペット、アプリの設定をエクスポートします。パスワード、セッショントークン、記憶したデバイスの Cookie、アプリの PIN は含まれません。コマンドスニペットには入力したテキストが含まれる場合があります。共有する前に確認してください。</string>
+    <string name="backup_export">ファイルをエクスポート</string>
+    <string name="backup_import">ファイルをインポート</string>
+    <string name="backup_include_keys">サーバーログインキーを含める（暗号化のみ）</string>
+    <string name="backup_password">バックアップのパスワード（8 文字以上）</string>
+    <string name="backup_password_hint">パスワードはファイル全体を暗号化します。安全に保管してください。復元することはできません。</string>
+    <string name="backup_confirm_password">パスワードを確認</string>
+    <string name="backup_password_mismatch">パスワードは一致し、8～1024 文字である必要があります。</string>
+    <string name="backup_busy">処理中…</string>
+    <string name="backup_saved">バックアップファイルを保存しました。</string>
+    <string name="backup_failed">バックアップを処理できませんでした。ファイル、形式のバージョン、パスワード、ストレージへのアクセスを確認してください。</string>
+    <string name="backup_preview">インポート内容を確認</string>
+    <string name="backup_preview_explanation">プロファイルは新しいプロファイルとして追加されます。既存のプロファイル、認証情報、PIN はそのまま残ります。確定する前にサーバーアドレスとピン留めされたキーを確認してください。</string>
+    <string name="backup_profile_details">お気に入り %1$d 件 · ショートカット %2$d 件 · コマンド %3$d 件</string>
+    <string name="backup_pinned_key">ピン留めされたサーバーキー: %1$s</string>
+    <string name="backup_contains_key">暗号化されたサーバーログインキーを含みます</string>
+    <string name="backup_apply_preferences">外観、スクリーンショット保護、自動ロックの遅延、ペンの設定も置き換える</string>
+    <string name="backup_confirm_import">プロファイルを追加</string>
+    <string name="backup_imported">%1$d 件のプロファイルを追加しました。プロファイルを選択してログインしてください。</string>
+    <string name="backup_capacity">プロファイルの空き枠が不足しています。インポートする前に未使用のプロファイルを削除してください。</string>
+    <string name="backup_decrypt">バックアップを復号</string>
+    <string name="backup_no_profiles">エクスポートする前に HTTPS サーバープロファイルを設定してください。</string>
+</resources>

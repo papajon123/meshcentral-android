@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">Este formato de backup preliminar não é compatível. Crie um novo backup no app que o exportou.</string>
+    <string name="backup_key_approval_title">Confirme a chave do servidor importada</string>
+    <string name="backup_key_matches">A chave do servidor corresponde ao backup. Confirme que confia nela antes de entrar.</string>
+    <string name="backup_key_mismatch">Aviso: a chave do servidor NÃO corresponde ao backup. Verifique a impressão digital com o administrador antes de confiar nela.</string>
+    <string name="backup_key_expected">Chave esperada do backup: %1$s</string>
+    <string name="backup_error_newer">Este arquivo é de uma versão mais recente do MeshPilot. Atualize o app para importá-lo.</string>
+    <string name="backup_error_auth">A senha está incorreta ou o arquivo criptografado foi modificado.</string>
+    <string name="backup_error_corrupt">O backup está danificado ou tem um formato inválido.</string>
+    <string name="backup_error_limit">O backup excede os limites de tamanho ou de itens suportados.</string>
+    <string name="backup_extension_skipped">Uma seção de uma versão mais recente foi ignorada: %1$s. Os dados dela não serão importados.</string>
+    <string name="backup_duplicate">Já existe um perfil para este servidor.</string>
+    <string name="backup_skip_duplicates">Ignorar perfis cujo servidor já existe</string>
+    <string name="backup_value_on">Ativado</string>
+    <string name="backup_value_off">Desativado</string>
+    <string name="backup_preferences_preview">Proteção de capturas de tela: %1$s\nAtraso do bloqueio automático: %2$d segundos\nTema: %3$s\nCores do sistema: %4$s\nPrecisão da caneta: %5$s\nDica da caneta já exibida: %6$s\nOcultar dispositivos quando bloqueado: %7$s</string>
+    <string name="integration_privacy_setting">Ocultar dispositivos em widgets e atalhos enquanto o app está bloqueado</string>
+    <string name="integration_privacy_help">Com proteção por PIN ou biometria, oculte nomes e status dos dispositivos enquanto o app estiver bloqueado ou você estiver fora dele.</string>
+    <string name="integration_private_hidden">Desbloqueie o app para ver os dispositivos</string>
+    <string name="integration_private_device">Dispositivo protegido</string>
+    <string name="integration_retry_seconds">Tente novamente em %1$d s</string>
+</resources>

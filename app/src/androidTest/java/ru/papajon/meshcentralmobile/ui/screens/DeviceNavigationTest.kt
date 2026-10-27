@@ -59,4 +59,22 @@ class DeviceNavigationTest {
         compose.onNode(hasText(compose.activity.getString(R.string.device_sftp)) and hasAnyAncestor(isPopup())).assertIsNotEnabled()
         compose.runOnIdle { assertEquals(0, selections) }
     }
+
+    @Test fun chatMenuHidesUnsupportedPhonesOfflineAndMissingGrants() {
+        var target by mutableStateOf(device.copy(agentId = 14))
+        compose.setContent {
+            MeshCentralMobileTheme {
+                DeviceScreen(target, MeshServerCapabilities(), true, DeviceTab.Overview, {}, {}, {}) {}
+            }
+        }
+        compose.onNodeWithContentDescription(compose.activity.getString(R.string.workspace_tools)).performClick()
+        val chat = hasText(compose.activity.getString(R.string.chat_title)) and hasAnyAncestor(isPopup())
+        compose.onNode(chat).assertDoesNotExist()
+        compose.runOnIdle { target = device.copy(conn = 0) }
+        compose.onNode(chat).assertDoesNotExist()
+        compose.runOnIdle { target = device.copy(rights = MeshRights.REMOTE_CONTROL) }
+        compose.onNode(chat).assertDoesNotExist()
+        compose.runOnIdle { target = device }
+        compose.onNode(chat).assertIsDisplayed()
+    }
 }

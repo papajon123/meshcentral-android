@@ -40,6 +40,7 @@ class ServerCertificateGalleryTest {
         val app = instrumentation.targetContext
         val locales = app.getSystemService(LocaleManager::class.java)
         val oldLocales = locales.applicationLocales
+        val oldResourceLocales = app.resources.configuration.locales
         val oldFontScale = Settings.System.getFloat(app.contentResolver, Settings.System.FONT_SCALE, 1f)
         val failure = ServerCertificateFailure(ServerCertificateFailureKind.Untrusted,
             "0123456789abcdef".repeat(4), "CN=mesh.example, O=Example", 1_760_000_000_000, 1_900_000_000_000, "https://mesh.example/", "ab".repeat(32))
@@ -55,7 +56,11 @@ class ServerCertificateGalleryTest {
                 Preview("zh-Hans", false, false), Preview("ar", true, true), Preview("ru", true, true, 1.4f))) {
                 locales.applicationLocales = LocaleList.forLanguageTags(choice.tag)
                 setFontScale(choice.fontScale)
-                android.os.SystemClock.sleep(400)
+                compose.waitUntil(10_000) {
+                    app.resources.configuration.locales[0].language == choice.tag.substringBefore('-') &&
+                        kotlin.math.abs(app.resources.configuration.fontScale - choice.fontScale) < 0.05f
+                }
+                instrumentation.waitForIdleSync()
                 ActivityScenario.launch(ComponentActivity::class.java).use { scenario ->
                     var title = ""
                     var button = ""
@@ -112,6 +117,13 @@ class ServerCertificateGalleryTest {
         } finally {
             locales.applicationLocales = oldLocales
             setFontScale(oldFontScale)
+            // Settings writes finish before the configuration reaches the application. Do not
+            // let that late update recreate the next test's Activity after its setContent.
+            compose.waitUntil(10_000) {
+                app.resources.configuration.locales == oldResourceLocales &&
+                    kotlin.math.abs(app.resources.configuration.fontScale - oldFontScale) < 0.05f
+            }
+            instrumentation.waitForIdleSync()
         }
     }
 }

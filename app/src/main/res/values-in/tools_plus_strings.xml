@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">Dipilih: %1$d</string>
+    <string name="tools_clear_selection">Hapus pilihan</string>
+    <string name="tools_download_selected">Unduh yang dipilih</string>
+    <string name="tools_delete_selected">Hapus yang dipilih</string>
+    <string name="tools_select_hint">Sentuh dan tahan untuk memilih beberapa item</string>
+    <string name="tools_download_folder">Unduh folder</string>
+    <string name="tools_folder_notice">Folder Mesh Agent diunduh sebagai arsip ZIP. Folder SFTP disalin file demi file. Pilih folder tujuan.</string>
+    <string name="tools_batch_progress">Selesai: %1$d dari %2$d · %3$d byte</string>
+    <string name="tools_retry">Coba lagi</string>
+    <string name="tools_queued">Dalam antrean</string>
+    <string name="tools_active">Mengunduh</string>
+    <string name="tools_succeeded">Terverifikasi</string>
+    <string name="tools_failed">Gagal</string>
+    <string name="tools_cancelled">Dibatalkan</string>
+    <string name="tools_archiving">Membuat arsip jarak jauh…</string>
+    <string name="tools_archive_failed">Arsip tidak dapat dibuat atau diverifikasi.</string>
+    <string name="tools_archive_left">Unduhan gagal. Arsip sementara meshpilot-*.zip mungkin tertinggal di folder sumber. Coba lagi untuk membersihkannya dan mengunduh ulang.</string>
+    <string name="tools_batch_failed">Satu unduhan gagal. Mencoba lagi akan memulainya di file lokal baru.</string>
+    <string name="tools_delete_list">Hapus item ini? Ini tidak dapat dibatalkan.</string>
+</resources>

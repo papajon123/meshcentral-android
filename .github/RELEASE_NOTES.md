@@ -1,88 +1,59 @@
-## MeshPilot 0.8.4
+## MeshPilot 0.9.0
 
 English · 简体中文 · Русский
 
-**MeshCentral Mobile is now MeshPilot.** At the request of the MeshCentral maintainers, third-party apps do not use
-the MeshCentral name. MeshPilot is an independent client for MeshCentral servers: it is not affiliated with or
-endorsed by the MeshCentral project, so please report problems with this app here, not to the MeshCentral team.
-The package and signing key are unchanged, so 0.8.4 installs as a normal update. 0.8.4 is the same app as 0.8.3,
-which was built and tested but could not be uploaded to GitHub.
+MeshPilot is an independent client for MeshCentral servers. It is not affiliated with or endorsed by the
+MeshCentral project, so please report problems with this app here, not to the MeshCentral team.
+The package and signing key are unchanged, so 0.9.0 installs as a normal update over 0.8.4.
 
-**New in 0.8.3 and 0.8.4:**
+**New in 0.9.0:**
 
-- **Login tokens and login keys.** Sign in with a MeshCentral login token: its own `~t:` user name and the token
-  password. The sign-in screen now explains where to create one, which helps on servers that allow only tokens or
-  single sign-on. Servers protected with a login key (`loginKey`) work too: enter the key in the server settings.
-  Fixes #11.
-- **Lower memory use in long desktop sessions:** decoded screen tiles are released right after drawing.
+- **Chat with the person at a computer.** Open the standard MeshCentral messenger window on an online computer and
+  exchange plain text. Conversations survive short network loss; history stays in memory and is never written to disk.
+- **Port forwarding.** Reach RDP, VNC, SSH, web or custom TCP services on remote machines through a connected Mesh
+  Agent on a local loopback port of the phone. Routes are started by you, shown in a notification with Stop all and
+  never restored automatically.
+- **Large servers.** Devices are shown in pages using the server's `maxdeviceview`, with search across all devices
+  on MeshCentral 1.3.1. The page and filter survive returning from details and reconnecting.
+- **Processes and services.** Search and sort processes, filter services, end a process or start/stop/restart a
+  service after confirmation. The app re-reads the agent state before reporting success. No plugin is required.
+- **Terminal and files.** Reconnect a terminal after a disconnect while keeping scrollback. Select several files or
+  folders with a long press, download whole folders with size and SHA-256 verification, and retry or cancel queued
+  transfers.
+- **Remote desktop.** Passive picture-in-picture, three-finger scrolling, a two-finger scroll/pan choice and a
+  pinch-to-zoom switch; physical mouse, keyboard and Samsung DeX input; per-device image quality, scale and capture
+  rate, with the incoming data rate shown in the session bar.
+- **Devices.** Invite a device into a group with a time-limited link or QR code. Rename devices, edit descriptions,
+  tags and notes, and move them between groups with permission checks.
+- **Launcher and backups.** Up to four recent devices on the app icon, a Favorites home-screen widget, and
+  password-encrypted settings backups that never overwrite existing profiles.
+- **Android 16.** The app targets Android 16 (API 36); Android 8.0 remains the minimum.
+- **Support MeshPilot.** An optional card in Settings opens the Boosty page. No features depend on support.
 
-Also in the 0.8 line (since 0.7.3):
+中文：MeshPilot 是 MeshCentral 服务器的独立客户端，与 MeshCentral 项目没有关联，也未获其认可；请在本仓库报告本应用的问题。
+软件包和签名密钥不变，0.9.0 可作为 0.8.4 的普通更新安装。0.9.0 新增：与电脑前的用户进行文字聊天（历史仅保存在内存中）；
+通过已连接的 Mesh Agent 将 RDP、VNC、SSH、网页或自定义 TCP 服务转发到手机本地回环端口，由用户手动启动并在通知中显示；
+大型服务器分页浏览，并可在 MeshCentral 1.3.1 上搜索全部设备；进程和服务管理，操作前需确认，并在报告成功前重新读取代理状态；
+终端断线后重新连接并保留滚动记录；长按多选文件和文件夹，下载整个文件夹并校验大小和 SHA-256；远程桌面画中画、三指滚动、
+双指滚动/平移选择、捏合缩放开关，支持实体鼠标、键盘和 Samsung DeX，并按设备保存画质、缩放和采集频率；通过限时链接或二维码邀请设备入组，
+重命名设备、编辑描述、标签和备注，并在权限检查后移动设备；应用图标快捷方式、“收藏”桌面小组件和密码加密的设置备份；
+目标平台为 Android 16，最低仍为 Android 8.0；设置中新增可选的 Boosty 支持卡片。
 
-- **Stylus and S Pen (0.8.2):** the pen works as a precise mouse on computer desktops with hover, tip clicks and
-  drags, side-button right click and palm rejection; on phones with remote input it gives precise taps and swipes.
-  Pressure and tilt are not carried by MeshCentral's remote-desktop protocol.
-- **Phones:** view the screen after Android consent, see battery and device details,
-  send confirmed vibration, flashlight, message, link and dial-pad requests, and
-  transfer files with size/SHA-256 verification. Unsupported folder creation and
-  rename stay hidden; ambiguous media names cannot be acted on.
-- **Phone control is conditional:** touch, hold, swipe, Android navigation and text
-  entry require a modified agent with input support, enabled accessibility and
-  sufficient rights. This agent support is **not yet in the upstream project**;
-  the official agent remains view-only. Command submission does not prove execution.
-- **Sign-in and trust:** approve and pin a server public key per profile, including
-  self-signed/private-CA servers, after independently checking its fingerprint.
-  Optional **Remember this device** stores the server's 2FA cookie with Android
-  Keystore encryption and binds it to the account, endpoint and issuing TLS trust.
-- **Computers and tools:** Windows security/antivirus status, hardware/software
-  inventory, CPU/RAM samples, device events and seven-day connectivity history;
-  saved keyboard shortcuts and terminal favorites; reviewed user messages and shell
-  commands. Power and removal requests retain permission checks and confirmations.
-- **Windows fixes:** treat JSON null as missing, format BIOS dates in the local
-  language, keep favorite-command insertion on the terminal prompt, and offer an
-  explicit PowerShell 5+ UTF-8 mode. Default commands stay unchanged; programs with
-  their own encoding and agent-side conversion still have limits.
-- **Recovery:** sessions come back by themselves after a network outage: the app waits for the network and
-  retries with a bounded backoff, while server refusals still stop after five attempts. Clearing the saved
-  sign-in no longer freezes the app, and a failed download no longer leaves a partial file behind.
-- **Reliability:** phone file transfers, MediaStore verification, screen framing,
-  document-picker/session cleanup and forms above the keyboard. Optional GitHub
-  update checks open downloads in the browser; the app never installs an APK.
+Русский: MeshPilot — независимый клиент для серверов MeshCentral, он не связан с проектом MeshCentral и не одобрен им;
+о проблемах с приложением сообщайте здесь. Пакет и ключ подписи прежние, 0.9.0 ставится обычным обновлением поверх 0.8.4.
+Новое в 0.9.0: текстовый чат с человеком за компьютером (история хранится только в памяти); проброс RDP, VNC, SSH,
+веб- и других TCP-служб удалённых машин через подключённый Mesh Agent на локальный порт телефона — маршруты запускаете вы,
+они видны в уведомлении и не восстанавливаются сами; постраничный просмотр больших серверов и поиск по всем устройствам
+на MeshCentral 1.3.1; диспетчер процессов и служб с подтверждением действий и повторной проверкой состояния агента;
+переподключение терминала с сохранением прокрутки; выбор нескольких файлов и папок долгим нажатием, загрузка целых папок
+с проверкой размера и SHA-256; рабочий стол в окне «картинка в картинке», прокрутка тремя пальцами, выбор прокрутки или
+сдвига двумя пальцами, переключатель масштабирования щипком, мышь, клавиатура и Samsung DeX, сохранение качества,
+масштаба и частоты кадров для каждого устройства; приглашение устройства в группу ссылкой или QR-кодом, переименование,
+описание, метки, заметки и перенос между группами с проверкой прав; ярлыки на значке приложения, виджет «Избранное»
+и резервная копия настроек с шифрованием паролем; целевая версия Android 16, минимальная — по-прежнему Android 8.0;
+в настройках появилась необязательная карточка поддержки на Boosty.
 
-The package and signing identity are unchanged. Standard desktop, terminal, files,
-SSH and SFTP do not require the optional plugin. Jobs, service/process tools and
-background notifications require the separately installed Mobile Companion plugin;
-the app does not administer the server.
-
-中文：MeshCentral Mobile 现更名为 MeshPilot：应 MeshCentral 维护者的要求，第三方应用不使用 MeshCentral 名称。MeshPilot 是 MeshCentral 服务器的独立客户端，与 MeshCentral 项目没有关联，也未获其认可；请在本仓库报告本应用的问题，而不要向 MeshCentral 团队报告。0.8.3/0.8.4 新增（0.8.4 与未能上传到 GitHub 的 0.8.3 为同一应用）：支持 MeshCentral 登录令牌（`~t:` 用户名和令牌密码）及受登录密钥（loginKey）保护的服务器；长时间远程桌面会话的内存占用更低。0.8.2 新增手写笔和 S Pen 支持（悬停、侧键右击、防误触）。新增手机屏幕查看、电池和设备信息、经确认后发送的操作请求，
-以及带大小和 SHA-256 校验的文件传输。触摸、滑动、导航和文字输入需要支持输入的修改版代理、
-已启用的无障碍服务及足够权限；这项代理支持尚未合入上游项目，官方代理仍只能查看屏幕。
-新增按服务器配置固定公钥，以及使用 Android Keystore 加密保存的“记住此设备”双重验证凭据。
-电脑端增加安全状态、软硬件信息、CPU/内存、事件和连接历史、快捷键及常用命令。
-修复手机文件传输、屏幕数据和键盘遮挡问题。Windows 修复包括 JSON null、BIOS 日期显示、
-常用命令插入位置，并提供显式选择的 PowerShell 5+ UTF-8 模式；默认命令不变，
-代理或程序自身的编码仍可能影响结果。操作已发送不代表设备已执行。
-断网后会话可自动恢复，清除已保存登录不再卡住界面，下载失败不会留下不完整文件。
-可选择检查 GitHub 更新，下载在浏览器中打开，不会自动安装。
-
-Русский: MeshCentral Mobile теперь называется MeshPilot: по просьбе сопровождающих MeshCentral сторонние приложения не используют это имя. MeshPilot — независимый клиент для серверов MeshCentral, он не связан с проектом MeshCentral и не одобрен им; о проблемах с приложением сообщайте здесь, а не команде MeshCentral. Новое в 0.8.3 и 0.8.4 (0.8.4 — то же приложение, что 0.8.3, которую не удалось загрузить на GitHub): вход по токену MeshCentral (имя `~t:…` и пароль токена) и поддержка серверов с ключом входа (loginKey); меньше памяти в долгих сеансах рабочего стола. В 0.8.2 появилась поддержка стилуса и S Pen (наведение, правый клик боковой кнопкой, защита от ладони). Для телефонов доступны
-просмотр экрана после согласия Android, батарея и сведения об устройстве, запросы
-действий с подтверждением и передача файлов с проверкой размера и SHA-256.
-Касания, свайпы, навигация и ввод текста требуют доработанного агента с поддержкой
-ввода, включённой службы специальных возможностей и нужных прав. Эти изменения
-агента ещё не вошли в основной проект; официальный агент позволяет только просмотр.
-Добавлены закрепление ключа сервера и «Запомнить устройство» для 2FA с шифрованием
-через Android Keystore. Для компьютеров расширены сведения о безопасности,
-оборудовании, программах, CPU/RAM, событиях и истории связи; добавлены сохраняемые
-сочетания клавиш и избранные команды. Исправлены передача файлов телефона, обработка
-экрана и перекрытие форм клавиатурой. Отправка команды не означает её выполнение.
-В Windows исправлены обработка JSON null, дата BIOS и вставка избранных команд;
-добавлен явный выбор PowerShell 5+ с UTF-8. Обычные команды не меняются; кодировка
-самой программы или преобразование в агенте всё ещё могут влиять на результат.
-После обрыва сети сеанс восстанавливается сам; очистка сохранённого входа больше не подвешивает
-приложение, а неудачное скачивание не оставляет неполный файл.
-Проверку обновлений GitHub можно включить по желанию; скачивание открывается в браузере.
-
-[Validation and remaining acceptance](https://github.com/papajon123/meshcentral-android/blob/main/docs/RELEASE_0_8_2_VALIDATION.md).
+See the [changelog](https://github.com/papajon123/meshcentral-android/blob/main/CHANGELOG.md) for details.
 Tested on emulators and a local MeshCentral 1.3.1 bench with Linux, Windows and Android agents;
 acceptance on physical phones continues. Power/removal
 execution, phone hardware effects and broad Windows/macOS coverage are not promised.

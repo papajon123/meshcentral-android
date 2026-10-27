@@ -17,11 +17,14 @@ data class ServerProfile(
     val customShortcuts: List<CustomShortcut> = emptyList(),
     val favoriteCommands: List<FavoriteCommand> = emptyList(),
     val pinnedSpkiSha256: String? = null,
+    /** Imported metadata, never a trust grant. */
+    val expectedSpkiSha256: String? = null,
 ) {
     /** A pin belongs to this profile and normalized endpoint (including host, port and domain path). */
     fun withServerUrl(url: String): ServerProfile = copy(
         serverUrl = url,
         pinnedSpkiSha256 = pinnedSpkiSha256.takeIf { CredentialScope.matches(serverUrl, url) },
+        expectedSpkiSha256 = expectedSpkiSha256.takeIf { CredentialScope.matches(serverUrl, url) },
     )
 }
 
@@ -35,6 +38,7 @@ object ProfileCatalog {
                 .put("onboardingCompleted", profile.onboardingCompleted)
                 .put("allowHttpInDebug", profile.allowHttpInDebug)
                 .put("pinnedSpkiSha256", profile.pinnedSpkiSha256)
+                .put("expectedSpkiSha256", profile.expectedSpkiSha256)
                 .put("trustSelfSignedCertificates", profile.trustSelfSignedCertificates)
                 .put("customShortcuts", CustomShortcut.encode(profile.customShortcuts))
                 .put("favoriteCommands", FavoriteCommand.encode(profile.favoriteCommands)))
@@ -53,7 +57,8 @@ object ProfileCatalog {
                     item.optBoolean("allowHttpInDebug"), item.optBoolean("trustSelfSignedCertificates"),
                     customShortcuts = CustomShortcut.decode(item.optJSONArray("customShortcuts")),
                     favoriteCommands = FavoriteCommand.decode(item.optJSONArray("favoriteCommands")),
-                    pinnedSpkiSha256 = item.optText("pinnedSpkiSha256").takeIf { it.matches(Regex("[0-9a-f]{64}")) }))
+                    pinnedSpkiSha256 = item.optText("pinnedSpkiSha256").takeIf { it.matches(Regex("[0-9a-f]{64}")) && item.optText("expectedSpkiSha256").isEmpty() },
+                    expectedSpkiSha256 = item.optText("expectedSpkiSha256").takeIf { it.matches(Regex("[0-9a-f]{64}")) }))
             }
         }
     }.getOrDefault(emptyList())

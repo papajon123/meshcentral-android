@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">এই খসড়া ব্যাকআপ ফরম্যাটটি সমর্থিত নয়। যে অ্যাপটি এটি রপ্তানি করেছে সেখানে একটি নতুন ব্যাকআপ তৈরি করুন।</string>
+    <string name="backup_key_approval_title">আমদানি করা সার্ভার কী নিশ্চিত করুন</string>
+    <string name="backup_key_matches">সার্ভার কী ব্যাকআপের সঙ্গে মিলে যায়। সাইন ইন করার আগে এটি বিশ্বাসযোগ্য বলে নিশ্চিত করুন।</string>
+    <string name="backup_key_mismatch">সতর্কতা: সার্ভার কী ব্যাকআপের সঙ্গে মেলে না। আস্থা রাখার আগে প্রশাসকের সঙ্গে ফিঙ্গারপ্রিন্ট যাচাই করুন।</string>
+    <string name="backup_key_expected">ব্যাকআপ থেকে প্রত্যাশিত কী: %1$s</string>
+    <string name="backup_error_newer">এই ফাইলটি MeshPilot-এর নতুন সংস্করণ থেকে এসেছে। আমদানি করতে অ্যাপ আপডেট করুন।</string>
+    <string name="backup_error_auth">পাসওয়ার্ড ভুল, অথবা এনক্রিপ্ট করা ফাইলটি পরিবর্তন করা হয়েছে।</string>
+    <string name="backup_error_corrupt">ব্যাকআপটি ক্ষতিগ্রস্ত অথবা এর ফরম্যাট অবৈধ।</string>
+    <string name="backup_error_limit">ব্যাকআপটি সমর্থিত আকার বা আইটেমের সীমা ছাড়িয়ে গেছে।</string>
+    <string name="backup_extension_skipped">নতুন সংস্করণের একটি বিভাগ বাদ দেওয়া হয়েছে: %1$s। এর ডেটা আমদানি করা হবে না।</string>
+    <string name="backup_duplicate">এই সার্ভারের জন্য একটি প্রোফাইল ইতিমধ্যে আছে।</string>
+    <string name="backup_skip_duplicates">যেসব প্রোফাইলের সার্ভার ইতিমধ্যে আছে সেগুলো বাদ দিন</string>
+    <string name="backup_value_on">চালু</string>
+    <string name="backup_value_off">বন্ধ</string>
+    <string name="backup_preferences_preview">স্ক্রিনশট সুরক্ষা: %1$s\nস্বয়ংক্রিয় লক বিলম্ব: %2$d সেকেন্ড\nথিম: %3$s\nসিস্টেমের রং: %4$s\nস্টাইলাসের নির্ভুলতা: %5$s\nস্টাইলাসের ইঙ্গিত আগে দেখানো হয়েছে: %6$s\nলক থাকাকালীন ডিভাইস লুকান: %7$s</string>
+    <string name="integration_privacy_setting">অ্যাপ লক থাকাকালীন উইজেট ও শর্টকাটে ডিভাইস লুকান</string>
+    <string name="integration_privacy_help">PIN বা বায়োমেট্রিক সুরক্ষা থাকলে, লক থাকাকালীন বা অ্যাপের বাইরে ডিভাইসের নাম ও অবস্থা লুকান।</string>
+    <string name="integration_private_hidden">ডিভাইস দেখতে অ্যাপের লক খুলুন</string>
+    <string name="integration_private_device">সুরক্ষিত ডিভাইস</string>
+    <string name="integration_retry_seconds">%1$d সেকেন্ড পরে আবার চেষ্টা করুন</string>
+</resources>

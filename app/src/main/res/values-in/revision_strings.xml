@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="backup_error_unsupported">Format cadangan draf ini tidak didukung. Buat cadangan baru di aplikasi yang mengekspornya.</string>
+    <string name="backup_key_approval_title">Konfirmasi kunci server yang diimpor</string>
+    <string name="backup_key_matches">Kunci server cocok dengan cadangan. Pastikan Anda memercayainya sebelum masuk.</string>
+    <string name="backup_key_mismatch">Peringatan: kunci server TIDAK cocok dengan cadangan. Verifikasi sidik jari dengan administrator sebelum memercayainya.</string>
+    <string name="backup_key_expected">Kunci yang diharapkan dari cadangan: %1$s</string>
+    <string name="backup_error_newer">File ini berasal dari versi MeshPilot yang lebih baru. Perbarui aplikasi untuk mengimpornya.</string>
+    <string name="backup_error_auth">Kata sandi salah atau file terenkripsi telah diubah.</string>
+    <string name="backup_error_corrupt">Cadangan rusak atau formatnya tidak valid.</string>
+    <string name="backup_error_limit">Cadangan melebihi batas ukuran atau item yang didukung.</string>
+    <string name="backup_extension_skipped">Bagian dari versi yang lebih baru dilewati: %1$s. Datanya tidak akan diimpor.</string>
+    <string name="backup_duplicate">Profil untuk server ini sudah ada.</string>
+    <string name="backup_skip_duplicates">Lewati profil yang servernya sudah ada</string>
+    <string name="backup_value_on">Aktif</string>
+    <string name="backup_value_off">Nonaktif</string>
+    <string name="backup_preferences_preview">Perlindungan tangkapan layar: %1$s\nJeda kunci otomatis: %2$d detik\nTema: %3$s\nWarna sistem: %4$s\nPresisi stilus: %5$s\nPetunjuk stilus sudah ditampilkan: %6$s\nSembunyikan perangkat saat terkunci: %7$s</string>
+    <string name="integration_privacy_setting">Sembunyikan perangkat di widget dan pintasan saat aplikasi terkunci</string>
+    <string name="integration_privacy_help">Dengan perlindungan PIN atau biometrik, sembunyikan nama dan status perangkat saat terkunci atau di luar aplikasi.</string>
+    <string name="integration_private_hidden">Buka kunci aplikasi untuk melihat perangkat</string>
+    <string name="integration_private_device">Perangkat terlindungi</string>
+    <string name="integration_retry_seconds">Coba lagi dalam %1$d detik</string>
+</resources>

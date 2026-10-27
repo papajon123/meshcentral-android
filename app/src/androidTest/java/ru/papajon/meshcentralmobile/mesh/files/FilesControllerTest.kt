@@ -279,6 +279,11 @@ class FilesControllerTest {
         controller.propose(change, if (change == FileChange.CreateDirectory) null else controller.state.value.entries.single())
         waitFor { controller.state.value.confirmation != null }
         controller.confirm("new-name")
+        if (change == FileChange.Delete) {
+            val preflight = nextJson()
+            assertEquals("ls", preflight.getString("action"))
+            listing(preflight.getInt("reqid"), """[{"n":"old.bin","t":3,"s":1}]""")
+        }
         val mutation = nextJson()
         assertTrue(mutation.getString("action") in listOf("mkdir", "rename", "rm"))
         assertEquals("ls", nextJson().getString("action"))
@@ -334,7 +339,9 @@ class FilesControllerTest {
         relay.frames.send(RelayFrame.Text("""{"action":"download","sub":"start","id":${request.getInt("id")}}"""))
         nextJson() // startack
         relay.frames.send(RelayFrame.Binary(byteArrayOf(1, 0, 0, 1, 1, 2)))
-        waitFor { !controller.state.value.connected }
+        assertEquals("stop", nextJson().getString("sub"))
+        waitFor { !controller.state.value.busy }
+        assertTrue(controller.state.value.connected)
         assertEquals(UiText.resource(R.string.files_partial), controller.state.value.message)
     }
 
@@ -346,7 +353,9 @@ class FilesControllerTest {
         relay.frames.send(RelayFrame.Text("""{"action":"download","sub":"start","id":${request.getInt("id")}}"""))
         nextJson()
         relay.frames.send(RelayFrame.Binary(byteArrayOf(1, 0, 0, 1, 1, 2)))
-        waitFor { !controller.state.value.connected }
+        assertEquals("stop", nextJson().getString("sub"))
+        waitFor { !controller.state.value.busy }
+        assertTrue(controller.state.value.connected)
         assertEquals(0L, destination.length())
         assertEquals(UiText.resource(R.string.files_partial), controller.state.value.message)
     }

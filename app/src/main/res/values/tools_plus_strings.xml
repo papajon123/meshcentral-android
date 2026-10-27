@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tools_selected">Selected: %1$d</string>
+    <string name="tools_clear_selection">Clear selection</string>
+    <string name="tools_download_selected">Download selected</string>
+    <string name="tools_delete_selected">Delete selected</string>
+    <string name="tools_select_hint">Touch and hold to select several items</string>
+    <string name="tools_download_folder">Download folder</string>
+    <string name="tools_folder_notice">Agent folders are downloaded as ZIP archives. SFTP folders are copied file by file. Choose a destination folder.</string>
+    <string name="tools_batch_progress">Completed: %1$d of %2$d · %3$d bytes</string>
+    <string name="tools_retry">Retry</string>
+    <string name="tools_queued">Queued</string>
+    <string name="tools_active">Downloading</string>
+    <string name="tools_succeeded">Verified</string>
+    <string name="tools_failed">Failed</string>
+    <string name="tools_cancelled">Cancelled</string>
+    <string name="tools_archiving">Creating the remote archive…</string>
+    <string name="tools_archive_failed">The archive could not be created or verified.</string>
+    <string name="tools_archive_left">The download failed. A temporary meshpilot-*.zip archive may remain in the source folder. Retry to clean it up and download again.</string>
+    <string name="tools_batch_failed">A download failed. Retry starts it again in a new local file.</string>
+    <string name="tools_delete_list">Delete these items? This cannot be undone.</string>
+</resources>

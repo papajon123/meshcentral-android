@@ -2,7 +2,7 @@
 stages: [checks, publish]
 
 default:
-  image: ghcr.io/cirruslabs/android-sdk:35@sha256:54e4ef10f19c211052851736dfb783ee26935a089b06bb1f9019a311cdc38af0
+  image: ghcr.io/cirruslabs/android-sdk:36@sha256:f9b3ea9ed2b5fc9522adae82c7b4622ab7aa54207ef532c8e615a347dca08f31
   tags: [meshcentral-android]
   interruptible: false
 
@@ -11,7 +11,7 @@ variables:
   GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
   PYTHONDONTWRITEBYTECODE: "1"
   GITHUB_REPOSITORY: "papajon123/meshcentral-android"
-  GRADLE_CACHE_KEY: "android-35-gradle-124"
+  GRADLE_CACHE_KEY: "android-36-gradle-124"
 
 workflow:
   rules:
@@ -21,7 +21,7 @@ workflow:
     # separate from the one main and release tags restore.
     - if: '$CI_PROJECT_ID == "124" && $CI_COMMIT_BRANCH =~ /^mr\// && $CI_COMMIT_REF_PROTECTED == "true"'
       variables:
-        GRADLE_CACHE_KEY: "review-android-35-gradle-124"
+        GRADLE_CACHE_KEY: "review-android-36-gradle-124"
     - when: never
 
 checks:
@@ -32,10 +32,21 @@ checks:
     paths:
       - .gradle/caches/
       - .gradle/wrapper/
+      - .android-sdk-cache/build-tools/
   script:
+    # SDK 36 is in the pinned image. Retain the project's Build Tools 35.0.0 and cache them.
+    - |
+      mkdir -p "$ANDROID_HOME/build-tools" .android-sdk-cache/build-tools
+      if [ -d .android-sdk-cache/build-tools/35.0.0 ]; then
+        cp -a .android-sdk-cache/build-tools/35.0.0 "$ANDROID_HOME/build-tools/"
+      fi
+      if [ ! -f "$ANDROID_HOME/build-tools/35.0.0/source.properties" ]; then
+        sdkmanager 'build-tools;35.0.0'
+      fi
+      cp -a "$ANDROID_HOME/build-tools/35.0.0" .android-sdk-cache/build-tools/
     - python3 ci/check_translations.py
     - python3 -B -m unittest discover -s ci -p 'test_*.py'
-    - bash gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug
+    - bash gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug compileDebugAndroidTestKotlin
     - |
       if [ -n "${CI_COMMIT_TAG:-}" ]; then
         python3 ci/publish_github_snapshot.py --source "$CI_PROJECT_DIR" --tag "$CI_COMMIT_TAG" --check-only

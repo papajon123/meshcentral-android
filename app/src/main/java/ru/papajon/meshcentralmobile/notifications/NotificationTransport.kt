@@ -21,6 +21,7 @@ object NotificationTransport {
     }
 
     internal fun support(profile: ServerProfile, serverUrl: String = profile.serverUrl): NotificationTransportSupport {
+        if (profile.expectedSpkiSha256 != null) return NotificationTransportSupport.Unsupported(NotificationError.TLS_UNTRUSTED)
         val url = serverUrl.trim().toHttpUrlOrNull()
             ?: return NotificationTransportSupport.Unsupported(NotificationError.INSECURE_TRANSPORT)
         if (!url.isHttps || url.username.isNotEmpty() || url.password.isNotEmpty() ||

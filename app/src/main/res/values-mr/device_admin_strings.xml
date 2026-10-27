@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">डिव्हाइस आमंत्रित करा</string>
+    <string name="admin_invite_help">हे लिंक असलेले कोणीही “%1$s” मध्ये एजंट स्थापित करू शकते. आपण ज्याला मदत करू इच्छिता त्याच्याशीच ते सामायिक करा.</string>
+    <string name="admin_invite_mode">उपलब्ध कोणताही एजंट पार्श्वभूमीत आणि परस्परसंवादी पद्धतीने स्थापित करण्यास अनुमती देते.</string>
+    <string name="admin_expiry">लिंकची वैधता</string>
+    <string name="admin_create_link">लिंक तयार करा</string>
+    <string name="admin_expires_at">कालबाह्य: %1$s</string>
+    <string name="admin_expired">ही लिंक कालबाह्य झाली आहे. नवीन लिंक तयार करा.</string>
+    <string name="admin_qr">एजंट स्थापना पृष्ठ उघडण्यासाठी स्कॅन करा</string>
+    <string name="admin_share">लिंक सामायिक करा</string>
+    <string name="admin_copy">लिंक कॉपी करा</string>
+    <string name="admin_copied">लिंक कॉपी झाली</string>
+    <string name="admin_close">बंद करा</string>
+    <string name="admin_cancel">रद्द करा</string>
+    <string name="admin_confirm">पुष्टी करा</string>
+    <string name="admin_review">बदल पाहा</string>
+    <string name="admin_edit">डिव्हाइस संपादित करा</string>
+    <string name="admin_name">नाव</string>
+    <string name="admin_description">वर्णन</string>
+    <string name="admin_tags">टॅग, स्वल्पविरामाने वेगळे करा</string>
+    <string name="admin_notes">टिपा</string>
+    <string name="admin_save_notes">टिपा जतन करा</string>
+    <string name="admin_move">दुसऱ्या गटात हलवा</string>
+    <string name="admin_move_confirm">“%1$s” ला “%2$s” मध्ये हलवायचे? प्रवेश गंतव्य गटानुसार असेल.</string>
+    <string name="admin_edit_confirm">“%1$s” मधील हे बदल जतन करायचे?</string>
+    <string name="admin_notes_confirm">“%1$s” च्या टिपा बदलायच्या?</string>
+    <string name="admin_saved">सर्व्हरने बदलांची पुष्टी केली</string>
+    <string name="admin_failed">बदलाची पुष्टी करता आली नाही. पुन्हा प्रयत्न करण्यापूर्वी रीफ्रेश करून डिव्हाइस तपासा.</string>
+    <string name="admin_invite_failed">लिंक तयार करता आली नाही. तुमचे कनेक्शन आणि गट परवानग्या तपासून पुन्हा प्रयत्न करा.</string>
+    <string name="admin_loading">सर्व्हरची वाट पाहत आहे…</string>
+    <string name="admin_invalid">नाव: 1–64 अक्षरे. वर्णन: जास्तीत जास्त 64 अक्षरे. प्रत्येक टॅग: जास्तीत जास्त 63 अक्षरे; एकूण: जास्तीत जास्त 4096. नियंत्रण किंवा मजकूर-दिशा स्वरूपण अक्षरांशिवाय एका ओळीचा मजकूर वापरा.</string>
+    <string name="admin_endpoint">सर्व्हर: %1$s</string>
+    <string name="admin_unavailable">हे डिव्हाइस व्यवस्थापित करण्यासाठी पुन्हा कनेक्ट करा आणि रीफ्रेश करा. तुमच्या खात्याकडे आवश्यक परवानग्या असणे आवश्यक आहे.</string>
+    <string name="admin_notes_limit">टिपा: जास्तीत जास्त 16000 अक्षरे.</string>
+    <string name="admin_no_destinations">हे डिव्हाइस हलवण्याची परवानगी असलेले कोणतेही सुसंगत गट नाहीत.</string>
+</resources>

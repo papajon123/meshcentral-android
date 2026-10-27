@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="admin_invite">邀請裝置</string>
+    <string name="admin_invite_help">任何擁有此連結的人都可以將代理程式安裝到“%1$s”中。請只與您希望協助的人分享此連結。</string>
+    <string name="admin_invite_mode">允許在背景或以互動方式安裝任何可用的代理程式。</string>
+    <string name="admin_expiry">連結有效期限</string>
+    <string name="admin_create_link">建立連結</string>
+    <string name="admin_expires_at">到期時間：%1$s</string>
+    <string name="admin_expired">此連結已過期。請建立新連結。</string>
+    <string name="admin_qr">掃描以開啟代理程式安裝頁面</string>
+    <string name="admin_share">分享連結</string>
+    <string name="admin_copy">複製連結</string>
+    <string name="admin_copied">已複製連結</string>
+    <string name="admin_close">關閉</string>
+    <string name="admin_cancel">取消</string>
+    <string name="admin_confirm">確認</string>
+    <string name="admin_review">檢視變更</string>
+    <string name="admin_edit">編輯裝置</string>
+    <string name="admin_name">名稱</string>
+    <string name="admin_description">說明</string>
+    <string name="admin_tags">標籤，以逗號分隔</string>
+    <string name="admin_notes">備註</string>
+    <string name="admin_save_notes">儲存備註</string>
+    <string name="admin_move">移到其他群組</string>
+    <string name="admin_move_confirm">要將“%1$s”移到“%2$s”嗎？存取權會跟隨目標群組。</string>
+    <string name="admin_edit_confirm">要儲存對“%1$s”的這些變更嗎？</string>
+    <string name="admin_notes_confirm">要取代“%1$s”的備註嗎？</string>
+    <string name="admin_saved">伺服器已確認變更</string>
+    <string name="admin_failed">無法確認變更。請重新整理並檢查裝置，然後再試一次。</string>
+    <string name="admin_invite_failed">無法建立連結。請檢查網路連線與群組權限，然後再試一次。</string>
+    <string name="admin_loading">正在等待伺服器…</string>
+    <string name="admin_invalid">名稱：1–64 個字元。說明：最多 64 個字元。每個標籤：最多 63 個字元；總計：最多 4096 個。請使用單行文字，不要使用控制字元或文字方向格式字元。</string>
+    <string name="admin_endpoint">伺服器：%1$s</string>
+    <string name="admin_unavailable">請重新連線並重新整理以管理此裝置。您的帳戶必須具備所需權限。</string>
+    <string name="admin_notes_limit">備註：最多 16000 個字元。</string>
+    <string name="admin_no_destinations">沒有具備移動此裝置權限的相容群組。</string>
+</resources>

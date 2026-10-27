@@ -4,9 +4,11 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import ru.papajon.meshcentralmobile.mesh.MeshDevice
+import ru.papajon.meshcentralmobile.mesh.DeviceListQuery
+import ru.papajon.meshcentralmobile.mesh.DeviceBrowserFilter
 import ru.papajon.meshcentralmobile.workspace.ConnectionWorkspace
 
-/** UI adapter: only selection is saved. Live sockets and input are never serialized or replayed. */
+/** Saves selection and browser intent, never live sockets or remote input. */
 class MeshSessionViewModel(application: Application, private val saved: SavedStateHandle) : AndroidViewModel(application) {
     val workspace = ConnectionWorkspace.get(application)
     val client get() = workspace.client
@@ -23,6 +25,11 @@ class MeshSessionViewModel(application: Application, private val saved: SavedSta
         if (restorationPending && userId != null) {
             restorationPending = false
             if (saved.get<String>("identity") == workspace.identity) {
+                if (saved.contains("browserFilter")) client.restoreDeviceBrowser(
+                    runCatching { DeviceBrowserFilter.valueOf(saved.get<String>("browserFilter").orEmpty()) }.getOrDefault(DeviceBrowserFilter.All),
+                    saved["browserSearch"],
+                    DeviceListQuery(saved.get<String>("queryFilter").orEmpty(),saved.get<Boolean>("queryCollect") ?: false,
+                        saved.get<ArrayList<String>>("queryIds")?.toSet()),saved.get<Int>("querySkip") ?: 0)
                 workspace.selectedDeviceId = saved["node"]
                 workspace.deviceTab = runCatching { DeviceTab.valueOf(saved.get<String>("tab").orEmpty()) }.getOrDefault(DeviceTab.Overview)
             }
@@ -46,6 +53,13 @@ class MeshSessionViewModel(application: Application, private val saved: SavedSta
         saved["identity"] = workspace.identity
         saved["node"] = selectedDeviceId
         saved["tab"] = deviceTab.name
+        val state=client.clientState.value
+        saved["browserFilter"]=state.deviceBrowserFilter.name
+        saved["browserSearch"]=state.deviceBrowserSearch
+        saved["queryFilter"]=state.deviceQuery.filter
+        saved["queryCollect"]=state.deviceQuery.collect
+        saved["queryIds"]=state.deviceQuery.ids?.let { ArrayList(it) }
+        saved["querySkip"]=client.deviceBrowserSkip
     }
     // The Application runtime owns sockets; destroying the Activity must not kill an active transfer.
 }
