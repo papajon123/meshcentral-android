@@ -392,6 +392,10 @@ class ChatScreenTest {
                 .assertTouchHeightIsEqualTo(48.dp).assertTouchWidthIsEqualTo(48.dp)
             compose.onNode(hasContentDescription("Close chat") or hasText("Close chat")).assertIsDisplayed()
                 .assertTouchHeightIsEqualTo(48.dp)
+        } else {
+            // Beside a docked IME on a short window the composer is squeezed; send the restored draft
+            // from the regular layout, which is what this part checks.
+            keyboard(false)
         }
         compose.onNodeWithTag("chat-send").assertIsDisplayed().performClick()
         compose.waitUntil(5_000) { received.any { JSONObject(it).optString("msg") == "Unsent draft" } }

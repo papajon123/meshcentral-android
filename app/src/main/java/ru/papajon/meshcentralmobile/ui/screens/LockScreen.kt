@@ -53,6 +53,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -88,6 +89,9 @@ fun LockScreen(
     var failed by rememberSaveable { mutableStateOf(false) }
     var shakeTrigger by rememberSaveable { mutableIntStateOf(0) }
     val languageTags = LocalConfiguration.current.locales.toLanguageTags()
+    // A keyboard left open by the screen underneath would cover the PIN keypad.
+    val softwareKeyboard = LocalSoftwareKeyboardController.current
+    LaunchedEffect(Unit) { softwareKeyboard?.hide() }
     LaunchedEffect(languageTags) {
         // A previous OS biometric error cannot be retranslated; show the current-language summary.
         if (message is UiText.Literal) message = UiText.resource(R.string.lock_biometric_failed)

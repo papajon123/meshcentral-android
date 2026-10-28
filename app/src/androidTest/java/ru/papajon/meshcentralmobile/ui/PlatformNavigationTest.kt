@@ -323,6 +323,7 @@ class PlatformNavigationTest {
                 .filter { "mCurrentFocus" in it || "mFocusedApp" in it }.joinToString(" | ") { it.trim() }, failure)
         }
         dismissImeIfVisible()
+        awaitImeHidden()
         // The IME's own Back may also deactivate capture on some platform versions.
         if (remoteFieldFocused()) back()
         compose.waitUntil(15_000) { !remoteFieldFocused() }

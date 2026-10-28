@@ -88,7 +88,7 @@ class PortForwardLifecycleTest {
         val rule = rule()
         onMain { assertTrue(workspace.client.portForwards.start(rule)) }
         val port = workspace.client.portForwards.states.value.last().localPort
-        Socket("127.0.0.1", port).use { it.soTimeout = 5000; assertReset(it) }
+        assertRejected(port)
         await { workspace.client.portForwards.states.value.none { it.running } }
         assertEquals(ForwardError.CONNECT_FAILED, workspace.client.portForwards.states.value.last().error)
         Thread.sleep(500)
@@ -204,7 +204,7 @@ class PortForwardLifecycleTest {
                 assertEquals(index, socket.getInputStream().read())
             }
             assertEquals(16, workspace.client.portForwards.states.value.last().connections)
-            Socket("127.0.0.1", port).use { it.soTimeout = 5000; assertReset(it) }
+            assertRejected(port)
             assertEquals(16, server.relayRequests.get())
             clients.forEach { it.getOutputStream().write(99); assertEquals(99, it.getInputStream().read()) }
         } finally { clients.forEach { it.close() } }
@@ -217,7 +217,7 @@ class PortForwardLifecycleTest {
             established.soTimeout = 5000
             established.getOutputStream().write(31); assertEquals(31, established.getInputStream().read())
             server.reject = true
-            Socket("127.0.0.1", port).use { it.soTimeout = 5000; assertReset(it) }
+            assertRejected(port)
             await { workspace.client.portForwards.states.value.last().connections == 1 }
             established.getOutputStream().write(32); assertEquals(32, established.getInputStream().read())
             assertTrue(workspace.client.portForwards.states.value.last().running)
@@ -397,6 +397,15 @@ class PortForwardLifecycleTest {
         while (!condition() && System.currentTimeMillis() < end) Thread.sleep(20)
         assertTrue("Fixture state timed out", condition())
     }
+    /** A refused forward resets the client; on Android 8 the reset can already arrive during connect. */
+    private fun assertRejected(port: Int) {
+        val socket = try { Socket("127.0.0.1", port) } catch (error: java.net.ConnectException) {
+            assertTrue("Expected a reset, got: ${error.message}", error.message?.contains("ECONNRESET") == true)
+            return
+        }
+        socket.use { it.soTimeout = 5000; assertReset(it) }
+    }
+
     private fun assertReset(socket: Socket) {
         try { while (socket.getInputStream().read() != -1) { }; fail("Expected reset, not successful EOF") }
         catch (_: java.net.SocketException) { }

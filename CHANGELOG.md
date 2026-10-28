@@ -1,3 +1,11 @@
+# 0.9.2 — 2026-10-28
+
+0.9.1 was tagged, but its signed GitHub build again stopped at four timing-sensitive device tests, so it was not published. 0.9.2 is the same app with:
+
+- Hide a keyboard left open by the previous screen when the PIN lock appears, so it cannot cover the keypad.
+- Device tests: accept a forward rejection that Android 8 already reports while connecting, wait for the IME to hide before Back or Tab, scroll to the unlock action on short windows, wait for relay input to resume after unlocking, and send the restored chat draft from the regular layout on short windows.
+- CI: rerun at most five failed device tests once on the shared emulators; broader failures are not retried, and the first attempt stays in the uploaded results.
+
 # 0.9.1 — 2026-10-27
 
 0.9.0 was tagged but its signed build stopped at device checks on Android 8 and 15, so it was not published. 0.9.1 is the same app with these fixes:

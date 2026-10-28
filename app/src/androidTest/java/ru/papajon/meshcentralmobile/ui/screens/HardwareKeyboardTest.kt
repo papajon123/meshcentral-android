@@ -296,6 +296,13 @@ class HardwareKeyboardTest {
         compose.waitForIdle()
         assertFalse(captured.value)
         assertEquals(listOf(SentKey(9, true, false), SentKey(9, false, false)), sink.snapshot())
+        // Releasing capture clears the hidden field's focus and hides the IME asynchronously; a Tab sent
+        // before that settles is still consumed by the field (no person types that fast after the chord).
+        compose.waitUntil(5_000) {
+            compose.activity.currentFocus !is ru.papajon.meshcentralmobile.ui.screens.session.RemoteInputField &&
+                androidx.core.view.ViewCompat.getRootWindowInsets(compose.activity.window.decorView)
+                    ?.isVisible(androidx.core.view.WindowInsetsCompat.Type.ime()) != true
+        }
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_TAB)
         compose.waitForIdle()
         compose.onNodeWithTag("local_menu").assertIsFocused()
