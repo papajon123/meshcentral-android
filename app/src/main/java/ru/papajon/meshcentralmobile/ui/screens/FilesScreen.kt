@@ -39,6 +39,7 @@ import androidx.compose.material.icons.outlined.Folder
 import androidx.compose.material.icons.outlined.FolderOpen
 import androidx.compose.material.icons.outlined.Image
 import androidx.compose.material.icons.outlined.InsertDriveFile
+import androidx.compose.material.icons.outlined.MoreVert
 import androidx.compose.material.icons.outlined.Movie
 import androidx.compose.material.icons.outlined.PictureAsPdf
 import androidx.compose.material.icons.outlined.Refresh
@@ -52,6 +53,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -278,7 +280,14 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                     selected = entry.name in selectedNames,
                     selecting = selectedNames.isNotEmpty(),
                     onLongClick = { if (!state.androidPhone) toggle(entry) },
-                    onClick = { if (selectedNames.isNotEmpty()) toggle(entry) else selected = entry })
+                    onActions = { selected = entry },
+                    onClick = {
+                        when {
+                            selectedNames.isNotEmpty() -> toggle(entry)
+                            entry.actionable && entry.directory -> controller.open(entry)
+                            else -> selected = entry
+                        }
+                    })
             }
         }
     }
@@ -655,7 +664,7 @@ private fun TransferBanner(name: String?, transferred: Long?, onCancel: () -> Un
 @OptIn(androidx.compose.foundation.ExperimentalFoundationApi::class)
 @Composable
 private fun FileRow(entry: RemoteFile, enabled: Boolean, selected: Boolean = false, selecting: Boolean = false,
-    onLongClick: () -> Unit = {}, onClick: () -> Unit) {
+    onLongClick: () -> Unit = {}, onActions: () -> Unit = {}, onClick: () -> Unit) {
     val supporting = when {
         entry.ambiguousName -> "#${entry.listingIndex?.plus(1)} · ${stringResource(R.string.files_size, entry.size)}"
         !entry.actionable -> stringResource(R.string.files_name_unavailable)
@@ -709,12 +718,22 @@ private fun FileRow(entry: RemoteFile, enabled: Boolean, selected: Boolean = fal
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-        Icon(
-            imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
-            modifier = Modifier.size(20.dp),
-        )
+        if (entry.directory && entry.type != 1 && !selecting) {
+            IconButton(onClick = onActions, enabled = enabled) {
+                Icon(
+                    imageVector = Icons.Outlined.MoreVert,
+                    contentDescription = "${stringResource(R.string.session_dock_more)}: ${entry.displayName}",
+                    modifier = Modifier.size(20.dp),
+                )
+            }
+        } else {
+            Icon(
+                imageVector = Icons.AutoMirrored.Outlined.KeyboardArrowRight,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                modifier = Modifier.size(20.dp),
+            )
+        }
     }
 }
 

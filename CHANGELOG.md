@@ -1,3 +1,7 @@
+# 0.9.4 — 2026-10-28
+
+- Open folders with one tap. Folder actions remain available from the More button, and long press still starts multi-selection. This addresses the folder-navigation part of GitHub #14; other reports in that issue remain open.
+
 # 0.9.3 — 2026-10-28
 
 0.9.2 was tagged, but two keyboard device tests still failed on the GitHub API 35 emulator after the CI retry, so it was not published. 0.9.3 is the same app with:

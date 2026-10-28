@@ -647,7 +647,6 @@ class LiveNavigationAcceptanceTest {
         stage = "navigate fixture folder $path using Compose"
         compose.onNode(hasScrollToIndexAction()).performScrollToNode(hasText(name))
         compose.onNodeWithText(name).performClick()
-        compose.onNodeWithText(context.getString(R.string.files_open)).performClick()
         compose.waitUntil(15_000) { model.filesController?.state?.value?.let { it.connected && !it.busy && it.path == path } == true }
     }
 
