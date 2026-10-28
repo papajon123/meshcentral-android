@@ -15,7 +15,9 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.first
+import org.junit.After
 import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import ru.papajon.meshcentralmobile.R
@@ -30,6 +32,21 @@ class FilesSelectionTest {
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val context get() = instrumentation.targetContext
     private var diagnosticState: (() -> String)? = null
+    private var originalAccessibilityFlags = 0
+
+    // Android 8 can keep reporting a dismissed dialog as the active window; search every window then.
+    @Before fun retrieveAllWindows() {
+        val automation = instrumentation.uiAutomation
+        originalAccessibilityFlags = automation.serviceInfo.flags
+        automation.serviceInfo = automation.serviceInfo.apply {
+            flags = flags or android.accessibilityservice.AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
+        }
+    }
+
+    @After fun restoreWindowRetrieval() {
+        val automation = instrumentation.uiAutomation
+        automation.serviceInfo = automation.serviceInfo.apply { flags = originalAccessibilityFlags }
+    }
 
     @Test fun longPressSelectsSeveralAndDeletionRequiresCompleteListConfirmation(): Unit = runBlocking {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
@@ -103,7 +120,9 @@ class FilesSelectionTest {
             repeat(node.childCount) { visit(node.getChild(it))?.let { found -> return found } }
             return null
         }
-        return visit(instrumentation.uiAutomation.rootInActiveWindow)
+        val automation = instrumentation.uiAutomation
+        return visit(automation.rootInActiveWindow)
+            ?: automation.windows.asSequence().mapNotNull { visit(it.root) }.firstOrNull()
     }
     private fun visible(label: String) = find(label) != null
     private fun actionable(node: AccessibilityNodeInfo?, longClick: Boolean = false): AccessibilityNodeInfo? {

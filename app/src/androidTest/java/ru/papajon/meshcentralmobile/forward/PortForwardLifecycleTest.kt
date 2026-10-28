@@ -44,7 +44,7 @@ class PortForwardLifecycleTest {
         Socket("127.0.0.1", port).use { local ->
             local.soTimeout = 5000
             local.getOutputStream().write(byteArrayOf(1, 2, 3))
-            assertArrayEquals(byteArrayOf(1, 2, 3), local.getInputStream().readNBytes(3))
+            assertArrayEquals(byteArrayOf(1, 2, 3), local.getInputStream().readUpTo(3))
             val notifications = app.getSystemService(NotificationManager::class.java)
             await { notifications.activeNotifications.any { it.id == PortForwardService.ID } }
             val notification = notifications.activeNotifications.single { it.id == PortForwardService.ID }.notification
@@ -138,7 +138,7 @@ class PortForwardLifecycleTest {
             await { server.relayRequests.get() == 1 }
             Thread.sleep(65_000)
             assertTrue("Backpressure must not be mistaken for lost WebSocket Pong", workspace.client.portForwards.states.value.last().running)
-            val bytes = local.getInputStream().readNBytes(4 * 1024 * 1024)
+            val bytes = local.getInputStream().readUpTo(4 * 1024 * 1024)
             assertEquals(4 * 1024 * 1024, bytes.size)
             assertTrue(bytes.all { it == 37.toByte() })
         }

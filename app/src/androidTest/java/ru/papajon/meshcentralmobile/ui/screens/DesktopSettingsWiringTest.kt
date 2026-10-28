@@ -45,6 +45,8 @@ class DesktopSettingsWiringTest {
             override fun cancel() {}
         }
         relay.javaClass.getDeclaredField("relaySocket").apply { isAccessible = true }.set(relay, socket)
+        // A paired relay has already sent the protocol number; until then the relay sends nothing.
+        relay.javaClass.getDeclaredField("protocolNumberSent").apply { isAccessible = true }.setBoolean(relay, true)
         state.value = RemoteDesktopState(device = MeshDevice("node//wiring", "mesh//fixture", "Fixture",
             conn = 1, agentId = if (windows) 3 else 6, osDescription = if (windows) "Windows" else "Linux", rights = 8),
             connectionState = ConnectionState.Connected, handshakeComplete = true,

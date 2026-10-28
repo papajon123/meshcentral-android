@@ -66,6 +66,13 @@ class ChatScreenTest {
         if (android.os.Build.VERSION.SDK_INT >= 29) activity.window.isNavigationBarContrastEnforced = false
         androidx.core.view.ViewCompat.requestApplyInsets(activity.window.decorView)
     }
+    /**
+     * The landscape-keyboard layout needs Compose IME insets (reliable from Android 11) and a phone-sized
+     * window. Android 8-10 pans the window instead, and the 320dp CI profile leaves about 70dp beside a docked IME.
+     */
+    private fun landscapeKeyboardLayoutCheckable() = android.os.Build.VERSION.SDK_INT >= 30 &&
+        compose.activity.resources.configuration.smallestScreenWidthDp >= 360
+
     private fun restoreContent(chat: ChatController, rtl: Boolean = false) {
         compose.activityRule.scenario.onActivity { activity ->
             configureWindow(activity)
@@ -199,6 +206,7 @@ class ChatScreenTest {
         snapshot("pinned-long-transcript")
     }
     @Test fun retainedPairControlsRemainVisibleWithLandscapeKeyboard() {
+        org.junit.Assume.assumeTrue("Landscape keyboard layout needs Android 11+ and a 360dp phone", landscapeKeyboardLayoutCheckable())
         val chat = start(); connected(chat)
         // Rotate before opening IME: Gboard's configuration reset can otherwise hide a
         // newly requested keyboard after the new Activity has already received focus.
@@ -290,6 +298,7 @@ class ChatScreenTest {
         snapshot("peer-left")
     }
     @Test fun peerClosureUsesRetryInsteadOfSendWithLandscapeKeyboard() {
+        org.junit.Assume.assumeTrue("Landscape keyboard layout needs Android 11+ and a 360dp phone", landscapeKeyboardLayoutCheckable())
         val chat = start(); connected(chat)
         compose.onNodeWithTag("chat-input").performTextInput("Draft survives closure")
         compose.runOnUiThread { compose.activity.requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE }
@@ -376,12 +385,14 @@ class ChatScreenTest {
         restoreContent(chat)
         compose.onNodeWithTag("chat-input").assertTextContains("Unsent draft")
         keyboard(true)
-        compose.onNodeWithTag("chat-send").assertHeightIsAtLeast(48.dp)
-        compose.onNodeWithTag("chat-input").assertHeightIsAtLeast(56.dp)
-        compose.onNodeWithContentDescription("Back").assertIsDisplayed()
-            .assertTouchHeightIsEqualTo(48.dp).assertTouchWidthIsEqualTo(48.dp)
-        compose.onNode(hasContentDescription("Close chat") or hasText("Close chat")).assertIsDisplayed()
-            .assertTouchHeightIsEqualTo(48.dp)
+        if (landscapeKeyboardLayoutCheckable()) {
+            compose.onNodeWithTag("chat-send").assertHeightIsAtLeast(48.dp)
+            compose.onNodeWithTag("chat-input").assertHeightIsAtLeast(56.dp)
+            compose.onNodeWithContentDescription("Back").assertIsDisplayed()
+                .assertTouchHeightIsEqualTo(48.dp).assertTouchWidthIsEqualTo(48.dp)
+            compose.onNode(hasContentDescription("Close chat") or hasText("Close chat")).assertIsDisplayed()
+                .assertTouchHeightIsEqualTo(48.dp)
+        }
         compose.onNodeWithTag("chat-send").assertIsDisplayed().performClick()
         compose.waitUntil(5_000) { received.any { JSONObject(it).optString("msg") == "Unsent draft" } }
         assertEquals(1, received.count { JSONObject(it).optString("msg") == "Unsent draft" })

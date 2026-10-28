@@ -97,11 +97,16 @@ class PlatformNavigationTest {
             }
         }
         server.start()
+        // A fresh device shows the one-time immersive-mode hint as a focused system window, which
+        // would take the next Back after entering fullscreen. Mark it as already acknowledged.
+        shell("settings put secure immersive_mode_confirmations confirmed")
+        // Creating the repository writes the default profile on a fresh device. Do it before the
+        // snapshot, or the app's own later default write would look like an unrestored change.
+        settings = SettingsRepository(context)
         for (name in listOf("app_settings", "app_update_preferences", "secure_vault", "mesh_recent_devices")) {
             val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
             savedPreferences[prefs] = prefs.all.toMap()
         }
-        settings = SettingsRepository(context)
         initialProfileId = settings.activeProfile.id
         context.getSharedPreferences("app_update_preferences", Context.MODE_PRIVATE).edit()
             .putBoolean("enabled", false).putLong("consent_version_code", BuildConfig.VERSION_CODE.toLong()).commit()
@@ -164,7 +169,7 @@ class PlatformNavigationTest {
             is Set<*> -> edit.putStringSet(key, value.filterIsInstance<String>().toSet())
         } }
         check(edit.commit()) { "Could not restore test preferences" }
-        assertTrue("Test preferences were not restored", prefs.all == values)
+        assertTrue("Test preferences were not restored: " + (prefs.all.keys + values.keys).filter { prefs.all[it] != values[it] }.map { it + "=" + prefs.all[it] + " vs " + values[it] }, prefs.all == values)
     }
 
     @Test fun settingsSheetAndWebViewReturnToTheirParent() {
@@ -199,12 +204,14 @@ class PlatformNavigationTest {
             compose.waitForIdle()
             compose.runOnIdle { assertEquals(tab, workspace.deviceTab) }
             snapshot(tab.name)
+            // Android 8 opens the IME for the focused terminal; Back closes it before navigating.
+            dismissImeIfVisible()
             back()
-            compose.waitUntil(5_000) { workspace.deviceTab == DeviceTab.Overview }
+            awaitAfterBack(5_000) { workspace.deviceTab == DeviceTab.Overview }
             compose.runOnIdle { assertEquals(DeviceTab.Overview, workspace.deviceTab) }
         }
         back()
-        compose.waitUntil(5_000) { workspace.selectedDeviceId == null }
+        awaitAfterBack(5_000) { workspace.selectedDeviceId == null }
         compose.runOnIdle { assertNull(workspace.selectedDeviceId) }
         compose.onNodeWithTag("device-row-node//navigation").assertIsDisplayed()
     }
@@ -229,7 +236,7 @@ class PlatformNavigationTest {
         compose.onNodeWithText(context.getString(R.string.session_dock_more)).assertIsDisplayed()
         snapshot("desktop-back-fullscreen")
         back()
-        compose.waitUntil(5_000) { workspace.selectedDeviceId == null }
+        awaitAfterBack(5_000) { workspace.selectedDeviceId == null }
         compose.onNodeWithTag("device-row-node//navigation").assertIsDisplayed()
         compose.runOnIdle { assertTrue(workspace.sessions.any { it.tab == DeviceTab.Desktop }) }
     }
@@ -286,7 +293,9 @@ class PlatformNavigationTest {
         compose.waitForIdle()
     }
 
-    private fun usesGestureNavigation() = Build.VERSION.SDK_INT >= 29 &&
+    // Injected edge swipes are not recognised as Back by the API 35 (320x640) emulator image, even in
+    // system Settings; there the Back key reaches the same OnBackInvokedCallback dispatch.
+    private fun usesGestureNavigation() = Build.VERSION.SDK_INT >= 36 &&
         shell("settings get secure navigation_mode").trim() == "2"
 
     private fun fullscreenRequested(): Boolean {
@@ -307,18 +316,42 @@ class PlatformNavigationTest {
         openConnectedDesktop()
         val session = workspace.selectedSession
         compose.onNodeWithText(context.getString(R.string.session_dock_typing)).performClick()
-        compose.waitUntil(15_000) { remoteFieldFocused() }
+        try {
+            compose.waitUntil(15_000) { remoteFieldFocused() }
+        } catch (failure: Throwable) {
+            throw AssertionError("Remote field not focused; " + shell("dumpsys window").lines()
+                .filter { "mCurrentFocus" in it || "mFocusedApp" in it }.joinToString(" | ") { it.trim() }, failure)
+        }
         dismissImeIfVisible()
         // The IME's own Back may also deactivate capture on some platform versions.
         if (remoteFieldFocused()) back()
         compose.waitUntil(15_000) { !remoteFieldFocused() }
+        // The IME's Back can hide the system keyboard and the field's focus while typing mode stays on;
+        // then the app's own Back turns typing off first, still without leaving the desktop.
+        val typing = hasClickAction() and hasText(context.getString(R.string.session_dock_typing))
+        if (SemanticsProperties.Selected.let { key -> compose.onNode(typing).fetchSemanticsNode().config.getOrElse(key) { false } }) back()
+        compose.onNode(typing).assertIsNotSelected()
+        snapshot("keyboard-off")
+        awaitImeHidden()
         compose.runOnIdle {
             assertEquals("node//navigation", workspace.selectedDeviceId)
             assertSame(session, workspace.selectedSession)
         }
         back()
-        compose.waitUntil(15_000) { workspace.selectedDeviceId == null }
+        awaitAfterBack(15_000) { workspace.selectedDeviceId == null }
         compose.runOnIdle { assertTrue(workspace.sessions.contains(session)) }
+    }
+
+    /** Names the focused window when Back did not reach the app (a system window may have taken it). */
+    private fun awaitAfterBack(timeoutMillis: Long, condition: () -> Boolean) {
+        try {
+            compose.waitUntil(timeoutMillis, condition)
+        } catch (failure: Throwable) {
+            throw AssertionError("Back did not reach the app; " + (shell("dumpsys window").lines()
+                .filter { "mCurrentFocus" in it || "mFocusedApp" in it } + shell("dumpsys input_method").lines()
+                .filter { "mInputShown" in it || "mImeWindowVis" in it || "mCurFocusedWindow=" in it })
+                .joinToString(" | ") { it.trim() }, failure)
+        }
     }
 
     private fun remoteFieldFocused(): Boolean {
@@ -366,7 +399,7 @@ class PlatformNavigationTest {
         compose.runOnIdle { assertEquals("node//navigation", workspace.selectedDeviceId) }
         // A completed gesture at the same destination must still perform Back.
         back()
-        compose.waitUntil(5_000) { workspace.selectedDeviceId == null }
+        awaitAfterBack(5_000) { workspace.selectedDeviceId == null }
     }
 
     private fun shell(command: String): String = ParcelFileDescriptor.AutoCloseInputStream(
@@ -376,6 +409,18 @@ class PlatformNavigationTest {
     private fun dismissImeIfVisible() {
         // On Android 8, restoring Settings can focus its PIN field and show the numeric IME.
         // Back must dismiss this actual system window before it changes the app destination.
+        withImeWindows { imeVisible ->
+            if (imeVisible()) {
+                back()
+                compose.waitUntil(5_000) { !imeVisible() }
+            }
+        }
+    }
+
+    /** While the IME is still hiding, Android 13+ keeps its Back callback ahead of the app's. */
+    private fun awaitImeHidden() = withImeWindows { imeVisible -> compose.waitUntil(5_000) { !imeVisible() } }
+
+    private fun withImeWindows(action: (imeVisible: () -> Boolean) -> Unit) {
         val automation = instrumentation.uiAutomation
         val originalFlags = automation.serviceInfo.flags
         try {
@@ -383,12 +428,7 @@ class PlatformNavigationTest {
                 flags = flags or AccessibilityServiceInfo.FLAG_RETRIEVE_INTERACTIVE_WINDOWS
             }
             automation.waitForIdle(100, 5_000)
-            if (automation.windows.any { it.type == AccessibilityWindowInfo.TYPE_INPUT_METHOD }) {
-                back()
-                compose.waitUntil(5_000) {
-                    automation.windows.none { it.type == AccessibilityWindowInfo.TYPE_INPUT_METHOD }
-                }
-            }
+            action { automation.windows.any { it.type == AccessibilityWindowInfo.TYPE_INPUT_METHOD } }
         } finally {
             automation.serviceInfo = automation.serviceInfo.apply { flags = originalFlags }
         }

@@ -1,12 +1,13 @@
-## MeshPilot 0.9.0
+## MeshPilot 0.9.1
 
 English · 简体中文 · Русский
 
 MeshPilot is an independent client for MeshCentral servers. It is not affiliated with or endorsed by the
 MeshCentral project, so please report problems with this app here, not to the MeshCentral team.
-The package and signing key are unchanged, so 0.9.0 installs as a normal update over 0.8.4.
+The package and signing key are unchanged, so 0.9.1 installs as a normal update over 0.8.4.
+0.9.1 is the first published build of the 0.9 line: the 0.9.0 tag did not pass device checks and was not released.
 
-**New in 0.9.0:**
+**New in 0.9:**
 
 - **Chat with the person at a computer.** Open the standard MeshCentral messenger window on an online computer and
   exchange plain text. Conversations survive short network loss; history stays in memory and is never written to disk.
@@ -31,7 +32,7 @@ The package and signing key are unchanged, so 0.9.0 installs as a normal update 
 - **Support MeshPilot.** An optional card in Settings opens the Boosty page. No features depend on support.
 
 中文：MeshPilot 是 MeshCentral 服务器的独立客户端，与 MeshCentral 项目没有关联，也未获其认可；请在本仓库报告本应用的问题。
-软件包和签名密钥不变，0.9.0 可作为 0.8.4 的普通更新安装。0.9.0 新增：与电脑前的用户进行文字聊天（历史仅保存在内存中）；
+软件包和签名密钥不变，0.9.1 可作为 0.8.4 的普通更新安装。0.9.1 是 0.9 系列首个正式发布的版本（0.9.0 未通过设备检查，未发布）。0.9 新增：与电脑前的用户进行文字聊天（历史仅保存在内存中）；
 通过已连接的 Mesh Agent 将 RDP、VNC、SSH、网页或自定义 TCP 服务转发到手机本地回环端口，由用户手动启动并在通知中显示；
 大型服务器分页浏览，并可在 MeshCentral 1.3.1 上搜索全部设备；进程和服务管理，操作前需确认，并在报告成功前重新读取代理状态；
 终端断线后重新连接并保留滚动记录；长按多选文件和文件夹，下载整个文件夹并校验大小和 SHA-256；远程桌面画中画、三指滚动、
@@ -40,8 +41,9 @@ The package and signing key are unchanged, so 0.9.0 installs as a normal update 
 目标平台为 Android 16，最低仍为 Android 8.0；设置中新增可选的 Boosty 支持卡片。
 
 Русский: MeshPilot — независимый клиент для серверов MeshCentral, он не связан с проектом MeshCentral и не одобрен им;
-о проблемах с приложением сообщайте здесь. Пакет и ключ подписи прежние, 0.9.0 ставится обычным обновлением поверх 0.8.4.
-Новое в 0.9.0: текстовый чат с человеком за компьютером (история хранится только в памяти); проброс RDP, VNC, SSH,
+о проблемах с приложением сообщайте здесь. Пакет и ключ подписи прежние, 0.9.1 ставится обычным обновлением поверх 0.8.4.
+0.9.1 — первый опубликованный выпуск линии 0.9: сборка 0.9.0 не прошла проверки на устройствах и не выпускалась.
+Новое в 0.9: текстовый чат с человеком за компьютером (история хранится только в памяти); проброс RDP, VNC, SSH,
 веб- и других TCP-служб удалённых машин через подключённый Mesh Agent на локальный порт телефона — маршруты запускаете вы,
 они видны в уведомлении и не восстанавливаются сами; постраничный просмотр больших серверов и поиск по всем устройствам
 на MeshCentral 1.3.1; диспетчер процессов и служб с подтверждением действий и повторной проверкой состояния агента;
@@ -53,7 +55,9 @@ The package and signing key are unchanged, so 0.9.0 installs as a normal update 
 и резервная копия настроек с шифрованием паролем; целевая версия Android 16, минимальная — по-прежнему Android 8.0;
 в настройках появилась необязательная карточка поддержки на Boosty.
 
-See the [changelog](https://github.com/papajon123/meshcentral-android/blob/main/CHANGELOG.md) for details.
+See the [changelog](https://github.com/papajon123/meshcentral-android/blob/main/CHANGELOG.md) and
+[0.9.1 validation](https://github.com/papajon123/meshcentral-android/blob/main/docs/RELEASE_0_9_1_VALIDATION.md) for details.
+On Android 8-10 in landscape with the keyboard open, the chat header can move out of view; system Back still works.
 Tested on emulators and a local MeshCentral 1.3.1 bench with Linux, Windows and Android agents;
 acceptance on physical phones continues. Power/removal
 execution, phone hardware effects and broad Windows/macOS coverage are not promised.

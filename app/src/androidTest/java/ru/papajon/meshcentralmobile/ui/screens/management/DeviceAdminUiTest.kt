@@ -61,6 +61,8 @@ class DeviceAdminUiTest {
         compose.onNodeWithTag("admin_review").assertIsEnabled()
     }
     @Test fun dismissClearsOnlyTheInvitationClipboard() {
+        // ClipboardManager.clearPrimaryClip exists from Android 9; older releases keep the copied link.
+        org.junit.Assume.assumeTrue(android.os.Build.VERSION.SDK_INT >= 28)
         val open = mutableStateOf(true)
         show { if (open.value) InviteDialogContent("Family", invitation, false, false, true, { open.value = false }) {} }
         compose.onNodeWithTag("admin_copy").performScrollTo().performClick()
@@ -74,6 +76,8 @@ class DeviceAdminUiTest {
         }
     }
     @Test fun expirationClearsTheMatchingClipboard() {
+        // ClipboardManager.clearPrimaryClip exists from Android 9; older releases keep the copied link.
+        org.junit.Assume.assumeTrue(android.os.Build.VERSION.SDK_INT >= 28)
         val current = mutableStateOf(invitation)
         show { InviteDialogContent("Family", current.value, false, false, true, {}) {} }
         compose.onNodeWithTag("admin_copy").performScrollTo().performClick()

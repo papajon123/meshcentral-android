@@ -156,7 +156,7 @@ class LiveForwardReviewTest {
     private fun ping(socket: Socket, input: InputStream) {
         socket.getOutputStream().write("GET /ping HTTP/1.1\r\nHost: fixture\r\n\r\n".toByteArray())
         assertTrue(headers(input).startsWith("HTTP/1.1 200"))
-        assertArrayEquals("pong".toByteArray(), input.readNBytes(4))
+        assertArrayEquals("pong".toByteArray(), input.readUpTo(4))
     }
     private fun headers(input: InputStream): String {
         val bytes = ByteArrayOutputStream()

@@ -19,7 +19,9 @@ class LocaleResourcesTest {
         assertEquals("取消", localized("zh-CN").getString(R.string.cancel))
         assertEquals("取消", localized("zh-TW").getString(R.string.cancel))
         assertEquals("Cancel", localized("nl-NL").getString(R.string.cancel))
-        assertEquals("Отмена", localized("nl-NL,ru-RU").getString(R.string.cancel))
+        // A WebView loaded earlier in this process adds its own locales (Dutch included) to the app's
+        // assets, so the unsupported first locale must be one WebView does not ship either.
+        assertEquals("Отмена", localized("fy-NL,ru-RU").getString(R.string.cancel))
     }
 
     @Test fun chineseScriptsAndRtlLocalesHaveDistinctResourcesAndDirection() {

@@ -42,8 +42,11 @@ class QueueSafLifecycleTest {
             compose.onNodeWithText("Choose queue fixture").performClick()
             clickSystem("Show roots", description = true)
             clickSystem("Queue grant fixture")
-            clickSystem("Use this folder")
-            clickSystem("Allow")
+            // Android 8-10 DocumentsUI selects the folder with "Select" and grants it without a dialog.
+            if (android.os.Build.VERSION.SDK_INT >= 30) {
+                clickSystem("Use this folder")
+                clickSystem("Allow")
+            } else clickSystem("Select")
             withTimeout(10_000) { while (destination == null || !resolver.persistedUriPermissions.any { it.uri == destination }) delay(20) }
             val chosen = requireNotNull(destination)
             assertTrue(resolver.persistedUriPermissions.any { it.uri == chosen && it.isReadPermission && it.isWritePermission })

@@ -129,7 +129,9 @@ class MainActivity : ComponentActivity() {
         super.onDestroy()
     }
 
-    private fun applyScreenshotBlocking(enabled: Boolean) {
+    // Callers may resume after a background lookup; window flags must change on the UI thread
+    // (Android 8-10 throws CalledFromWrongThreadException). runOnUiThread runs inline there.
+    private fun applyScreenshotBlocking(enabled: Boolean) = runOnUiThread {
         if (enabled) {
             window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
         } else {
@@ -137,7 +139,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun applyRemoteFullscreen(enabled: Boolean) {
+    private fun applyRemoteFullscreen(enabled: Boolean) = runOnUiThread {
         val controller = WindowInsetsControllerCompat(window, window.decorView)
         if (enabled) {
             controller.hide(WindowInsetsCompat.Type.systemBars())

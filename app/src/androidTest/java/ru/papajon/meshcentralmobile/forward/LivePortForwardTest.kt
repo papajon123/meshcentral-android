@@ -109,7 +109,7 @@ class LivePortForwardTest {
                 socket.soTimeout = 15000
                 val challenge = ByteArray(32768) { (it % 127).toByte() }
                 socket.getOutputStream().write(challenge)
-                assertArrayEquals(challenge, socket.getInputStream().readNBytes(challenge.size))
+                assertArrayEquals(challenge, socket.getInputStream().readUpTo(challenge.size))
                 val notifications = app.getSystemService(NotificationManager::class.java)
                 await { notifications.activeNotifications.any { it.id == PortForwardService.ID } }
                 notifications.activeNotifications.single { it.id == PortForwardService.ID }.notification.actions.single().actionIntent.send()

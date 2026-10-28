@@ -136,7 +136,12 @@ class LauncherIntegrationTest {
         val manager = android.appwidget.AppWidgetManager.getInstance(context)
         var id = android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID
         try {
-            automation.adoptShellPermissionIdentity("android.permission.BIND_APPWIDGET")
+            // Shell permission adoption needs Android 10; older releases grant widget binding by package.
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                automation.adoptShellPermissionIdentity("android.permission.BIND_APPWIDGET")
+            } else {
+                automation.executeShellCommand("appwidget grantbind --package ${context.packageName}").close()
+            }
             compose.runOnIdle {
                 id = host.allocateAppWidgetId()
                 assertTrue(manager.bindAppWidgetIdIfAllowed(id, android.content.ComponentName(context, FavoritesWidget::class.java)))
@@ -182,7 +187,11 @@ class LauncherIntegrationTest {
             compose.waitUntil(10_000) { view.findViewById<android.widget.ListView>(R.id.widget_rows)?.count == 0 }
         } finally {
             compose.runOnIdle { host.stopListening(); if (id != android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID) host.deleteAppWidgetId(id) }
-            automation.dropShellPermissionIdentity()
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                automation.dropShellPermissionIdentity()
+            } else {
+                automation.executeShellCommand("appwidget revokebind --package ${context.packageName}").close()
+            }
         }
     }
 }

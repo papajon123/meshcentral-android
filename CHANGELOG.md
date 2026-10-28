@@ -1,3 +1,11 @@
+# 0.9.1 — 2026-10-27
+
+0.9.0 was tagged but its signed build stopped at device checks on Android 8 and 15, so it was not published. 0.9.1 is the same app with these fixes:
+
+- Apply fullscreen and screenshot-blocking window changes on the UI thread, even when a launcher or notification destination resumes after a background lookup (Android 8-10 rejected the change from another thread).
+- Report the highlighted session dock actions (typing, drag) as selected to accessibility services.
+- Device tests run on Android 8 and on the CI phone profile: no Android 13-only stream reads, widget binding without shell permission adoption, Android 8 folder picker labels, invitation clipboard checks only on Android 9+, a search of every window after a dialog closes, the one-time immersive hint, IME hiding before Back, and landscape-keyboard layout checks only on Android 11+ phones at least 360dp wide.
+
 # 0.9.0 — 2026-10-27
 
 ## Support

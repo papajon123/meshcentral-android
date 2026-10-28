@@ -12,6 +12,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.platform.testTag
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -861,6 +863,8 @@ private fun DockAction(
             .background(if (highlighted) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
             .heightIn(min = 56.dp)
             .clickable(role = Role.Button, interactionSource = interaction, indication = LocalIndication.current, enabled = enabled, onClick = onClick)
+            // The highlight is the only sign that typing or drag mode is on; expose it to accessibility.
+            .semantics { selected = highlighted }
             .padding(horizontal = 2.dp, vertical = 6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp),
