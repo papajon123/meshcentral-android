@@ -322,6 +322,10 @@ class PlatformNavigationTest {
             throw AssertionError("Remote field not focused; " + shell("dumpsys window").lines()
                 .filter { "mCurrentFocus" in it || "mFocusedApp" in it }.joinToString(" | ") { it.trim() }, failure)
         }
+        // The app repeats its IME request once, 150 ms after typing starts. A Back before that would be
+        // undone by the repeat, so let the IME appear and that request pass first.
+        withImeWindows { imeVisible -> runCatching { compose.waitUntil(3_000) { imeVisible() } } }
+        SystemClock.sleep(500)
         dismissImeIfVisible()
         awaitImeHidden()
         // The IME's own Back may also deactivate capture on some platform versions.

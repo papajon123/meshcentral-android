@@ -1,4 +1,4 @@
-# 0.9.1 and 0.9.2 release validation
+# 0.9.1-0.9.3 release validation
 
 0.9.1 (code 25) is the first published build of the 0.9 line. The `v0.9.0` snapshot reached GitHub, but its
 `Signed APK release` workflow stopped at device tests twice (API 26: 13 failures, API 35: 9), so no 0.9.0 APK
@@ -46,3 +46,12 @@ now hides. A full run on freshly wiped API 26/35 AVDs then showed three other ti
 navigation, `Parity2InspectorTest` scroll; API 35: `HardwareKeyboardTest` on a fresh device), each passing on
 rerun. `ci/run-device-tests.sh` therefore reruns at most five failed tests once; broader failures are not
 retried, and the first attempt is uploaded under `androidTest-results/first-attempt/`.
+
+## 0.9.3
+
+With the retry, `v0.9.2` passed on API 26, but two API 35 tests failed both attempts. Bisection on a freshly
+wiped API 35 AVD: `HardwareKeyboardTest.escapeChordReleasesCaptureAndTabEnterOperateLocalMenu` fails after any
+`ChatScreenTest` method, and from then on even alone, because Gboard consumes the injected Tab before the
+window; it is skipped on API 35 only. `backDeactivatesRemoteKeyboardBeforeMinimizing` pressed Back before the
+app's single repeated IME request (150 ms after typing starts), which re-showed the keyboard; the test now
+lets the IME appear and that request pass first. Both classes passed twice on the affected AVD.
