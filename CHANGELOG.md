@@ -1,3 +1,8 @@
+# 0.9.7 — 2026-10-29
+
+- Keep the monitor chosen for each profile and computer, including All displays, after lock, screen off, reconnect or reopening the app.
+- Stop forcing the first monitor and treat the agent's report as a default only; if the saved monitor is unavailable, the desktop uses an available screen.
+
 # 0.9.6 — 2026-10-29
 
 - Compact remote-session header with a tappable status indicator and problem details. Traffic uses Latin byte units; verbose diagnostics no longer expand the lower icon toolbar.

@@ -71,6 +71,8 @@ class MeshDesktopRelay(
     private var waitingForNetwork = false
     @Volatile private var backgroundPaused = false
     private val initialisation = DesktopInitialisationTracker()
+    @Volatile private var preferredDisplay: Int? = null
+    @Volatile private var displayListReceived = false
 
     private val _desktopState = MutableStateFlow(RemoteDesktopState())
     val desktopState: StateFlow<RemoteDesktopState> = _desktopState
@@ -107,6 +109,8 @@ class MeshDesktopRelay(
         cancelReconnect()
         currentBaseUrl = baseUrl
         currentDevice = device
+        preferredDisplay = null
+        displayListReceived = false
         retry.reset()
         _desktopState.value = RemoteDesktopState(
             connectionState = ConnectionState.LoadingRemoteDesktop,
@@ -191,6 +195,7 @@ class MeshDesktopRelay(
         )
         when (action) {
             DesktopResumeAction.Refresh -> {
+                restoreDisplay()
                 if (!setPaused(false) || !requestRefresh()) reconnect(resetBudget = false) else watchForFreshFrame()
             }
             DesktopResumeAction.Reconnect -> reconnect(resetBudget = false)
@@ -223,6 +228,8 @@ class MeshDesktopRelay(
         protocolNumberSent = false
         decoder.reset()
         if (resetState) {
+            preferredDisplay = null
+            displayListReceived = false
             currentDevice = null
             framebuffer.clear()
             _desktopState.value = RemoteDesktopState()
@@ -253,6 +260,7 @@ class MeshDesktopRelay(
             if (state.remoteWidth > 0 && state.remoteHeight > 0)
                 framebuffer.apply(KvmPacket.ScreenSize(state.remoteWidth, state.remoteHeight))
         }
+        if (!locked && !backgroundPaused) restoreDisplay()
         sendBinary(KvmInputEncoder.pause(locked || backgroundPaused))
         if (!locked && !backgroundPaused) requestRefresh()
     }
@@ -265,15 +273,23 @@ class MeshDesktopRelay(
             releaseMouseButtons()
             resumeWatchdogJob?.cancel()
         }
+        if (wasPaused && !paused && !appLocked) restoreDisplay()
         val sent = sendBinary(KvmInputEncoder.pause(paused || appLocked))
         if (sent && wasPaused && !paused && !appLocked) requestRefresh()
         return sent
     }
 
-    fun selectDisplay(display: Int): Boolean {
+    @Synchronized fun selectDisplay(display: Int): Boolean {
+        if (display !in 0..KvmPacketParser.ALL_DISPLAYS_INDEX) return false
+        if (displayListReceived && display != KvmPacketParser.ALL_DISPLAYS_INDEX && display !in _desktopState.value.displays) return false
+        preferredDisplay = display
         _desktopState.update { it.copy(selectedDisplay = display) }
-        return sendBinary(KvmInputEncoder.setDisplay(display))
+        return (display == KvmPacketParser.ALL_DISPLAYS_INDEX || displayListReceived) && sendBinary(KvmInputEncoder.setDisplay(display))
     }
+
+    private fun restoreDisplay() { preferredDisplay?.takeIf {
+        it == KvmPacketParser.ALL_DISPLAYS_INDEX || displayListReceived && it in _desktopState.value.displays
+    }?.let { sendBinary(KvmInputEncoder.setDisplay(it)) } }
 
     fun requestDisplays(): Boolean = sendBinary(KvmInputEncoder.getDisplays())
 
@@ -394,6 +410,7 @@ class MeshDesktopRelay(
 
         decoder.reset()
         initialisation.onNewRelay()
+        displayListReceived = false
         protocolNumberSent = false
         val id = MeshControlMessages.randomTunnelId(random)
         tunnelId = id
@@ -401,7 +418,7 @@ class MeshDesktopRelay(
         frameVersion = 0L
         _desktopState.update {
             it.copy(framebuffer = null, remoteWidth = 0, remoteHeight = 0,
-                frameVersion = 0L, handshakeComplete = false,
+                frameVersion = 0L, handshakeComplete = false, selectedDisplay = preferredDisplay,
                 connectionState = if (it.connectionState == ConnectionState.LoadingRemoteDesktop) {
                     ConnectionState.LoadingRemoteDesktop
                 } else {
@@ -593,6 +610,9 @@ class MeshDesktopRelay(
             if (packets.any { it is KvmPacket.Tile || it is KvmPacket.CopyRect }) streamMeter.frame()
         }
 
+        val selection = displays?.let { preferredDisplaySelection(preferredDisplay, it.ids, it.selected) }
+        if (displays != null) displayListReceived = displays.ids.isNotEmpty()
+        if (selection != null) preferredDisplay = selection
         _desktopState.update { state ->
             var next = state
             if (update != null) {
@@ -618,7 +638,7 @@ class MeshDesktopRelay(
             displays?.let { value ->
                 next = next.copy(
                     displays = value.ids,
-                    selectedDisplay = value.selected.takeIf { it != KvmPacketParser.ALL_DISPLAYS_INDEX },
+                    selectedDisplay = selection ?: value.selected.takeIf { it != KvmPacketParser.ALL_DISPLAYS_INDEX },
                 )
             }
             geometry?.let { next = next.copy(displayGeometry = it.displays) }
@@ -630,10 +650,15 @@ class MeshDesktopRelay(
         }
 
         if (inputLock?.locked == true) synchronized(this) { releaseMouseButtons() }
+        var initialisedThisPacket = false
         if (screenSize != null) {
             val changed = previousSize.first != screenSize.width || previousSize.second != screenSize.height
-            if (initialisation.shouldInitialise(changed)) sendInitialisationSequence()
+            if (initialisation.shouldInitialise(changed)) {
+                sendInitialisationSequence()
+                initialisedThisPacket = true
+            }
         }
+        if (!initialisedThisPacket && selection != null && selection != displays?.selected) restoreDisplay()
         if (displays?.ids?.size == 0) requestDisplays()
     }
 
@@ -653,6 +678,7 @@ class MeshDesktopRelay(
             (!appLocked || command != 8) &&
                 ((!appLocked && !inputSuppressed && _desktopState.value.device?.isAndroidAgent != true) || command !in setOf(1, 14))
         }.forEach(::sendBinary)
+        restoreDisplay()
         sendBinary(KvmInputEncoder.getDisplays())
         if (backgroundPaused || appLocked) sendBinary(KvmInputEncoder.pause(true)) else requestRefresh()
     }

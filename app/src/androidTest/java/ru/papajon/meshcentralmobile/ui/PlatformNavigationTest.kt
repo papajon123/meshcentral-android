@@ -53,6 +53,7 @@ class PlatformNavigationTest {
     private val context get() = instrumentation.targetContext
     private val server = MockWebServer()
     @Volatile private var displayPacket = "000b000e0003ffff00010002ffff"
+    private val displaySelections = java.util.concurrent.ConcurrentLinkedQueue<Int>()
     private var scenario: ActivityScenario<MainActivity>? = null
     private lateinit var workspace: ConnectionWorkspace
     private lateinit var settings: SettingsRepository
@@ -65,6 +66,8 @@ class PlatformNavigationTest {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 if (request.path?.startsWith("/meshrelay.ashx") == true) {
                     return MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
+                        private var currentDisplay = 65535
+                        private fun displays() = (displayPacket.dropLast(4) + currentDisplay.toString(16).padStart(4,'0')).decodeHex()
                         override fun onOpen(webSocket: WebSocket, response: Response) {
                             webSocket.send("c")
                         }
@@ -74,6 +77,13 @@ class PlatformNavigationTest {
                                 webSocket.send("0007000803200258".decodeHex()) // 800x600
                                 webSocket.send(displayPacket.decodeHex()) // advertised physical monitors and All
                             }
+                        }
+                        override fun onMessage(webSocket: WebSocket, bytes: okio.ByteString) {
+                            if (bytes.size == 6 && bytes[1].toInt() == 12) {
+                                currentDisplay = (bytes[4].toInt() and 255) * 256 + (bytes[5].toInt() and 255)
+                                displaySelections.add(currentDisplay)
+                                webSocket.send(displays())
+                            } else if (bytes.size == 4 && bytes[1].toInt() == 11) webSocket.send(displays())
                         }
                         override fun onClosing(webSocket: WebSocket, code: Int, reason: String) { webSocket.close(1000, null) }
                     })
@@ -104,7 +114,7 @@ class PlatformNavigationTest {
         // Creating the repository writes the default profile on a fresh device. Do it before the
         // snapshot, or the app's own later default write would look like an unrestored change.
         settings = SettingsRepository(context)
-        for (name in listOf("app_settings", "app_update_preferences", "secure_vault", "mesh_recent_devices")) {
+        for (name in listOf("app_settings", "app_update_preferences", "secure_vault", "mesh_recent_devices", "desktop_display")) {
             val prefs = context.getSharedPreferences(name, Context.MODE_PRIVATE)
             savedPreferences[prefs] = prefs.all.toMap()
         }
@@ -312,6 +322,50 @@ class PlatformNavigationTest {
         compose.onNodeWithTag("session-display-choice-2").assertDoesNotExist()
         compose.onNodeWithContentDescription(context.getString(R.string.session_dock_more)).assertIsDisplayed()
         compose.runOnIdle { assertEquals("node//navigation", workspace.selectedDeviceId) }
+    }
+
+    @Test fun displaySelectionSurvivesLockReconnectAndActivityRecreation() {
+        openConnectedDesktop()
+        val vault = ru.papajon.meshcentralmobile.security.SecureVault(context)
+        try {
+            for (display in listOf(2, 65535)) {
+                compose.onNodeWithTag("session-display-$display").performClick()
+                compose.waitUntil(5_000) { workspace.client.desktopState.value.selectedDisplay == display }
+                compose.waitUntil(5_000) { display in displaySelections }
+                displaySelections.clear()
+                scenario!!.onActivity {
+                    vault.savePin("6042")
+                    settings.updateLockTimeoutSeconds(0)
+                    workspace.appLock.lockNow()
+                }
+                compose.onNodeWithText(context.getString(R.string.lock_title)).assertIsDisplayed()
+                shell("input keyevent 223")
+                SystemClock.sleep(300)
+                shell("input keyevent 224")
+                shell("wm dismiss-keyguard")
+                scenario!!.onActivity { workspace.client.reconnectDesktop() }
+                compose.waitUntil(8_000) { workspace.client.desktopState.value.handshakeComplete }
+                compose.waitUntil(8_000) { display in displaySelections }
+                "6042".forEach { compose.onNodeWithText(it.toString()).performClick() }
+                compose.waitUntil(8_000) { !workspace.appLock.isLocked }
+                compose.onNodeWithTag("session-display-$display").assertIsSelected()
+                assertEquals(display, workspace.client.desktopState.value.selectedDisplay)
+                assertFalse("Reconnect must not request the first monitor", displaySelections.contains(1))
+                scenario!!.recreate()
+                compose.onNodeWithTag("session-display-$display").assertIsSelected()
+            }
+            compose.onNodeWithTag("session-display-2").performClick()
+            displayPacket = "000b000c0002ffff0001ffff" // monitor 2 was unplugged
+            scenario!!.onActivity { workspace.client.requestRemoteDisplays() }
+            compose.waitUntil(8_000) { workspace.client.desktopState.value.selectedDisplay == 1 }
+            displaySelections.clear()
+            scenario!!.recreate()
+            compose.onNodeWithTag("session-display-1").assertIsSelected()
+            assertFalse("An unavailable saved monitor must not be requested", displaySelections.contains(2))
+        } finally {
+            scenario!!.onActivity { vault.clearPin(); workspace.appLock.refreshLockRequirement() }
+            shell("input keyevent 224"); shell("wm dismiss-keyguard")
+        }
     }
 
     @Test fun backDeactivatesRemoteKeyboardBeforeMinimizing() {

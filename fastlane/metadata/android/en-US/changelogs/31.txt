@@ -1,0 +1,1 @@
+Monitor choice, including All displays, is saved per profile and computer and survives lock, screen off, reconnect and reopening the app. The app no longer forces the first monitor; if the saved monitor is unavailable, an available screen is used. Package and signing key unchanged; installs over 0.9.6.

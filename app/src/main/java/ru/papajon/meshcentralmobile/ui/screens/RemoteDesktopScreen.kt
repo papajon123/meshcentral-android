@@ -188,6 +188,7 @@ fun RemoteDesktopScreen(
     var pipAutomatic by remember { mutableStateOf(displayPreferences.loadPipAutomatic()) }
     LaunchedEffect(shortcutProfileId, desktopState.device?.nodeId) {
         desktopState.device?.nodeId?.let { node ->
+            displayPreferences.loadDisplay(shortcutProfileId, node)?.let(meshClient::selectRemoteDisplay)
             val saved = displayPreferences.load(shortcutProfileId, node)
             meshClient.setRemoteQuality(saved.jpegQuality, saved.frameRate, saved.scaling)
         }
@@ -195,6 +196,10 @@ fun RemoteDesktopScreen(
     fun saveQuality(value: ru.papajon.meshcentralmobile.mesh.DesktopQuality) {
         desktopState.device?.nodeId?.let { displayPreferences.save(shortcutProfileId, it, value) }
         meshClient.setRemoteQuality(value.jpegQuality, value.frameRate, value.scaling)
+    }
+    fun chooseDisplay(display: Int) {
+        desktopState.device?.let { displayPreferences.saveDisplay(shortcutProfileId, it.nodeId, display) }
+        meshClient.selectRemoteDisplay(display)
     }
     val pipEligible = desktopState.hasFrame && desktopState.connectionState == ConnectionState.Connected &&
         (sheet == SessionSheet.None || inPip)
@@ -247,22 +252,13 @@ fun RemoteDesktopScreen(
         return
     }
 
-    // Choose one monitor once the agent reports its displays, so the first frame is readable.
+    // Phone-agent sessions do not keep desktop keyboard/drag controls active.
     LaunchedEffect(device.nodeId, device.isAndroidAgent) {
         if (device.isAndroidAgent) {
             keyboardActive = false
             dragArmed = false
             hintVisible = false
             sheet = SessionSheet.None
-        }
-    }
-    var initialDisplaySelected by remember(device.nodeId, desktopState.attempt) { mutableStateOf(false) }
-    LaunchedEffect(device.nodeId, desktopState.attempt, desktopState.displays) {
-        if (!initialDisplaySelected && desktopState.displays.size > 1) {
-            initialDisplaySelected = true
-            if (desktopState.selectedDisplay == null || desktopState.selectedDisplay == ALL_DISPLAYS) {
-                desktopState.displays.firstOrNull { it != ALL_DISPLAYS }?.let(meshClient::selectRemoteDisplay)
-            }
         }
     }
 
@@ -279,7 +275,7 @@ fun RemoteDesktopScreen(
             Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
                 if (chromeVisible) SessionTopBar(desktopState, debugDetails = debugDetails, onMinimize = onMinimize,
                     onBack = { if (onCloseSession != null) onCloseSession() else { meshClient.disconnectDesktop(); onBrowseDevices() } },
-                    onSelectDisplay = meshClient::selectRemoteDisplay,
+                    onSelectDisplay = ::chooseDisplay,
                     onRefresh = { meshClient.requestRemoteRefresh() }, onReconnect = meshClient::reconnectDesktop,
                     onHideChrome = { chromeVisible = false })
                 else TextButton(onClick = { chromeVisible = true }) { Text(stringResource(R.string.session_action_show_controls)) }
@@ -353,7 +349,7 @@ fun RemoteDesktopScreen(
                     onBack = {
                         if (onCloseSession != null) onCloseSession() else { meshClient.disconnectDesktop(); onBrowseDevices() }
                     },
-                    onSelectDisplay = meshClient::selectRemoteDisplay,
+                    onSelectDisplay = ::chooseDisplay,
                     onRefresh = { meshClient.requestRemoteRefresh() },
                     onReconnect = meshClient::reconnectDesktop,
                     onHideChrome = { chromeVisible = false },
@@ -748,7 +744,6 @@ private fun DockAction(
             .background(if (highlighted) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
             .height(48.dp)
             .clickable(role = Role.Button, interactionSource = interaction, indication = LocalIndication.current, enabled = enabled, onClick = onClick)
-            // The highlight is the only sign that typing or drag mode is on; expose it to accessibility.
             .semantics { selected = highlighted }
             .padding(horizontal = 2.dp, vertical = 6.dp),
         contentAlignment = Alignment.Center,

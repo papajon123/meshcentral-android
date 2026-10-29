@@ -6,6 +6,7 @@ import okhttp3.*
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okio.ByteString
+import okio.ByteString.Companion.decodeHex
 import org.junit.Assert.*
 import org.junit.Test
 
@@ -27,7 +28,10 @@ class DesktopProtocolOrderTest {
             override fun onOpen(webSocket: WebSocket, response: Response) { peers.add(webSocket) }
             override fun onMessage(webSocket: WebSocket, text: String) {
                 messages.add(text)
-                if (text == "2") webSocket.send(ByteString.of(*size))
+                if (text == "2") {
+                    webSocket.send(ByteString.of(*size))
+                    webSocket.send("000b000e0003ffff00010002ffff".decodeHex())
+                }
             }
             override fun onMessage(webSocket: WebSocket, bytes: ByteString) { messages.add(bytes.toByteArray()) }
             override fun onClosing(webSocket: WebSocket, code: Int, reason: String) { webSocket.close(code, null) }
@@ -38,6 +42,7 @@ class DesktopProtocolOrderTest {
             await { peers.isNotEmpty() }
             // What the desktop screen and workspace do as soon as they appear.
             assertFalse(relay.setQuality(jpegQuality = 40, frameRate = 15, scaling = 512))
+            assertFalse(relay.selectDisplay(2))
             assertFalse(relay.setPaused(false))
             assertFalse(relay.requestRefresh())
             assertFalse(relay.sendRemoteKey(65, true))
@@ -46,6 +51,7 @@ class DesktopProtocolOrderTest {
             await { relay.desktopState.value.handshakeComplete }
             val saved = DesktopQuality(40, 15, 512).packet()
             await { messages.any { it is ByteArray && it.contentEquals(saved) } }
+            await { messages.any { it is ByteArray && it.contentEquals(KvmInputEncoder.setDisplay(2)) } }
             assertEquals("2", messages.first())
         } finally { relay.disconnect(); scope.cancel(); http.dispatcher.executorService.shutdown(); server.shutdown() }
     }

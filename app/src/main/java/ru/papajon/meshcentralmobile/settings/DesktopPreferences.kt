@@ -11,6 +11,12 @@ class DesktopPreferences(context: Context) {
         .digest("${profile.length}:$profile$node".toByteArray(Charsets.UTF_8)).joinToString("") { "%02x".format(it) }
     fun loadPipAutomatic(): Boolean = prefs.getBoolean("pip.automatic", false)
     fun savePipAutomatic(enabled: Boolean) { prefs.edit().putBoolean("pip.automatic", enabled).apply() }
+    fun loadDisplay(profile: String, node: String): Int? = prefs.getInt("${key(profile,node)}.display", -1)
+        .takeIf { it in 0..65535 }
+    fun saveDisplay(profile: String, node: String, display: Int) {
+        require(display in 0..65535)
+        prefs.edit().putInt("${key(profile,node)}.display", display).apply()
+    }
     fun load(profile: String, node: String): DesktopQuality {
         val key = key(profile, node)
         return DesktopQuality(prefs.getInt("$key.q", 60), prefs.getInt("$key.f", 30),
