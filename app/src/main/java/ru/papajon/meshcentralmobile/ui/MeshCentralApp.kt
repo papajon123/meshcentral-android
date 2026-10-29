@@ -321,7 +321,9 @@ fun MeshCentralApp(
         }
         LockScreen(
             biometricEnabled = settings.biometricUnlockEnabled,
-            onPinSubmit = appLockController::unlockWithPin,
+            pinEnabled = secureVault.hasPin(),
+            pinLength = remember(secureVault) { secureVault.pinLength() },
+            onPinSubmit = appLockController::unlockWithPinAsync,
             onBiometricUnlockRequested = { callback ->
                 onBiometricUnlockRequested { success, error ->
                     if (success) appLockController.unlockAfterBiometric()
@@ -588,7 +590,9 @@ fun MeshCentralApp(
         topBar = {
             if (currentDestination != AppDestination.Session) Column(Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                    TextButton(onClick = { managingProfiles = true }, modifier = Modifier.weight(1f)) { Text(settingsRepository.activeProfile.name) }
+                    TextButton(onClick = { managingProfiles = true }, modifier = Modifier.weight(1f)) {
+                        Text(settingsRepository.activeProfile.name, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
+                    }
                     TextButton(onClick = { managingSessions = true }) {
                         Text(stringResource(R.string.workspace_sessions_count, workspace.sessions.size))
                         ru.papajon.meshcentralmobile.ui.components.ChatUnreadBadge(workspace.unreadChats)

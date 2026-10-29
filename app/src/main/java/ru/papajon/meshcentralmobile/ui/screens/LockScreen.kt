@@ -29,7 +29,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Backspace
 import androidx.compose.material.icons.outlined.ErrorOutline
-import androidx.compose.material.icons.outlined.Fingerprint
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Shield
 import androidx.compose.material3.Button
@@ -38,13 +37,16 @@ import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -61,6 +63,9 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import kotlinx.coroutines.delay
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.localization.UiText
 import ru.papajon.meshcentralmobile.localization.asString
@@ -69,23 +74,30 @@ import ru.papajon.meshcentralmobile.ui.theme.PillShape
 
 /**
  * Full-screen lock. The composition is deliberately quiet: a shield/lock mark, one status surface
- * with the masked PIN progress and feedback, then a single keypad surface whose primary action is
- * Unlock. Every key clears the 48 dp touch target, the pressed state has both visual and haptic
- * feedback, and the whole screen scrolls when the font scale grows.
- *
- * Behaviour is unchanged: [onPinSubmit] gets the raw digits and returns whether the PIN was
- * accepted, the entry is capped at 12 digits, zero appends a digit, backspace removes one, and the
- * biometric result is reported through [onBiometricUnlockRequested].
+ * with masked PIN progress and an auto-submitting keypad. Legacy PIN records without length
+ * metadata still auto-unlock; only those retain a submit action for explicit failure feedback.
+ * The entered PIN is deliberately never stored in saved instance state.
  */
 @Composable
 fun LockScreen(
     biometricEnabled: Boolean,
-    onPinSubmit: (String) -> Boolean,
+    onPinSubmit: suspend (String) -> Boolean,
     onBiometricUnlockRequested: ((Boolean, String?) -> Unit) -> Unit,
     modifier: Modifier = Modifier,
+    pinEnabled: Boolean = true,
+    pinLength: Int? = null,
 ) {
-    var pin by rememberSaveable { mutableStateOf("") }
-    var message by remember { mutableStateOf<UiText>(UiText.resource(R.string.lock_message_locked)) }
+    var pin by remember { mutableStateOf("") }
+    var manualSubmit by remember { mutableIntStateOf(0) }
+    val expectedLength = pinLength?.takeIf { it in 4..PIN_MAX_LENGTH }
+    val submit by rememberUpdatedState(onPinSubmit)
+    val biometricRequest by rememberUpdatedState(onBiometricUnlockRequested)
+    var biometricRequested by rememberSaveable { mutableStateOf(false) }
+    var biometricRunning by remember { mutableStateOf(false) }
+    val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
+    val resumed = lifecycleState.isAtLeast(Lifecycle.State.RESUMED)
+    val entryHint = if (pinEnabled) R.string.lock_message_locked else R.string.biometric_unlock_subtitle
+    var message by remember { mutableStateOf<UiText>(UiText.resource(entryHint)) }
     var failed by rememberSaveable { mutableStateOf(false) }
     var shakeTrigger by rememberSaveable { mutableIntStateOf(0) }
     val languageTags = LocalConfiguration.current.locales.toLanguageTags()
@@ -109,26 +121,40 @@ fun LockScreen(
         }
     }
 
-    val submitPin: () -> Unit = {
-        if (onPinSubmit(pin)) {
+    LaunchedEffect(pin, manualSubmit, resumed) {
+        if (!resumed || !pinEnabled || pin.isEmpty()) return@LaunchedEffect
+        val automatic = if (expectedLength != null) pin.length == expectedLength else pin.length >= 4
+        if (!automatic && manualSubmit == 0) return@LaunchedEffect
+        // Legacy records have no length. Debounce their candidates and keep intermediate failures
+        // quiet so a six-digit PIN is never rejected at digit four.
+        if (expectedLength == null && manualSubmit == 0) delay(180)
+        if (submit(pin)) {
             pin = ""
             failed = false
-        } else {
+        } else if (expectedLength != null || manualSubmit > 0 || pin.length == PIN_MAX_LENGTH) {
             message = UiText.resource(R.string.lock_invalid_pin)
             failed = true
             shakeTrigger += 1
+            if (expectedLength != null) pin = ""
         }
     }
 
     val requestBiometric: () -> Unit = {
-        onBiometricUnlockRequested { success, error ->
-            failed = !success
+        biometricRequested = true
+        biometricRunning = true
+        biometricRequest { success, error ->
+            biometricRunning = false
+            failed = !success && error != null
             message = if (success) {
                 UiText.resource(R.string.lock_unlocked)
             } else {
-                error?.let(UiText::literal) ?: UiText.resource(R.string.lock_biometric_failed)
+                error?.let(UiText::literal) ?: UiText.resource(entryHint)
             }
         }
+    }
+    LaunchedEffect(biometricEnabled, resumed) {
+        if (resumed && biometricEnabled && !biometricRequested) requestBiometric()
+        if (!resumed) pin = ""
     }
 
     Column(
@@ -167,26 +193,36 @@ fun LockScreen(
                 )
             }
 
-            PinStatus(
+            if (pinEnabled) PinStatus(
                 filled = pin.length,
+                slots = expectedLength,
                 message = message.asString(),
                 failed = failed,
                 shakeOffset = shake.value,
             )
 
-            KeypadPanel(
-                biometricEnabled = biometricEnabled,
+            if (pinEnabled) KeypadPanel(
+                showSubmit = expectedLength == null,
                 onDigit = { digit ->
-                    pin = (pin + digit).take(PIN_MAX_LENGTH)
+                    pin = (pin + digit).take(expectedLength ?: PIN_MAX_LENGTH)
+                    manualSubmit = 0
                     failed = false
+                    message = UiText.resource(R.string.lock_message_locked)
                 },
                 onBackspace = {
                     pin = pin.dropLast(1)
+                    manualSubmit = 0
                     failed = false
+                    message = UiText.resource(R.string.lock_message_locked)
                 },
-                onBiometric = requestBiometric,
-                onUnlock = submitPin,
+                onUnlock = { manualSubmit += 1 },
             )
+            if (!pinEnabled) LockMessage(message.asString(), failed)
+            if (biometricEnabled && biometricRequested && !biometricRunning) {
+                TextButton(onClick = requestBiometric) {
+                    Text(stringResource(R.string.lock_action_unlock_biometric))
+                }
+            }
         }
         Spacer(modifier = Modifier.height(spacing.xxl))
     }
@@ -206,6 +242,7 @@ private fun LockHero() {
 @Composable
 private fun PinStatus(
     filled: Int,
+    slots: Int?,
     message: String,
     failed: Boolean,
     shakeOffset: Float,
@@ -225,6 +262,7 @@ private fun PinStatus(
         ) {
             PinProgress(
                 filled = filled,
+                slots = slots,
                 modifier = Modifier.offset(x = shakeOffset.dp),
             )
             LockMessage(message = message, failed = failed)
@@ -232,9 +270,9 @@ private fun PinStatus(
     }
 }
 
-/** Twelve fixed slots make the cap readable; the merged node announces the exact count. */
+/** Known length uses fixed slots; a legacy PIN grows without announcing a fictitious length. */
 @Composable
-private fun PinProgress(filled: Int, modifier: Modifier = Modifier) {
+private fun PinProgress(filled: Int, slots: Int?, modifier: Modifier = Modifier) {
     val spacing = MeshTheme.spacing
     val progressLabel = stringResource(R.string.lock_pin_progress, filled)
     Row(
@@ -242,7 +280,7 @@ private fun PinProgress(filled: Int, modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.spacedBy(spacing.xs),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        repeat(maxOf(4, filled)) { index ->
+        repeat(slots ?: maxOf(4, filled)) { index ->
             val isFilled = index < filled
             val dotScale by animateFloatAsState(
                 targetValue = if (isFilled) 1f else 0.65f,
@@ -303,18 +341,16 @@ private fun LockMessage(message: String, failed: Boolean) {
     }
 }
 
-/** One keypad surface: the digit grid, optional biometrics, and the only filled action (Unlock). */
+/** One keypad surface; manual submission is only a fallback for legacy length-less records. */
 @Composable
 private fun KeypadPanel(
-    biometricEnabled: Boolean,
+    showSubmit: Boolean,
     onDigit: (String) -> Unit,
     onBackspace: () -> Unit,
-    onBiometric: () -> Unit,
     onUnlock: () -> Unit,
 ) {
     val spacing = MeshTheme.spacing
     val deleteDigitLabel = stringResource(R.string.lock_delete_digit)
-    val biometricLabel = stringResource(R.string.lock_action_unlock_biometric)
 
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -345,21 +381,7 @@ private fun KeypadPanel(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(spacing.sm),
             ) {
-                if (biometricEnabled) {
-                    LockKey(
-                        modifier = Modifier.weight(1f),
-                        label = biometricLabel,
-                        onClick = onBiometric,
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Fingerprint,
-                            contentDescription = null,
-                            modifier = Modifier.size(22.dp),
-                        )
-                    }
-                } else {
-                    Spacer(modifier = Modifier.weight(1f))
-                }
+                Spacer(modifier = Modifier.weight(1f))
 
                 LockKey(
                     modifier = Modifier.weight(1f),
@@ -383,7 +405,7 @@ private fun KeypadPanel(
 
             Spacer(modifier = Modifier.height(spacing.xs))
 
-            Button(
+            if (showSubmit) Button(
                 onClick = onUnlock,
                 modifier = Modifier
                     .fillMaxWidth()

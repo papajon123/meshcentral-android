@@ -1,3 +1,9 @@
+# 0.9.5 — 2026-10-29
+
+- Unlock automatically after a complete 4–12 digit PIN, preserving existing PINs. Enabled biometrics open automatically and cancellation leaves PIN available.
+- Compact the computer list, remove repeated server/settings labels and retain the existing Material 3 theme.
+- Replace fixed app-lock time buttons with a compact custom-seconds editor. Zero locks immediately after leaving the app; custom delays survive backup and restore.
+
 # 0.9.4 — 2026-10-28
 
 - Open folders with one tap. Folder actions remain available from the More button, and long press still starts multi-selection. This addresses the folder-navigation part of GitHub #14; other reports in that issue remain open.

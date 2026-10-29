@@ -5,7 +5,6 @@ import ru.papajon.meshcentralmobile.localization.UiText
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -28,8 +27,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -47,7 +44,6 @@ import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material.icons.outlined.TouchApp
 import androidx.compose.material.icons.outlined.SystemUpdateAlt
-import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -67,7 +63,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -89,13 +84,6 @@ import ru.papajon.meshcentralmobile.ui.theme.MeshMono
 import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 import ru.papajon.meshcentralmobile.ui.theme.PillShape
 import ru.papajon.meshcentralmobile.ui.web.MeshWebViewSurface
-
-/** Auto-lock choices, identical to the ones the original screen offered. */
-private val LockTimeoutOptions = listOf(
-    15L to R.string.settings_auto_lock_option_15,
-    60L to R.string.settings_auto_lock_option_60,
-    300L to R.string.settings_auto_lock_option_300,
-)
 
 /**
  * Settings grouped into cards instead of a column of equal buttons: read-only server identity,
@@ -126,7 +114,7 @@ fun SettingsScreen(
     onStylusPrecisionChanged: (Boolean) -> Unit = {},
     onHideDevicesWhenLockedChanged: (Boolean) -> Unit = {},
 ) {
-    var newPin by rememberSaveable { mutableStateOf("") }
+    var newPin by remember { mutableStateOf("") }
     var message by remember {
         mutableStateOf<UiText>(UiText.resource(
             if (hasPin) R.string.settings_message_pin_configured else R.string.settings_message_pin_missing,
@@ -645,114 +633,6 @@ private fun SettingsActionRow(
     }
 }
 
-/** Auto-lock row: current value in words plus a three-way pill selector. */
-@Composable
-private fun SettingsAutoLockRow(
-    currentSeconds: Long,
-    onLockTimeoutChanged: (Long) -> Unit,
-) {
-    val spacing = MeshTheme.spacing
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = spacing.lg, vertical = spacing.md),
-        verticalArrangement = Arrangement.spacedBy(spacing.md),
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.md),
-        ) {
-            IconBadge(
-                icon = Icons.Outlined.Timer,
-                container = MaterialTheme.colorScheme.tertiaryContainer,
-                tint = MaterialTheme.colorScheme.onTertiaryContainer,
-            )
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = stringResource(R.string.settings_auto_lock),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-                Text(
-                    text = stringResource(R.string.settings_auto_lock_supporting, lockTimeoutLabel(currentSeconds)),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
-        }
-        Row(
-            modifier = Modifier.selectableGroup(),
-            horizontalArrangement = Arrangement.spacedBy(spacing.sm),
-        ) {
-            LockTimeoutOptions.forEach { (seconds, labelRes) ->
-                TimeoutPill(
-                    label = stringResource(labelRes),
-                    selected = currentSeconds == seconds,
-                    onClick = { onLockTimeoutChanged(seconds) },
-                    modifier = Modifier.weight(1f),
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun TimeoutPill(
-    label: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val spacing = MeshTheme.spacing
-    val container by animateColorAsState(
-        targetValue = if (selected) {
-            MaterialTheme.colorScheme.primaryContainer
-        } else {
-            MaterialTheme.colorScheme.surfaceContainerHigh
-        },
-        animationSpec = MeshTheme.motion.effectColor,
-        label = "timeout-pill-container",
-    )
-    val contentColor by animateColorAsState(
-        targetValue = if (selected) {
-            MaterialTheme.colorScheme.onPrimaryContainer
-        } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
-        },
-        animationSpec = MeshTheme.motion.effectColor,
-        label = "timeout-pill-content",
-    )
-    val borderColor by animateColorAsState(
-        targetValue = if (selected) {
-            Color.Transparent
-        } else {
-            MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
-        },
-        animationSpec = MeshTheme.motion.effectColor,
-        label = "timeout-pill-border",
-    )
-    Box(
-        modifier = modifier
-            .heightIn(min = 48.dp)
-            .clip(PillShape)
-            .background(container)
-            .border(border = BorderStroke(1.dp, borderColor), shape = PillShape)
-            .selectable(
-                selected = selected,
-                role = Role.RadioButton,
-                onClick = onClick,
-            )
-            .padding(horizontal = spacing.md),
-        contentAlignment = Alignment.Center,
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelLarge,
-            color = contentColor,
-        )
-    }
-}
-
 /** Full-screen raw WebView kept behind the About card; the close action returns to the settings list. */
 @Composable
 private fun DebugWebViewOverlay(
@@ -803,12 +683,4 @@ private fun DebugWebViewOverlay(
             modifier = Modifier.weight(1f),
         )
     }
-}
-
-@Composable
-private fun lockTimeoutLabel(seconds: Long): String = when (seconds) {
-    15L -> stringResource(R.string.settings_auto_lock_seconds_15)
-    60L -> stringResource(R.string.settings_auto_lock_minute_1)
-    300L -> stringResource(R.string.settings_auto_lock_minutes_5)
-    else -> stringResource(R.string.settings_auto_lock_seconds, seconds)
 }

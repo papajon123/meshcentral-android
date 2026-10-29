@@ -35,7 +35,6 @@ import androidx.compose.material.icons.outlined.Smartphone
 import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.StarBorder
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.FilledIconButton
@@ -72,6 +71,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.discovery.DeviceSearch
@@ -217,7 +217,6 @@ internal fun DevicesContent(
             R.string.devices_subtitle_counts,
             onlineCount,
             pageDevices.size,
-            clientState.serverName ?: clientState.userId ?: "",
         )
     }
     val visibleDevices = remember(pageDevices, clientState.groups, effectiveFilter, favoriteIds, recentOrder, query, serverSearch, page.filter,
@@ -269,7 +268,6 @@ internal fun DevicesContent(
             current = current,
             refreshEnabled = !clientState.requiresSignIn,
             onRefresh = onRefresh,
-            onSettings = onOpenSettings,
         )
 
         if (pageDevices.isEmpty() || !signedIn && clientState.requiresSignIn) updateBanner?.invoke()
@@ -462,22 +460,21 @@ private fun DevicesHeader(
     current: Boolean,
     refreshEnabled: Boolean,
     onRefresh: () -> Unit,
-    onSettings: () -> Unit,
 ) {
     val contextColor = when {
         !signedIn -> MaterialTheme.colorScheme.outline
         current -> MeshTheme.colors.online
         else -> MeshTheme.colors.warning
     }
-    BoxWithConstraints(Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 12.dp, bottom = 8.dp)) {
+    BoxWithConstraints(Modifier.fillMaxWidth().padding(start = MeshTheme.spacing.lg, end = MeshTheme.spacing.sm, top = MeshTheme.spacing.xs, bottom = MeshTheme.spacing.xs)) {
         if (maxWidth < 420.dp && LocalDensity.current.fontScale >= 1.4f) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 DevicesHeading(subtitle, contextColor, Modifier.fillMaxWidth())
-                DeviceHeaderActions(refreshEnabled, onRefresh, onSettings, Modifier.align(Alignment.End))
+                DeviceHeaderActions(refreshEnabled, onRefresh, Modifier.align(Alignment.End))
             }
         } else Row(verticalAlignment = Alignment.CenterVertically) {
             DevicesHeading(subtitle, contextColor, Modifier.weight(1f))
-            DeviceHeaderActions(refreshEnabled, onRefresh, onSettings)
+            DeviceHeaderActions(refreshEnabled, onRefresh)
         }
     }
 }
@@ -485,7 +482,7 @@ private fun DevicesHeader(
 @Composable
 private fun DevicesHeading(subtitle: String, contextColor: androidx.compose.ui.graphics.Color, modifier: Modifier) {
     Column(modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(stringResource(R.string.devices_title), style = MaterialTheme.typography.headlineMedium)
+        Text(stringResource(R.string.devices_title), style = MaterialTheme.typography.titleLarge)
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             Box(Modifier.size(8.dp).clip(CircleShape).background(contextColor))
             Text(subtitle, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -494,13 +491,10 @@ private fun DevicesHeading(subtitle: String, contextColor: androidx.compose.ui.g
 }
 
 @Composable
-private fun DeviceHeaderActions(refreshEnabled: Boolean, onRefresh: () -> Unit, onSettings: () -> Unit, modifier: Modifier = Modifier) {
+private fun DeviceHeaderActions(refreshEnabled: Boolean, onRefresh: () -> Unit, modifier: Modifier = Modifier) {
     Row(modifier) {
         IconButton(onClick = onRefresh, enabled = refreshEnabled, modifier = Modifier.size(48.dp)) {
             Icon(Icons.Outlined.Refresh, contentDescription = stringResource(R.string.devices_action_refresh))
-        }
-        IconButton(onClick = onSettings, modifier = Modifier.size(48.dp)) {
-            Icon(Icons.Outlined.Settings, contentDescription = stringResource(R.string.devices_action_settings))
         }
     }
 }
@@ -706,31 +700,14 @@ private fun DeviceRow(
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
-                    Row(
-                        modifier = Modifier.padding(top = 2.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Box(
-                            Modifier
-                                .size(6.dp)
-                                .clip(CircleShape)
-                                .background(statusColor),
-                        )
-                        Spacer(Modifier.width(5.dp))
-                        Text(
-                            text = status,
-                            style = MaterialTheme.typography.labelMedium,
-                            color = statusColor,
-                        )
-                    }
-                    if (os.isNotEmpty()) {
-                        Text(
-                            text = os,
-                            modifier = Modifier.padding(top = 2.dp),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
+                    Text(
+                        text = listOf(status, os).filter { it.isNotEmpty() }.joinToString(" · "),
+                        modifier = Modifier.padding(top = MeshTheme.spacing.xs),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                     if (device.ipAddress.isNotBlank()) {
                         Text(
                             text = device.ipAddress,

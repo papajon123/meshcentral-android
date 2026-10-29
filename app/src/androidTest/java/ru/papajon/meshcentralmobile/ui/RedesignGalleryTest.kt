@@ -31,6 +31,7 @@ import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.core.app.ActivityScenario
 import androidx.test.platform.app.InstrumentationRegistry
 import java.io.File
@@ -160,8 +161,7 @@ class RedesignGalleryTest {
         disposeFixtures()
     }
 
-    @Test fun rendersEveryReachableProductionScreenIntoPngs() {
-        clearPreviousOutputs()
+    private fun launchGallery() {
         scenario = ActivityScenario.launch(ComponentActivity::class.java).also { launched ->
             launched.onActivity {
                 activity = it
@@ -175,6 +175,33 @@ class RedesignGalleryTest {
                 it.setContent { GalleryContent() }
             }
         }
+    }
+
+    /** Scoped acceptance for quick unlock; unrelated session sheets retain their own gallery. */
+    @Test fun rendersQuickUnlockAndHomeIntoPngs() {
+        clearPreviousOutputs()
+        launchGallery()
+        show(Screen.LockEmpty)
+        requireVisible("0", scroll = true)
+        capture(Screen.LockEmpty)
+        show(Screen.LockError)
+        typePin("6042")
+        waitForText(string(R.string.lock_invalid_pin))
+        requireVisible(string(R.string.lock_invalid_pin), scroll = true)
+        capture(Screen.LockError)
+        show(Screen.DevicesLoaded)
+        requireVisible("Build server", scroll = true)
+        capture(Screen.DevicesLoaded)
+        show(Screen.Settings)
+        compose.onNodeWithTag("lock-timeout-row").performScrollTo().assertIsDisplayed()
+        capture(Screen.Settings)
+        assertEquals(4, captures.size)
+        writeManifest()
+    }
+
+    @Test fun rendersEveryReachableProductionScreenIntoPngs() {
+        clearPreviousOutputs()
+        launchGallery()
 
         // 1. Onboarding (introduction plus the production server form).
         show(Screen.Onboarding)
@@ -217,14 +244,13 @@ class RedesignGalleryTest {
         show(Screen.LockEmpty)
         requireVisible(string(R.string.lock_title))
         requireVisible(string(R.string.lock_subtitle))
-        requireVisible(string(R.string.lock_action_unlock), scroll = true)
+        requireVisible("0", scroll = true)
         capture(Screen.LockEmpty)
 
         // 6. Lock screen after a synthetic rejected PIN callback.
         submittedPins.clear()
         show(Screen.LockError)
         typePin("6042")
-        clickText(string(R.string.lock_action_unlock), scroll = true)
         waitForText(string(R.string.lock_invalid_pin))
         requireVisible(string(R.string.lock_invalid_pin), scroll = true)
         compose.runOnIdle { assertEquals("6042", submittedPins.last()) }
@@ -343,6 +369,7 @@ class RedesignGalleryTest {
 
                             Screen.LockEmpty, Screen.LockError -> LockScreen(
                                 biometricEnabled = false,
+                                pinLength = 4,
                                 onPinSubmit = { pin -> submittedPins += pin; false },
                                 onBiometricUnlockRequested = {},
                             )

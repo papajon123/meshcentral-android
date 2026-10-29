@@ -70,7 +70,7 @@ object BackupCodec {
 
     private val PROFILE_ID = Regex("[A-Za-z0-9_-]{1,64}")
     private val PIN = Regex("[0-9a-f]{64}")
-    private val LOCK_TIMEOUTS = setOf(15L, 60L, 300L)
+    private val LOCK_TIMEOUTS = ru.papajon.meshcentralmobile.settings.AppLockTimeout.range
     private val THEME_MODES = setOf("System", "Light", "Dark")
 
     private val ROOT_FIELDS = setOf("format", "version", "profiles", "preferences", "extensions")

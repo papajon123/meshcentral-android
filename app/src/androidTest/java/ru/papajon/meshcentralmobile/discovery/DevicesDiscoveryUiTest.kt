@@ -31,6 +31,14 @@ class DevicesDiscoveryUiTest {
     @get:Rule
     val compose = createAndroidComposeRule<ComponentActivity>()
 
+    @Test fun headerDoesNotRepeatServerOrSettingsNavigation() {
+        showDevices(listOf(device("one", "Alpha")))
+        compose.onNodeWithText("server.example", substring = true).assertDoesNotExist()
+        compose.onNodeWithContentDescription(text(R.string.devices_action_settings)).assertDoesNotExist()
+        compose.onNodeWithContentDescription(text(R.string.devices_action_refresh)).assertIsDisplayed()
+        compose.onNodeWithText(compose.activity.getString(R.string.devices_subtitle_counts, 1, 1)).assertIsDisplayed()
+    }
+
     @Test
     fun searchWithoutResultsHasItsOwnMessageAndClearRestoresTheList() {
         showDevices(listOf(device("one", "Alpha")))

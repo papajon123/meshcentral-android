@@ -1,0 +1,1 @@
+Automatic unlock after a complete 4–12 digit PIN. Biometrics open automatically; cancel to use PIN. Compact computer list without repeated server/settings controls. Custom app-lock delay in seconds; 0 locks immediately after leaving the app. Existing PINs and settings are preserved.

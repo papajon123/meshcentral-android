@@ -88,7 +88,6 @@ class LauncherLockTest {
             }
             capture("integration-lock.png")
             listOf("1", "3", "5", "7").forEach { compose.onNodeWithText(it).performClick() }
-            compose.onNodeWithText(context.getString(R.string.lock_action_unlock)).performClick()
             compose.waitUntil(10_000) { workspace.selectedDeviceId == node }
             compose.runOnIdle { assertNull(workspace.launcherDestination) }
             activity.onActivity { opened ->

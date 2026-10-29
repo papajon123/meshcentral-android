@@ -168,6 +168,7 @@ class SettingsRepository(context: Context, private val preferencesName: String =
     }
 
     fun updateLockTimeoutSeconds(seconds: Long) {
+        require(seconds in AppLockTimeout.range)
         prefs.edit().putLong(KEY_LOCK_TIMEOUT_SECONDS, seconds).apply()
         settingsState.value = loadSettings()
     }

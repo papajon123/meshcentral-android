@@ -111,11 +111,17 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
         val payload = JSONObject()
             .put("salt", salt.encodeBase64())
             .put("hash", hash.encodeBase64())
+            .put("length", pin.length)
             .toString()
         putEncrypted(KEY_PIN, payload)
     }
 
     fun hasPin(): Boolean = prefs.contains(KEY_PIN)
+
+    /** Kept inside the encrypted record; null means a pre-auto-submit PIN. */
+    fun pinLength(): Int? = getEncrypted(KEY_PIN)?.let { payload ->
+        JSONObject(payload).optInt("length").takeIf { it in 4..12 }
+    }
 
     fun verifyPin(pin: String): Boolean {
         val payload = getEncrypted(KEY_PIN) ?: return false
@@ -123,7 +129,12 @@ class SecureVault(context: Context, private val credentialNamespace: String? = n
         val salt = json.getString("salt").decodeBase64()
         val expectedHash = json.getString("hash").decodeBase64()
         val actualHash = hashPin(pin, salt)
-        return expectedHash.contentEquals(actualHash)
+        val matches = java.security.MessageDigest.isEqual(expectedHash, actualHash)
+        // Never infer a legacy PIN's length from a failed candidate or change its hash/salt.
+        if (matches && !json.has("length") && !readOnly) {
+            putEncrypted(KEY_PIN, json.put("length", pin.length).toString())
+        }
+        return matches
     }
 
     fun clearPin() {

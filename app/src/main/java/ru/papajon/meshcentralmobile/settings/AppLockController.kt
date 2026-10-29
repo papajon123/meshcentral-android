@@ -109,6 +109,19 @@ class AppLockController(
         return unlocked
     }
 
+    suspend fun unlockWithPinAsync(pin: String): Boolean {
+        val unlocked = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Default) {
+            secureVault.verifyPin(pin)
+        }
+        // withContext checks cancellation before returning to the UI thread. A disposed lock
+        // screen cannot accept a slow result after navigation/backgrounding.
+        if (unlocked && hasInteractiveWindow) {
+            unlock()
+            return true
+        }
+        return false
+    }
+
     fun unlockAfterBiometric() {
         unlock()
     }

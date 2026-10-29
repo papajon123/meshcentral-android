@@ -95,6 +95,19 @@ class WidgetGateUiTest {
         }
         vault = SecureVault(context)
         appLock = AppLockController(settings, vault)
+        // This fixture hosts the app in ComponentActivity. Mirror MainActivity's window registry
+        // so asynchronous PIN results have the same foreground guard as the production host.
+        withContext(Dispatchers.Main) {
+            val window = compose.activity
+            window.lifecycle.addObserver(androidx.lifecycle.LifecycleEventObserver { _, event ->
+                when (event) {
+                    Lifecycle.Event.ON_START -> appLock.onWindowStarted(window, false)
+                    Lifecycle.Event.ON_STOP -> appLock.onWindowStopped(window)
+                    else -> Unit
+                }
+            })
+            if (window.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) appLock.onWindowStarted(window, false)
+        }
     }
 
     @After
@@ -192,7 +205,6 @@ class WidgetGateUiTest {
 
         // 4. Only the unlocked production effect, with the current authenticated state, clears it.
         listOf("1", "3", "5", "7").forEach { compose.onNodeWithText(it).performClick() }
-        compose.onNodeWithText(context.getString(R.string.lock_action_unlock)).performClick()
         compose.waitUntil(15_000) { !gate.getBoolean("$id.blocked", false) }
         compose.runOnIdle {
             assertFalse(appLock.isLocked)

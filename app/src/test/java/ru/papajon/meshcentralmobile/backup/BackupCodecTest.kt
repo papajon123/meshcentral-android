@@ -91,6 +91,22 @@ class BackupCodecTest {
         assertEquals(backup, decoded)
     }
 
+    @Test fun customLockTimeoutsSurviveBackupAndRestore() {
+        listOf(0L, 45L, 90L, 86_400L).forEach { seconds ->
+            val backup = fullBackup().copy(preferences = fullBackup().preferences.copy(lockTimeoutSeconds = seconds))
+            assertEquals(backup, BackupCodec.decode(BackupCodec.encode(backup, includeLoginKeys = true), allowLoginKeys = true))
+        }
+    }
+
+    @Test fun invalidLockTimeoutsAreRejectedInBothDirections() {
+        listOf(-1L, 86_401L, Long.MAX_VALUE).forEach { seconds ->
+            val backup = fullBackup().copy(preferences = fullBackup().preferences.copy(lockTimeoutSeconds = seconds))
+            assertFailure(BackupFailureReason.Corrupt) { BackupCodec.encode(backup) }
+            val json = validJson().apply { getJSONObject("preferences").put("lockTimeoutSeconds", seconds) }
+            assertFailure(BackupFailureReason.Corrupt) { decode(json) }
+        }
+    }
+
     @Test
     fun defaultExportOmitsLoginKeyAndDecodeRejectsIt() {
         val withoutKeys = BackupCodec.encode(fullBackup())

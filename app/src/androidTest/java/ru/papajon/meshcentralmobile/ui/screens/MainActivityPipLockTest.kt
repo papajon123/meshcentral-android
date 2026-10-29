@@ -111,20 +111,9 @@ class MainActivityPipLockTest {
         if (expired) {
             compose.onNodeWithText(context.getString(R.string.lock_message_locked)).assertIsDisplayed()
             "1234".forEach { compose.onNodeWithText(it.toString(), useUnmergedTree = true).performClick() }
-            // On a short window the keypad scrolls; the action can start below the visible area.
-            compose.onNodeWithText(context.getString(R.string.lock_action_unlock)).performScrollTo().performClick()
-            // The relay input gate follows the unlock through recomposition, not synchronously.
-            var state = ""
-            try {
-                compose.waitUntil(5_000) {
-                    var settled = false
-                    compose.runOnUiThread {
-                        state = "locked=${controller().isLocked} suppressed=${suppressed()}"
-                        settled = !controller().isLocked && !suppressed()
-                    }
-                    settled
-                }
-            } catch (failure: Throwable) { throw AssertionError("PIN unlock must resume relay input: $state", failure) }
+            compose.waitUntil(10_000) { !controller().isLocked }
+            compose.waitForIdle()
+            compose.runOnUiThread { assertFalse(controller().isLocked); assertFalse(suppressed()) }
         }
     }
 
