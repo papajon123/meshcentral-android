@@ -52,6 +52,7 @@ class PlatformNavigationTest {
     private val instrumentation = InstrumentationRegistry.getInstrumentation()
     private val context get() = instrumentation.targetContext
     private val server = MockWebServer()
+    @Volatile private var displayPacket = "000b000e0003ffff00010002ffff"
     private var scenario: ActivityScenario<MainActivity>? = null
     private lateinit var workspace: ConnectionWorkspace
     private lateinit var settings: SettingsRepository
@@ -71,7 +72,7 @@ class PlatformNavigationTest {
                             // Like MeshCentral, wait for the viewer protocol before streaming KVM.
                             if (text == "2") {
                                 webSocket.send("0007000803200258".decodeHex()) // 800x600
-                                webSocket.send("000b000e0003ffff00010002ffff".decodeHex()) // two monitors + all
+                                webSocket.send(displayPacket.decodeHex()) // advertised physical monitors and All
                             }
                         }
                         override fun onClosing(webSocket: WebSocket, code: Int, reason: String) { webSocket.close(1000, null) }
@@ -169,7 +170,7 @@ class PlatformNavigationTest {
             is Set<*> -> edit.putStringSet(key, value.filterIsInstance<String>().toSet())
         } }
         check(edit.commit()) { "Could not restore test preferences" }
-        assertTrue("Test preferences were not restored: " + (prefs.all.keys + values.keys).filter { prefs.all[it] != values[it] }.map { it + "=" + prefs.all[it] + " vs " + values[it] }, prefs.all == values)
+        assertTrue("Test preferences were not restored: " + (prefs.all.keys + values.keys).filter { prefs.all[it] != values[it] }, prefs.all == values)
     }
 
     @Test fun settingsSheetAndWebViewReturnToTheirParent() {
@@ -220,12 +221,12 @@ class PlatformNavigationTest {
         compose.onNodeWithContentDescription(context.getString(R.string.devices_action_connect)).performClick()
         compose.waitUntil(5_000) { workspace.sessions.any { it.tab == DeviceTab.Desktop } }
         snapshot("desktop")
-        compose.onNodeWithText(context.getString(R.string.session_dock_more)).performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.session_dock_more)).performClick()
         compose.onNodeWithText(context.getString(R.string.session_options_fullscreen)).performScrollTo().performClick()
         assertTrue("The fullscreen option must activate fullscreen before Back is tested", fullscreenRequested())
         snapshot("desktop-options")
         back() // Dismiss the options sheet before leaving fullscreen or minimizing.
-        compose.onNodeWithText(context.getString(R.string.session_dock_more)).assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.session_dock_more)).assertIsDisplayed()
         snapshot("desktop-back-sheet")
         // Transient bars can be visible while fullscreen is still enabled. Observe the screen
         // mode without opening another dialog (which resets immersive gesture handling).
@@ -233,7 +234,7 @@ class PlatformNavigationTest {
         repeat(2) { if (fullscreenRequested()) back() }
         assertFalse("Back must leave fullscreen", fullscreenRequested())
         compose.waitUntil(5_000) { statusBarVisible() }
-        compose.onNodeWithText(context.getString(R.string.session_dock_more)).assertIsDisplayed()
+        compose.onNodeWithContentDescription(context.getString(R.string.session_dock_more)).assertIsDisplayed()
         snapshot("desktop-back-fullscreen")
         back()
         awaitAfterBack(5_000) { workspace.selectedDeviceId == null }
@@ -303,19 +304,20 @@ class PlatformNavigationTest {
     }
 
     @Test fun monitorMenuBackKeepsTheDesktopOpen() {
+        displayPacket = "000b00100004ffff000100020003ffff" // three monitors + All
         openConnectedDesktop()
-        compose.onNodeWithText(context.getString(R.string.session_screen_short, 1)).performClick()
-        compose.onNodeWithText(context.getString(R.string.session_screen_short, 2)).assertIsDisplayed()
+        compose.onNodeWithTag("session-display-menu").performClick()
+        compose.onNodeWithTag("session-display-choice-2").assertIsDisplayed()
         back()
-        compose.onNodeWithText(context.getString(R.string.session_screen_short, 2)).assertDoesNotExist()
-        compose.onNodeWithText(context.getString(R.string.session_dock_more)).assertIsDisplayed()
+        compose.onNodeWithTag("session-display-choice-2").assertDoesNotExist()
+        compose.onNodeWithContentDescription(context.getString(R.string.session_dock_more)).assertIsDisplayed()
         compose.runOnIdle { assertEquals("node//navigation", workspace.selectedDeviceId) }
     }
 
     @Test fun backDeactivatesRemoteKeyboardBeforeMinimizing() {
         openConnectedDesktop()
         val session = workspace.selectedSession
-        compose.onNodeWithText(context.getString(R.string.session_dock_typing)).performClick()
+        compose.onNodeWithContentDescription(context.getString(R.string.session_dock_typing)).performClick()
         try {
             compose.waitUntil(15_000) { remoteFieldFocused() }
         } catch (failure: Throwable) {
@@ -333,7 +335,7 @@ class PlatformNavigationTest {
         compose.waitUntil(15_000) { !remoteFieldFocused() }
         // The IME's Back can hide the system keyboard and the field's focus while typing mode stays on;
         // then the app's own Back turns typing off first, still without leaving the desktop.
-        val typing = hasClickAction() and hasText(context.getString(R.string.session_dock_typing))
+        val typing = hasClickAction() and hasContentDescription(context.getString(R.string.session_dock_typing))
         if (SemanticsProperties.Selected.let { key -> compose.onNode(typing).fetchSemanticsNode().config.getOrElse(key) { false } }) back()
         compose.onNode(typing).assertIsNotSelected()
         snapshot("keyboard-off")

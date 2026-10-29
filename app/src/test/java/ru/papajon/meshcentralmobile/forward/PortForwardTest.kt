@@ -107,10 +107,7 @@ class PortForwardTest {
             val port = manager.states.value.single().localPort
             Socket("127.0.0.1", port).use { first ->
                 await { opened.size == 1 }
-                Socket("127.0.0.1", port).use { second ->
-                    second.soTimeout = 2000
-                    assertReset(second)
-                }
+                assertRejectedConnection { Socket("127.0.0.1", port) }
                 assertEquals(1, opened.size)
                 manager.stopAll()
                 first.soTimeout = 2000
@@ -118,6 +115,26 @@ class PortForwardTest {
                 assertEquals(1, closed.get())
                 assertFalse(manager.states.value.single().running)
             }
+        }
+    }
+
+    @Test fun rejectedConnectionCanResetDuringConnect() {
+        assertRejectedConnection { throw java.net.SocketException("Connection reset by peer") }
+    }
+
+    @Test fun rejectedConnectionDoesNotAcceptAnUnavailableListener() {
+        assertThrows(AssertionError::class.java) {
+            assertRejectedConnection { throw java.net.SocketException("Connection refused") }
+        }
+    }
+
+    private fun assertRejectedConnection(connect: () -> Socket) {
+        // SO_LINGER=0 rejection can reach Linux before connect() returns, or at the first read.
+        try {
+            connect().use { socket -> socket.soTimeout = 2000; assertReset(socket) }
+        } catch (error: java.net.SocketException) {
+            assertTrue("Expected TCP reset during connect, got ${error.javaClass.simpleName}",
+                error.message?.contains("reset", ignoreCase = true) == true)
         }
     }
 

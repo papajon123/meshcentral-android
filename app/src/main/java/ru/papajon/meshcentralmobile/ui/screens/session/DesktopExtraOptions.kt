@@ -26,7 +26,7 @@ internal fun DesktopExtraOptions(state: RemoteDesktopState, onScaling: (Int) -> 
                     label = { Text("${value * 100 / 1024}%") }, modifier = Modifier.testTag("desktop_scale_$value"))
             }
         }
-        Text(stringResource(R.string.desktop_stream_rate, state.framesPerSecond, state.bytesPerSecond),
+        Text(sessionStreamRate(state.framesPerSecond, state.bytesPerSecond),
             style = MaterialTheme.typography.bodySmall)
         HorizontalDivider()
         Text(stringResource(R.string.desktop_two_fingers), style = MaterialTheme.typography.titleSmall)

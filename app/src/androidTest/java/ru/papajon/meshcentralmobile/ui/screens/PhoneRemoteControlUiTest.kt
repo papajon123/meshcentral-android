@@ -93,7 +93,7 @@ class PhoneRemoteControlUiTest {
         } }
         compose.onNodeWithTag("phone_control_panel").assertDoesNotExist()
         for (label in listOf(R.string.session_dock_typing, R.string.session_dock_keys, R.string.session_dock_clipboard)) {
-            compose.onNodeWithText(compose.activity.getString(label)).assertIsDisplayed()
+            compose.onNodeWithContentDescription(compose.activity.getString(label)).assertIsDisplayed()
         }
     }
 

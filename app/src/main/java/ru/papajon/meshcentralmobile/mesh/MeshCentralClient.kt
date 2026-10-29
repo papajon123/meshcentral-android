@@ -641,7 +641,7 @@ class MeshCentralClient(
         authCookie = null
         relayCookie = null
         relay.updateRelayCredentials(null, null)
-        transportSockets.toList().forEach { it.cancel() }
+        concurrentSnapshot(transportSockets).forEach { it.cancel() }
         transportSockets.clear()
         _clientState.update {
             it.copy(connectionState = ConnectionState.Offline, userId = null,
@@ -651,7 +651,7 @@ class MeshCentralClient(
 
     private fun replaceTlsTransport() {
         val previous = okHttpClient
-        transportSockets.toList().forEach { it.cancel() }
+        concurrentSnapshot(transportSockets).forEach { it.cancel() }
         transportSockets.clear()
         tlsTransport = createTlsTransport()
         disposeTransport(previous)
@@ -1002,7 +1002,7 @@ class MeshCentralClient(
 
     fun onNetworkLost() {
         networkAvailable = false
-        chats.toList().forEach { it.onNetworkLost() }
+        concurrentSnapshot(chats).forEach { it.onNetworkLost() }
         relay.onNetworkLost()
         if (manualClose || authRejected || certificateRejected || controlRetry.exhausted || sessionUsername == null) return
         val previous = controlSocket
@@ -1104,13 +1104,13 @@ class MeshCentralClient(
         controlConnected = false
         sessionGeneration.incrementAndGet()
         portForwards.stopAll()
-        additionalRelays.toList().forEach { it.close() }
+        concurrentSnapshot(additionalRelays).forEach { it.close() }
         chatCookieGeneration = -1L
     }
 
     private fun closeChats() {
         chatIdentityGeneration.incrementAndGet()
-        chats.toList().forEach { it.close() }
+        concurrentSnapshot(chats).forEach { it.close() }
     }
 
     /** Messenger authenticates with authcookie.cookie (userid/domainid), not the agent rcookie. */
@@ -1247,7 +1247,7 @@ class MeshCentralClient(
         phoneDesktopSyncJob.cancel()
         relay.disconnect()
         disconnectControl(manual = true)
-        transportSockets.toList().forEach { it.cancel() }
+        concurrentSnapshot(transportSockets).forEach { it.cancel() }
         transportSockets.clear()
         disposeTransport(okHttpClient)
     }

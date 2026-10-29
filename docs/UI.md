@@ -75,7 +75,9 @@ SSH and SFTP authentication appears inline where the server requests it. The pas
 
 ## Switching remote displays
 
-The dock has a display button between the pointer-mode button and the keyboard button. It shows the current display (`All displays`, `Display 1`, `Display 2`, … in English; labels follow the selected locale) and one tap moves to the next display in the agent's list, wrapping around. The full list with sizes is in **Session → Displays**.
+The upper bar shows direct screen icons for one or two physical monitors and the protocol's All selection. Three or more physical monitors use a menu. Physical IDs are preserved; the All sentinel does not count as a monitor. Switching is disabled until the relay handshake completes.
+
+A green/amber/red connection indicator opens readable status and the actual problem. Long diagnostics, frame rate and keyboard hints live in those details; the header keeps one-line identity and Latin traffic units. The lower toolbar is a fixed-height row of 48 dp icon controls. Narrow windows scroll horizontally; captions and mode changes cannot make it grow. Selected modes remain accessible.
 
 The switch happens on the agent, so the phone receives one display at a time and keeps the whole canvas for it. A split-canvas experiment was rejected: on a phone the halves are small, zoom in one pane bleeds into the other, and a switching button is the clearer interaction.
 

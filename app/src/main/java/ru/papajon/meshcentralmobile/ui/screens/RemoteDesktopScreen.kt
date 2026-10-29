@@ -7,6 +7,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.activity.compose.BackHandler
@@ -129,7 +132,7 @@ import ru.papajon.meshcentralmobile.ui.screens.session.MouseModeSheet
 import ru.papajon.meshcentralmobile.ui.screens.session.NativeKeyboardCapture
 import ru.papajon.meshcentralmobile.ui.screens.session.SessionOptionsSheet
 import ru.papajon.meshcentralmobile.ui.screens.session.SessionConnectionControls
-import ru.papajon.meshcentralmobile.ui.screens.session.SessionConnectionStatus
+import ru.papajon.meshcentralmobile.ui.screens.session.SessionTopBar
 import ru.papajon.meshcentralmobile.ui.screens.session.SessionRefreshAction
 import ru.papajon.meshcentralmobile.ui.screens.session.TextSheet
 import ru.papajon.meshcentralmobile.ui.screens.session.PhoneControlPanel
@@ -263,6 +266,9 @@ fun RemoteDesktopScreen(
         }
     }
 
+    val debugDetails = if (debugVisible && ru.papajon.meshcentralmobile.BuildConfig.DEBUG)
+        sessionDebugText(canvasSize, desktopState, zoom, panX, panY, lastGesture) else null
+
     Box(
         modifier = modifier
             .testTag(if (fullscreen) "remote-desktop-fullscreen" else "remote-desktop")
@@ -271,7 +277,7 @@ fun RemoteDesktopScreen(
     ) {
         if (device.isAndroidAgent) {
             Column(Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing)) {
-                if (chromeVisible) SessionTopBar(desktopState, canvasSize, debugVisible,
+                if (chromeVisible) SessionTopBar(desktopState, debugDetails = debugDetails, onMinimize = onMinimize,
                     onBack = { if (onCloseSession != null) onCloseSession() else { meshClient.disconnectDesktop(); onBrowseDevices() } },
                     onSelectDisplay = meshClient::selectRemoteDisplay,
                     onRefresh = { meshClient.requestRemoteRefresh() }, onReconnect = meshClient::reconnectDesktop,
@@ -342,8 +348,8 @@ fun RemoteDesktopScreen(
             ) {
                 SessionTopBar(
                     state = desktopState,
-                    canvasSize = canvasSize,
-                    debugVisible = debugVisible,
+                    debugDetails = debugDetails,
+                    onMinimize = onMinimize,
                     onBack = {
                         if (onCloseSession != null) onCloseSession() else { meshClient.disconnectDesktop(); onBrowseDevices() }
                     },
@@ -352,9 +358,6 @@ fun RemoteDesktopScreen(
                     onReconnect = meshClient::reconnectDesktop,
                     onHideChrome = { chromeVisible = false },
                 )
-            }
-            if (chromeVisible && onMinimize != null) TextButton(onClick = onMinimize) {
-                Text(stringResource(R.string.workspace_minimize))
             }
 
             if (!chromeVisible) Row(
@@ -383,16 +386,6 @@ fun RemoteDesktopScreen(
             modifier = Modifier.align(Alignment.BottomCenter),
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                if (debugVisible) {
-                    SessionDebugLine(
-                        canvasSize = canvasSize,
-                        state = desktopState,
-                        zoom = zoom,
-                        panX = panX,
-                        panY = panY,
-                        lastGesture = lastGesture,
-                    )
-                }
                 SessionDock(
                     state = desktopState,
                     mode = mode,
@@ -534,104 +527,6 @@ private fun currentRemoteCentre(state: RemoteDesktopState): Pair<Int, Int> {    
     return width / 2 to height / 2
 }
 
-@Composable
-private fun SessionTopBar(
-    state: RemoteDesktopState,
-    canvasSize: IntSize,
-    debugVisible: Boolean,
-    onBack: () -> Unit,
-    onSelectDisplay: (Int) -> Unit,
-    onRefresh: () -> Unit,
-    onReconnect: () -> Unit,
-    onHideChrome: () -> Unit,
-) {
-    var displayMenuExpanded by remember { mutableStateOf(false) }
-    Surface(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 6.dp),
-        shape = MaterialTheme.shapes.large,
-        color = MeshTheme.colors.glass,
-        tonalElevation = 2.dp,
-    ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 2.dp, vertical = 2.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-            IconButton(onClick = onBack) {
-                Icon(Icons.AutoMirrored.Outlined.ArrowBack, contentDescription = stringResource(R.string.session_action_end))
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = state.device?.name ?: stringResource(R.string.session_title_fallback),
-                    style = MaterialTheme.typography.titleSmall,
-                    maxLines = 1,
-                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis,
-                )
-                SessionConnectionStatus(state)
-                Text(stringResource(R.string.desktop_stream_rate, state.framesPerSecond, state.bytesPerSecond),
-                    style = MaterialTheme.typography.labelSmall)
-                if (state.device?.isAndroidAgent != true &&
-                    androidx.compose.ui.platform.LocalConfiguration.current.keyboard == android.content.res.Configuration.KEYBOARD_QWERTY) {
-                    Text(stringResource(R.string.desktop_keyboard_release), style = MaterialTheme.typography.labelSmall)
-                }
-            }
-            if (state.displays.size > 1) {
-                Box {
-                    TextButton(onClick = { displayMenuExpanded = true }) {
-                        Text(screenSwitchLabel(state), maxLines = 1)
-                    }
-                    DropdownMenu(
-                        expanded = displayMenuExpanded,
-                        onDismissRequest = { displayMenuExpanded = false },
-                    ) {
-                        state.displays.forEach { id ->
-                            DropdownMenuItem(
-                                text = {
-                                    Text(if (id == ALL_DISPLAYS) stringResource(R.string.session_screen_all)
-                                        else stringResource(R.string.session_screen_short, id))
-                                },
-                                onClick = {
-                                    displayMenuExpanded = false
-                                    onSelectDisplay(id)
-                                },
-                            )
-                        }
-                    }
-                }
-            }
-            SessionRefreshAction(state, onRefresh, onReconnect)
-            IconButton(onClick = onHideChrome) {
-                Icon(Icons.Outlined.ArrowDropUp, contentDescription = stringResource(R.string.session_action_hide_controls))
-            }
-            }
-            if (ru.papajon.meshcentralmobile.BuildConfig.DEBUG && debugVisible) {
-                val viewport = RemoteViewport(
-                    canvasWidth = canvasSize.width,
-                    canvasHeight = canvasSize.height,
-                    remoteWidth = state.remoteWidth,
-                    remoteHeight = state.remoteHeight,
-                )
-                Text(
-                    text = stringResource(
-                        R.string.session_debug_canvas,
-                        canvasSize.width,
-                        canvasSize.height,
-                        viewport.drawnWidth.toInt(),
-                        viewport.drawnHeight.toInt(),
-                        viewport.left.toInt(),
-                        viewport.top.toInt(),
-                    ),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(start = 14.dp, bottom = 4.dp),
-                )
-            }
-        }
-    }
-}
-
 /**
  * Gesture guide shown once per session: the touch model is not guessable, and a user who cannot move
  * around the desktop thinks the app is broken.
@@ -703,15 +598,14 @@ private fun GuideRow(gesture: String, meaning: String) {
 
 /** Small text shown above the dock in debug builds with the live canvas geometry. */
 @Composable
-private fun SessionDebugLine(
+private fun sessionDebugText(
     canvasSize: IntSize,
     state: RemoteDesktopState,
     zoom: Float,
     panX: Float,
     panY: Float,
     lastGesture: String,
-) {
-    if (!ru.papajon.meshcentralmobile.BuildConfig.DEBUG) return
+): String {
     val viewport = RemoteViewport(
         canvasWidth = canvasSize.width,
         canvasHeight = canvasSize.height,
@@ -721,8 +615,7 @@ private fun SessionDebugLine(
         panX = panX,
         panY = panY,
     )
-    Text(
-        text = stringResource(
+    return stringResource(
             R.string.session_debug_line,
             canvasSize.width,
             canvasSize.height,
@@ -732,11 +625,7 @@ private fun SessionDebugLine(
             viewport.top.toInt(),
             (zoom * 100).toInt(),
             gestureLabel(lastGesture),
-        ),
-        style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        modifier = Modifier.padding(bottom = 4.dp),
-    )
+        )
 }
 
 /**
@@ -773,15 +662,20 @@ internal fun SessionDock(
     Surface(
         modifier = Modifier
             .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.systemBars)
-            .padding(horizontal = 8.dp, vertical = 6.dp),
+            .windowInsetsPadding(WindowInsets.systemBars.only(WindowInsetsSides.Bottom + WindowInsetsSides.Horizontal))
+            .padding(horizontal = 8.dp, vertical = 6.dp)
+            .testTag("session-dock"),
         shape = MaterialTheme.shapes.large,
         color = MeshTheme.colors.glass,
         tonalElevation = 2.dp,
     ) {
+        BoxWithConstraints(Modifier.fillMaxWidth()) {
+        val count = if (state.device?.isAndroidAgent == true) 2 else 6
+        val actionWidth = maxOf(48.dp, (maxWidth - 8.dp) / count)
         Row(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth().height(56.dp)
+                .horizontalScroll(rememberScrollState())
                 .padding(horizontal = 4.dp, vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -798,7 +692,7 @@ internal fun SessionDock(
                 enabled = true,
                 onClick = onModeClick,
                 highlighted = dragArmed,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.width(actionWidth),
             )
             DockAction(
                 Icons.Outlined.Keyboard,
@@ -806,38 +700,29 @@ internal fun SessionDock(
                 enabled,
                 onKeyboardToggle,
                 highlighted = keyboardActive,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.width(actionWidth),
             )
             DockAction(
                 Icons.Outlined.KeyboardAlt,
                 stringResource(R.string.session_dock_keys),
                 enabled,
                 onKeys,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.width(actionWidth),
             )
             DockAction(
                 Icons.Outlined.ContentPaste,
                 stringResource(R.string.session_dock_clipboard),
                 state.connectionState == ConnectionState.Connected,
                 onClipboard,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.width(actionWidth),
             )
             }
             DockAction(Icons.Outlined.MoreHoriz, stringResource(R.string.session_dock_more), true, onOptions,
-                modifier = Modifier.weight(1f))
+                modifier = Modifier.width(actionWidth))
             DockAction(Icons.Outlined.ArrowDropDown, stringResource(R.string.session_dock_hide), true, onHideDock,
-                modifier = Modifier.weight(1f))
+                modifier = Modifier.width(actionWidth))
         }
     }
-}
-
-/** Short label of the display the stream currently shows, used on the switching button. */
-@Composable
-private fun screenSwitchLabel(state: RemoteDesktopState): String {
-    val current = state.selectedDisplay
-    return when {
-        current == null || current == ALL_DISPLAYS -> stringResource(R.string.session_screen_all)
-        else -> stringResource(R.string.session_screen_short, current)
     }
 }
 
@@ -857,34 +742,22 @@ private fun DockAction(
         label = "dock-alpha",
     )
     val tint = if (highlighted) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onSurface
-    Column(
+    Box(
         modifier = modifier
             .clip(MaterialTheme.shapes.small)
             .background(if (highlighted) MaterialTheme.colorScheme.primaryContainer else Color.Transparent)
-            .heightIn(min = 56.dp)
+            .height(48.dp)
             .clickable(role = Role.Button, interactionSource = interaction, indication = LocalIndication.current, enabled = enabled, onClick = onClick)
             // The highlight is the only sign that typing or drag mode is on; expose it to accessibility.
             .semantics { selected = highlighted }
             .padding(horizontal = 2.dp, vertical = 6.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(2.dp),
+        contentAlignment = Alignment.Center,
     ) {
         Icon(
             imageVector = icon,
             contentDescription = label,
             tint = tint.copy(alpha = alpha),
             modifier = Modifier.size(20.dp),
-        )
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelSmall,
-            softWrap = true,
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-            color = if (highlighted) {
-                MaterialTheme.colorScheme.onPrimaryContainer
-            } else {
-                MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = alpha)
-            },
         )
     }
 }

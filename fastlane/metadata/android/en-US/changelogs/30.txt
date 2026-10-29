@@ -1,0 +1,1 @@
+Compact session controls, colour status with details, direct selection for up to two monitors, fixed-height lower toolbar and Latin traffic units. Includes automatic PIN/biometrics and custom lock time. Fixes release checks and a rare connection-close crash from the unpublished 0.9.5 candidate.

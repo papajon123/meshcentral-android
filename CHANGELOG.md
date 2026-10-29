@@ -1,4 +1,13 @@
-# 0.9.5 — 2026-10-29
+# 0.9.6 — 2026-10-29
+
+- Compact remote-session header with a tappable status indicator and problem details. Traffic uses Latin byte units; verbose diagnostics no longer expand the lower icon toolbar.
+- One-tap monitor selection for one or two physical monitors, with the existing menu for three or more.
+- Includes automatic PIN/biometrics and custom app-lock time from the unpublished 0.9.5 candidate.
+- Fix a concurrent-set teardown race and update the locale test that still expected the intentionally removed server-name duplicate.
+
+# 0.9.5 — 2026-10-29 (not published)
+
+This tag did not publish an APK: device checks found the obsolete duplicated-server assertion, and API 26 also exposed a concurrent transport teardown race. These are addressed in 0.9.6.
 
 - Unlock automatically after a complete 4–12 digit PIN, preserving existing PINs. Enabled biometrics open automatically and cancellation leaves PIN available.
 - Compact the computer list, remove repeated server/settings labels and retain the existing Material 3 theme.

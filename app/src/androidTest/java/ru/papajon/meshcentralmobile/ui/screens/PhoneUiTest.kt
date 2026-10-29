@@ -74,7 +74,7 @@ class PhoneUiTest {
         }
         compose.onNodeWithTag("phone_view_only").assertIsDisplayed()
         for (label in listOf(R.string.session_dock_typing, R.string.session_dock_keys, R.string.session_dock_clipboard)) {
-            compose.onNodeWithText(compose.activity.getString(label)).assertDoesNotExist()
+            compose.onNodeWithContentDescription(compose.activity.getString(label)).assertDoesNotExist()
         }
         screenshot("phone-view-only")
     }
