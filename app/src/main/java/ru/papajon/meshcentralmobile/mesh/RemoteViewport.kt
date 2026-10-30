@@ -53,6 +53,25 @@ data class RemoteViewport(
         return (left + remoteX * scaleValue) to (top + remoteY * scaleValue)
     }
 
+    /** Relative pointer motion keeps subpixel precision and reveals the pointer near the edges. */
+    fun moveTrackpad(x: Float, y: Float, dx: Float, dy: Float): TrackpadMotion {
+        if (!remoteValid || !canvasValid || !scale.isFinite() || scale <= 0f) {
+            return TrackpadMotion(x, y, panX, panY)
+        }
+        val nextX = (x + dx / scale).coerceIn(0f, (remoteWidth - 1).toFloat())
+        val nextY = (y + dy / scale).coerceIn(0f, (remoteHeight - 1).toFloat())
+        fun follow(position: Float, extent: Int, drawn: Float, pan: Float): Float {
+            val margin = extent * 0.1f
+            val correction = position.coerceIn(margin, extent - margin) - position
+            // Preserve manual free pan; following may reduce existing empty space but never enlarge it.
+            val limit = ((drawn - extent) / 2f).coerceAtLeast(0f)
+            return (pan + correction).coerceIn(minOf(-limit, pan), maxOf(limit, pan))
+        }
+        return TrackpadMotion(nextX, nextY,
+            follow(left + nextX * scale, canvasWidth, drawnWidth, panX),
+            follow(top + nextY * scale, canvasHeight, drawnHeight, panY))
+    }
+
     /**
      * Keeps the visible area inside the canvas when zoomed, and still allows a bounded free pan when
      * the whole framebuffer already fits.
@@ -127,3 +146,5 @@ data class RemoteViewport(
 }
 
 data class ZoomResult(val zoom: Float, val panX: Float, val panY: Float)
+
+data class TrackpadMotion(val x: Float, val y: Float, val panX: Float, val panY: Float)

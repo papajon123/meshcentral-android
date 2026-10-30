@@ -1,5 +1,13 @@
 # Validation
 
+## 0.9.8
+
+- `testDebugUnitTest lintDebug assembleDebug assembleDebugAndroidTest` passed: 877 JVM tests, no failures.
+- Focused instrumentation on API 35: 45 passed; API 26: 42 passed. Includes desktop inputs, Details, clipboard readback, text export through the activity-result/ContentResolver path, saved-file readback, cancellation, snapshot changes and stream-close errors.
+- The trackpad regression test failed before the fix (remote y stopped at 300 of 400), then passed including reverse movement and clicks at the cursor position. Geometry tests cover four edges, fractional motion, letterboxing and preservation of manual panning.
+- Reviewed screenshots of compact actions and text at 200% size. Translation checks passed for all 23 locales.
+- Physical phones, a live remote desktop and cloud document-provider interfaces were not tested for this candidate. Tests inject the document-picker result; they do not claim an end-to-end check of every file picker.
+
 ## 0.7.3
 
 [#10](https://github.com/papajon123/meshcentral-android/issues/10): on a server that requires a

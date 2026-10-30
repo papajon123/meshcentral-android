@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">คัดลอก</string>
+    <string name="device_info_save">บันทึกเป็นไฟล์</string>
+    <string name="device_info_saved">บันทึกข้อมูลอุปกรณ์แล้ว</string>
+    <string name="device_info_save_error">ไม่สามารถบันทึกข้อมูลอุปกรณ์ได้</string>
+    <string name="device_info_copy_error">ไม่สามารถคัดลอกข้อมูลอุปกรณ์ได้</string>
+</resources>

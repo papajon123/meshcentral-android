@@ -94,6 +94,35 @@ class DesktopPlusInputTest {
         }
     }
 
+    @Test fun trackpadFollowsCursorBeyondInitialVisibleArea() {
+        mode.value = RemoteControlMode.Trackpad
+        canvas()
+        repeat(4) {
+            compose.onNodeWithTag("desktop_canvas").performTouchInput {
+                swipe(Offset(200f, 100f), Offset(200f, 300f), 250)
+            }
+            compose.waitForIdle()
+        }
+        compose.runOnIdle {
+            val moves = sink.events.filter { it.startsWith("move:") }
+            assertTrue("cursor must reach remote bottom: $moves", moves.any { it.substringAfterLast(':').toInt() >= 390 })
+            assertTrue("viewport must follow cursor: pan=$pan", pan < -150f)
+            assertFalse(sink.events.any { it == "click" || it.startsWith("button:") })
+        }
+        compose.onNodeWithTag("desktop_canvas").performTouchInput { click(Offset(100f, 100f)) }
+        compose.runOnIdle { assertEquals(200 to 399, sink.clickPositions.last()) }
+        repeat(4) {
+            compose.onNodeWithTag("desktop_canvas").performTouchInput {
+                swipe(Offset(200f, 300f), Offset(200f, 100f), 250)
+            }
+            compose.waitForIdle()
+        }
+        compose.runOnIdle {
+            assertEquals("move:200:0", sink.events.last { it.startsWith("move:") })
+            assertTrue("viewport must follow back to top: pan=$pan", pan > 150f)
+        }
+    }
+
     @Test fun threeFingersScrollAllComputerModesWithoutClicksOrZoom() {
         canvas()
         for (value in RemoteControlMode.entries) {
@@ -429,10 +458,11 @@ class DesktopPlusInputTest {
 
 internal class DesktopRecordingSink : NativeRemoteInputSink {
     val events = CopyOnWriteArrayList<String>()
+    val clickPositions = CopyOnWriteArrayList<Pair<Int, Int>>()
     private fun record(value: String): Boolean { events += value; return true }
     override fun sendMouseMove(x: Int, y: Int) = record("move:$x:$y")
     override fun sendMouseButton(x: Int, y: Int, button: MouseButton, down: Boolean) = record("button:$button:$down")
-    override fun sendMouseClick(x: Int, y: Int, button: MouseButton) = record("click")
+    override fun sendMouseClick(x: Int, y: Int, button: MouseButton): Boolean { clickPositions += x to y; return record("click") }
     override fun sendMouseDoubleClick(x: Int, y: Int) = record("double")
     override fun sendMouseScroll(x: Int, y: Int, delta: Float) = record("wheel:$delta")
     override fun sendRemoteKey(remoteKeyCode: Int, down: Boolean, extended: Boolean) = record("key:$remoteKeyCode:$down")

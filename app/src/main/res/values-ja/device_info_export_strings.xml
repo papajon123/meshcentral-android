@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">コピー</string>
+    <string name="device_info_save">ファイルに保存</string>
+    <string name="device_info_saved">デバイス情報を保存しました。</string>
+    <string name="device_info_save_error">デバイス情報を保存できませんでした。</string>
+    <string name="device_info_copy_error">デバイス情報をコピーできませんでした。</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">نسخ</string>
+    <string name="device_info_save">حفظ في ملف</string>
+    <string name="device_info_saved">تم حفظ معلومات الجهاز.</string>
+    <string name="device_info_save_error">تعذّر حفظ معلومات الجهاز.</string>
+    <string name="device_info_copy_error">تعذّر نسخ معلومات الجهاز.</string>
+</resources>

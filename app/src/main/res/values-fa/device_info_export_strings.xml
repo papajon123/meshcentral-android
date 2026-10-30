@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">کپی</string>
+    <string name="device_info_save">ذخیره در فایل</string>
+    <string name="device_info_saved">اطلاعات دستگاه ذخیره شد.</string>
+    <string name="device_info_save_error">اطلاعات دستگاه ذخیره نشد.</string>
+    <string name="device_info_copy_error">اطلاعات دستگاه کپی نشد.</string>
+</resources>

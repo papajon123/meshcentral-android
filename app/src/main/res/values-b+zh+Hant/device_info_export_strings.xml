@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">複製</string>
+    <string name="device_info_save">儲存到檔案</string>
+    <string name="device_info_saved">裝置資訊已儲存。</string>
+    <string name="device_info_save_error">無法儲存裝置資訊。</string>
+    <string name="device_info_copy_error">無法複製裝置資訊。</string>
+</resources>

@@ -256,7 +256,7 @@ class DeviceInspectorScreenTest {
         val context = compose.activity.createConfigurationContext(configuration)
         val message = context.getString(R.string.companion_job_error_server_restart)
         compose.setContent {
-            CompositionLocalProvider(LocalContext provides context, LocalConfiguration provides configuration) {
+            CompositionLocalProvider(LocalContext provides context, LocalConfiguration provides configuration, androidx.activity.compose.LocalActivityResultRegistryOwner provides compose.activity) {
                 MeshCentralMobileTheme(darkTheme = dark) {
                     DeviceInspectorScreen(
                         snapshot, listOf(spooler), listOf(browser), false, message, emptySet(), false,

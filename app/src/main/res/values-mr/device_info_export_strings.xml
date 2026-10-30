@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">कॉपी करा</string>
+    <string name="device_info_save">फाइलमध्ये जतन करा</string>
+    <string name="device_info_saved">डिव्हाइस माहिती जतन केली.</string>
+    <string name="device_info_save_error">डिव्हाइस माहिती जतन करता आली नाही.</string>
+    <string name="device_info_copy_error">डिव्हाइस माहिती कॉपी करता आली नाही.</string>
+</resources>

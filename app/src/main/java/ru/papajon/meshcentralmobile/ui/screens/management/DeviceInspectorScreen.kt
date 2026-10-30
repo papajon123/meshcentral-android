@@ -104,6 +104,9 @@ object DeviceInspectorTestTags {
     const val SearchServices = "device_inspector_search_services"
     const val SearchProcesses = "device_inspector_search_processes"
     const val NoSearchResults = "device_inspector_no_search_results"
+    const val DeviceInfoActions = "device_info_actions"
+    const val DeviceInfoCopy = "device_info_copy"
+    const val DeviceInfoSave = "device_info_save"
 
     fun tab(tab: DeviceInspectorTab) = "device_inspector_tab_${tab.name.lowercase()}"
     fun power(action: DevicePowerAction) = "device_inspector_power_${action.name.lowercase()}"
@@ -624,6 +627,7 @@ private fun DetailsTab(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
+        item(key = "device_info_actions") { DeviceInfoActions(snapshot) }
         if (systemRows.isNotEmpty()) {
             item(key = "system") {
                 InfoSection(title = stringResource(R.string.manage_section_system)) {

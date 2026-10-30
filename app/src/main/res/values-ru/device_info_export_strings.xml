@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">Копировать</string>
+    <string name="device_info_save">Сохранить в файл</string>
+    <string name="device_info_saved">Сведения об устройстве сохранены.</string>
+    <string name="device_info_save_error">Не удалось сохранить сведения об устройстве.</string>
+    <string name="device_info_copy_error">Не удалось скопировать сведения об устройстве.</string>
+</resources>

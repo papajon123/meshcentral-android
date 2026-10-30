@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">Sao chép</string>
+    <string name="device_info_save">Lưu vào tệp</string>
+    <string name="device_info_saved">Đã lưu thông tin thiết bị.</string>
+    <string name="device_info_save_error">Không thể lưu thông tin thiết bị.</string>
+    <string name="device_info_copy_error">Không thể sao chép thông tin thiết bị.</string>
+</resources>

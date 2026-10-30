@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">কপি করুন</string>
+    <string name="device_info_save">ফাইলে সংরক্ষণ করুন</string>
+    <string name="device_info_saved">ডিভাইসের তথ্য সংরক্ষণ করা হয়েছে।</string>
+    <string name="device_info_save_error">ডিভাইসের তথ্য সংরক্ষণ করা যায়নি।</string>
+    <string name="device_info_copy_error">ডিভাইসের তথ্য কপি করা যায়নি।</string>
+</resources>

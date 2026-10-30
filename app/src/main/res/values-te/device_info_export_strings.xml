@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">కాపీ చేయి</string>
+    <string name="device_info_save">ఫైల్‌లో సేవ్ చేయి</string>
+    <string name="device_info_saved">పరికర సమాచారం సేవ్ చేయబడింది.</string>
+    <string name="device_info_save_error">పరికర సమాచారాన్ని సేవ్ చేయలేకపోయాం.</string>
+    <string name="device_info_copy_error">పరికర సమాచారాన్ని కాపీ చేయలేకపోయాం.</string>
+</resources>

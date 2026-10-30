@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">복사</string>
+    <string name="device_info_save">파일로 저장</string>
+    <string name="device_info_saved">기기 정보를 저장했습니다.</string>
+    <string name="device_info_save_error">기기 정보를 저장하지 못했습니다.</string>
+    <string name="device_info_copy_error">기기 정보를 복사하지 못했습니다.</string>
+</resources>

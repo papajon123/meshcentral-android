@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">Copier</string>
+    <string name="device_info_save">Enregistrer dans un fichier</string>
+    <string name="device_info_saved">Informations de l’appareil enregistrées.</string>
+    <string name="device_info_save_error">Impossible d’enregistrer les informations de l’appareil.</string>
+    <string name="device_info_copy_error">Impossible de copier les informations de l’appareil.</string>
+</resources>

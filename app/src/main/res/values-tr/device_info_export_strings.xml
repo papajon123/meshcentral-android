@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="device_info_copy">Kopyala</string>
+    <string name="device_info_save">Dosyaya kaydet</string>
+    <string name="device_info_saved">Cihaz bilgileri kaydedildi.</string>
+    <string name="device_info_save_error">Cihaz bilgileri kaydedilemedi.</string>
+    <string name="device_info_copy_error">Cihaz bilgileri kopyalanamadı.</string>
+</resources>

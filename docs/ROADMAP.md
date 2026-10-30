@@ -136,3 +136,9 @@ Standard desktop, terminal, files, SSH and SFTP do **not** need it.
 - [Interface](UI.md) · [Architecture](ARCHITECTURE.md) · [Protocol](PROTOCOL.md)
 - [Optional server plugin](../server/mobile-companion/README.md)
 - [Privacy](../PRIVACY.md) · [Security policy](../SECURITY.md)
+
+## Feedback follow-up — 2026-10-31
+
+Trackpad usability is handled in 0.9.8: relative motion reaches the whole remote framebuffer and the viewport follows at its edges. Acceptance: movement at zoom, all four edges, bounded pan, precise small movements, and existing direct-touch/mouse/stylus/view-only checks.
+
+For the later interface release: split long settings pages into compact groups and open detailed options in dialogs; replace the oversized theme selector with a compact current-value row and a selection dialog. Preserve setting values and accessibility. Compare visual alternatives before implementation; validate small phones, large text and TalkBack.

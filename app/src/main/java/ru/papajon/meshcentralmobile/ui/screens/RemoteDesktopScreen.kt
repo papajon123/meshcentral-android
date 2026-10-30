@@ -878,9 +878,10 @@ internal fun SessionCanvas(
         return
     }
     var canvasSize by remember { mutableStateOf(IntSize.Zero) }
-    var trackpadCursor by remember { mutableStateOf(Offset.Zero) }
+
     // Last remote pointer position we sent, drawn as a cursor because the agent does not paint one.
-    var remoteCursor by remember { mutableStateOf(Offset.Unspecified) }
+    var remoteCursor by remember(desktopState.device?.nodeId, desktopState.attempt,
+        desktopState.remoteWidth, desktopState.remoteHeight) { mutableStateOf(Offset.Unspecified) }
     // Double-tap detection state, kept across gestures.
     var lastTapUpMillis by remember { mutableStateOf(0L) }
     var lastTapPosition by remember { mutableStateOf(Offset.Zero) }
@@ -897,6 +898,11 @@ internal fun SessionCanvas(
         fitWidth = desktopState.device?.supportsRemoteInput == false,
     )
     val currentViewport by rememberUpdatedState(viewport)
+    fun trackpadPoint(): Offset {
+        if (remoteCursor == Offset.Unspecified) return Offset(canvasSize.width / 2f, canvasSize.height / 2f)
+        val point = currentViewport.toCanvas(remoteCursor.x.toInt(), remoteCursor.y.toInt())
+        return Offset(point.first, point.second)
+    }
     val currentDragArmed by rememberUpdatedState(dragArmed)
     val currentOnDragConsumed by rememberUpdatedState(onDragConsumed)
     val currentInputEnabled by rememberUpdatedState(desktopState.inputEnabled)
@@ -905,8 +911,6 @@ internal fun SessionCanvas(
         desktopState.remoteWidth, desktopState.remoteHeight) {
         StylusInputController(inputSink, onCursor = { x, y ->
             remoteCursor = Offset(x.toFloat(), y.toFloat())
-            val canvasPoint = currentViewport.toCanvas(x, y)
-            trackpadCursor = Offset(canvasPoint.first, canvasPoint.second)
         }, nowMillis = android.os.SystemClock::uptimeMillis)
     }
     val fingerDragCancellation = remember { FingerDragCancellation() }
@@ -922,15 +926,8 @@ internal fun SessionCanvas(
             }
         }) { x, y ->
         remoteCursor = Offset(x.toFloat(), y.toFloat())
-        val point = currentViewport.toCanvas(x, y)
-        trackpadCursor = Offset(point.first, point.second)
     }
 
-    LaunchedEffect(canvasSize, desktopState.remoteWidth, desktopState.remoteHeight) {
-        if (canvasSize.width > 0 && canvasSize.height > 0) {
-            trackpadCursor = Offset(canvasSize.width / 2f, canvasSize.height / 2f)
-        }
-    }
 
     Canvas(
         modifier = modifier
@@ -1001,7 +998,7 @@ internal fun SessionCanvas(
                                 SessionGesturePolicy.onHold(mode, distanceDp) == SessionGestureAction.RightClick &&
                                 currentInputEnabled
                             ) {
-                                val point = if (mode == RemoteControlMode.Trackpad) trackpadCursor else downPosition
+                                val point = if (mode == RemoteControlMode.Trackpad) trackpadPoint() else downPosition
                                 val viewportAtHold = currentViewport
                                 if (viewportAtHold.hitsImage(point.x, point.y)) {
                                     val remote = viewportAtHold.toRemote(point.x, point.y)
@@ -1108,7 +1105,7 @@ internal fun SessionCanvas(
                                         SessionGestureAction.RemoteScroll -> {
                                             scrolledBy += if (newlyDecided) totalPanY else panChange.y
                                             if (currentInputEnabled && abs(scrolledBy) > 6f) {
-                                                val cursor = if (mode == RemoteControlMode.Trackpad) trackpadCursor else centroid
+                                                val cursor = if (mode == RemoteControlMode.Trackpad) trackpadPoint() else centroid
                                                 val remote = currentViewport.toRemote(cursor.x, cursor.y)
                                                 inputSink.sendMouseScroll(remote.first, remote.second, -scrolledBy * 1.5f)
                                                 scrolledBy = 0f
@@ -1192,14 +1189,16 @@ internal fun SessionCanvas(
                                         }
 
                                         RemoteControlMode.Trackpad -> {
-                                            trackpadCursor = Offset(
-                                                x = (trackpadCursor.x + delta.x).coerceIn(0f, canvasSize.width.toFloat()),
-                                                y = (trackpadCursor.y + delta.y).coerceIn(0f, canvasSize.height.toFloat()),
-                                            )
                                             if (currentInputEnabled) {
-                                                val remote = currentViewport.toRemote(trackpadCursor.x, trackpadCursor.y)
-                                                remoteCursor = Offset(remote.first.toFloat(), remote.second.toFloat())
-                                                inputSink.sendMouseMove(remote.first, remote.second)
+                                                val base = currentViewport
+                                                val start = if (remoteCursor != Offset.Unspecified) remoteCursor else {
+                                                    val point = base.toRemote(canvasSize.width / 2f, canvasSize.height / 2f)
+                                                    Offset(point.first.toFloat(), point.second.toFloat())
+                                                }
+                                                val result = base.moveTrackpad(start.x, start.y, delta.x, delta.y)
+                                                remoteCursor = Offset(result.x, result.y)
+                                                onViewportChanged(base.zoom, result.panX, result.panY)
+                                                inputSink.sendMouseMove(result.x.toInt(), result.y.toInt())
                                             }
                                         }
 
@@ -1247,7 +1246,7 @@ internal fun SessionCanvas(
                                 SessionGestureAction.RightClick,
                                 -> if (currentInputEnabled) {
                                     val point = when {
-                                        mode == RemoteControlMode.Trackpad -> trackpadCursor
+                                        mode == RemoteControlMode.Trackpad -> trackpadPoint()
                                         multiTouch -> downPosition
                                         else -> downPosition
                                     }

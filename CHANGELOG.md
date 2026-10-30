@@ -1,3 +1,9 @@
+# 0.9.8 — 2026-10-31
+
+- In trackpad mode, move the pointer across the entire remote desktop while zoomed in. The viewport follows near the edges and remains still during central movement.
+- Preserve fractional pointer movement at high zoom and follow the pointer without resetting manual panning.
+- Copy computer details to the clipboard or save the same localized report as a UTF-8 text file using the Android document picker.
+
 # 0.9.7 — 2026-10-29
 
 - Keep the monitor chosen for each profile and computer, including All displays, after lock, screen off, reconnect or reopening the app.
