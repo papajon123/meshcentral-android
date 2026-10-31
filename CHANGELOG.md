@@ -1,4 +1,11 @@
-# 0.9.8 — 2026-10-31
+# 0.9.9 — 2026-10-31
+
+- Deliver trackpad viewport following and copy/save of computer information from the 0.9.8 candidate.
+- Correct the localized phone-inspector test fixture to retain its Activity result registry, required by the file picker. Application behavior is unchanged by this test fix.
+
+# 0.9.8 — 2026-10-31 (no GitHub APK published)
+
+The full device suite found a missing ActivityResultRegistryOwner in a localized test fixture. The 0.9.8 tag is preserved; the corrected release is 0.9.9.
 
 - In trackpad mode, move the pointer across the entire remote desktop while zoomed in. The viewport follows near the edges and remains still during central movement.
 - Preserve fractional pointer movement at high zoom and follow the pointer without resetting manual panning.

@@ -126,7 +126,8 @@ class PhoneUiTest {
         val configuration = Configuration(compose.activity.resources.configuration).apply { setLocale(Locale.forLanguageTag("ru")) }
         val localized = compose.activity.createConfigurationContext(configuration)
         compose.setContent {
-            CompositionLocalProvider(LocalContext provides localized, LocalConfiguration provides configuration) {
+            CompositionLocalProvider(LocalContext provides localized, LocalConfiguration provides configuration,
+                androidx.activity.compose.LocalActivityResultRegistryOwner provides compose.activity) {
                 MeshCentralMobileTheme(darkTheme = true) {
                     DeviceInspectorScreen(
                         snapshot = DeviceSystemSnapshot(deviceName = "Test phone", osName = "Android", osVersion = "16",

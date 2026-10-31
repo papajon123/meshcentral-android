@@ -1,4 +1,4 @@
-## MeshPilot 0.9.8
+## MeshPilot 0.9.9
 
 MeshPilot is an independent client for MeshCentral servers, not affiliated with or endorsed by the MeshCentral project.
 

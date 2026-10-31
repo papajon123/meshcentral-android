@@ -1,0 +1,1 @@
+Trackpad mode now follows the pointer across a zoomed desktop. Small movements stay precise, and manual panning is preserved. Copy computer details or save a localized text report, including reported BIOS, board and TPM information.

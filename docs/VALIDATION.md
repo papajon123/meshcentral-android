@@ -1,5 +1,11 @@
 # Validation
 
+## 0.9.9
+
+The complete 0.9.8 GitHub device suite caught a localized phone-inspector test that replaced LocalContext without retaining ActivityResultRegistryOwner. The failing case was reproduced locally before the one-line fixture fix. Production localization does not replace LocalContext this way. Version 0.9.8 has no GitHub APK; its tag is preserved, and this candidate uses 0.9.9 / 33.
+
+Both candidate builds, JVM tests and lint passed. PhoneUiTest, DeviceInfoExportTest and DeviceInfoSaveFlowTest passed together: 26 tests on API 26 and 26 on API 35, in each application. The remaining failures in the full 0.9.8 runs were the same localized fixture on both APIs; transient authentication/PiP cases passed the existing one-time retry.
+
 ## 0.9.8
 
 - `testDebugUnitTest lintDebug assembleDebug assembleDebugAndroidTest` passed: 877 JVM tests, no failures.
