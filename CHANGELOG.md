@@ -1,4 +1,12 @@
-# 0.10.2 — 2026-11-05 (candidate)
+# 0.10.3 — 2026-11-05 (candidate)
+
+- Correct AAB signature validation: resource filenames in jarsigner's entry listing are not certificate or algorithm errors. Keep strict verification, signer pinning and rejection of expired, disabled and partially signed bundles.
+- Observe the real document picker's foreground window through Window Manager and dismiss it before unregistering its callback, keeping subsequent UI tests isolated.
+- Retain the application behavior and identity from the 0.10.2 candidate.
+
+# 0.10.2 — 2026-11-05 (no GitHub APK published)
+
+Release checks passed, including the permitted bounded UI-test retry. AAB verification then falsely matched `disabled` in a resource filename; the corrected candidate is 0.10.3.
 
 - Use an isolated TLS provider for Android test servers so MockWebServer can record requests on Android 8 without a platform SNI crash. Keep application TLS and certificate-approval behavior unchanged.
 - Refuse partial test retries after an instrumentation crash and verify that every retried test actually ran and passed.

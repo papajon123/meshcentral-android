@@ -283,6 +283,75 @@ class SignatureContractTest(unittest.TestCase):
             with self.assertRaisesRegex(verify.VerificationError, "not valid"):
                 verify.verify_signature(Path("bundle.aab"), ["META-INF/CERT.SF", "META-INF/CERT.RSA"])
 
+    def run_signature(self, code, output):
+        with mock.patch.object(verify, "java_tool", return_value="jarsigner"), \
+                mock.patch.object(verify, "run_tool", return_value=subprocess.CompletedProcess(
+                    [], code, output, b"")):
+            return verify.verify_signature(
+                Path("bundle.aab"), ["META-INF/CERT.SF", "META-INF/CERT.RSA"]
+            )
+
+    def test_no_timestamp_warning_alone_is_not_rejected(self):
+        output = (
+            b"jar verified, with signer errors.\n"
+            b"This jar contains signatures that do not include a timestamp. Without a "
+            b"timestamp, users may not be able to validate this jar after any of the "
+            b"signer certificates expire (as early as 2036-11-02).\n"
+        )
+        self.assertEqual({"signed": True}, self.run_signature(4, output))
+
+    def test_future_crypto_warnings_remain_rejected(self):
+        for message in (
+            b"The SHA-256 signature algorithm is considered a security risk. "
+            b"This algorithm will be disabled in a future update.\n",
+            b"The RSA signing key has a keysize of 1024 which is considered a "
+            b"security risk. This key size will be disabled in a future update.\n",
+        ):
+            with self.subTest(message=message):
+                output = b"jar verified, with signer errors.\n" + message
+                with self.assertRaisesRegex(verify.VerificationError, "not valid"):
+                    self.run_signature(4, output)
+
+    def test_resource_names_are_not_crypto_diagnostics(self):
+        for name in ("abc_list_selector_disabled_holo_dark.9.png", "signer certificate has expired.txt"):
+            with self.subTest(name=name):
+                listing = f"- Entry base/assets/{name} is signed in JarFile but is not signed in JarInputStream\n"
+                output = b"jar verified, with signer errors.\n" + listing.encode()
+                self.assertEqual({"signed": True}, self.run_signature(4, output))
+                with self.assertRaisesRegex(verify.VerificationError, "not valid"):
+                    self.run_signature(4, output + b"The signer certificate has expired.\n")
+
+    def test_currently_disabled_algorithm_is_rejected(self):
+        with self.assertRaisesRegex(verify.VerificationError, "jarsigner"):
+            self.run_signature(
+                16,
+                b"The jar will be treated as unsigned, because it is signed with a "
+                b"weak algorithm that is now disabled.\n",
+            )
+        with self.assertRaisesRegex(verify.VerificationError, "not valid"):
+            self.run_signature(
+                4,
+                b"jar verified, with signer errors.\n"
+                b"The SHA1withRSA algorithm specified for the -sigalg option is "
+                b"considered a security risk and is disabled.\n",
+            )
+
+    def test_not_yet_valid_certificate_is_rejected(self):
+        with self.assertRaisesRegex(verify.VerificationError, "not valid"):
+            self.run_signature(
+                4,
+                b"jar verified, with signer errors.\n"
+                b"This jar contains entries whose signer certificate is not yet valid.\n",
+            )
+
+    def test_unsigned_appended_payload_is_rejected(self):
+        with self.assertRaisesRegex(verify.VerificationError, "jarsigner"):
+            self.run_signature(
+                20,
+                b"jar verified, with signer errors.\n"
+                b"This jar contains unsigned entries which have not been integrity-checked.\n",
+            )
+
     def test_unsigned_bundle_is_allowed_without_require_signed(self):
         result = verify.verify_signature(
             Path("bundle.aab"),

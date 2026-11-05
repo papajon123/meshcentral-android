@@ -1,0 +1,1 @@
+Includes reliable system document selection and upload cancellation, biometric or phone screen-lock fallback, 23 interface languages, improved session navigation, optional remote keyboard mapping and requests for remote-user consent.

@@ -24,10 +24,14 @@ import ru.papajon.meshcentralmobile.MainActivity
  * FragmentActivity.startActivityForResult and the system DocumentsUI, not a fake registry.
  * A request-code regression is captured in the launch block and reported as a JUnit failure,
  * so the instrumentation process survives to report the red test.
+ *
+ * Foreground proof comes from Window Manager focus records read through an independent
+ * shell oracle; the accessibility root is not used for cancellation decisions.
  */
 class PlatformDocumentPickerTest {
     private val instrumentation get() = InstrumentationRegistry.getInstrumentation()
     private val automation get() = instrumentation.uiAutomation
+    private val oracle by lazy { SystemFocusOracle(automation) }
 
     @Test
     fun openDocumentLaunchesRealPickerAndBackReturnsNull() {
@@ -46,6 +50,7 @@ class PlatformDocumentPickerTest {
         val launcherRef = AtomicReference<ActivityResultLauncher<I>?>()
         val key = "platform-document-picker-${UUID.randomUUID()}"
         val scenario = ActivityScenario.launch(MainActivity::class.java)
+        var failure: Throwable? = null
         try {
             scenario.onActivity { activity ->
                 // The overload without a LifecycleOwner is what FilesScreen effectively uses.
@@ -61,72 +66,176 @@ class PlatformDocumentPickerTest {
                 }
             }
             assertNull("Real picker launch failed: ${launchFailure.get()}", launchFailure.get())
-            assertTrue("DocumentsUI did not become the active window", awaitDocumentsUi())
-            Thread.sleep(SETTLE_MS)
-            // CreateDocument may focus its filename editor and show the IME. The first Back
-            // then closes the keyboard, not the picker. Never send Back after its callback.
-            val cancelDeadline = SystemClock.elapsedRealtime() + TIMEOUT_MS
-            var backPresses = 0
-            while (received.count != 0L && SystemClock.elapsedRealtime() < cancelDeadline) {
-                if (documentsUiActive() && backPresses < 3) {
-                    assertTrue("Back was not delivered to DocumentsUI",
-                        automation.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK))
-                    backPresses++
-                    received.await(600, TimeUnit.MILLISECONDS)
-                } else {
-                    received.await(POLL_MS, TimeUnit.MILLISECONDS)
-                }
-            }
+            awaitDocumentsUiForeground(scenario)
+            // CreateDocument may focus its filename editor and show the IME. A Back press
+            // then dismisses the keyboard first; keep pressing only while DocumentsUI owns
+            // the focused window and stop as soon as its callback arrives.
+            cancelPickerWhileForeground(scenario, received)
             assertEquals("No cancellation result within 10 s", 0L, received.count)
             assertNull("Cancelling the picker must return a null Uri", result.get())
             awaitResumed(scenario)
+        } catch (throwable: Throwable) {
+            failure = throwable
         } finally {
-            runCatching {
-                instrumentation.runOnMainSync {
-                    launcherRef.get()?.unregister()
-                }
+            val cleanupFailure = cleanup(scenario, launcherRef)
+            val primary = failure
+            if (primary != null) {
+                if (cleanupFailure != null) primary.addSuppressed(cleanupFailure)
+                throw primary
             }
-            // Leave no system picker behind if an assertion failed before the user Back.
-            repeat(3) {
-                if (documentsUiActive()) {
-                    runCatching { automation.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK) }
-                    Thread.sleep(300)
-                }
-            }
-            scenario.close()
+            if (cleanupFailure != null) throw cleanupFailure
         }
     }
 
-    private fun awaitDocumentsUi(): Boolean {
-        val deadline = System.currentTimeMillis() + TIMEOUT_MS
-        while (System.currentTimeMillis() < deadline) {
-            if (documentsUiActive()) return true
-            Thread.sleep(POLL_MS)
+    private fun awaitDocumentsUiForeground(scenario: ActivityScenario<MainActivity>) {
+        val deadline = SystemClock.elapsedRealtime() + TIMEOUT_MS
+        var last: FocusComponent? = null
+        while (SystemClock.elapsedRealtime() < deadline) {
+            last = oracle.readSnapshot().preferredComponent
+            if (last?.isDocumentsUi == true && scenario.state != Lifecycle.State.RESUMED) return
+            SystemClock.sleep(POLL_MS)
         }
-        return documentsUiActive()
+        throw AssertionError(
+            "DocumentsUI did not become the foreground window " +
+                "(last=${describe(last)}, activity=${scenario.state})",
+        )
     }
 
-    private fun documentsUiActive(): Boolean {
-        val activePackage = automation.rootInActiveWindow?.packageName?.toString() ?: return false
-        return activePackage in DOCUMENTS_UI_PACKAGES
+    private fun cancelPickerWhileForeground(
+        scenario: ActivityScenario<MainActivity>,
+        received: CountDownLatch,
+    ) {
+        val deadline = SystemClock.elapsedRealtime() + TIMEOUT_MS
+        var backPresses = 0
+        var last: FocusComponent? = null
+        while (received.count != 0L && SystemClock.elapsedRealtime() < deadline) {
+            val snapshot = oracle.readSnapshot()
+            last = snapshot.preferredComponent
+            val ownedPickerForeground = last?.isDocumentsUi == true &&
+                scenario.state != Lifecycle.State.RESUMED &&
+                received.count != 0L
+            if (ownedPickerForeground) {
+                if (backPresses >= MAX_BACK_PRESSES) {
+                    throw AssertionError(
+                        "DocumentsUI stayed foreground after $MAX_BACK_PRESSES Back presses " +
+                            "(last=${describe(last)})",
+                    )
+                }
+                assertTrue(
+                    "Back was not delivered to DocumentsUI",
+                    automation.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK),
+                )
+                backPresses++
+                awaitCallbackOrFocusChange(received, snapshot, deadline)
+            } else {
+                received.await(POLL_MS, TimeUnit.MILLISECONDS)
+            }
+        }
     }
+
+    /**
+     * Waits for the result callback, for DocumentsUI to stop owning the focused window, or
+     * for the focus record itself to change. The last case is IME dismissal: the focused-app
+     * record keeps naming DocumentsUI while the component-less input window is replaced by
+     * the picker's own activity component. The next iteration then sends the picker's Back.
+     */
+    private fun awaitCallbackOrFocusChange(
+        received: CountDownLatch,
+        before: WindowFocusSnapshot,
+        overallDeadline: Long,
+    ) {
+        val sliceDeadline = minOf(overallDeadline, SystemClock.elapsedRealtime() + BACK_SETTLE_MS)
+        val beforeSignature = focusSignature(before)
+        while (received.count != 0L && SystemClock.elapsedRealtime() < sliceDeadline) {
+            val after = oracle.readSnapshot()
+            if (!after.documentsUiForeground) return
+            if (focusSignature(after) != beforeSignature) return
+            received.await(POLL_MS, TimeUnit.MILLISECONDS)
+        }
+    }
+
+    private fun focusSignature(snapshot: WindowFocusSnapshot): String =
+        "${componentSignature(snapshot.currentFocus)}|${componentSignature(snapshot.focusedApp)}"
+
+    private fun componentSignature(component: FocusComponent?): String =
+        component?.let { "${it.packageName}/${it.activityName}" } ?: "none"
 
     private fun awaitResumed(scenario: ActivityScenario<MainActivity>) {
-        val deadline = System.currentTimeMillis() + TIMEOUT_MS
-        while (System.currentTimeMillis() < deadline) {
+        val deadline = SystemClock.elapsedRealtime() + TIMEOUT_MS
+        while (SystemClock.elapsedRealtime() < deadline) {
             if (scenario.state == Lifecycle.State.RESUMED) return
-            Thread.sleep(POLL_MS)
+            SystemClock.sleep(POLL_MS)
         }
         assertEquals("MainActivity did not return to RESUMED", Lifecycle.State.RESUMED, scenario.state)
     }
 
+    private fun <I> cleanup(
+        scenario: ActivityScenario<MainActivity>,
+        launcherRef: AtomicReference<ActivityResultLauncher<I>?>,
+    ): Throwable? {
+        val failures = mutableListOf<Throwable>()
+        // Dismiss the owned picker first: unregistering removes the result callback that a
+        // later Back press would deliver to. Only an observed DocumentsUI window is pressed.
+        collectFailure(failures) { dismissOwnedPicker() }
+        collectFailure(failures) {
+            instrumentation.runOnMainSync { launcherRef.get()?.unregister() }
+        }
+        collectFailure(failures) { scenario.close() }
+        if (failures.isEmpty()) return null
+        val primary = failures.first()
+        failures.drop(1).forEach { primary.addSuppressed(it) }
+        return primary
+    }
+
+    private fun collectFailure(failures: MutableList<Throwable>, block: () -> Unit) {
+        try {
+            block()
+        } catch (throwable: Throwable) {
+            failures += throwable
+        }
+    }
+
+    private fun dismissOwnedPicker() {
+        val deadline = SystemClock.elapsedRealtime() + TIMEOUT_MS
+        var backPresses = 0
+        var last: FocusComponent? = null
+        while (SystemClock.elapsedRealtime() < deadline) {
+            last = oracle.readSnapshot().preferredComponent
+            if (last?.isDocumentsUi != true) return
+            if (backPresses >= MAX_CLEANUP_BACK_PRESSES) {
+                throw AssertionError(
+                    "DocumentsUI picker was still foreground after $backPresses cleanup Back presses " +
+                        "(last=${describe(last)})",
+                )
+            }
+            assertTrue(
+                "Cleanup Back was not delivered while ${describe(last)} was foreground",
+                automation.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK),
+            )
+            backPresses++
+            awaitPickerDeparture(deadline)
+        }
+        throw AssertionError(
+            "DocumentsUI picker was still foreground at the cleanup deadline (last=${describe(last)})",
+        )
+    }
+
+    private fun awaitPickerDeparture(overallDeadline: Long) {
+        val sliceDeadline = minOf(overallDeadline, SystemClock.elapsedRealtime() + BACK_SETTLE_MS)
+        while (SystemClock.elapsedRealtime() < sliceDeadline) {
+            if (oracle.readSnapshot().preferredComponent?.isDocumentsUi != true) return
+            SystemClock.sleep(POLL_MS)
+        }
+    }
+
+    private fun describe(component: FocusComponent?): String =
+        component?.toString() ?: "no focused activity component"
+
     private companion object {
         private const val TIMEOUT_MS = 10_000L
         private const val POLL_MS = 100L
-        private const val SETTLE_MS = 300L
-        private val DOCUMENTS_UI_PACKAGES = setOf(
-            "com.android.documentsui",
-            "com.google.android.documentsui",
-        )
+        private const val BACK_SETTLE_MS = 750L
+        private const val MAX_BACK_PRESSES = 3
+        private const val MAX_CLEANUP_BACK_PRESSES = 5
     }
 }

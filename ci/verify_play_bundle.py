@@ -35,6 +35,13 @@ FORBIDDEN_PERMISSIONS = {
 }
 JAVA_TIMEOUT = 900
 TOOL_TIMEOUT = 300
+# AGP writes the JAR manifest after payload entries. jarsigner lists resource
+# names when comparing JarFile and JarInputStream handling. These names are data,
+# not certificate/algorithm diagnostics (Android resources often contain disabled).
+JAR_STREAM_ENTRY_WARNING = re.compile(
+    r"\s*-\s+Entry .+ is signed in JarFile but is not signed in JarInputStream\.?\s*",
+    re.IGNORECASE,
+)
 
 
 class VerificationError(Exception):
@@ -379,11 +386,16 @@ def verify_signature(bundle, entry_names, require_signed=False, expected_signer=
     )
     output = decode_output(result.stdout) + decode_output(result.stderr)
     # Android signing certificates are normally self-signed (strict exit bit 4).
-    # In particular, strict bit 16 rejects unsigned payload appended to a signed JAR.
+    # Strict bit 16 still rejects unsigned payload appended to a signed JAR.
     if result.returncode not in (0, 4):
         raise VerificationError("jarsigner verification failed")
     lower = output.lower()
-    if result.returncode == 4 and any(reason in lower for reason in ("has expired", "not yet valid", "disabled")):
+    diagnostics = "\n".join(
+        line for line in lower.splitlines() if not JAR_STREAM_ENTRY_WARNING.fullmatch(line)
+    )
+    # Preserve the existing strict certificate/algorithm policy, including
+    # future crypto deprecation warnings. Ignore only the structured entry list.
+    if result.returncode == 4 and any(reason in diagnostics for reason in ("has expired", "not yet valid", "disabled")):
         raise VerificationError("signer certificate or signature algorithm is not valid")
     if "jar verified" not in lower or "jar is unsigned" in lower:
         raise VerificationError("jarsigner did not confirm 'jar verified.'")
