@@ -1,3 +1,25 @@
+# 0.10.1 — 2026-11-05 (candidate)
+
+- Fix a crash when opening or creating a document after the switch to `FragmentActivity`. Use a compatible Fragment release so real Android Activity Result request codes are accepted.
+- Exercise the real system document picker and cancellation callback, in addition to the existing file-operation fixtures; retain Android device-credential fallback.
+- Keep the file-transfer service running while choosing an upload source. Cancelled picker results cannot be reused by a later upload and never delete the source document.
+- Enable the OpenSSH SFTP subsystem in the isolated review fixture.
+- Include the 0.10.0 candidate features below. Application identities and signing keys are unchanged.
+
+# 0.10.0 — 2026-11-04 (no GitHub APK published)
+
+Real-device testing found an incompatible transitive Fragment dependency in the system document-picker path. The GitLab tag is preserved; the corrected candidate is 0.10.1.
+
+- Unlock with device authentication: biometrics with Android's device-credential fallback, so biometric unlock works without an app PIN; a configured app PIN remains available.
+- Choose from 23 app languages, including Simplified and Traditional Chinese.
+- Keep computer-inspector tabs selectable while details load; a slow read no longer blocks switching to Services.
+- Add an optional remote keyboard layout for desktop sessions: physical keys follow the remote virtual keys, phone-composed text is sent as Unicode, and the phone IME keeps working.
+- Request the computer user's consent for new desktop, terminal and file sessions; the server and agent decide, and their automatic approval rules still apply.
+- Keep the main navigation available during an ordinary session; only explicit fullscreen hides it.
+- Update to AGP 9.5.0, Gradle 9.8.2 and OkHttp 5.5.1.
+- The Play distribution hides the external updater and donation link and includes offline privacy texts in English and Russian.
+- The package name and signing configuration are unchanged. A debug-build APK upgrade from 0.8.4 to 0.10.0 preserved encrypted credentials.
+
 # 0.9.9 — 2026-10-31
 
 - Deliver trackpad viewport following and copy/save of computer information from the 0.9.8 candidate.

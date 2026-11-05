@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.management
 
+import ru.papajon.meshcentralmobile.testing.hasSameJsonContent
+
 import org.json.JSONArray
 import org.json.JSONObject
 import org.junit.Assert.*
@@ -8,8 +10,8 @@ import ru.papajon.meshcentralmobile.mesh.MeshControlMessages
 
 class DeviceHistoryParserTest {
     @Test fun requestsUseNodeIdAndFiftyEventLimit() {
-        assertTrue(JSONObject("""{"action":"events","nodeid":"node//example","limit":50}""").similar(MeshControlMessages.deviceEvents("node//example")))
-        assertTrue(JSONObject("""{"action":"powertimeline","nodeid":"node//example"}""").similar(MeshControlMessages.powerTimeline("node//example")))
+        assertTrue(JSONObject("""{"action":"events","nodeid":"node//example","limit":50}""").hasSameJsonContent(MeshControlMessages.deviceEvents("node//example")))
+        assertTrue(JSONObject("""{"action":"powertimeline","nodeid":"node//example"}""").hasSameJsonContent(MeshControlMessages.powerTimeline("node//example")))
     }
     @Test fun eventDatesAndMissingFieldsAreTolerant() {
         val events = DeviceHistoryParser.events(JSONObject("""{"events":[{"time":"2026-10-25T00:00:00Z","action":"changenode","msg":"Changed"},{"time":"bad"},null]}"""))

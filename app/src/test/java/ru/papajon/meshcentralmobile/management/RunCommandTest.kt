@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.management
 
+import ru.papajon.meshcentralmobile.testing.hasSameJsonContent
+
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
@@ -8,7 +10,7 @@ import ru.papajon.meshcentralmobile.mesh.*
 class RunCommandTest {
     private val device = MeshDevice("node//example", "mesh//example", "Example", agentId = 4, conn = 1, rights = MeshRights.REMOTE_COMMAND)
     @Test fun exactMessageRequestsOutputFromAgentAccount() {
-        assertTrue(JSONObject("""{"action":"runcommands","nodeids":["node//example"],"type":0,"cmds":"echo example","runAsUser":0,"reply":true}""").similar(RunCommand.create(device, true, "echo example", true)))
+        assertTrue(JSONObject("""{"action":"runcommands","nodeids":["node//example"],"type":0,"cmds":"echo example","runAsUser":0,"reply":true}""").hasSameJsonContent(RunCommand.create(device, true, "echo example", true)))
     }
     @Test fun commandRequiresPermissionFreshOnlineComputerAndConfirmation() {
         for (bad in listOf(device.copy(rights = null), device.copy(rights = 8), device.copy(conn = 0), device.copy(agentId = 14), device.copy(agentId = null))) {

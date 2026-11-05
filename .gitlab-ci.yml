@@ -11,7 +11,7 @@ variables:
   GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
   PYTHONDONTWRITEBYTECODE: "1"
   GITHUB_REPOSITORY: "papajon123/meshcentral-android"
-  GRADLE_CACHE_KEY: "android-36-gradle-124"
+  GRADLE_CACHE_KEY: "android-37-gradle-124"
 
 workflow:
   rules:
@@ -21,7 +21,7 @@ workflow:
     # separate from the one main and release tags restore.
     - if: '$CI_PROJECT_ID == "124" && $CI_COMMIT_BRANCH =~ /^mr\// && $CI_COMMIT_REF_PROTECTED == "true"'
       variables:
-        GRADLE_CACHE_KEY: "review-android-36-gradle-124"
+        GRADLE_CACHE_KEY: "review-android-37-gradle-124"
     - when: never
 
 checks:
@@ -34,7 +34,8 @@ checks:
       - .gradle/wrapper/
       - .android-sdk-cache/build-tools/
   script:
-    # SDK 36 is in the pinned image. Retain the project's Build Tools 35.0.0 and cache them.
+    - sdkmanager 'platforms;android-37.0' 'build-tools;36.0.0'
+    # Install SDK 37.0 and Build Tools 36.0.0; retain Build Tools 35.0.0 for APK verification and cache them.
     - |
       mkdir -p "$ANDROID_HOME/build-tools" .android-sdk-cache/build-tools
       if [ -d .android-sdk-cache/build-tools/35.0.0 ]; then
@@ -45,8 +46,9 @@ checks:
       fi
       cp -a "$ANDROID_HOME/build-tools/35.0.0" .android-sdk-cache/build-tools/
     - python3 ci/check_translations.py
+    - python3 ci/prepare_play_assets.py
     - python3 -B -m unittest discover -s ci -p 'test_*.py'
-    - bash gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug compileDebugAndroidTestKotlin
+    - bash gradlew --no-daemon --max-workers=2 --stacktrace testDirectDebugUnitTest testPlayDebugUnitTest lintDirectDebug lintPlayDebug assembleDirectDebug assemblePlayDebug compileDirectDebugAndroidTestKotlin compilePlayDebugAndroidTestKotlin bundlePlayRelease
     - |
       if [ -n "${CI_COMMIT_TAG:-}" ]; then
         python3 ci/publish_github_snapshot.py --source "$CI_PROJECT_DIR" --tag "$CI_COMMIT_TAG" --check-only

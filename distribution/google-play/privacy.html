@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MeshPilot — Privacy policy</title>
+<style>html{color-scheme:light dark}body{font:16px/1.6 system-ui,sans-serif;max-width:760px;margin:auto;padding:24px}h1,h2,h3{line-height:1.25}a{overflow-wrap:anywhere}section{margin:2.5rem 0}li{margin:.5rem 0}</style>
+</head>
+<body>
+<header><h1>MeshPilot — Privacy policy</h1><nav><a href="#english">English</a> · <a href="#russian">Русский</a></nav></header>
+<section id="english" lang="en">
+<h2>English</h2>
+<p>This policy describes the Google Play distribution of MeshPilot, an independent Android client for MeshCentral. It is not made or supported by the MeshCentral project. You choose the MeshCentral server and use an account provided by its operator.</p>
+<h3>Connections and remote content</h3>
+<p>The app communicates with your chosen server over HTTPS and secure WebSockets. It sends authentication information, identifiers of managed computers, keyboard and pointer input, terminal input, uploaded files, clipboard text, chat messages, search and session requests when you use the corresponding tools. It receives remote screen frames, terminal output and downloaded files from the server. The server operator and the managed computer control access, logging, session recording and retention.</p>
+<p>MeshPilot has no advertising, analytics, telemetry or crash-reporting SDK. No project server is preconfigured: the app communicates with the server you select. If a review or demonstration server is provided, its operator controls that server's data and access. The Google Play build does not check GitHub for app updates or offer an external installer. Android, Google Play and external websites that you open have their own privacy policies.</p>
+<h3>Local storage and authentication</h3>
+<p>Server addresses, profile names, device shortcuts, favorites, recent device identifiers and settings are stored in app-private preferences. They are not encrypted and can reveal information about your infrastructure. Saved sign-in credentials, login keys, remembered two-factor cookies, the app PIN record and optional notification tokens use Android Keystore-backed encryption.</p>
+<p>Android handles biometric and phone screen-lock authentication. MeshPilot does not receive your fingerprint, face template or phone PIN. SSH passwords, private keys and passphrases remain in memory for the current session; the app does not save them. Remote frames and terminal output are processed in memory rather than recorded by the app. Android may allow screenshots and recent-app previews unless you enable screenshot blocking.</p>
+<h3>Files, exports and notifications</h3>
+<p>You choose the documents used for uploads, downloads and settings exports through Android. Exported files remain at the destination you choose. Settings exports exclude passwords, cookies and the app PIN. An export without login keys may be unencrypted if you choose no password. Including login keys requires a password-encrypted export.</p>
+<p>Optional background notifications connect to the companion endpoint on your chosen MeshCentral server. Their token is encrypted locally, and notification text omits computer names and sensitive session content. There is no project push service or Firebase Cloud Messaging integration.</p>
+<h3>Deletion and control</h3>
+<p>You can clear saved sign-in data and sessions in Settings and remove server profiles separately. Uninstalling the app removes its private local data, but does not remove exported files or data held on your server. MeshPilot does not create a project account. Ask your server operator about deleting server accounts, logs or recordings.</p>
+<p>The app is a remote administration tool and is not directed at children. Use it only with systems you are authorized to manage.</p>
+<h3>Contact</h3>
+<p>Public support and privacy contact: <a href="mailto:papajon1234@gmail.com">papajon1234@gmail.com</a>.</p>
+<p>For privacy questions, contact the maintainer through <a href="https://github.com/papajon123/meshcentral-android/issues">the MeshPilot issue tracker</a> without posting credentials or private data. For security reports, follow <a href="https://github.com/papajon123/meshcentral-android/blob/main/SECURITY.md">the security policy</a>.</p>
+</section>
+<section id="russian" lang="ru">
+<h2>Русский</h2>
+<p>Эта политика описывает сборку MeshPilot для Google Play. MeshPilot — независимый Android-клиент, который не разрабатывает и не поддерживает команда MeshCentral. Вы выбираете сервер MeshCentral и используете учётную запись, предоставленную его владельцем.</p>
+<h3>Подключения и содержимое сеансов</h3>
+<p>Приложение соединяется с выбранным сервером через HTTPS и защищённые WebSocket-соединения. При использовании соответствующих функций оно отправляет данные входа, идентификаторы управляемых компьютеров, ввод клавиатуры и мыши, ввод терминала, загружаемые файлы, текст буфера обмена, сообщения чата, поисковые запросы и запросы сеансов. Изображение удалённого экрана, вывод терминала и скачиваемые файлы поступают с сервера. Доступ, журналы, запись сеансов и сроки хранения определяют оператор сервера и управляемый компьютер.</p>
+<p>В MeshPilot нет рекламы, аналитики, телеметрии и стороннего сбора отчётов о сбоях. Сервер проекта заранее не настроен: приложение обращается к серверу, который вы выбрали. Если для ознакомления или проверки предоставлен демонстрационный сервер, его данными и доступом управляет его оператор. Сборка Google Play не проверяет обновления на GitHub и не предлагает внешний установщик. У Android, Google Play и сайтов, которые вы открываете, действуют собственные правила обработки данных.</p>
+<h3>Хранение на устройстве и вход</h3>
+<p>Адреса серверов, названия профилей, ярлыки компьютеров, избранное, идентификаторы недавних устройств и настройки сохраняются в закрытой области приложения. Эти настройки не шифруются и могут раскрывать сведения о вашей инфраструктуре. Сохранённые данные и ключи входа, cookie двухфакторной проверки, запись PIN приложения и токены уведомлений шифруются с помощью Android Keystore.</p>
+<p>Биометрию и блокировку экрана проверяет Android. MeshPilot не получает отпечатки пальцев, шаблоны лица или PIN телефона. Пароли, закрытые ключи и парольные фразы SSH остаются в памяти на время сеанса и не сохраняются приложением. Изображение удалённого экрана и вывод терминала обрабатываются в памяти; приложение не записывает их. Android может разрешать снимки экрана и сохранять миниатюры недавних приложений, если вы не включили блокировку снимков.</p>
+<h3>Файлы, экспорт и уведомления</h3>
+<p>Вы выбираете документы для передачи файлов и экспорта настроек средствами Android. Экспортированные файлы остаются в выбранном месте. Экспорт настроек не включает пароли, cookie и PIN приложения. Экспорт без ключей входа может быть незашифрованным, если не задать пароль. Для включения ключей входа обязателен зашифрованный экспорт с паролем.</p>
+<p>Необязательные фоновые уведомления обращаются к расширению выбранного сервера MeshCentral. Токен шифруется на устройстве; уведомления не показывают имена компьютеров и чувствительное содержимое сеансов. Собственной службы доставки уведомлений и интеграции с Firebase Cloud Messaging нет.</p>
+<h3>Удаление и управление данными</h3>
+<p>В настройках можно очистить сохранённые данные входа и сеансы; профили серверов удаляются отдельно. Удаление приложения очищает его закрытое хранилище, но не экспортированные файлы и данные сервера. MeshPilot не создаёт учётную запись проекта. По вопросам удаления серверной учётной записи, журналов и записей сеансов обращайтесь к оператору сервера.</p>
+<p>Приложение предназначено для удалённого администрирования, а не для детей. Используйте его только для систем, которыми вам разрешено управлять.</p>
+<h3>Связь с разработчиком</h3>
+<p>Публичный адрес поддержки и вопросов о конфиденциальности: <a href="mailto:papajon1234@gmail.com">papajon1234@gmail.com</a>.</p>
+<p>Вопросы о конфиденциальности можно задать через <a href="https://github.com/papajon123/meshcentral-android/issues">обращения проекта MeshPilot</a>, не публикуя пароли и личные данные. Для сообщений об уязвимостях используйте порядок из <a href="https://github.com/papajon123/meshcentral-android/blob/main/SECURITY.md">политики безопасности</a>.</p>
+</section>
+</body></html>

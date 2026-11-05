@@ -242,7 +242,7 @@ class RedesignGalleryTest {
 
         // 5. Lock screen, empty PIN.
         show(Screen.LockEmpty)
-        requireVisible(string(R.string.lock_title))
+        requireVisible(string(R.string.app_name))
         requireVisible(string(R.string.lock_subtitle))
         requireVisible("0", scroll = true)
         capture(Screen.LockEmpty)
@@ -260,7 +260,11 @@ class RedesignGalleryTest {
         show(Screen.Settings)
         requireVisible(string(R.string.settings_title))
         requireVisible(string(R.string.settings_message_pin_configured), scroll = true)
-        requireVisible(string(R.string.settings_update_action), scroll = true)
+        if (ru.papajon.meshcentralmobile.BuildConfig.EXTERNAL_UPDATES_ENABLED) {
+            requireVisible(string(R.string.settings_update_action), scroll = true)
+        } else {
+            assertTrue(compose.onAllNodesWithText(string(R.string.settings_update_action)).fetchSemanticsNodes().isEmpty())
+        }
         requireExists(string(R.string.settings_pin_status_set))
         requireVisible(string(R.string.settings_title), scroll = true)
         capture(Screen.Settings)

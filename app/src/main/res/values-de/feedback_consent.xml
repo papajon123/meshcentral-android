@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">Den Benutzer des Computers um Erlaubnis bitten</string>
+    <string name="consent_help">Fordern Sie die Zustimmung für neue Desktop-, Terminal- und Dateisitzungen von Mesh Agent an. Die Zustimmung steuern Server und Agent; ihre Regeln für die automatische Zustimmung gelten weiterhin.</string>
+    <string name="consent_requested">Erlaubnis zum Verbinden wird angefordert…</string>
+    <string name="consent_waiting">Warten auf die Zugriffsfreigabe durch den Benutzer des Computers…</string>
+    <string name="consent_denied">Der Benutzer des Computers hat den Zugriff nicht gewährt.</string>
+    <string name="consent_timeout">Die Erlaubnisanfrage ist abgelaufen. Sie können die Verbindung erneut versuchen.</string>
+</resources>

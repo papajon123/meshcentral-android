@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">संगणक वापरकर्त्याकडे परवानगी मागा</string>
+    <string name="consent_help">नवीन Mesh Agent डेस्कटॉप, टर्मिनल आणि फाइल सत्रांसाठी मंजुरी मागा. मंजुरी सर्व्हर आणि एजंट नियंत्रित करतात; त्यांचे स्वयंचलित मंजुरी नियम अजूनही लागू आहेत.</string>
+    <string name="consent_requested">कनेक्ट होण्यासाठी परवानगी मागितली जात आहे…</string>
+    <string name="consent_waiting">संगणक वापरकर्त्याने प्रवेश देण्याची प्रतीक्षा करत आहे…</string>
+    <string name="consent_denied">संगणक वापरकर्त्याने प्रवेश दिला नाही.</string>
+    <string name="consent_timeout">परवानगी विनंतीची वेळ संपली. तुम्ही पुन्हा कनेक्ट होण्याचा प्रयत्न करू शकता.</string>
+</resources>

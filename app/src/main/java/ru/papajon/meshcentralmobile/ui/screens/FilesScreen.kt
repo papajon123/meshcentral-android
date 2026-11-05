@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.key
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.material3.Checkbox
@@ -110,11 +111,13 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
     }
     fun toggle(entry: RemoteFile) { selection.toggle(state.path, entry); selectedNames = selection.names }
     fun clearSelection() { selection.clear(); selectedNames = emptySet() }
-    val chooseFolder = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri ->
-        controller.batch.choose(uri)
+    val chooseFolder = key(controller) {
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocumentTree()) { uri -> controller.batch.choose(uri) }
     }
-    val createBatchDocument = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/octet-stream")) { uri ->
-        controller.batch.choose(uri, document = true)
+    val createBatchDocument = key(controller) {
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/octet-stream")) { uri ->
+            controller.batch.choose(uri, document = true)
+        }
     }
     var downloadConfirmation by remember(controller) { mutableStateOf<List<RemoteFile>?>(null) }
     fun beginDownloads(entries: List<RemoteFile>) {
@@ -138,11 +141,13 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
     } }
     var selected by remember(controller) { mutableStateOf<RemoteFile?>(null) }
     var leaving by remember(controller) { mutableStateOf(false) }
-    val createDocument = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/octet-stream")) { uri ->
-        scope.launch { controller.downloadChosen(uri) }
+    val createDocument = key(controller) {
+        rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/octet-stream")) { uri ->
+            scope.launch { controller.downloadChosen(uri) }
+        }
     }
-    val openDocument = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
-        if (uri != null) controller.proposeUpload(uri)
+    val openDocument = key(controller) {
+        rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri -> controller.uploadChosen(uri) }
     }
     val requestBack: () -> Unit = { if ((state.busy || state.batchBusy) && !preserveOnBack) leaving = true else onBack() }
     BackHandler(onBack = requestBack)
@@ -190,9 +195,17 @@ fun FilesScreen(controller: FilesController, onBack: () -> Unit, modifier: Modif
                     onParent = controller::parent,
                     onRefresh = controller::refresh,
                     onCreateDirectory = { controller.propose(FileChange.CreateDirectory) },
-                    onUpload = { openDocument.launch(arrayOf("*/*")) },
+                    onUpload = { scope.launch {
+                        if (controller.prepareUpload()) {
+                            try {
+                                ContextCompat.startForegroundService(context,
+                                    Intent(context, FileTransferService::class.java).setAction(FileTransferService.PICKER_RESERVATION))
+                                openDocument.launch(arrayOf("*/*"))
+                            } catch (_: Exception) { controller.uploadPreparationFailed() }
+                        }
+                    } },
                     canCreateDirectory = !state.androidPhone,
-                    canUpload = !state.androidPhone || state.path.isNotEmpty(),
+                    canUpload = !state.uploadPickerOutstanding && (!state.androidPhone || state.path.isNotEmpty()),
                 )
                 if (!state.androidPhone) {
                     Text(stringResource(R.string.tools_select_hint), style = MaterialTheme.typography.bodySmall)

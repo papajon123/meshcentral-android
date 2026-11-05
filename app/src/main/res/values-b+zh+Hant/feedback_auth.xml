@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">使用生物辨識或手機螢幕鎖定開啟應用程式。</string>
+    <string name="auth_unavailable">裝置驗證無法使用。請檢查 Android 安全性設定，然後再試一次。</string>
+    <string name="auth_security_settings">開啟 Android 安全性設定</string>
+    <string name="auth_setting_title">裝置驗證</string>
+    <string name="auth_setting_help">使用生物辨識或手機螢幕鎖定。若已設定應用程式 PIN，仍可使用。</string>
+    <string name="auth_unlock_action">使用裝置驗證解鎖</string>
+</resources>

@@ -141,7 +141,8 @@ class TerminalController(
                     val ready = !closed && if (isSsh) mutableState.value.ready else status.phase == RelayPhase.Connected
                     mutableState.value = mutableState.value.copy(
                         phase = status.phase, ready = ready, recorded = status.recorded,
-                        message = status.message ?: mutableState.value.message,
+                        message = if (!isSsh && status.phase == RelayPhase.Connected) status.message
+                            else status.message ?: mutableState.value.message,
                         auth = if (closed) TerminalAuth.None else mutableState.value.auth,
                     )
                     renderer?.setInputEnabled(ready)

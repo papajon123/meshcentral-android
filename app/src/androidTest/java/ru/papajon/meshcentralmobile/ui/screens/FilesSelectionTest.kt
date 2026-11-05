@@ -229,8 +229,9 @@ class FilesSelectionTest {
         repeat(8) {
             if (visible(label)) return
             val list = firstNode { it.isScrollable }
-            assertNotNull("No scrollable list for $label", list)
-            list!!.performAction(action)
+            // A short listing has no scroll container. Its selection label can still be
+            // pending recomposition after a click; keep the bounded wait in that case.
+            list?.performAction(action)
             delay(250)
         }
         awaitUi("scroll to $label") { visible(label) }

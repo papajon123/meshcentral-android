@@ -744,7 +744,7 @@ private fun DeviceRow(
                     FilledIconButton(
                         onClick = onConnect,
                         shape = PillShape,
-                        modifier = Modifier.size(48.dp),
+                        modifier = Modifier.size(48.dp).testTag("device-connect-${device.nodeId}"),
                     ) {
                         Icon(
                             imageVector = if (device.viewOnly) Icons.Outlined.Visibility else Icons.Outlined.PlayArrow,

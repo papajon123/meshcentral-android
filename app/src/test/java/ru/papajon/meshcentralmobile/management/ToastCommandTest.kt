@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.management
 
+import ru.papajon.meshcentralmobile.testing.hasSameJsonContent
+
 import org.junit.Assert.*
 import org.junit.Test
 import org.json.JSONObject
@@ -12,7 +14,7 @@ class ToastCommandTest {
         val message = "Hello\nsecond line"
         val result = ToastCommand.create(device, true, title, message)
         val expected = JSONObject().put("action", "toast").put("nodeids", org.json.JSONArray().put(device.nodeId)).put("title", title).put("msg", message)
-        assertTrue(expected.similar(JSONObject(result.toString())))
+        assertTrue(expected.hasSameJsonContent(JSONObject(result.toString())))
         assertEquals(4, result.length())
     }
     @Test fun deniesMissingWrongAndRevokedRights() {

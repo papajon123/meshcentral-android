@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">برای باز کردن برنامه از زیست‌سنجی یا قفل صفحه گوشی استفاده کنید.</string>
+    <string name="auth_unavailable">احراز هویت دستگاه در دسترس نیست. تنظیمات امنیتی Android را بررسی کنید و دوباره تلاش کنید.</string>
+    <string name="auth_security_settings">باز کردن تنظیمات امنیتی Android</string>
+    <string name="auth_setting_title">احراز هویت دستگاه</string>
+    <string name="auth_setting_help">از زیست‌سنجی یا قفل صفحه گوشی استفاده کنید. در صورت تنظیم، PIN برنامه همچنان در دسترس است.</string>
+    <string name="auth_unlock_action">باز کردن قفل با احراز هویت دستگاه</string>
+</resources>

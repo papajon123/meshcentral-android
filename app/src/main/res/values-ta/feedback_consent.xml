@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">கணினி பயனரிடம் அனுமதி கேள்</string>
+    <string name="consent_help">புதிய Mesh Agent டெஸ்க்டாப், முனையம் மற்றும் கோப்பு அமர்வுகளுக்கு ஒப்புதல் கேளுங்கள். ஒப்புதலை சேவையகமும் முகவரும் கட்டுப்படுத்துகின்றன; அவற்றின் தானியங்கி ஒப்புதல் விதிகள் இன்னும் பொருந்தும்.</string>
+    <string name="consent_requested">இணைப்பதற்கான அனுமதி கேட்கப்படுகிறது…</string>
+    <string name="consent_waiting">கணினி பயனர் அணுகலை வழங்குவதற்காகக் காத்திருக்கிறது…</string>
+    <string name="consent_denied">கணினி பயனர் அணுகலை வழங்கவில்லை.</string>
+    <string name="consent_timeout">அனுமதி கோரிக்கைக்கான நேரம் முடிந்தது. மீண்டும் இணைக்க முயலலாம்.</string>
+</resources>

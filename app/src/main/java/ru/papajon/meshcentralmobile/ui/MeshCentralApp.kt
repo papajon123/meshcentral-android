@@ -199,7 +199,13 @@ fun MeshCentralApp(
     var pendingFileClose by remember { mutableStateOf<(() -> Unit)?>(null) }
     var browserUnavailable by remember { mutableStateOf(false) }
     val fileState = sessionViewModel.filesController?.state?.collectAsState()?.value
-    val fileOperationBusy = workspace.transfers.hasPending || workspace.sessions.any { it.files?.state?.value?.let { state -> state.busy || state.batchBusy } == true }
+    val sessionFileOperations = workspace.sessions.map { session ->
+        key(session.id) {
+            val state = session.files?.state?.collectAsState()?.value
+            state?.let { it.busy || it.batchBusy } == true
+        }
+    }
+    val fileOperationBusy = workspace.transfers.hasPending || sessionFileOperations.any { it }
     LaunchedEffect(fileState?.transferName, fileState?.batchBusy) {
         if (fileState?.batchBusy == true || (fileState?.transferName != null && fileState.busy)) {
             try { ContextCompat.startForegroundService(context, Intent(context, FileTransferService::class.java)) }
@@ -576,7 +582,7 @@ fun MeshCentralApp(
         confirmButton = { TextButton(onClick = { browserUnavailable = false }) { Text(stringResource(android.R.string.ok)) } },
     )
 
-    val showMainNavigation = currentDestination != AppDestination.Session && sessionViewModel.selectedDeviceId == null
+    val showMainNavigation = currentDestination != AppDestination.Session || !remoteFullscreen
     val useNavigationRail = LocalConfiguration.current.screenWidthDp >= 600 && showMainNavigation
     val selectDestination: (AppDestination) -> Unit = { destination ->
         if (currentDestination == AppDestination.Session && destination != AppDestination.Session) {
@@ -588,7 +594,7 @@ fun MeshCentralApp(
     Scaffold(
         contentWindowInsets = if (currentDestination == AppDestination.Session) WindowInsets(0, 0, 0, 0) else WindowInsets.safeDrawing,
         topBar = {
-            if (currentDestination != AppDestination.Session) Column(Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
+            if (showMainNavigation) Column(Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                     TextButton(onClick = { managingProfiles = true }, modifier = Modifier.weight(1f)) {
                         Text(settingsRepository.activeProfile.name, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
@@ -608,8 +614,7 @@ fun MeshCentralApp(
             }
         },
         bottomBar = {
-            // The live session owns the whole window: its own dock and back action replace the tab
-            // bar, which otherwise eats a fifth of the canvas.
+            // Only explicit fullscreen owns the whole window. Ordinary sessions keep navigation.
             if (showMainNavigation && !useNavigationRail) {
                 MeshNavigationBar(currentDestination, selectDestination)
             }
@@ -845,7 +850,11 @@ fun MeshCentralApp(
                     )
 
                     AppDestination.Settings -> SettingsScreen(
-                        updates = { UpdateSettings(updateState, updateModel::consent, { updateModel.check(manual = true) }, updateModel::later, updateModel::skip) },
+                        updates = {
+                            if (BuildConfig.EXTERNAL_UPDATES_ENABLED) {
+                                UpdateSettings(updateState, updateModel::consent, { updateModel.check(manual = true) }, updateModel::later, updateModel::skip)
+                            }
+                        },
                         settings = settings,
                         serverUrl = settings.serverUrl,
                         onStylusPrecisionChanged = settingsRepository::updateStylusPrecision,
@@ -858,6 +867,8 @@ fun MeshCentralApp(
                             settingsRepository.updateBiometricUnlock(enabled)
                             appLockController.refreshLockRequirement()
                         },
+                        onBiometricVerificationRequested = onBiometricUnlockRequested,
+                        onRequestUserConsentChanged = settingsRepository::updateRequestUserConsent,
                         onLockTimeoutChanged = settingsRepository::updateLockTimeoutSeconds,
                         onHideDevicesWhenLockedChanged = settingsRepository::updateHideDevicesWhenLocked,
                         onPinSaved = { pin ->

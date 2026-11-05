@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.mesh.files
 
+import ru.papajon.meshcentralmobile.testing.hasSameJsonContent
+
 import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
@@ -75,7 +77,7 @@ class AndroidFilesConnectionTest {
         try {
             adapter.connect()
             assertTrue(adapter.sendText("""{"action":"ls","path":"/Images","reqid":7}"""))
-            assertTrue(JSONObject(raw.binary.single().toString(Charsets.UTF_8)).similar(JSONObject("""{"action":"ls","path":"Images","reqid":7}""")))
+            assertTrue(JSONObject(raw.binary.single().toString(Charsets.UTF_8)).hasSameJsonContent(JSONObject("""{"action":"ls","path":"Images","reqid":7}""")))
             raw.input.send(RelayFrame.Binary("""{"action":"ls","path":"Images","reqid":7,"dir":[]}""".toByteArray()))
             val response = withTimeout(2000) { adapter.incoming.first() } as RelayFrame.Text
             assertEquals("Images", JSONObject(response.value).getString("path"))

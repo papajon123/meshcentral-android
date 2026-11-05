@@ -2,6 +2,7 @@ package ru.papajon.meshcentralmobile.management
 
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -37,11 +38,14 @@ class TaskToolsScreenTest {
         compose.setContent {
             val density = LocalDensity.current
             val context = LocalContext.current
-            val configuration = android.content.res.Configuration(context.resources.configuration).apply {
-                if (rtlLarge) setLocale(java.util.Locale.forLanguageTag("ar"))
+            val baseConfiguration = LocalConfiguration.current
+            val configuration = remember(baseConfiguration, rtlLarge) {
+                android.content.res.Configuration(baseConfiguration).apply {
+                    if (rtlLarge) setLocale(java.util.Locale.forLanguageTag("ar"))
+                }
             }
-            val translated = remember(context, rtlLarge) { context.createConfigurationContext(configuration) }
-            CompositionLocalProvider(LocalContext provides translated, LocalConfiguration provides configuration, LocalLayoutDirection provides if (rtlLarge) LayoutDirection.Rtl else LayoutDirection.Ltr,
+            val translated = remember(context, configuration) { context.createConfigurationContext(configuration) }
+            CompositionLocalProvider(LocalContext provides translated, LocalResources provides translated.resources, LocalConfiguration provides configuration, LocalLayoutDirection provides if (rtlLarge) LayoutDirection.Rtl else LayoutDirection.Ltr,
                 LocalDensity provides Density(density.density, if (rtlLarge) 1.8f else 1f)) {
                 MeshCentralMobileTheme {
                     TaskToolsContent(screenState, MeshDevice("node//fixture", "mesh//fixture", "Fixture computer", conn = 1, agentId = 6, rights = rights), current, services,

@@ -66,6 +66,7 @@ class MeshCentralClient(
     private val secureVault: SecureVault,
     private val scope: CoroutineScope,
     private val singleAttempt: Boolean = false,
+    private val requestUserConsent: () -> Boolean = { false },
 ) : Closeable, NativeRemoteInputSink {
     private val cookieJar = MeshCookieJar()
     private class ControlCookieScope(val serverUrl: String, val username: String)
@@ -1049,7 +1050,8 @@ class MeshCentralClient(
             return
         }
         val target = _clientState.value.devices.firstOrNull { it.nodeId == device.nodeId } ?: device
-        relay.connect(url, if (target.isAndroidAgent) target.copy(remoteInput = PhoneRemoteInput.Unknown) else target)
+        relay.connect(url, if (target.isAndroidAgent) target.copy(remoteInput = PhoneRemoteInput.Unknown) else target,
+            requestConsent = requestUserConsent())
         if (target.isAndroidAgent) refreshPhoneInput(target.nodeId)
         pendingDesktopResume = false
         _clientState.update {
@@ -1086,7 +1088,7 @@ class MeshCentralClient(
             sendControl = ::sendControlJson,
             onFinished = { additionalRelays.remove(it) },
             onCertificateFailure = ::reportRelayCertificateFailure,
-            options = options,
+            options = AgentConsent.options(protocol.usage, requestUserConsent(), options),
             androidFileListings = device.isAndroidAgent && protocol == RelayProtocol.AgentFiles,
         )
         additionalRelays.add(connection)

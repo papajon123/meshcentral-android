@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">Use remote keyboard layout</string>
+    <string name="desktop_remote_keyboard_map_help">Physical keys use the remote layout. Text composed by the phone keyboard is sent as text.</string>
+</resources>

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_privacy_policy">隐私政策</string>
+    <string name="play_privacy_unavailable">无法打开隐私政策。</string>
+</resources>

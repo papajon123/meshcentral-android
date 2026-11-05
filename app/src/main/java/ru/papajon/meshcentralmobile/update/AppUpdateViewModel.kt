@@ -37,6 +37,7 @@ class AppUpdateViewModel(application: Application) : AndroidViewModel(applicatio
     init { refresh(store.load()) }
 
     fun consent(enabled: Boolean) {
+        if (!BuildConfig.EXTERNAL_UPDATES_ENABLED) return
         stop()
         val preferences = state.value.preferences.copy(enabled = enabled, consentVersionCode = installed.versionCode)
         store.save(preferences)
@@ -47,6 +48,7 @@ class AppUpdateViewModel(application: Application) : AndroidViewModel(applicatio
 
     /** [manual] is the Settings button; automatic checks on start stay silent when not due. */
     fun check(manual: Boolean = false) {
+        if (!BuildConfig.EXTERNAL_UPDATES_ENABLED) return
         if (job?.isActive == true) return
         val preferences = state.value.preferences
         val now = System.currentTimeMillis()
@@ -122,6 +124,11 @@ class AppUpdateViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private fun refresh(preferences: UpdatePreferences) {
+        if (!BuildConfig.EXTERNAL_UPDATES_ENABLED) {
+            // Do not erase the direct distribution's preferences when changing distribution.
+            mutableState.value = UpdateUiState(preferences.copy(enabled = false), needsConsent = false)
+            return
+        }
         val candidate = store.candidate()?.takeIf {
             UpdatePolicy.hasConsent(preferences) &&
                 UpdatePolicy.evaluate(it, installed, preferences, System.currentTimeMillis()) is UpdateDecision.Available

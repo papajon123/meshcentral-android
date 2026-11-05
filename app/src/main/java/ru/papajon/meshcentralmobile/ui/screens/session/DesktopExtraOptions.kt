@@ -17,7 +17,8 @@ internal fun DesktopExtraOptions(state: RemoteDesktopState, onScaling: (Int) -> 
     twoFingerAction: TwoFingerAction, onTwoFingerAction: (TwoFingerAction) -> Unit,
     pinchEnabled: Boolean, onPinchEnabled: (Boolean) -> Unit,
     pipSupported: Boolean, pipAutomatic: Boolean, onPipAutomatic: (Boolean) -> Unit, onEnterPip: () -> Unit,
-    hardwareKeyboardCaptured: Boolean, onHardwareKeyboardCaptured: (Boolean) -> Unit) {
+    hardwareKeyboardCaptured: Boolean, onHardwareKeyboardCaptured: (Boolean) -> Unit,
+    useRemoteKeyboardMap: Boolean, onUseRemoteKeyboardMap: (Boolean) -> Unit) {
     Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Text(stringResource(R.string.desktop_scale, state.quality.scaling * 100 / 1024), style = MaterialTheme.typography.titleSmall)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -54,6 +55,10 @@ internal fun DesktopExtraOptions(state: RemoteDesktopState, onScaling: (Int) -> 
             FilterChip(selected = hardwareKeyboardCaptured, onClick = { onHardwareKeyboardCaptured(!hardwareKeyboardCaptured) },
                 label = { Text(stringResource(R.string.desktop_keyboard_capture)) }, modifier = Modifier.testTag("desktop_keyboard_capture"))
             Text(stringResource(R.string.desktop_keyboard_release), style = MaterialTheme.typography.bodySmall)
+            FilterChip(selected = useRemoteKeyboardMap, onClick = { onUseRemoteKeyboardMap(!useRemoteKeyboardMap) },
+                label = { Text(stringResource(R.string.desktop_remote_keyboard_map)) },
+                modifier = Modifier.testTag("desktop_remote_keyboard_map"))
+            Text(stringResource(R.string.desktop_remote_keyboard_map_help), style = MaterialTheme.typography.bodySmall)
             Text(stringResource(R.string.desktop_input_help), style = MaterialTheme.typography.bodySmall)
         }
     }

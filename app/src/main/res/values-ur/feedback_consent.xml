@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">کمپیوٹر صارف سے اجازت طلب کریں</string>
+    <string name="consent_help">نئے Mesh Agent ڈیسک ٹاپ، ٹرمینل اور فائل سیشنز کے لیے منظوری طلب کریں۔ منظوری کو سرور اور ایجنٹ کنٹرول کرتے ہیں؛ ان کے خودکار منظوری کے قواعد اب بھی لاگو ہیں۔</string>
+    <string name="consent_requested">کنکشن کی اجازت طلب کی جا رہی ہے…</string>
+    <string name="consent_waiting">کمپیوٹر صارف کے رسائی دینے کا انتظار ہے…</string>
+    <string name="consent_denied">کمپیوٹر صارف نے رسائی نہیں دی۔</string>
+    <string name="consent_timeout">اجازت کی درخواست کا وقت ختم ہو گیا۔ آپ دوبارہ کنکشن کی کوشش کر سکتے ہیں۔</string>
+</resources>

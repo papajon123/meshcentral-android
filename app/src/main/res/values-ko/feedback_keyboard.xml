@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">원격 키보드 레이아웃 사용</string>
+    <string name="desktop_remote_keyboard_map_help">물리 키는 원격 레이아웃을 사용합니다. 휴대폰 키보드로 작성한 텍스트는 텍스트로 전송됩니다.</string>
+</resources>

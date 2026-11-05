@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">ऐप खोलने के लिए बायोमेट्रिक्स या फ़ोन का स्क्रीन लॉक उपयोग करें।</string>
+    <string name="auth_unavailable">डिवाइस प्रमाणीकरण उपलब्ध नहीं है। Android सुरक्षा सेटिंग्स जाँचें और फिर से प्रयास करें।</string>
+    <string name="auth_security_settings">Android सुरक्षा सेटिंग्स खोलें</string>
+    <string name="auth_setting_title">डिवाइस प्रमाणीकरण</string>
+    <string name="auth_setting_help">बायोमेट्रिक्स या फ़ोन का स्क्रीन लॉक उपयोग करें। ऐप PIN सेट होने पर वह उपलब्ध रहता है।</string>
+    <string name="auth_unlock_action">डिवाइस प्रमाणीकरण से अनलॉक करें</string>
+</resources>

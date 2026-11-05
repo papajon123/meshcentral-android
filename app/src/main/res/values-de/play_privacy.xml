@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_privacy_policy">Datenschutzerklärung</string>
+    <string name="play_privacy_unavailable">Die Datenschutzerklärung konnte nicht geöffnet werden.</string>
+</resources>

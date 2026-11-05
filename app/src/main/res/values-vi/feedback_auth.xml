@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">Dùng sinh trắc học hoặc khóa màn hình điện thoại để mở ứng dụng.</string>
+    <string name="auth_unavailable">Xác thực thiết bị không khả dụng. Kiểm tra cài đặt bảo mật Android và thử lại.</string>
+    <string name="auth_security_settings">Mở cài đặt bảo mật Android</string>
+    <string name="auth_setting_title">Xác thực thiết bị</string>
+    <string name="auth_setting_help">Dùng sinh trắc học hoặc khóa màn hình điện thoại. PIN của ứng dụng vẫn khả dụng nếu đã được thiết lập.</string>
+    <string name="auth_unlock_action">Mở khóa bằng xác thực thiết bị</string>
+</resources>

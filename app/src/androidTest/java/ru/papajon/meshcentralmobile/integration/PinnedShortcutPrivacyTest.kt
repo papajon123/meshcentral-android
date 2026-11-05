@@ -95,7 +95,7 @@ class PinnedShortcutPrivacyTest {
             assertTrue("Click the real generic shortcut on the home screen", clicked)
             opened = instrumentation.waitForMonitorWithTimeout(monitor, 10_000)
             assertNotNull("Pinned shortcut must open MainActivity", opened)
-            compose.onNodeWithText(context.getString(R.string.lock_title)).assertIsDisplayed()
+            compose.onNodeWithText(context.getString(R.string.app_name)).assertIsDisplayed()
             capture(context, "round2-pinned-lock.png")
             assertNull(workspace.selectedDeviceId)
             assertEquals(token, workspace.launcherDestination)

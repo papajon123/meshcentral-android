@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">रिमोट कीबोर्ड लेआउट वापरा</string>
+    <string name="desktop_remote_keyboard_map_help">भौतिक की रिमोट लेआउट वापरतात. फोनच्या कीबोर्डने तयार केलेला मजकूर मजकूर म्हणून पाठवला जातो.</string>
+</resources>

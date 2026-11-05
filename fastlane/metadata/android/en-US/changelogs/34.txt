@@ -1,0 +1,1 @@
+Biometric unlock now falls back to your phone screen lock when no app PIN is set. Choose from 23 app languages. Inspector tabs stay usable while data loads. Optional remote keyboard layout for desktop sessions. Desktop, terminal and file sessions can ask the computer user for permission.

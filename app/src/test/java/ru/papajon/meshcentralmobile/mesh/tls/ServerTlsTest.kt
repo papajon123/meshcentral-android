@@ -199,6 +199,7 @@ class ServerTlsTest {
         val error = runCatching { get(client, url) }.exceptionOrNull()
         assertTrue("Expected a TLS failure, got $error", error is IOException)
         val failure = error!!.serverCertificateFailure()
+        assertNotNull("Exception types: ${error.javaClass.simpleName}; suppressed: ${error.suppressed.map { it.javaClass.simpleName }}", failure)
         assertEquals(kind, failure?.kind)
         assertEquals(kind == ServerCertificateFailureKind.Changed || kind == ServerCertificateFailureKind.Untrusted, failure!!.canApprove)
     }

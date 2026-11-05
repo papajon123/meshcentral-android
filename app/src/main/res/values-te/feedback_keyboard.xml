@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">రిమోట్ కీబోర్డ్ లేఅవుట్‌ను ఉపయోగించండి</string>
+    <string name="desktop_remote_keyboard_map_help">భౌతిక కీలు రిమోట్ లేఅవుట్‌ను ఉపయోగిస్తాయి. ఫోన్ కీబోర్డ్‌తో రూపొందించిన వచనం వచనంగా పంపబడుతుంది.</string>
+</resources>

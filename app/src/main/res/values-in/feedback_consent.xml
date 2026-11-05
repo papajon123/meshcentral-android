@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">Minta izin kepada pengguna komputer</string>
+    <string name="consent_help">Minta persetujuan untuk sesi desktop, terminal, dan file Mesh Agent baru. Persetujuan dikendalikan oleh server dan agen; aturan persetujuan otomatisnya tetap berlaku.</string>
+    <string name="consent_requested">Meminta izin untuk terhubung…</string>
+    <string name="consent_waiting">Menunggu pengguna komputer memberikan akses…</string>
+    <string name="consent_denied">Pengguna komputer tidak memberikan akses.</string>
+    <string name="consent_timeout">Permintaan izin habis waktu. Anda dapat mencoba terhubung lagi.</string>
+</resources>

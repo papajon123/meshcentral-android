@@ -17,6 +17,11 @@ class DesktopPreferences(context: Context) {
         require(display in 0..65535)
         prefs.edit().putInt("${key(profile,node)}.display", display).apply()
     }
+    fun loadRemoteKeyboardMap(profile: String, node: String): Boolean =
+        prefs.getBoolean("${key(profile,node)}.keyboard_map", false)
+    fun saveRemoteKeyboardMap(profile: String, node: String, enabled: Boolean) {
+        prefs.edit().putBoolean("${key(profile,node)}.keyboard_map", enabled).apply()
+    }
     fun load(profile: String, node: String): DesktopQuality {
         val key = key(profile, node)
         return DesktopQuality(prefs.getInt("$key.q", 60), prefs.getInt("$key.f", 30),

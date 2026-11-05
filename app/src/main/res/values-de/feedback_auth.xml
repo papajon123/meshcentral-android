@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">Verwenden Sie die Biometrie oder die Bildschirmsperre Ihres Telefons, um die App zu öffnen.</string>
+    <string name="auth_unavailable">Die Geräteauthentifizierung ist nicht verfügbar. Prüfen Sie die Android-Sicherheitseinstellungen und versuchen Sie es erneut.</string>
+    <string name="auth_security_settings">Android-Sicherheitseinstellungen öffnen</string>
+    <string name="auth_setting_title">Geräteauthentifizierung</string>
+    <string name="auth_setting_help">Verwenden Sie die Biometrie oder die Bildschirmsperre Ihres Telefons. Eine App-PIN bleibt verfügbar, wenn sie eingerichtet ist.</string>
+    <string name="auth_unlock_action">Mit Geräteauthentifizierung entsperren</string>
+</resources>

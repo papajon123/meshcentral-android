@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">ایپ کھولنے کے لیے بایومیٹرکس یا فون کا اسکرین لاک استعمال کریں۔</string>
+    <string name="auth_unavailable">ڈیوائس کی توثیق دستیاب نہیں ہے۔ Android کی سیکیورٹی ترتیبات چیک کریں اور دوبارہ کوشش کریں۔</string>
+    <string name="auth_security_settings">Android کی سیکیورٹی ترتیبات کھولیں</string>
+    <string name="auth_setting_title">ڈیوائس کی توثیق</string>
+    <string name="auth_setting_help">بایومیٹرکس یا فون کا اسکرین لاک استعمال کریں۔ ایپ PIN ترتیب دیا ہوا ہو تو وہ دستیاب رہتا ہے۔</string>
+    <string name="auth_unlock_action">ڈیوائس کی توثیق سے قفل کھولیں</string>
+</resources>

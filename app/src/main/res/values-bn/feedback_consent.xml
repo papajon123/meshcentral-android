@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">কম্পিউটার ব্যবহারকারীর কাছে অনুমতি চান</string>
+    <string name="consent_help">নতুন Mesh Agent ডেস্কটপ, টার্মিনাল ও ফাইল সেশনের জন্য সম্মতি চান। সম্মতি নিয়ন্ত্রণ করে সার্ভার ও এজেন্ট; তাদের স্বয়ংক্রিয় সম্মতির নিয়ম এখনও প্রযোজ্য।</string>
+    <string name="consent_requested">সংযোগের অনুমতি চাওয়া হচ্ছে…</string>
+    <string name="consent_waiting">কম্পিউটার ব্যবহারকারীর অ্যাক্সেস দেওয়ার অপেক্ষা করা হচ্ছে…</string>
+    <string name="consent_denied">কম্পিউটার ব্যবহারকারী অ্যাক্সেস দেননি।</string>
+    <string name="consent_timeout">অনুমতি অনুরোধের সময় শেষ হয়েছে। আবার সংযোগ করার চেষ্টা করতে পারেন।</string>
+</resources>

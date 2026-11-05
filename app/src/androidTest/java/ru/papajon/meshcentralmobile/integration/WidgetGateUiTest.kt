@@ -199,7 +199,7 @@ class WidgetGateUiTest {
         withContext(Dispatchers.Main) { appLock.lockNow() }
         assertTrue(appLock.isLocked)
         compose.activityRule.scenario.moveToState(Lifecycle.State.RESUMED)
-        compose.onNodeWithText(context.getString(R.string.lock_title)).assertIsDisplayed()
+        compose.onNodeWithText(context.getString(R.string.app_name)).assertIsDisplayed()
         compose.waitForIdle()
         assertTrue("A locked foreground must keep the latch", gate.getBoolean("$id.blocked", false))
 

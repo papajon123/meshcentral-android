@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">দূরবর্তী কীবোর্ড লেআউট ব্যবহার করুন</string>
+    <string name="desktop_remote_keyboard_map_help">ভৌত কীগুলো দূরবর্তী লেআউট ব্যবহার করে। ফোনের কীবোর্ডে তৈরি পাঠ্য হিসেবে পাঠানো হয়।</string>
+</resources>

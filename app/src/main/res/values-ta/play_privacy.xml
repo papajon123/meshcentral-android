@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_privacy_policy">தனியுரிமைக் கொள்கை</string>
+    <string name="play_privacy_unavailable">தனியுரிமைக் கொள்கையைத் திறக்க முடியவில்லை.</string>
+</resources>

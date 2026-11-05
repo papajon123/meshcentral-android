@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">యాప్ను తెరవడానికి బయోమెట్రిక్ లేదా ఫోన్ స్క్రీన్ లాక్ను ఉపయోగించండి.</string>
+    <string name="auth_unavailable">పరికర ప్రామాణీకరణ అందుబాటులో లేదు. Android భద్రతా సెట్టింగ్లను తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="auth_security_settings">Android భద్రతా సెట్టింగ్లను తెరవండి</string>
+    <string name="auth_setting_title">పరికర ప్రామాణీకరణ</string>
+    <string name="auth_setting_help">బయోమెట్రిక్ లేదా ఫోన్ స్క్రీన్ లాక్ను ఉపయోగించండి. యాప్ PIN సెట్ చేయబడి ఉంటే అది అందుబాటులో ఉంటుంది.</string>
+    <string name="auth_unlock_action">పరికర ప్రామాణీకరణతో అన్లాక్ చేయండి</string>
+</resources>

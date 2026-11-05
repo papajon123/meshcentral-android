@@ -8,8 +8,8 @@ under **Unreleased** in [CHANGELOG.md](CHANGELOG.md). Published releases may hav
 
 ## Summary
 
-- The app has no project account, advertising, analytics, telemetry, or crash-reporting SDK, and no
-  project-operated backend.
+- The app has no project account, advertising, analytics, telemetry, or crash-reporting SDK.
+  No project server is preconfigured; the user selects the MeshCentral server.
 - It connects to the MeshCentral server you configure and, only after separate consent, to GitHub for
   update metadata. The native client uses `/control.ashx`,
   `/meshrelay.ashx` (desktop, Agent terminal and Agent files), `/sshterminalrelay.ashx` (SSH) and
@@ -77,13 +77,14 @@ terminated by MeshCentral; Android does not connect directly to the SSH host.
 The optional notification request uses `Authorization: Bearer <token>` only. It rejects cookies,
 redirects, query tokens and self-signed certificate exceptions; it uses the Android system trust store.
 The token is bound to the configured origin and is never placed in a URL. There is no FCM or other push
-provider, and the app does not send notification data to a project-operated service.
+provider or separate project push service; requests go to the configured MeshCentral server.
 
 The server operator can see the connecting IP address, account name, device list, session timing, SSH
 host selection, plugin job metadata and traffic passing through these relays. Server-side logging, SSH
 host-key policy, terminal recording, plugin installation and access control are outside the app.
 
-The app does not send data to a project-operated backend.
+If a review or demonstration server is provided, its operator controls that server's data and
+access, just as for any other selected server.
 
 ### Optional GitHub update checks
 

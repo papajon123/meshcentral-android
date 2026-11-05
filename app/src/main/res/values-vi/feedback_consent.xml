@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">Yêu cầu người dùng máy tính cấp quyền</string>
+    <string name="consent_help">Yêu cầu phê duyệt cho các phiên màn hình, dòng lệnh và tệp mới của Mesh Agent. Máy chủ và tác nhân kiểm soát phê duyệt; các quy tắc phê duyệt tự động của họ vẫn áp dụng.</string>
+    <string name="consent_requested">Đang yêu cầu quyền kết nối…</string>
+    <string name="consent_waiting">Đang chờ người dùng máy tính cấp quyền truy cập…</string>
+    <string name="consent_denied">Người dùng máy tính không cấp quyền truy cập.</string>
+    <string name="consent_timeout">Yêu cầu cấp quyền đã hết thời gian. Bạn có thể thử kết nối lại.</string>
+</resources>

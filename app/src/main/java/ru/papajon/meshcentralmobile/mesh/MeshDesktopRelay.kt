@@ -38,6 +38,7 @@ class MeshDesktopRelay(
     private val scope: CoroutineScope,
     private val onCertificateFailure: (ServerCertificateFailure) -> Unit = {},
     private val phoneInputAllowed: (MeshDevice) -> Boolean = { true },
+    private val consentTimeoutMillis: Long = 90_000,
     private val sendControlMessage: (JSONObject) -> Boolean,
 ) : NativeRemoteInputSink {
     private val framebuffer = KvmFramebuffer()
@@ -61,6 +62,8 @@ class MeshDesktopRelay(
     private var manualClose = false
     private var reconnectJob: Job? = null
     private var keepAliveJob: Job? = null
+    private var consentWaitJob: Job? = null
+    private var requestConsentForSession = false
     private var resumeWatchdogJob: Job? = null
     @Volatile private var quality = DesktopQuality()
     private val streamMeter = DesktopStreamMeter()
@@ -93,7 +96,7 @@ class MeshDesktopRelay(
         this.relayCookie = relayCookie
     }
 
-    fun connect(baseUrl: HttpUrl, device: MeshDevice) {
+    fun connect(baseUrl: HttpUrl, device: MeshDevice, requestConsent: Boolean = false) {
         synchronized(this) { releaseMouseButtons() }
         if (!device.canOpenNativeDesktop) {
             _desktopState.value = RemoteDesktopState(
@@ -109,6 +112,7 @@ class MeshDesktopRelay(
         cancelReconnect()
         currentBaseUrl = baseUrl
         currentDevice = device
+        requestConsentForSession = requestConsent
         preferredDisplay = null
         displayListReceived = false
         retry.reset()
@@ -550,17 +554,22 @@ class MeshDesktopRelay(
         when {
             text == "c" || text == "cr" -> {
                 if (protocolNumberSent) return
-                // MeshCentral waits for the viewer protocol number before forwarding KVM data.
-                webSocket.send(PROTOCOL_NUMBER)
+                // Upstream sends options AFTER relay pairing and BEFORE the protocol number.
+                val options = AgentConsent.options(2, requestConsentForSession)?.put("type", "options")
+                if ((options != null && !webSocket.send(options.toString())) || !webSocket.send(PROTOCOL_NUMBER)) {
+                    stopSessionWithFailure(webSocket, R.string.relay_connection_failed)
+                    return
+                }
                 protocolNumberSent = true
                 _desktopState.update {
                     it.copy(
-                        connectionState = ConnectionState.Connected,
-                        message = UiText.Resource(R.string.runtime_desktop_agent_connected),
+                        connectionState = if (requestConsentForSession) ConnectionState.LoadingRemoteDesktop else ConnectionState.Connected,
+                        message = UiText.Resource(if (requestConsentForSession) R.string.consent_requested else R.string.runtime_desktop_agent_connected),
                         handshakeComplete = false,
                     )
                 }
                 startKeepAlive()
+                if (requestConsentForSession) startConsentTimeout(webSocket)
             }
 
             text.startsWith("{") -> handleControlJson(webSocket, text)
@@ -604,7 +613,11 @@ class MeshDesktopRelay(
         if (relaySocket !== socket) return
         val previousSize = _desktopState.value.remoteWidth to _desktopState.value.remoteHeight
         // An upgrade or "c" can precede an immediate refusal. A real KVM frame proves recovery.
-        if (update != null || screenSize != null) retry.reset()
+        if (update != null || screenSize != null) {
+            retry.reset()
+            consentWaitJob?.cancel()
+            consentWaitJob = null
+        }
         if (update != null) {
             frameVersion++
             if (packets.any { it is KvmPacket.Tile || it is KvmPacket.CopyRect }) streamMeter.frame()
@@ -631,6 +644,7 @@ class MeshDesktopRelay(
                 next = next.copy(
                     remoteWidth = size.width,
                     remoteHeight = size.height,
+                    connectionState = ConnectionState.Connected,
                     handshakeComplete = true,
                     message = if (changed) null else next.message,
                 )
@@ -687,6 +701,14 @@ class MeshDesktopRelay(
         val json = runCatching { JSONObject(text) }.getOrNull() ?: return
         if (json.optInt("ctrlChannel") != MeshControlMessages.CTRL_CHANNEL) return
         when (json.optText("type")) {
+            "console" -> when (json.optInt("msgid", -1)) {
+                1 -> {
+                    _desktopState.update { it.copy(connectionState = ConnectionState.LoadingRemoteDesktop,
+                        message = UiText.Resource(R.string.consent_waiting)) }
+                    startConsentTimeout(webSocket)
+                }
+                2 -> stopSessionWithFailure(webSocket, R.string.consent_denied)
+            }
             "ping" -> webSocket.send(
                 JSONObject()
                     .put("ctrlChannel", MeshControlMessages.CTRL_CHANNEL)
@@ -733,11 +755,35 @@ class MeshDesktopRelay(
     }
 
     private fun stopKeepAlive() {
+        consentWaitJob?.cancel()
+        consentWaitJob = null
         statisticsJob?.cancel()
         statisticsJob = null
         _desktopState.update { it.copy(bytesPerSecond = 0L, framesPerSecond = 0f) }
         keepAliveJob?.cancel()
         keepAliveJob = null
+    }
+
+    private fun startConsentTimeout(socket: WebSocket) {
+        if (consentWaitJob?.isActive == true) return
+        consentWaitJob = scope.launch {
+            delay(consentTimeoutMillis)
+            if (relaySocket === socket) stopSessionWithFailure(socket, R.string.consent_timeout)
+        }
+    }
+
+    private fun stopSessionWithFailure(socket: WebSocket, message: Int) {
+        if (relaySocket !== socket) return
+        manualClose = true
+        cancelReconnect()
+        resumeWatchdogJob?.cancel()
+        stopKeepAlive()
+        synchronized(this) { releaseMouseButtons() }
+        relaySocket = null
+        protocolNumberSent = false
+        socket.cancel()
+        _desktopState.update { it.copy(connectionState = ConnectionState.Failed,
+            handshakeComplete = false, message = UiText.Resource(message)) }
     }
 
     private fun sendControlClose(socket: WebSocket? = relaySocket) {

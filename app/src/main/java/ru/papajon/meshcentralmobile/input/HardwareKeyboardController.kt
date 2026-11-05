@@ -2,28 +2,56 @@ package ru.papajon.meshcentralmobile.input
 
 import android.view.KeyEvent
 
-/** Physical key ownership includes side/extended flags; no unicode/IME duplication. */
-class HardwareKeyboardController(private val input: NativeRemoteInputSink, private val isWindows: Boolean = true) {
+/**
+ * Physical key ownership includes side/extended flags; no unicode/IME duplication.
+ *
+ * With [useRemoteKeyboardMap] off, a plain printable character is sent once as Unicode text on
+ * key down, matching MeshCentral's remoteKeyMap=false input path. Its key up is swallowed because
+ * no virtual key was pressed. With the map on, the physical virtual key down/up is preserved.
+ */
+class HardwareKeyboardController(
+    private val input: NativeRemoteInputSink,
+    private val isWindows: Boolean = true,
+    private val useRemoteKeyboardMap: Boolean = false,
+    private val unicodeForKey: (KeyEvent) -> Int = { it.unicodeChar },
+) {
     private data class PhysicalKey(val device: Int, val scan: Int, val code: Int)
     private data class RemoteKey(val code: Int, val extended: Boolean = false)
     private val held = linkedMapOf<PhysicalKey, RemoteKey>()
     private val implicit = linkedSetOf<RemoteKey>()
     private val pressed = linkedSetOf<RemoteKey>()
+    private val unicodeHeld = linkedSetOf<PhysicalKey>()
+    private var pendingDeadAccent = 0
 
     fun handle(event: KeyEvent): Boolean {
         if (event.flags and KeyEvent.FLAG_SOFT_KEYBOARD != 0 || event.keyCode in skippedSystemKeys) return false
         if (event.action != KeyEvent.ACTION_DOWN && event.action != KeyEvent.ACTION_UP) return false
-        val remote = remoteKey(event.keyCode) ?: return false
         val physical = PhysicalKey(event.deviceId, event.scanCode, event.keyCode)
         if (event.action == KeyEvent.ACTION_DOWN) {
+            printableText(event)?.let { text ->
+                // A printable character is one Unicode event, not a virtual key pair. Releasing
+                // modifiers that only existed implicitly also keeps the text unmodified.
+                releasePhysical(physical)
+                releaseImplicit()
+                unicodeHeld.add(physical)
+                if (text.isNotEmpty()) input.sendUnicodeText(text)
+                return true
+            }
+            val remote = remoteKey(event.keyCode) ?: return false
+            unicodeHeld.remove(physical)
             val repeat = held.containsKey(physical)
             held[physical] = remote
             if (!isModifier(remote)) holdImplicitModifiers(event)
             if (repeat && remote in pressed) send(remote, true) else press(remote)
         } else {
-            held.remove(physical)?.let { owned ->
-                if (owned !in held.values && owned !in implicit) release(owned)
+            if (unicodeHeld.remove(physical)) {
+                // The down was Unicode, so an up must not invent a virtual key release.
+                releasePhysical(physical)
+                if (held.values.none { !isModifier(it) }) releaseImplicit()
+                return true
             }
+            val remote = remoteKey(event.keyCode) ?: return false
+            releasePhysical(physical)
             if (!isModifier(remote) && held.values.none { !isModifier(it) }) releaseImplicit()
         }
         return true
@@ -31,8 +59,47 @@ class HardwareKeyboardController(private val input: NativeRemoteInputSink, priva
 
     fun releaseAll() {
         val keys = pressed.toList().asReversed()
-        held.clear(); implicit.clear(); pressed.clear()
+        held.clear(); implicit.clear(); pressed.clear(); unicodeHeld.clear()
+        pendingDeadAccent = 0
         keys.forEach { send(it, false) }
+    }
+
+    private fun printableText(event: KeyEvent): String? {
+        if (useRemoteKeyboardMap || event.isCtrlPressed || event.isAltPressed || event.isMetaPressed) {
+            pendingDeadAccent = 0
+            return null
+        }
+        val codePoint = unicodeForKey(event)
+        if (codePoint and android.view.KeyCharacterMap.COMBINING_ACCENT != 0) {
+            val accent = codePoint and android.view.KeyCharacterMap.COMBINING_ACCENT_MASK
+            if (!Character.isValidCodePoint(accent) || Character.isISOControl(accent)) return null
+            val previous = pendingDeadAccent
+            pendingDeadAccent = if (previous == accent || event.repeatCount > 0) 0 else accent
+            return when {
+                event.repeatCount > 0 -> String(Character.toChars(accent))
+                previous != 0 -> String(Character.toChars(previous))
+                else -> ""
+            }
+        }
+        if (!Character.isValidCodePoint(codePoint) || Character.isISOControl(codePoint)) {
+            pendingDeadAccent = 0
+            return null
+        }
+        if (!Character.isDefined(codePoint)) return null
+        val accent = pendingDeadAccent
+        pendingDeadAccent = 0
+        if (accent != 0) {
+            val combined = KeyEvent.getDeadChar(accent, codePoint)
+            if (combined != 0) return String(Character.toChars(combined))
+            return String(Character.toChars(accent)) + String(Character.toChars(codePoint))
+        }
+        return String(Character.toChars(codePoint))
+    }
+
+    private fun releasePhysical(physical: PhysicalKey) {
+        held.remove(physical)?.let { owned ->
+            if (owned !in held.values && owned !in implicit) release(owned)
+        }
     }
 
     private fun family(key: RemoteKey): Int = when (key.code) {

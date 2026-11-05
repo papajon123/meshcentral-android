@@ -9,12 +9,13 @@ import ru.papajon.meshcentralmobile.MainActivity
 import ru.papajon.meshcentralmobile.R
 import ru.papajon.meshcentralmobile.workspace.ConnectionWorkspace
 
-/** Started only by an explicit transfer while the Activity is visible; never restarted after death. */
+/** Protects explicit transfers and their document-picker reservations; never restarted after death. */
 class FileTransferService : Service() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val workspace get() = ConnectionWorkspace.get(application)
     private var monitoring: Job? = null
     private var completedNormally = false
+    private var notifyCompletion = false
     override fun onCreate() {
         super.onCreate()
         getSystemService(NotificationManager::class.java).createNotificationChannel(
@@ -23,20 +24,28 @@ class FileTransferService : Service() {
     }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == CANCEL) { cancelTransfers(); finish(); return START_NOT_STICKY }
+        val startMonitor = monitoring?.isActive != true
+        if (startMonitor) notifyCompletion = false
+        if (intent?.action != PICKER_RESERVATION) notifyCompletion = true
+        completedNormally = false
         startForeground(ID, notification(false))
-        if (monitoring?.isActive != true) monitoring = scope.launch {
+        if (startMonitor) monitoring = scope.launch {
             while (activeTransfers()) { delay(500) }
-            getSystemService(NotificationManager::class.java).notify(COMPLETE_ID, notification(true))
+            // Selecting or cancelling a source is not a completed data transfer.
+            if (notifyCompletion) getSystemService(NotificationManager::class.java).notify(COMPLETE_ID, notification(true))
             finish()
         }
         return START_NOT_STICKY
     }
     private fun activeTransfers(): Boolean = cleanups.get() > 0 || workspace.transfers.hasPending || workspace.sessions.any {
-        it.files?.state?.value?.let { state -> state.batchBusy || (state.busy && state.transferName != null) } == true
+        it.files?.state?.value?.let { state -> state.uploadPickerPending || state.batchBusy || (state.busy && state.transferName != null) } == true
     }
     private fun cancelTransfers() {
         workspace.transfers.cancelAll()
-        workspace.sessions.forEach { it.files?.let { files -> if (files.state.value.batchBusy) files.cancel() else if (files.state.value.transferName != null) files.cancel() } }
+        workspace.sessions.forEach { it.files?.let { files ->
+            val state = files.state.value
+            if (state.uploadPickerPending || state.batchBusy || state.transferName != null) files.cancel()
+        } }
     }
     private fun notification(finished: Boolean): Notification {
         val open = PendingIntent.getActivity(this, 701, Intent(this, MainActivity::class.java).setAction("show-transfers"), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
@@ -55,6 +64,7 @@ class FileTransferService : Service() {
     override fun onDestroy() { if (!completedNormally) cancelTransfers(); scope.cancel(); super.onDestroy() }
     override fun onBind(intent: Intent?): IBinder? = null
     companion object {
+        const val PICKER_RESERVATION = "file-picker-reservation"
         private val cleanups = java.util.concurrent.atomic.AtomicInteger()
         fun beginCleanup() { cleanups.incrementAndGet() }
         fun endCleanup() { cleanups.decrementAndGet() }

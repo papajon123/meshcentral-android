@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">Uygulamayı açmak için biyometriyi veya telefonunuzun ekran kilidini kullanın.</string>
+    <string name="auth_unavailable">Cihaz kimlik doğrulaması kullanılamıyor. Android güvenlik ayarlarını kontrol edip tekrar deneyin.</string>
+    <string name="auth_security_settings">Android güvenlik ayarlarını aç</string>
+    <string name="auth_setting_title">Cihaz kimlik doğrulaması</string>
+    <string name="auth_setting_help">Biyometriyi veya telefonunuzun ekran kilidini kullanın. Uygulama PIN\'i ayarlanmışsa kullanılabilir olmaya devam eder.</string>
+    <string name="auth_unlock_action">Cihaz kimlik doğrulamasıyla kilidi aç</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">ขออนุญาตจากผู้ใช้คอมพิวเตอร์</string>
+    <string name="consent_help">ขอการอนุมัติสำหรับเซสชันเดสก์ท็อป เทอร์มินัล และไฟล์ใหม่ของ Mesh Agent เซิร์ฟเวอร์และเอเจนต์ควบคุมการอนุมัติ กฎการอนุมัติอัตโนมัติยังมีผลอยู่</string>
+    <string name="consent_requested">กำลังขออนุญาตเชื่อมต่อ…</string>
+    <string name="consent_waiting">กำลังรอให้ผู้ใช้คอมพิวเตอร์อนุญาตการเข้าถึง…</string>
+    <string name="consent_denied">ผู้ใช้คอมพิวเตอร์ไม่ได้อนุญาตการเข้าถึง</string>
+    <string name="consent_timeout">คำขออนุญาตหมดเวลาแล้ว คุณสามารถลองเชื่อมต่ออีกครั้งได้</string>
+</resources>

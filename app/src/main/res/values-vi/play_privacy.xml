@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_privacy_policy">Chính sách quyền riêng tư</string>
+    <string name="play_privacy_unavailable">Không thể mở chính sách quyền riêng tư.</string>
+</resources>

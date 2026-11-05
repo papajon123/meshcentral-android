@@ -126,8 +126,12 @@ class PlatformNavigationTest {
         settings.activateProfile(profile.id)
         settings.updateAllowHttpInDebug(true)
         settings.updateBlockScreenshots(false)
+        // This suite tests navigation, not an inherited app-lock configuration. Restore it below.
+        settings.updateBiometricUnlock(false)
+        SecureVault(context).clearPin()
         instrumentation.runOnMainSync {
             workspace = ConnectionWorkspace.get(context.applicationContext as Application)
+            workspace.appLock.refreshLockRequirement()
             check(!workspace.clearingSession) { "Previous session cleanup is still running" }
             workspace.closeAll()
             workspace.switchProfile(profile.id)
@@ -136,7 +140,14 @@ class PlatformNavigationTest {
         }
         compose.waitUntil(10_000) { workspace.client.clientState.value.devicesCurrent }
         scenario = ActivityScenario.launch(MainActivity::class.java)
-        compose.onNodeWithTag("device-row-node//navigation").assertIsDisplayed()
+        try {
+            compose.waitUntil(5_000) {
+                runCatching { compose.onNodeWithTag("device-row-node//navigation").assertIsDisplayed() }.isSuccess
+            }
+        } catch (failure: Throwable) {
+            snapshot("prepare-not-ready")
+            throw failure
+        }
     }
 
     @After fun cleanup() {
@@ -252,6 +263,24 @@ class PlatformNavigationTest {
         compose.runOnIdle { assertTrue(workspace.sessions.any { it.tab == DeviceTab.Desktop }) }
     }
 
+    @Test fun aRegularDesktopKeepsNavigationAndReturningFromSettingsRetainsTheSession() {
+        compose.onNodeWithTag("device-connect-node//navigation").performClick()
+        compose.waitUntil(5_000) { workspace.sessions.any { it.tab == DeviceTab.Desktop } }
+        val session = workspace.sessions.first { it.tab == DeviceTab.Desktop }
+        snapshot("desktop-navigation")
+        compose.onNode(hasContentDescription(context.getString(R.string.common_nav_settings)) and hasClickAction())
+            .assertIsDisplayed().performClick()
+        compose.onNodeWithTag("app-language-picker").performScrollTo().assertIsDisplayed()
+        compose.runOnIdle { assertTrue(workspace.sessions.any { it.id == session.id }) }
+        snapshot("desktop-settings-navigation")
+        compose.onNodeWithTag("app-language-picker").performClick()
+        snapshot("language-dialog")
+        back()
+        compose.onNodeWithTag("main-navigation-Session").performClick()
+        compose.runOnIdle { assertTrue(workspace.sessions.any { it.id == session.id }) }
+        compose.onNodeWithTag("main-navigation-Settings").assertIsDisplayed()
+    }
+
     @Test fun tabletRotationRetainsTerminalAndSelectedDevice() {
         assumeTrue("Tablet acceptance requires sw600dp", context.resources.configuration.smallestScreenWidthDp >= 600)
         compose.onNodeWithTag("device-row-node//navigation").performClick()
@@ -338,7 +367,7 @@ class PlatformNavigationTest {
                     settings.updateLockTimeoutSeconds(0)
                     workspace.appLock.lockNow()
                 }
-                compose.onNodeWithText(context.getString(R.string.lock_title)).assertIsDisplayed()
+                compose.onNodeWithText(context.getString(R.string.app_name)).assertIsDisplayed()
                 shell("input keyevent 223")
                 SystemClock.sleep(300)
                 shell("input keyevent 224")
@@ -386,7 +415,7 @@ class PlatformNavigationTest {
         awaitImeHidden()
         // The IME's own Back may also deactivate capture on some platform versions.
         if (remoteFieldFocused()) back()
-        compose.waitUntil(15_000) { !remoteFieldFocused() }
+        awaitAfterBack(15_000) { !remoteFieldFocused() }
         // The IME's Back can hide the system keyboard and the field's focus while typing mode stays on;
         // then the app's own Back turns typing off first, still without leaving the desktop.
         val typing = hasClickAction() and hasContentDescription(context.getString(R.string.session_dock_typing))
@@ -549,12 +578,12 @@ class PlatformNavigationTest {
         assertTrue("Window did not draw before capture", frame.await(5, TimeUnit.SECONDS))
         val directory = requireNotNull(InstrumentationRegistry.getArguments().getString("additionalTestOutputDir"))
         require(directory.matches(Regex("/[A-Za-z0-9_./-]+")))
-        val path = "$directory/api36-$name.png"
+        val path = "$directory/api${Build.VERSION.SDK_INT}-$name.png"
         // UTP creates this directory as shell, so capture as shell rather than the app UID.
         // executeShellCommand tokenizes arguments; it does not interpret shell quotes/operators.
         shell("mkdir -p $directory")
         shell("rm -f $path")
         shell("screencap -p $path")
-        assertTrue("Screenshot was not saved", shell("ls -l $path").contains("api36-$name.png"))
+        assertTrue("Screenshot was not saved", shell("ls -l $path").contains("api${Build.VERSION.SDK_INT}-$name.png"))
     }
 }

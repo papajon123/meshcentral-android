@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.mesh
 
+import ru.papajon.meshcentralmobile.testing.hasSameJsonContent
+
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
@@ -19,7 +21,7 @@ class PhoneCommandsTest {
     private val nodeId = "node//phone"
     private fun command(action: PhoneAction, text: String = "", title: String = "") =
         PhoneCommands.message(nodeId, PhoneRequest(action, text, title))
-    private fun exact(expected: String, actual: JSONObject) = assertTrue(actual.toString(), JSONObject(expected).similar(actual))
+    private fun exact(expected: String, actual: JSONObject) = assertTrue(actual.toString(), JSONObject(expected).hasSameJsonContent(actual))
 
     @Test fun locateCommandsUseAuditedActionTypesAndMilliseconds() {
         exact("""{"action":"poweraction","nodeids":["node//phone"],"actiontype":401,"time":5000}""", command(PhoneAction.Vibrate))

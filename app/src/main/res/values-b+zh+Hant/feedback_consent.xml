@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">向電腦使用者請求權限</string>
+    <string name="consent_help">為新的 Mesh Agent 桌面、終端機與檔案工作階段請求核准。核准由伺服器與代理程式控制；其自動核准規則仍然適用。</string>
+    <string name="consent_requested">正在請求連線權限…</string>
+    <string name="consent_waiting">正在等待電腦使用者授予存取權…</string>
+    <string name="consent_denied">電腦使用者未授予存取權。</string>
+    <string name="consent_timeout">權限請求已逾時。可以再試一次連線。</string>
+</resources>

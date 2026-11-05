@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">生体認証またはスマートフォンの画面ロックを使用してアプリを開きます。</string>
+    <string name="auth_unavailable">デバイス認証を利用できません。Android のセキュリティ設定を確認して、もう一度お試しください。</string>
+    <string name="auth_security_settings">Android のセキュリティ設定を開く</string>
+    <string name="auth_setting_title">デバイス認証</string>
+    <string name="auth_setting_help">生体認証またはスマートフォンの画面ロックを使用します。アプリ PIN が設定されている場合は引き続き使用できます。</string>
+    <string name="auth_unlock_action">デバイス認証でロック解除</string>
+</resources>

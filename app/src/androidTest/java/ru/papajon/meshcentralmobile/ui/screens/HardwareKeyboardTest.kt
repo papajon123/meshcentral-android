@@ -28,7 +28,7 @@ class HardwareKeyboardTest {
 
     @Test fun nonWindowsKeysAndImplicitModifiersNeverUseWindowsExtendedActions() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink, isWindows = false)
+        val controller = HardwareKeyboardController(sink, isWindows = false, useRemoteKeyboardMap = true)
         for ((androidKey, vk) in listOf(KeyEvent.KEYCODE_SHIFT_RIGHT to 16, KeyEvent.KEYCODE_CTRL_RIGHT to 17,
             KeyEvent.KEYCODE_ALT_RIGHT to 18, KeyEvent.KEYCODE_NUMPAD_ENTER to 13,
             KeyEvent.KEYCODE_DPAD_RIGHT to 39, KeyEvent.KEYCODE_META_RIGHT to 92)) {
@@ -48,7 +48,7 @@ class HardwareKeyboardTest {
 
     @Test fun nonWindowsBothShiftsShareOwnershipUntilLastRelease() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink, isWindows = false)
+        val controller = HardwareKeyboardController(sink, isWindows = false, useRemoteKeyboardMap = true)
         controller.handle(key(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_LEFT))
         controller.handle(key(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_SHIFT_RIGHT))
         controller.handle(key(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_SHIFT_LEFT))
@@ -59,7 +59,7 @@ class HardwareKeyboardTest {
 
     @Test fun rightSideAndNumpadKeysKeepTheirExtendedBits() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink)
+        val controller = HardwareKeyboardController(sink, useRemoteKeyboardMap = true)
         for ((androidKey, remote) in listOf(KeyEvent.KEYCODE_ALT_RIGHT to (18 to true),
             KeyEvent.KEYCODE_CTRL_RIGHT to (17 to true), KeyEvent.KEYCODE_NUMPAD_ENTER to (13 to true),
             KeyEvent.KEYCODE_NUMPAD_DIVIDE to (111 to true), KeyEvent.KEYCODE_SHIFT_RIGHT to (161 to false))) {
@@ -74,7 +74,7 @@ class HardwareKeyboardTest {
     @Test
     fun windowDispatchForwardsPairsAndRepeats() {
         val sink = RecordingSink()
-        compose.setContent { HardwareKeyboardCapture(sink, enabled = true) }
+        compose.setContent { HardwareKeyboardCapture(sink, enabled = true, useRemoteKeyboardMap = true) }
         waitForWindowFocus()
 
         val handled = BooleanArray(3)
@@ -101,7 +101,7 @@ class HardwareKeyboardTest {
     @Test
     fun windowShortcutDispatchClosesItsKeyPair() {
         val sink = RecordingSink()
-        compose.setContent { HardwareKeyboardCapture(sink, enabled = true) }
+        compose.setContent { HardwareKeyboardCapture(sink, enabled = true, useRemoteKeyboardMap = true) }
         waitForWindowFocus()
 
         val handled = booleanArrayOf(false)
@@ -126,7 +126,7 @@ class HardwareKeyboardTest {
     @Test
     fun ctrlCIsSentAsKeysWithoutUnicodeText() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink)
+        val controller = HardwareKeyboardController(sink, useRemoteKeyboardMap = true)
 
         assertTrue(controller.handle(key(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_CTRL_LEFT, scanCode = 29)))
         assertTrue(
@@ -156,7 +156,7 @@ class HardwareKeyboardTest {
     @Test
     fun altTabSynthesizesTheMissingAltDownAndReleasesIt() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink)
+        val controller = HardwareKeyboardController(sink, useRemoteKeyboardMap = true)
 
         assertTrue(
             controller.handle(
@@ -183,7 +183,7 @@ class HardwareKeyboardTest {
     @Test
     fun metaStateMetaKeyIsExtendedAndReleased() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink)
+        val controller = HardwareKeyboardController(sink, useRemoteKeyboardMap = true)
 
         assertTrue(
             controller.handle(
@@ -210,7 +210,7 @@ class HardwareKeyboardTest {
     @Test
     fun f12MapsToVirtualKey123() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink)
+        val controller = HardwareKeyboardController(sink, useRemoteKeyboardMap = true)
 
         assertTrue(controller.handle(key(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F12, scanCode = 88)))
         assertTrue(controller.handle(key(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F12, scanCode = 88)))
@@ -227,7 +227,7 @@ class HardwareKeyboardTest {
     @Test
     fun twoShiftKeysKeepTheirIndependentPresses() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink)
+        val controller = HardwareKeyboardController(sink, useRemoteKeyboardMap = true)
 
         assertTrue(
             controller.handle(
@@ -276,7 +276,7 @@ class HardwareKeyboardTest {
         val captured = mutableStateOf(true)
         var opened = 0
         compose.setContent {
-            HardwareKeyboardCapture(sink, captured.value, onReleaseCapture = { captured.value = false })
+            HardwareKeyboardCapture(sink, captured.value, useRemoteKeyboardMap = true, onReleaseCapture = { captured.value = false })
             androidx.compose.foundation.layout.Column {
                 androidx.compose.material3.Button(onClick = { opened++ }, modifier = Modifier.testTag("local_menu")) {
                     androidx.compose.material3.Text("Menu")
@@ -304,11 +304,14 @@ class HardwareKeyboardTest {
         // before that settles is still consumed by the field (no person types that fast after the chord).
         compose.waitUntil(5_000) {
             compose.activity.currentFocus !is ru.papajon.meshcentralmobile.ui.screens.session.RemoteInputField &&
+                !(compose.activity.getSystemService(android.content.Context.INPUT_METHOD_SERVICE)
+                    as android.view.inputmethod.InputMethodManager).isAcceptingText &&
                 androidx.core.view.ViewCompat.getRootWindowInsets(compose.activity.window.decorView)
                     ?.isVisible(androidx.core.view.WindowInsetsCompat.Type.ime()) != true
         }
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_TAB)
         compose.waitForIdle()
+        println("Local focus after Tab: " + compose.activity.currentFocus?.javaClass?.simpleName)
         compose.onNodeWithTag("local_menu").assertIsFocused()
         androidx.test.platform.app.InstrumentationRegistry.getInstrumentation().sendKeyDownUpSync(KeyEvent.KEYCODE_TAB)
         compose.onNodeWithTag("second_local_control").assertIsFocused()
@@ -321,7 +324,7 @@ class HardwareKeyboardTest {
     @Test fun hardwareChordWithImeActiveDoesNotDuplicateText() {
         val sink = RecordingSink()
         compose.setContent {
-            HardwareKeyboardCapture(sink, true)
+            HardwareKeyboardCapture(sink, true, useRemoteKeyboardMap = true)
             ru.papajon.meshcentralmobile.ui.screens.session.NativeKeyboardCapture(sink, true)
         }
         waitForWindowFocus()
@@ -340,7 +343,7 @@ class HardwareKeyboardTest {
     @Test
     fun aFailedDownIsNotReleasedLater() {
         val sink = RecordingSink().apply { failDownCode = 65 }
-        val controller = HardwareKeyboardController(sink)
+        val controller = HardwareKeyboardController(sink, useRemoteKeyboardMap = true)
 
         assertTrue(controller.handle(key(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_A, scanCode = 30)))
         assertTrue(controller.handle(key(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_A, scanCode = 30)))
@@ -352,7 +355,7 @@ class HardwareKeyboardTest {
     fun disablingCaptureReleasesHeldKeysAndStopsInterception() {
         val sink = RecordingSink()
         val enabled = mutableStateOf(true)
-        compose.setContent { HardwareKeyboardCapture(sink, enabled = enabled.value) }
+        compose.setContent { HardwareKeyboardCapture(sink, enabled = enabled.value, useRemoteKeyboardMap = true) }
         waitForWindowFocus()
 
         compose.runOnUiThread {
@@ -375,7 +378,7 @@ class HardwareKeyboardTest {
     @Test
     fun focusLossReleasesHeldKeysAndStopsInterception() {
         val sink = RecordingSink()
-        compose.setContent { HardwareKeyboardCapture(sink, enabled = true) }
+        compose.setContent { HardwareKeyboardCapture(sink, enabled = true, useRemoteKeyboardMap = true) }
         waitForWindowFocus()
 
         compose.runOnUiThread {
@@ -405,7 +408,7 @@ class HardwareKeyboardTest {
     @Test
     fun softKeyboardEventsAreNotIntercepted() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink)
+        val controller = HardwareKeyboardController(sink, useRemoteKeyboardMap = true)
 
         assertFalse(
             controller.handle(
@@ -418,7 +421,7 @@ class HardwareKeyboardTest {
     @Test
     fun systemKeysKeepTheirLocalMeaning() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink)
+        val controller = HardwareKeyboardController(sink, useRemoteKeyboardMap = true)
 
         listOf(
             KeyEvent.KEYCODE_BACK,
@@ -435,7 +438,7 @@ class HardwareKeyboardTest {
     @Test
     fun releaseAllReleasesEachOwnedKeyOnce() {
         val sink = RecordingSink()
-        val controller = HardwareKeyboardController(sink)
+        val controller = HardwareKeyboardController(sink, useRemoteKeyboardMap = true)
 
         controller.handle(key(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_CTRL_LEFT, KeyEvent.META_CTRL_ON, scanCode = 29))
         controller.handle(

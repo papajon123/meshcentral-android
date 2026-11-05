@@ -146,42 +146,42 @@ fun TaskToolsContent(state: TaskToolsState, device: MeshDevice, current: Boolean
         }
     }
     processConfirmation?.let { target ->
-        AlertDialog(onDismissRequest = { processConfirmation = null; onConfirmationChanged(false) }, title = { Text(screenContext.getString(R.string.tasks_kill)) },
+        AlertDialog(onDismissRequest = { processConfirmation = null; onConfirmationChanged(false) }, title = { Text(stringResource(R.string.tasks_kill)) },
             text = { Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(screenContext.getString(R.string.tasks_kill_confirm, target.name, target.pid))
-                if (TaskToolsProtocol.critical(target)) Text(screenContext.getString(R.string.tasks_critical_process), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("tasks_critical"))
+                Text(stringResource(R.string.tasks_kill_confirm, target.name, target.pid))
+                if (TaskToolsProtocol.critical(target)) Text(stringResource(R.string.tasks_critical_process), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("tasks_critical"))
             } },
-            confirmButton = { TextButton(onClick = { onKill(target, true); processConfirmation = null; onConfirmationChanged(false) }, enabled = canChange && !confirmationBusy, modifier = Modifier.testTag("tasks_confirm")) { Text(screenContext.getString(R.string.tasks_confirm)) } },
-            dismissButton = { TextButton(onClick = { processConfirmation = null; onConfirmationChanged(false) }) { Text(screenContext.getString(R.string.tasks_cancel)) } })
+            confirmButton = { TextButton(onClick = { onKill(target, true); processConfirmation = null; onConfirmationChanged(false) }, enabled = canChange && !confirmationBusy, modifier = Modifier.testTag("tasks_confirm")) { Text(stringResource(R.string.tasks_confirm)) } },
+            dismissButton = { TextButton(onClick = { processConfirmation = null; onConfirmationChanged(false) }) { Text(stringResource(R.string.tasks_cancel)) } })
     }
     serviceConfirmation?.let { (target, action) ->
-        AlertDialog(onDismissRequest = { serviceConfirmation = null; onConfirmationChanged(false) }, title = { Text(screenContext.getString(action.label())) },
+        AlertDialog(onDismissRequest = { serviceConfirmation = null; onConfirmationChanged(false) }, title = { Text(stringResource(action.label())) },
             text = { Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                Text(screenContext.getString(R.string.tasks_service_confirm, screenContext.getString(action.label()), target.displayName))
+                Text(stringResource(R.string.tasks_service_confirm, stringResource(action.label()), target.displayName))
                 Text(target.name)
-                if (TaskToolsProtocol.critical(target)) Text(screenContext.getString(R.string.tasks_critical_service), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("tasks_critical"))
+                if (TaskToolsProtocol.critical(target)) Text(stringResource(R.string.tasks_critical_service), color = MaterialTheme.colorScheme.error, modifier = Modifier.testTag("tasks_critical"))
             } },
-            confirmButton = { TextButton(onClick = { onService(target, action, true); serviceConfirmation = null; onConfirmationChanged(false) }, enabled = canChange && !confirmationBusy, modifier = Modifier.testTag("tasks_confirm")) { Text(screenContext.getString(R.string.tasks_confirm)) } },
-            dismissButton = { TextButton(onClick = { serviceConfirmation = null; onConfirmationChanged(false) }) { Text(screenContext.getString(R.string.tasks_cancel)) } })
+            confirmButton = { TextButton(onClick = { onService(target, action, true); serviceConfirmation = null; onConfirmationChanged(false) }, enabled = canChange && !confirmationBusy, modifier = Modifier.testTag("tasks_confirm")) { Text(stringResource(R.string.tasks_confirm)) } },
+            dismissButton = { TextButton(onClick = { serviceConfirmation = null; onConfirmationChanged(false) }) { Text(stringResource(R.string.tasks_cancel)) } })
     }
-    if (state.details != null) AlertDialog(onDismissRequest = onDismissDetails, title = { Text(screenContext.getString(R.string.tasks_details)) },
+    if (state.details != null) AlertDialog(onDismissRequest = onDismissDetails, title = { Text(stringResource(R.string.tasks_details)) },
         text = { Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-            if (state.detailsLoading) Text(screenContext.getString(R.string.tasks_loading))
-            state.detailsError?.let { Text(screenContext.getString(it)) }
+            if (state.detailsLoading) Text(stringResource(R.string.tasks_loading))
+            state.detailsError?.let { Text(stringResource(it)) }
             TaskToolsPresentation.details(screenContext, state.details).forEach { (label, value) -> Text("$label: $value") }
-        } }, confirmButton = { TextButton(onClick = onDismissDetails) { Text(screenContext.getString(R.string.tasks_close)) } })
+        } }, confirmButton = { TextButton(onClick = onDismissDetails) { Text(stringResource(R.string.tasks_close)) } })
     state.serviceDetails?.let { service ->
         AlertDialog(onDismissRequest = onDismissDetails, title = { Text(service.displayName) },
             text = { Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                if (state.detailsLoading) Text(screenContext.getString(R.string.tasks_loading))
-                state.detailsError?.let { Text(screenContext.getString(it)) }
-                Text(screenContext.getString(R.string.manage_service_name, service.name))
-                Text(screenContext.getString(R.string.manage_service_state, screenContext.getString(when (service.running) {
+                if (state.detailsLoading) Text(stringResource(R.string.tasks_loading))
+                state.detailsError?.let { Text(stringResource(it)) }
+                Text(stringResource(R.string.manage_service_name, service.name))
+                Text(stringResource(R.string.manage_service_state, stringResource(when (service.running) {
                     true -> R.string.tasks_running; false -> R.string.tasks_stopped; null -> R.string.tasks_unknown
                 })))
-                Text(screenContext.getString(R.string.tasks_start_type, TaskToolsPresentation.startup(screenContext, service.startType)))
-                service.pid?.let { Text(screenContext.getString(R.string.manage_process_pid, it)) }
-            } }, confirmButton = { TextButton(onClick = onDismissDetails) { Text(screenContext.getString(R.string.tasks_close)) } })
+                Text(stringResource(R.string.tasks_start_type, TaskToolsPresentation.startup(screenContext, service.startType)))
+                service.pid?.let { Text(stringResource(R.string.manage_process_pid, it)) }
+            } }, confirmButton = { TextButton(onClick = onDismissDetails) { Text(stringResource(R.string.tasks_close)) } })
     }
 }
 

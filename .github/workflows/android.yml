@@ -19,8 +19,9 @@ jobs:
       - name: Build, unit tests and lint
         run: |
           python3 ci/check_translations.py
+          python3 ci/prepare_play_assets.py
           python3 -m unittest discover -s ci -p 'test_*.py'
-          ./gradlew --no-daemon testDebugUnitTest lintDebug assembleDebug
+          ./gradlew --no-daemon testDirectDebugUnitTest testPlayDebugUnitTest lintDirectDebug lintPlayDebug assembleDirectDebug assemblePlayDebug bundlePlayRelease
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:

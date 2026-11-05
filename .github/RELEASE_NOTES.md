@@ -1,15 +1,25 @@
-## MeshPilot 0.9.9
+## MeshPilot 0.10.1 candidate
 
 MeshPilot is an independent client for MeshCentral servers, not affiliated with or endorsed by the MeshCentral project.
 
-**Trackpad navigation:** move the pointer across the whole zoomed desktop. The view follows near the edges, preserves manual panning and keeps small movements precise.
+**System file picker:** opening and creating documents use a compatible Fragment library. Real Android picker and cancellation tests cover the Activity Result path, while device-credential fallback remains available.
 
-**Computer details:** copy the displayed system information or save a localized UTF-8 text report through Android's file picker. The report includes reported hardware, memory, disks, network, BIOS, board and TPM information.
+**File selection:** the transfer service stays active while Android's file picker is open. A cancelled picker cannot supply the result of a later upload or delete the source document.
 
-The package name and signing key are unchanged. This update installs over 0.9.7 and preserves your settings.
+**Unlock and languages:** without an app PIN, device authentication accepts biometrics or Android's screen lock. With an app PIN, that PIN remains the fallback. The app UI can be set to any of 23 languages.
 
-**Русский:** в режиме тачпада курсор перемещается по всему увеличенному рабочему столу, а изображение следует за ним у краёв. Ручной сдвиг и точность мелких движений сохранены. На экране «Сведения» можно скопировать информацию о компьютере или сохранить её в текстовый файл через системный диалог Android. В отчёт включены полученные сведения об оборудовании, памяти, дисках, сети, BIOS, плате и TPM. Обновление устанавливается поверх 0.9.7 с сохранением настроек; имя пакета и подпись прежние.
+**Inspector while loading:** computer-inspector tabs stay selectable while details load, so a slow read no longer traps you on one tab.
 
-**简体中文：** 触控板模式下，指针可以移动到放大的远程桌面的各个位置，画面会在接近边缘时跟随指针，同时保留手动平移和细微移动的精度。在设备详情中，可以复制系统信息，或通过 Android 文件选择器保存本地化的 UTF-8 文本报告。报告包含设备已提供的硬件、内存、磁盘、网络、BIOS、主板和 TPM 信息。可在 0.9.7 上直接更新并保留设置，软件包名称和签名密钥不变。
+**Remote keyboard layout:** an optional per-computer setting sends physical keys as remote virtual keys and phone-composed text as Unicode, keeping the phone IME unchanged.
 
-See [CHANGELOG](https://github.com/papajon123/meshcentral-android/blob/main/CHANGELOG.md) and [known limitations](https://github.com/papajon123/meshcentral-android/blob/main/docs/KNOWN_LIMITATIONS.md). Physical-phone acceptance of these changes remains pending.
+**User consent:** new desktop, terminal and file sessions can ask the computer user for permission. The server and agent decide, and their automatic approval rules still apply.
+
+**Session navigation:** the main navigation stays available during an ordinary session; only explicit fullscreen hides it.
+
+**Build and distribution:** AGP 9.5.0, Gradle 9.8.2 and OkHttp 5.5.1. The Play distribution hides the external updater and donation link and ships offline English and Russian privacy texts. The package name and signing configuration are unchanged. A debug-build APK upgrade from 0.8.4 to 0.10.0 preserved encrypted credentials.
+
+**Русский:** вход по биометрии или блокировке экрана Android, в том числе без PIN приложения; заданный PIN по-прежнему доступен. Интерфейс переключается между 23 языками. Вкладки сведений о компьютере не блокируются, пока идёт загрузка. Необязательная раскладка удалённой клавиатуры передаёт физические клавиши как виртуальные клавиши удалённого компьютера, а набранный на телефоне текст — как Unicode, не меняя IME. Для новых сеансов рабочего стола, терминала и файлов можно запрашивать согласие пользователя компьютера; решение принимают сервер и агент, их правила автоодобрения действуют. Во время обычного сеанса основная навигация остаётся на экране и скрывается только в полноэкранном режиме. Обновлены AGP 9.5.0, Gradle 9.8.2 и OkHttp 5.5.1. В сборке Play скрыты внешнее обновление и карточка поддержки, добавлены офлайн-тексты политики на английском и русском. Имя пакета и настройка подписи сохранены; отладочное обновление с 0.8.4 сохранило зашифрованные учётные данные.
+
+**Исправление 0.10.1:** устранено падение при открытии системного выбора или сохранения файла. Проверены настоящие окна Android и отмена выбора; разблокировка через блокировку экрана Android сохранена.
+
+See [CHANGELOG](https://github.com/papajon123/meshcentral-android/blob/main/CHANGELOG.md) and [known limitations](https://github.com/papajon123/meshcentral-android/blob/main/docs/KNOWN_LIMITATIONS.md). This is a prerelease. Physical-phone acceptance and Google Play distribution remain pending.

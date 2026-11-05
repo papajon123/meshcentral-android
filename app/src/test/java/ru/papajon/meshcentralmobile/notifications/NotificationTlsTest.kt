@@ -28,6 +28,7 @@ class NotificationTlsTest {
     ) { server ->
         NotificationHttpClient.forServer(server.url("/"), "00".repeat(32), platform).use { client ->
             val error = runCatching { runBlocking { client.fetch(server.url("/events"), "fixture-token", 0) } }.exceptionOrNull()
+            // The notification facade must preserve TLS classification even after address fallback.
             assertTrue(error is SSLException)
             assertEquals(ServerCertificateFailureKind.Changed, error?.serverCertificateFailure()?.kind)
             assertEquals(0, server.requestCount)

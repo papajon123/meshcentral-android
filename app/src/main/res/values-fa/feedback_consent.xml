@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">درخواست اجازه از کاربر رایانه</string>
+    <string name="consent_help">برای نشست‌های جدید دسکتاپ، ترمینال و فایل Mesh Agent درخواست تأیید کنید. تأیید را سرور و عامل کنترل می‌کنند؛ قواعد تأیید خودکار آن‌ها همچنان اعمال می‌شود.</string>
+    <string name="consent_requested">در حال درخواست اجازه برای اتصال…</string>
+    <string name="consent_waiting">در انتظار اجازهٔ دسترسی از سوی کاربر رایانه…</string>
+    <string name="consent_denied">کاربر رایانه اجازهٔ دسترسی نداد.</string>
+    <string name="consent_timeout">مهلت درخواست اجازه تمام شد. می‌توانید دوباره برای اتصال تلاش کنید.</string>
+</resources>

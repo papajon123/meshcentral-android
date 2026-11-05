@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">Pedir permissão ao usuário do computador</string>
+    <string name="consent_help">Solicite aprovação para novas sessões de desktop, terminal e arquivos do Mesh Agent. A aprovação é controlada pelo servidor e pelo agente; suas regras de aprovação automática continuam valendo.</string>
+    <string name="consent_requested">Solicitando permissão para conectar…</string>
+    <string name="consent_waiting">Aguardando o usuário do computador conceder acesso…</string>
+    <string name="consent_denied">O usuário do computador não concedeu acesso.</string>
+    <string name="consent_timeout">A solicitação de permissão expirou. Você pode tentar conectar novamente.</string>
+</resources>

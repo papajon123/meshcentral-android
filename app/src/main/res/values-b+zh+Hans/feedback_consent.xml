@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">向计算机用户请求权限</string>
+    <string name="consent_help">为新的 Mesh Agent 桌面、终端和文件会话请求批准。批准由服务器和代理控制；其自动批准规则仍然有效。</string>
+    <string name="consent_requested">正在请求连接权限…</string>
+    <string name="consent_waiting">正在等待计算机用户授予访问权限…</string>
+    <string name="consent_denied">计算机用户未授予访问权限。</string>
+    <string name="consent_timeout">权限请求已超时。可以再次尝试连接。</string>
+</resources>

@@ -40,6 +40,7 @@ import ru.papajon.meshcentralmobile.mesh.session.RelayProtocol
 import ru.papajon.meshcentralmobile.transfer.TransferOutcome
 
 enum class FileChange { CreateDirectory, Rename, Delete, Upload }
+enum class UploadPickerPhase { None, Choosing, Cancelled }
 
 /** In-memory only; never persisted in a Bundle, saved state, log or preferences. */
 class FileConfirmation(
@@ -65,7 +66,11 @@ data class FilesState(
     val askKeyPass: Boolean = false,
     val androidPhone: Boolean = false,
     val batchBusy: Boolean = false,
-)
+    val uploadPickerPhase: UploadPickerPhase = UploadPickerPhase.None,
+) {
+    val uploadPickerPending: Boolean get() = uploadPickerPhase == UploadPickerPhase.Choosing
+    val uploadPickerOutstanding: Boolean get() = uploadPickerPhase != UploadPickerPhase.None
+}
 
 /** One operation and one chunk in flight. Every retry requires a new explicit user action.
  * All protocol and SAF stream work runs on IO, serialized by a mutex; no per-frame coroutine queue.
@@ -115,6 +120,7 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
     private var pendingCancel: PendingCancel? = null
     private val selectedDownload = AtomicReference<Pair<String, RemoteFile>?>(null)
     private val pendingPicker = AtomicBoolean(false)
+    private val pendingUploadPath = AtomicReference<String?>(null)
     private val lateDocumentMessage = AtomicReference<UiText?>(null)
 
     init {
@@ -196,12 +202,19 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
             connection.state.collect { status ->
                 mutex.withLock {
                     when (status.phase) {
+                        RelayPhase.Waiting -> if ((status.message as? UiText.Resource)?.id == R.string.consent_waiting) {
+                            timeout?.cancel()
+                            mutable.value = mutable.value.copy(connected = false, busy = true, message = status.message)
+                        }
                         RelayPhase.Connected -> if (!sftp && !mutable.value.connected && !closed.get()) {
                             mutable.value = mutable.value.copy(connected = true)
                             guarded { list("") }
                         }
                         RelayPhase.Closed, RelayPhase.Failed -> if (!closed.get()) {
-                            if (listingId != null && (status.message as? UiText.Resource)?.id == R.string.relay_buffer_limit) {
+                            val reason = (status.message as? UiText.Resource)?.id
+                            if (reason == R.string.consent_denied || reason == R.string.consent_timeout) {
+                                fail(reason)
+                            } else if (listingId != null && reason == R.string.relay_buffer_limit) {
                                 fail(R.string.files_directory_failed, preferReason = true)
                             } else fail(R.string.files_disconnected)
                         }
@@ -648,16 +661,65 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
         )
     }
 
+    /** Reserve the selected remote folder before SAF covers the Activity. No upload starts yet. */
+    suspend fun prepareUpload(): Boolean = mutex.withLock {
+        if (disposed.get() || !worker.isActive || !available() || pendingUploadPath.get() != null ||
+            (androidPhone && mutable.value.path.isEmpty())) return@withLock false
+        pendingUploadPath.set(mutable.value.path)
+        mutable.value = mutable.value.copy(busy = true, uploadPickerPhase = UploadPickerPhase.Choosing, message = null)
+        true
+    }
+
+    fun uploadPreparationFailed() = action {
+        if (pendingUploadPath.get() != null) releaseUploadPicker(text(R.string.workspace_background_unavailable))
+    }
+
+    fun uploadChosen(uri: Uri?) = action {
+        val path = pendingUploadPath.getAndSet(null) ?: return@action
+        val snapshot = mutable.value
+        if (snapshot.uploadPickerPhase == UploadPickerPhase.Cancelled) {
+            // Cancellation releases foreground work, but the OS still owes this picker a result.
+            // Consume it before another upload can start; leave any other operation untouched.
+            mutable.value = snapshot.copy(uploadPickerPhase = UploadPickerPhase.None)
+            return@action
+        }
+        if (uri == null) { releaseUploadPicker(); return@action }
+        if (!snapshot.uploadPickerPending || !snapshot.connected || snapshot.path != path ||
+            snapshot.batchBusy || snapshot.confirmation != null) {
+            releaseUploadPicker(text(if (snapshot.connected) R.string.files_cancelled else R.string.files_disconnected))
+            return@action
+        }
+        // Provider metadata stays on the controller's IO worker. Keep the reservation while it is read.
+        val confirmation = uploadConfirmation(uri, path)
+        if (disposed.get() || closed.get() || !worker.isActive) {
+            releaseUploadPicker(text(R.string.files_cancelled))
+            return@action
+        }
+        mutable.value = mutable.value.copy(busy = false, uploadPickerPhase = UploadPickerPhase.None,
+            confirmation = confirmation, message = null)
+    }
+
+    private fun releaseUploadPicker(message: UiText? = null) {
+        pendingUploadPath.set(null)
+        if (mutable.value.uploadPickerPending) {
+            mutable.value = mutable.value.copy(busy = false, uploadPickerPhase = UploadPickerPhase.None, message = message)
+        } else {
+            mutable.value = mutable.value.copy(uploadPickerPhase = UploadPickerPhase.None)
+        }
+    }
+
     fun proposeUpload(uri: Uri) = action {
         if (!available()) return@action
         if (androidPhone && mutable.value.path.isEmpty()) return@action
+        mutable.value = mutable.value.copy(confirmation = uploadConfirmation(uri, mutable.value.path), message = null)
+    }
+
+    private fun uploadConfirmation(uri: Uri, path: String): FileConfirmation {
         var name = ""
         resolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
             if (cursor.moveToFirst()) name = cursor.getString(0).orEmpty()
         }
-        mutable.value = mutable.value.copy(
-            confirmation = FileConfirmation(FileChange.Upload, mutable.value.path, name, source = uri), message = null,
-        )
+        return FileConfirmation(FileChange.Upload, path, name, source = uri)
     }
 
     fun dismissConfirmation() = action { mutable.value = mutable.value.copy(confirmation = null) }
@@ -770,6 +832,12 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
     }
 
     fun cancel() = action {
+        if (mutable.value.uploadPickerPending) {
+            // Do not reuse the single Activity Result launcher until its cancelled selection returns.
+            mutable.value = mutable.value.copy(busy = false, uploadPickerPhase = UploadPickerPhase.Cancelled,
+                message = text(R.string.files_cancelled))
+            return@action
+        }
         if (batch.state.value.pending) { batch.cancel(); return@action }
         val current = transfer
         when {
@@ -1215,6 +1283,8 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
     }
     private fun cleanup(): DownloadDocumentCleanup.Result? {
         selectedDownload.set(null)
+        pendingUploadPath.set(null)
+        mutable.value = mutable.value.copy(uploadPickerPhase = UploadPickerPhase.None)
         val removed = cleanupTransfer()
         listingId = null
         androidDeleteId = null

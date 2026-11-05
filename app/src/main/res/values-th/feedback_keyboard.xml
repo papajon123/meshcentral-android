@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">ใช้เลย์เอาต์แป้นพิมพ์ระยะไกล</string>
+    <string name="desktop_remote_keyboard_map_help">ปุ่มกายภาพใช้เลย์เอาต์ระยะไกล ข้อความที่พิมพ์ด้วยแป้นพิมพ์โทรศัพท์จะถูกส่งเป็นข้อความ</string>
+</resources>

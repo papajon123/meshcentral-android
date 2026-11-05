@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">Ask the computer user for permission</string>
+    <string name="consent_help">Request approval for new Mesh Agent desktop, terminal and file sessions. The server and agent control approval; their automatic approval rules still apply.</string>
+    <string name="consent_requested">Requesting permission to connect…</string>
+    <string name="consent_waiting">Waiting for the computer user to grant access…</string>
+    <string name="consent_denied">The computer user did not grant access.</string>
+    <string name="consent_timeout">The permission request timed out. You can try connecting again.</string>
+</resources>

@@ -26,6 +26,35 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
 
 class ManagedRelayConnectionTest {
+    @Test fun consentCompletionResumesInputAndDoesNotRepeatTheProtocol() = fixture { f ->
+        f.connection.connect(); f.open(); f.text("c")
+        f.text("""{"ctrlChannel":"102938","type":"console","msgid":1}""")
+        assertFalse(f.connection.sendText("blocked-input"))
+        f.text("""{"ctrlChannel":"102938","type":"console","msg":null}""")
+        assertEquals(RelayPhase.Connected, f.connection.state.value.phase)
+        assertNull(f.connection.state.value.message)
+        assertTrue(f.connection.sendText("allowed-input"))
+        assertEquals(1, f.factory.socket.sentText.count { it == "5" })
+    }
+
+    @Test fun consentDenialClosesTheConnectionAndCannotBeRetriedImplicitly() = fixture { f ->
+        f.connection.connect(); f.open(); f.text("c")
+        f.text("""{"ctrlChannel":"102938","type":"console","msgid":2,"msg":"denied"}""")
+        assertEquals(RelayPhase.Failed, f.connection.state.value.phase)
+        assertTrue(f.factory.socket.cancelled)
+        assertFalse(f.connection.sendText("must-not-run"))
+        f.connection.connect()
+        assertEquals(1, f.factory.created)
+    }
+
+    @Test fun serverConsentWaitIsBoundedAndNeverReportedAsReady() = fixture(handshakeTimeout = 50) { f ->
+        f.connection.connect(); f.open(); f.text("c")
+        f.text("""{"ctrlChannel":"102938","type":"console","msgid":1}""")
+        assertEquals(RelayPhase.Waiting, f.connection.state.value.phase)
+        runBlocking { withTimeout(2_000) { f.connection.state.first { it.phase == RelayPhase.Failed } } }
+        assertFalse(f.connection.sendText("must-not-run"))
+    }
+
     @Test fun androidDownloadUsesP10HandshakeAndDrainsBeforeEof() = fixture(RelayProtocol.AgentFileDownload) { f ->
         f.connection.connect(); f.open(); f.text("c")
         assertEquals("10", f.factory.socket.request().url.queryParameter("p"))

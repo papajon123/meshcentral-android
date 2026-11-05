@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">Demander l’autorisation à l’utilisateur de l’ordinateur</string>
+    <string name="consent_help">Demandez l’approbation pour les nouvelles sessions de bureau, de terminal et de fichiers Mesh Agent. L’approbation est contrôlée par le serveur et l’agent. Leurs règles d’approbation automatique s’appliquent toujours.</string>
+    <string name="consent_requested">Demande d’autorisation de connexion…</string>
+    <string name="consent_waiting">En attente de l’autorisation d’accès de l’utilisateur de l’ordinateur…</string>
+    <string name="consent_denied">L’utilisateur de l’ordinateur n’a pas accordé l’accès.</string>
+    <string name="consent_timeout">La demande d’autorisation a expiré. Vous pouvez réessayer de vous connecter.</string>
+</resources>

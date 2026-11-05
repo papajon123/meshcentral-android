@@ -81,7 +81,7 @@ class LauncherLockTest {
             // The lock is process-wide and already exists; a cold start with a PIN begins locked.
             withContext(Dispatchers.Main) { workspace.appLock.lockNow() }
             activity = ActivityScenario.launch(DeviceShortcuts.intent(context, snapshot.devices.single().token))
-            compose.onNodeWithText(context.getString(R.string.lock_title)).assertIsDisplayed()
+            compose.onNodeWithText(context.getString(R.string.app_name)).assertIsDisplayed()
             compose.runOnIdle {
                 assertNull(workspace.selectedDeviceId)
                 assertEquals(snapshot.devices.single().token, workspace.launcherDestination)
@@ -107,7 +107,7 @@ class LauncherLockTest {
                 opened.intent = trackedIntent
             }
             compose.waitForIdle()
-            compose.onNodeWithText(context.getString(R.string.lock_title)).assertDoesNotExist()
+            compose.onNodeWithText(context.getString(R.string.app_name)).assertDoesNotExist()
             compose.runOnIdle { workspace.browseDevices() }
             val forged = java.util.UUID.randomUUID().toString()
             activity.onActivity { opened ->

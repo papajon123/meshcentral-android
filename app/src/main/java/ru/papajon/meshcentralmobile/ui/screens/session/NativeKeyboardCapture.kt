@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import kotlinx.coroutines.delay
 import ru.papajon.meshcentralmobile.BuildConfig
+import ru.papajon.meshcentralmobile.input.HardwareKeyboardController
 import ru.papajon.meshcentralmobile.input.ImeTextDelta
 import ru.papajon.meshcentralmobile.input.NativeRemoteInputSink
 import ru.papajon.meshcentralmobile.input.RemoteKeyCodeMapper
@@ -37,8 +38,10 @@ fun NativeKeyboardCapture(
     input: NativeRemoteInputSink?,
     active: Boolean,
     modifier: Modifier = Modifier,
+    useRemoteKeyboardMap: Boolean = false,
+    isWindows: Boolean = true,
 ) {
-    val field = remember { mutableStateOf<EditText?>(null) }
+    val field = remember { mutableStateOf<RemoteInputField?>(null) }
     val hostContext = LocalContext.current
     val view = field.value
 
@@ -57,6 +60,7 @@ fun NativeKeyboardCapture(
             }
         } else {
             if (view != null) {
+                view.releaseHardwareKeys()
                 manager?.hideSoftInputFromWindow(view.windowToken, 0)
                 view.clearFocus()
                 view.text?.clear()
@@ -67,6 +71,7 @@ fun NativeKeyboardCapture(
     DisposableEffect(hostContext) {
         onDispose {
             field.value?.let { current ->
+                current.releaseHardwareKeys()
                 val manager = hostContext.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 manager?.hideSoftInputFromWindow(current.windowToken, 0)
                 current.text?.clear()
@@ -77,7 +82,12 @@ fun NativeKeyboardCapture(
     AndroidView(
         modifier = modifier,
         factory = { context: Context ->
-            RemoteInputField(context, input).also { view ->
+            RemoteInputField(
+                context,
+                if (active) input else null,
+                useRemoteKeyboardMap,
+                isWindows,
+            ).also { view ->
                 view.layoutParams = ViewGroup.LayoutParams(2, 2)
                 // Almost invisible rather than fully transparent: some ROMs refuse to raise the
                 // keyboard for a view with alpha 0.
@@ -91,7 +101,7 @@ fun NativeKeyboardCapture(
         },
         update = { view ->
             // An inactive invisible editor must not take Tab focus or forward a late IME event.
-            view.sink = if (active) input else null
+            view.updateInput(if (active) input else null, useRemoteKeyboardMap, isWindows)
             view.isFocusable = active
             view.isFocusableInTouchMode = active
         },
@@ -102,14 +112,67 @@ private const val TAG = "NativeKeyboardCapture"
 private const val IME_RETRY_DELAY_MILLIS = 150L
 
 /** Invisible text field whose input connection is rewritten to remote key packets. */
-internal class RemoteInputField(context: Context, var sink: NativeRemoteInputSink?) :
-    EditText(context) {
+internal class RemoteInputField(
+    context: Context,
+    initialSink: NativeRemoteInputSink?,
+    useRemoteKeyboardMap: Boolean = false,
+    isWindows: Boolean = true,
+) : EditText(context) {
+
+    private var currentSink = initialSink
+    var sink: NativeRemoteInputSink?
+        get() = currentSink
+        set(value) { updateInput(value, remoteKeyboardMap, windowsInput) }
+    private var remoteKeyboardMap = useRemoteKeyboardMap
+    private var windowsInput = isWindows
+    private var hardware: HardwareKeyboardController? = initialSink?.let {
+        HardwareKeyboardController(it, isWindows, useRemoteKeyboardMap)
+    }
 
     val forwarder = ImeTextDelta(
         onText = ::typeUnicode,
         onBackspace = { sendVirtualKey(8) },
         onDelete = { sendVirtualKey(46) },
     )
+
+    /** Releases every physical key this field owns before the sink or mode changes. */
+    fun releaseHardwareKeys() {
+        hardware?.releaseAll()
+    }
+
+    override fun onWindowFocusChanged(hasWindowFocus: Boolean) {
+        if (!hasWindowFocus) releaseHardwareKeys()
+        super.onWindowFocusChanged(hasWindowFocus)
+    }
+
+    override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: android.graphics.Rect?) {
+        if (!focused) releaseHardwareKeys()
+        super.onFocusChanged(focused, direction, previouslyFocusedRect)
+    }
+
+    override fun onDetachedFromWindow() {
+        releaseHardwareKeys()
+        super.onDetachedFromWindow()
+    }
+
+    fun updateInput(
+        nextSink: NativeRemoteInputSink?,
+        useRemoteKeyboardMap: Boolean,
+        isWindows: Boolean = windowsInput,
+    ) {
+        if (nextSink === currentSink && useRemoteKeyboardMap == remoteKeyboardMap && isWindows == windowsInput) return
+        // Release against the old sink and old mode before replacing the owner.
+        hardware?.releaseAll()
+        currentSink = nextSink
+        remoteKeyboardMap = useRemoteKeyboardMap
+        windowsInput = isWindows
+        hardware = nextSink?.let { HardwareKeyboardController(it, isWindows, useRemoteKeyboardMap) }
+        if (nextSink == null && isAttachedToWindow) {
+            // Hiding an EditText alone can leave its IME connection accepting Tab/Enter.
+            // Re-query the now-inactive editor so local keyboard navigation resumes.
+            context.getSystemService(InputMethodManager::class.java)?.restartInput(this)
+        }
+    }
 
     fun synchronizeComposition() {
         val editable = text ?: return
@@ -126,7 +189,10 @@ internal class RemoteInputField(context: Context, var sink: NativeRemoteInputSin
         setTextIsSelectable(false)
     }
 
+    override fun onCheckIsTextEditor(): Boolean = currentSink != null && super.onCheckIsTextEditor()
+
     override fun onCreateInputConnection(outAttrs: EditorInfo): InputConnection? {
+        if (currentSink == null) return null
         outAttrs.inputType = inputType
         outAttrs.imeOptions = imeOptions
         val base = super.onCreateInputConnection(outAttrs) ?: return null
@@ -148,9 +214,10 @@ internal class RemoteInputField(context: Context, var sink: NativeRemoteInputSin
     /** Hardware keys arrive on the view rather than through the input connection. */
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
         // System navigation and volume belong to Android, including legacy Back on API 26–32.
-        if (keyCode == KeyEvent.KEYCODE_BACK || keyCode == KeyEvent.KEYCODE_VOLUME_UP ||
-            keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == KeyEvent.KEYCODE_VOLUME_MUTE) {
-            return super.onKeyDown(keyCode, event)
+        if (keyCode in localSystemKeys) return super.onKeyDown(keyCode, event)
+        if (isPhysical(event)) {
+            hardware?.handle(event)
+            return true
         }
         val virtualKey = mapKeyCode(keyCode)
             ?: RemoteKeyCodeMapper.toVirtualKeyCode(keyCode).takeIf { event.unicodeChar == 0 }
@@ -172,7 +239,32 @@ internal class RemoteInputField(context: Context, var sink: NativeRemoteInputSin
         return true
     }
 
-    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean = super.onKeyUp(keyCode, event)
+    override fun onKeyUp(keyCode: Int, event: KeyEvent): Boolean {
+        if (keyCode in localSystemKeys) return super.onKeyUp(keyCode, event)
+        if (isPhysical(event)) {
+            hardware?.handle(event)
+            return true
+        }
+        return super.onKeyUp(keyCode, event)
+    }
+
+    /**
+     * Hardware events carry a non-negative device id (including the built-in keyboard id 0).
+     * Key events synthesised by an IME use the
+     * virtual keyboard id, so they keep the Unicode/composing path below.
+     */
+    private fun isPhysical(event: KeyEvent): Boolean =
+        event.deviceId >= 0 && event.flags and KeyEvent.FLAG_SOFT_KEYBOARD == 0
+
+    private companion object {
+        val localSystemKeys = setOf(
+            KeyEvent.KEYCODE_BACK,
+            KeyEvent.KEYCODE_VOLUME_UP,
+            KeyEvent.KEYCODE_VOLUME_DOWN,
+            KeyEvent.KEYCODE_VOLUME_MUTE,
+            KeyEvent.KEYCODE_POWER,
+        )
+    }
 }
 
 /** Maps Android key codes to Windows virtual key codes, or null for printable characters. */

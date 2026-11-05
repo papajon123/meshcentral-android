@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.management
 
+import ru.papajon.meshcentralmobile.testing.hasSameJsonContent
+
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
@@ -8,7 +10,7 @@ import ru.papajon.meshcentralmobile.mesh.*
 class DevicePowerCommandTest {
     private val device = MeshDevice("node//example", "mesh//example", "Example", conn = 1, agentId = 4, rights = MeshRights.RESET_OFF)
     @Test fun sleepUsesAuditedPowerActionFour() {
-        assertTrue(JSONObject("""{"action":"poweraction","nodeids":["node//example"],"actiontype":4}""").similar(DevicePowerCommand.create(device, true, DevicePowerAction.Sleep)))
+        assertTrue(JSONObject("""{"action":"poweraction","nodeids":["node//example"],"actiontype":4}""").hasSameJsonContent(DevicePowerCommand.create(device, true, DevicePowerAction.Sleep)))
     }
     @Test fun sleepRequiresResetOffFreshConnectivityAndComputerAgent() {
         for (denied in listOf(device.copy(rights = null), device.copy(rights = MeshRights.REMOTE_CONTROL),

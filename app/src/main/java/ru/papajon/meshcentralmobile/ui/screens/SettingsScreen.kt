@@ -113,6 +113,8 @@ fun SettingsScreen(
     forwarding: @Composable () -> Unit = {},
     onStylusPrecisionChanged: (Boolean) -> Unit = {},
     onHideDevicesWhenLockedChanged: (Boolean) -> Unit = {},
+    onBiometricVerificationRequested: (((Boolean, String?) -> Unit) -> Unit)? = null,
+    onRequestUserConsentChanged: (Boolean) -> Unit = {},
 ) {
     var newPin by remember { mutableStateOf("") }
     var message by remember {
@@ -163,6 +165,7 @@ fun SettingsScreen(
         }
 
         AppearanceSection()
+        ru.papajon.meshcentralmobile.ui.components.AppLanguagePicker()
         onBackup?.let { action -> TextButton(onClick = action) { Text(stringResource(R.string.backup_title)) } }
         SettingsStatusStrip(message = message.asString())
 
@@ -233,15 +236,24 @@ fun SettingsScreen(
                     SettingsDivider()
                     SettingsSwitchRow(
                         icon = Icons.Outlined.Fingerprint,
-                        title = stringResource(R.string.settings_biometric_unlock),
-                        supporting = stringResource(R.string.settings_biometric_unlock_supporting),
+                        title = stringResource(R.string.auth_setting_title),
+                        supporting = stringResource(R.string.auth_setting_help),
                         checked = settings.biometricUnlockEnabled,
-                        onCheckedChange = {
-                            onBiometricUnlockChanged(it)
-                            message = if (it) {
-                                UiText.resource(R.string.settings_biometric_enabled)
+                        onCheckedChange = { enabled ->
+                            if (!enabled) {
+                                onBiometricUnlockChanged(false)
+                                message = UiText.resource(R.string.settings_biometric_disabled)
+                            } else if (onBiometricVerificationRequested != null) {
+                                onBiometricVerificationRequested { verified, error ->
+                                    if (verified) {
+                                        onBiometricUnlockChanged(true)
+                                        message = UiText.resource(R.string.settings_biometric_enabled)
+                                    } else if (error != null) {
+                                        message = UiText.literal(error)
+                                    }
+                                }
                             } else {
-                                UiText.resource(R.string.settings_biometric_disabled)
+                                message = UiText.resource(R.string.auth_unavailable)
                             }
                         },
                     )
@@ -249,6 +261,14 @@ fun SettingsScreen(
                     SettingsAutoLockRow(
                         currentSeconds = settings.lockTimeoutSeconds,
                         onLockTimeoutChanged = onLockTimeoutChanged,
+                    )
+                    SettingsDivider()
+                    SettingsSwitchRow(
+                        icon = Icons.Outlined.Security,
+                        title = stringResource(R.string.consent_setting),
+                        supporting = stringResource(R.string.consent_help),
+                        checked = settings.requestUserConsent,
+                        onCheckedChange = onRequestUserConsentChanged,
                     )
                 }
             }
@@ -398,6 +418,9 @@ fun SettingsScreen(
         updates()
 
         SupportCard(url = BuildConfig.SUPPORT_URL)
+        if (!BuildConfig.EXTERNAL_UPDATES_ENABLED) {
+            ru.papajon.meshcentralmobile.ui.components.PlayPrivacyPolicyButton()
+        }
 
         SettingsSection(
             title = stringResource(R.string.settings_section_about),

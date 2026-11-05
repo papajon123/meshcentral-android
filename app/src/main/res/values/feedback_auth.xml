@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">Use biometrics or your phone screen lock to open the app.</string>
+    <string name="auth_unavailable">Device authentication is unavailable. Check Android security settings and try again.</string>
+    <string name="auth_security_settings">Open Android security settings</string>
+    <string name="auth_setting_title">Device authentication</string>
+    <string name="auth_setting_help">Use biometrics or your phone screen lock. An app PIN remains available if configured.</string>
+    <string name="auth_unlock_action">Unlock with device authentication</string>
+</resources>

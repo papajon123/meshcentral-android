@@ -172,7 +172,18 @@ internal fun X509Certificate.failure(
 class ServerCertificateException(val failure: ServerCertificateFailure) :
     CertificateException("Server certificate ${failure.kind.name}")
 
-/** TLS providers wrap CertificateException; retain the typed reason without exposing raw messages. */
-fun Throwable.serverCertificateFailure(): ServerCertificateFailure? =
-    generateSequence(this) { it.cause }.take(16)
-        .filterIsInstance<ServerCertificateException>().firstOrNull()?.failure
+/** Preserve typed certificate rejection across provider wrappers and alternate-address failures. */
+fun Throwable.serverCertificateFailure(): ServerCertificateFailure? {
+    val seen = java.util.Collections.newSetFromMap(java.util.IdentityHashMap<Throwable, Boolean>())
+    val pending = java.util.ArrayDeque<Throwable>()
+    pending.add(this)
+    while (pending.isNotEmpty() && seen.size < 64) {
+        val current = pending.removeFirst()
+        if (!seen.add(current)) continue
+        if (current is ServerCertificateException) return current.failure
+        current.cause?.let(pending::addLast)
+        // OkHttp may report a later address's ConnectException with the TLS rejection suppressed.
+        current.suppressed.take(64).forEach(pending::addLast)
+    }
+    return null
+}

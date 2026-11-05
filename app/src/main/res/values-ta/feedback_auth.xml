@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">பயன்பாட்டைத் திறக்க பயோமெட்ரிக் அல்லது தொலைபேசியின் திரைப் பூட்டைப் பயன்படுத்தவும்.</string>
+    <string name="auth_unavailable">சாதன அங்கீகாரம் கிடைக்கவில்லை. Android பாதுகாப்பு அமைப்புகளைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.</string>
+    <string name="auth_security_settings">Android பாதுகாப்பு அமைப்புகளைத் திற</string>
+    <string name="auth_setting_title">சாதன அங்கீகாரம்</string>
+    <string name="auth_setting_help">பயோமெட்ரிக் அல்லது தொலைபேசியின் திரைப் பூட்டைப் பயன்படுத்தவும். பயன்பாட்டு PIN அமைக்கப்பட்டிருந்தால் அது தொடர்ந்து கிடைக்கும்.</string>
+    <string name="auth_unlock_action">சாதன அங்கீகாரத்துடன் அன்லாக் செய்</string>
+</resources>

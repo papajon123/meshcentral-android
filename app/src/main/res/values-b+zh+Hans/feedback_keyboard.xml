@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">使用远程键盘布局</string>
+    <string name="desktop_remote_keyboard_map_help">物理按键使用远程布局。手机键盘输入的文本将以文本形式发送。</string>
+</resources>

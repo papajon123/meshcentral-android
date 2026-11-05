@@ -1,20 +1,19 @@
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
     namespace = "ru.papajon.meshcentralmobile"
-    compileSdk = 36
-    buildToolsVersion = "35.0.0"
+    compileSdk = 37
+    buildToolsVersion = "36.0.0"
 
     defaultConfig {
         applicationId = "io.github.papajon123.meshcentral"
         minSdk = 26
         targetSdk = 36
-        versionCode = 33
-        versionName = "0.9.9"
+        versionCode = 35
+        versionName = "0.10.1"
         // Keep dependency-only locales from taking precedence over a supported system fallback.
         resourceConfigurations.addAll(listOf(
             "en", "ru", "zh", "b+zh+Hans", "b+zh+Hant", "es", "fr", "pt", "de", "ar", "hi", "bn", "ur",
@@ -23,9 +22,23 @@ android {
 
         // Donation page shown in Settings; an empty value hides the card (e.g. for a store with payment rules).
         buildConfigField("String", "SUPPORT_URL", "\"https://boosty.to/papajon123\"")
+        buildConfigField("boolean", "EXTERNAL_UPDATES_ENABLED", "true")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
+    }
+
+    flavorDimensions += "distribution"
+    productFlavors {
+        create("direct") {
+            dimension = "distribution"
+            isDefault = true
+        }
+        create("play") {
+            dimension = "distribution"
+            buildConfigField("boolean", "EXTERNAL_UPDATES_ENABLED", "false")
+            buildConfigField("String", "SUPPORT_URL", "\"\"")
+        }
     }
 
     val releaseKeystoreFile = System.getenv("ANDROID_RELEASE_KEYSTORE_FILE")
@@ -62,19 +75,24 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     buildFeatures {
         compose = true
         buildConfig = true
     }
 }
 
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
+}
+
 dependencies {
-    implementation("com.google.zxing:core:3.5.3")
-    implementation(platform("androidx.compose:compose-bom:2024.12.01"))
+    implementation("androidx.biometric:biometric:1.1.0")
+    // Biometric 1.1 otherwise selects Fragment 1.2.5, which rejects Activity Result request codes.
+    implementation("androidx.fragment:fragment:1.8.9")
+    implementation("com.google.zxing:core:3.5.4")
+    implementation(platform("androidx.compose:compose-bom:2026.09.00"))
     implementation("androidx.activity:activity-compose:1.9.3")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.material:material-icons-extended")
@@ -83,22 +101,22 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
-    implementation("androidx.work:work-runtime-ktx:2.10.1")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
+    implementation("androidx.work:work-runtime-ktx:2.12.0")
+    implementation("com.squareup.okhttp3:okhttp:5.5.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
 
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("com.squareup.okhttp3:okhttp-tls:4.12.0")
-    testImplementation("org.json:json:20240303")
-    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.12.01"))
+    testImplementation("com.squareup.okhttp3:okhttp-tls:5.5.1")
+    testImplementation("org.json:json:20260814")
+    testImplementation("com.squareup.okhttp3:mockwebserver:5.5.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2026.09.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")
     androidTestImplementation("androidx.test.espresso:espresso-intents:3.7.0")
-    androidTestImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
-    androidTestImplementation("com.squareup.okhttp3:okhttp-tls:4.12.0")
+    androidTestImplementation("com.squareup.okhttp3:mockwebserver:5.5.1")
+    androidTestImplementation("com.squareup.okhttp3:okhttp-tls:5.5.1")
 }

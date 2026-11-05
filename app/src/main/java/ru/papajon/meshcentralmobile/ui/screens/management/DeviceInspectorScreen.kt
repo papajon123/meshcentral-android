@@ -250,7 +250,9 @@ fun DeviceInspectorScreen(
             onBack = onBack,
             busy = busy,
         )
-        if (phoneDevice == null) InspectorTabs(selected = selectedTab, enabled = !busy, onSelect = { selectedTab = it })
+        // Reading data or waiting for a mutation must never trap the user on a tab.
+        // Individual mutation/refresh controls keep their own busy guards.
+        if (phoneDevice == null) InspectorTabs(selected = selectedTab, enabled = true, onSelect = { selectedTab = it })
 
         Box(Modifier.weight(1f).fillMaxWidth()) {
             val contentModifier = Modifier

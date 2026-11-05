@@ -61,6 +61,8 @@ internal class ManagedRelayConnection(
     private var startJob: Job? = null
     private var timeoutJob: Job? = null
     private var ended = false
+    private var protocolStarted = false
+    private var consentWaiting = false
     private var mediaListing: JSONObject? = null
     private val tunnelId = MeshControlMessages.randomTunnelId(SecureRandom())
     internal val responseId = "android-relay-$tunnelId"
@@ -217,6 +219,25 @@ internal class ManagedRelayConnection(
         if (response.has("dir") && response.optInt("reqid", -1) == request.optInt("reqid", -2)) mediaListing = null
     }
 
+    private fun waitForConsent() {
+        if (!protocolStarted || consentWaiting) return
+        consentWaiting = true
+        mutableState.value = mutableState.value.copy(phase = RelayPhase.Waiting,
+            message = UiText.Resource(R.string.consent_waiting))
+        timeoutJob?.cancel()
+        timeoutJob = scope.launch {
+            delay(handshakeTimeoutMillis)
+            synchronized(lock) { if (!ended && consentWaiting) fail(R.string.consent_timeout) }
+        }
+    }
+
+    private fun finishConsentWait() {
+        if (!consentWaiting) return
+        consentWaiting = false
+        timeoutJob?.cancel()
+        mutableState.value = mutableState.value.copy(phase = RelayPhase.Connected, message = null)
+    }
+
     private inner class Listener : WebSocketListener() {
         override fun onOpen(webSocket: WebSocket, response: Response) = synchronized(lock) {
             if (ended || socket !== webSocket) { webSocket.cancel(); return@synchronized }
@@ -233,13 +254,14 @@ internal class ManagedRelayConnection(
                 oversizedMediaListing()?.let { return@synchronized it }
                 fail(R.string.relay_buffer_limit); return
             }
-            if (agent && mutableState.value.phase == RelayPhase.Waiting && (text == "c" || text == "cr")) {
+            if (agent && !protocolStarted && mutableState.value.phase == RelayPhase.Waiting && (text == "c" || text == "cr")) {
                 val sentOptions = optionsText?.let { webSocket.send(it) } ?: true
                 optionsText = null
                 if (!sentOptions || !webSocket.send(protocol.usage.toString())) {
                     fail(R.string.relay_connection_failed); return
                 }
                 timeoutJob?.cancel()
+                protocolStarted = true
                 mutableState.value = RelayStatus(RelayPhase.Connected, recorded = text == "cr")
                 return
             }
@@ -252,6 +274,11 @@ internal class ManagedRelayConnection(
                             return
                         }
                         "close" -> { fail(R.string.relay_remote_closed); return }
+                        "console" -> when (control.optInt("msgid", -1)) {
+                            1 -> { waitForConsent(); return }
+                            2 -> { fail(R.string.consent_denied); return }
+                            else -> if (control.opt("msg") == JSONObject.NULL) { finishConsentWait(); return }
+                        }
                         // pong, RTT, recording and other relay metadata are not file bytes.
                         else -> if (protocol == RelayProtocol.AgentFileDownload) return
                     }
@@ -259,7 +286,8 @@ internal class ManagedRelayConnection(
             }
             if (protocol == RelayProtocol.AgentFileDownload && (text == "pong" || text == "ping")) return
             if (mediaListing != null) observeMediaResponse(text)
-            // Includes consent/status control messages before Agent readiness and raw SSH auth messages.
+            if (agent && protocolStarted && consentWaiting) finishConsentWait()
+            // Includes other status control messages and raw SSH auth messages.
             RelayFrame.Text(text)
           }
           receive(frame)
@@ -273,6 +301,7 @@ internal class ManagedRelayConnection(
                 oversizedMediaListing()?.let { return@synchronized it }
                 fail(R.string.relay_buffer_limit); return
             }
+            if (agent && protocolStarted && consentWaiting) finishConsentWait()
             if (agent && mutableState.value.phase != RelayPhase.Connected) { fail(R.string.relay_protocol_error); return }
             if (mediaListing != null && bytes.size > 1 && bytes[0] == '{'.code.toByte()) observeMediaResponse(bytes.utf8())
             RelayFrame.Binary(bytes.toByteArray())

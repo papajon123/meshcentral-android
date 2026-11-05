@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_privacy_policy">개인정보 처리방침</string>
+    <string name="play_privacy_unavailable">개인정보 처리방침을 열 수 없습니다.</string>
+</resources>

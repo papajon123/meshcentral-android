@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">Gunakan tata letak keyboard jarak jauh</string>
+    <string name="desktop_remote_keyboard_map_help">Tombol fisik menggunakan tata letak jarak jauh. Teks yang diketik dengan keyboard ponsel dikirim sebagai teks.</string>
+</resources>

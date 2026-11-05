@@ -360,6 +360,7 @@ fun TextSheet(
     onClose: () -> Unit,
 ) {
     val context = LocalContext.current
+    val textClipLabel = stringResource(R.string.session_text_clip_label)
     var draft by rememberSaveable { mutableStateOf("") }
     var message by remember { mutableStateOf<UiText?>(null) }
 
@@ -426,7 +427,7 @@ fun TextSheet(
                         if (draft.isNotEmpty()) {
                             RemoteInputBridge.copyToAndroidClipboard(
                                 context,
-                                context.getString(R.string.session_text_clip_label),
+                                textClipLabel,
                                 draft,
                             )
                             message = UiText.Resource(R.string.session_text_copied)
@@ -460,6 +461,7 @@ fun ClipboardSheet(
     onClose: () -> Unit,
 ) {
     val context = LocalContext.current
+    val clipboardCopyLabel = stringResource(R.string.session_clipboard_copy_label)
     val transfer by meshClient.clipboardState.collectAsState()
 
     MeshSheet(onDismissRequest = onClose) {
@@ -533,7 +535,7 @@ fun ClipboardSheet(
                                 TextButton(onClick = {
                                     RemoteInputBridge.copyToAndroidClipboard(
                                         context,
-                                        context.getString(R.string.session_clipboard_copy_label),
+                                        clipboardCopyLabel,
                                         current.text,
                                     )
                                 }) {
@@ -629,6 +631,8 @@ fun SessionOptionsSheet(
     onEnterPip: () -> Unit = {},
     hardwareKeyboardCaptured: Boolean = true,
     onHardwareKeyboardCaptured: (Boolean) -> Unit = {},
+    useRemoteKeyboardMap: Boolean = false,
+    onUseRemoteKeyboardMap: (Boolean) -> Unit = {},
 ) {
     var quality by remember(state.quality) { mutableStateOf(state.quality.jpegQuality.toFloat()) }
     var frameRate by remember(state.quality) { mutableStateOf(state.quality.frameRate.toFloat()) }
@@ -700,7 +704,8 @@ fun SessionOptionsSheet(
 
             DesktopExtraOptions(state, onScaling, twoFingerAction, onTwoFingerAction, pinchEnabled,
                 onPinchEnabled, pipSupported, pipAutomatic, onPipAutomatic, onEnterPip,
-                hardwareKeyboardCaptured, onHardwareKeyboardCaptured)
+                hardwareKeyboardCaptured, onHardwareKeyboardCaptured,
+                useRemoteKeyboardMap, onUseRemoteKeyboardMap)
 
             SectionLabel(stringResource(R.string.session_options_connection))
             FlowRow(

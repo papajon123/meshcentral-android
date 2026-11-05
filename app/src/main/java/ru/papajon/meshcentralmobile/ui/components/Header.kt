@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import ru.papajon.meshcentralmobile.model.AppDestination
@@ -72,7 +73,7 @@ fun MeshNavigationBar(current: AppDestination, onSelect: (AppDestination) -> Uni
         AppDestination.entries.forEach { destination ->
             val label = appDestinationLabel(destination)
             NavigationBarItem(
-                modifier = Modifier.semantics { contentDescription = label },
+                modifier = Modifier.testTag("main-navigation-${destination.name}").semantics { contentDescription = label },
                 selected = destination == current,
                 onClick = { onSelect(destination) },
                 icon = { Icon(destination.icon(), contentDescription = null, modifier = Modifier.size(24.dp)) },
@@ -109,7 +110,7 @@ fun MeshNavigationRail(current: AppDestination, onSelect: (AppDestination) -> Un
                     selectedTextColor = MaterialTheme.colorScheme.primary,
                     indicatorColor = MaterialTheme.colorScheme.primaryContainer,
                 ),
-                modifier = Modifier.padding(vertical = 4.dp).semantics { contentDescription = label },
+                modifier = Modifier.padding(vertical = 4.dp).testTag("main-navigation-${destination.name}").semantics { contentDescription = label },
             )
         }
     }

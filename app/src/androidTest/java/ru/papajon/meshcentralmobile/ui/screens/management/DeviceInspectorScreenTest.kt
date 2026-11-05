@@ -14,6 +14,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.assertIsEnabled
+import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -235,6 +237,35 @@ class DeviceInspectorScreenTest {
         show(loading = true, error = "request failed", onOpenHelp = {})
         compose.onNodeWithTag(DeviceInspectorTestTags.ErrorRefresh).assertIsNotEnabled()
         compose.onNodeWithTag(DeviceInspectorTestTags.ErrorHelp).assertIsNotEnabled()
+    }
+
+    @Test
+    fun loadingServicesDoesNotTrapNavigationOrRepeatMutations() {
+        val loading = mutableStateOf(false)
+        var loads = 0
+        var mutations = 0
+        compose.setContent {
+            MeshCentralMobileTheme {
+                DeviceInspectorScreen(
+                    snapshot, emptyList(), listOf(browser), loading.value, null,
+                    setOf(DevicePowerAction.Restart), true,
+                    onRefresh = {}, onLoadServices = { loads++; loading.value = true },
+                    onLoadProcesses = {}, onPower = { mutations++ },
+                    onServiceAction = { _, _ -> mutations++ }, onBack = {},
+                    modifier = Modifier.safeDrawingPadding(),
+                )
+            }
+        }
+        compose.onNodeWithTag(DeviceInspectorTestTags.tab(DeviceInspectorTab.Services)).performClick()
+        compose.onNodeWithTag(DeviceInspectorTestTags.PowerMenu).assertIsNotEnabled()
+        compose.onNodeWithTag(DeviceInspectorTestTags.tab(DeviceInspectorTab.Details)).assertIsEnabled().performClick()
+        compose.onNodeWithTag(DeviceInspectorTestTags.tab(DeviceInspectorTab.Details)).assertIsSelected()
+        compose.runOnIdle { loading.value = false }
+        compose.onNodeWithTag(DeviceInspectorTestTags.tab(DeviceInspectorTab.Details)).assertIsSelected()
+        compose.runOnIdle {
+            assertEquals(1, loads)
+            assertEquals(0, mutations)
+        }
     }
 
     @Test

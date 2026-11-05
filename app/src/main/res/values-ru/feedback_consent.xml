@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">Запрашивать разрешение на подключение</string>
+    <string name="consent_help">Запрашивать подтверждение для новых сеансов рабочего стола, терминала и работы с файлами Mesh Agent. Подтверждением управляют сервер и агент; их правила автоматического подтверждения продолжают действовать.</string>
+    <string name="consent_requested">Запрашиваем разрешение на подключение…</string>
+    <string name="consent_waiting">Ожидание разрешения пользователя компьютера…</string>
+    <string name="consent_denied">Пользователь компьютера не разрешил доступ.</string>
+    <string name="consent_timeout">Время ожидания разрешения истекло. Можно попробовать подключиться снова.</string>
+</resources>

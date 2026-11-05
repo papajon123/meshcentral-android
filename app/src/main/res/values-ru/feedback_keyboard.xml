@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">Использовать раскладку удалённой клавиатуры</string>
+    <string name="desktop_remote_keyboard_map_help">Физические клавиши используют удалённую раскладку. Текст, набранный на клавиатуре телефона, отправляется как текст.</string>
+</resources>

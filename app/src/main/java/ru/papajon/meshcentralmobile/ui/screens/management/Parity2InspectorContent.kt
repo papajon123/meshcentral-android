@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
@@ -67,6 +68,7 @@ private fun DeviceRemovalAction.label() = if (this == DeviceRemovalAction.Uninst
 @Composable
 internal fun HardwareDetailsContent(details: HardwareDetails, online: Boolean) {
     val unknown = stringResource(R.string.parity_unknown)
+    val locale = LocalLocale.current.platformLocale
     fun value(text: String?) = text ?: unknown
     @Composable fun flag(flag: Boolean?) = stringResource(when (flag) { true -> R.string.parity_yes; false -> R.string.parity_no; null -> R.string.parity_unknown })
     @Composable fun line(label: Int, text: String?) { Text("${stringResource(label)}: ${value(text)}") }
@@ -96,7 +98,7 @@ internal fun HardwareDetailsContent(details: HardwareDetails, online: Boolean) {
             val now = System.currentTimeMillis()
             val uptime = details.lastBootMillis?.takeIf { online && it <= now }?.let {
                 val seconds = (now - it) / 1000
-                String.format(java.util.Locale.getDefault(), "%d:%02d:%02d", seconds / 3600, seconds / 60 % 60, seconds % 60)
+                String.format(locale, "%d:%02d:%02d", seconds / 3600, seconds / 60 % 60, seconds % 60)
             }
             line(R.string.parity2_uptime, uptime)
             Text(stringResource(R.string.parity_security_cached), style = MaterialTheme.typography.bodySmall)

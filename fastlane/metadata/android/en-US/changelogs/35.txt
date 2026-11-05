@@ -1,0 +1,2 @@
+Fix a crash when opening or saving files with Android's system document picker. Keep biometric and phone screen-lock fallback working. Includes the language, session navigation, consent and remote keyboard improvements prepared for 0.10.0.
+Keep the transfer service active while choosing a source. Cancelled picker results cannot restart an upload or delete the source.

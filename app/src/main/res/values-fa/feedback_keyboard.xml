@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">استفاده از چیدمان صفحه‌کلید راه دور</string>
+    <string name="desktop_remote_keyboard_map_help">کلیدهای فیزیکی از چیدمان راه دور استفاده می‌کنند. متنی که با صفحه‌کلید گوشی ساخته می‌شود به‌صورت متن ارسال می‌شود.</string>
+</resources>

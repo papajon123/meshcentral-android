@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.input.KeyboardType
@@ -30,6 +31,7 @@ import ru.papajon.meshcentralmobile.ui.theme.MeshTheme
 @Composable
 fun BackupScreen(settings: SettingsRepository, onClose: () -> Unit, onPreferencesImported: () -> Unit, locked: Boolean = false) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val repository = remember(settings) { SettingsBackupRepository(settings) }
     val session: BackupSession = androidx.lifecycle.viewmodel.compose.viewModel()
     val scope = session.viewModelScope
@@ -44,7 +46,7 @@ fun BackupScreen(settings: SettingsRepository, onClose: () -> Unit, onPreference
     var preview by session::preview
     var applyPreferences by session::applyPreferences
     var skipDuplicates by session::skipDuplicates
-    fun fail(error: Exception? = null) { message = context.getString(when ((error as? BackupException)?.reason) {
+    fun fail(error: Exception? = null) { message = resources.getString(when ((error as? BackupException)?.reason) {
         BackupFailureReason.NewerVersion -> R.string.backup_error_newer
         BackupFailureReason.PasswordOrTampered -> R.string.backup_error_auth
         BackupFailureReason.Corrupt -> R.string.backup_error_corrupt
@@ -75,7 +77,7 @@ fun BackupScreen(settings: SettingsRepository, onClose: () -> Unit, onPreference
             busy = true
             try {
                 withContext(Dispatchers.IO) { BackupDocuments.write(context.contentResolver, uri, bytes) }
-                message = context.getString(R.string.backup_saved)
+                message = resources.getString(R.string.backup_saved)
             } catch (cancelled: CancellationException) { throw cancelled }
             catch (_: Exception) { fail() }
             finally { bytes.fill(0); busy = false }
@@ -145,7 +147,7 @@ fun BackupScreen(settings: SettingsRepository, onClose: () -> Unit, onPreference
                     if (duplicateIds.isNotEmpty())
                         BackupCheck(stringResource(R.string.backup_skip_duplicates), skipDuplicates, !busy) { skipDuplicates = it }
                     val values = pending.preferences
-                    fun enabledLabel(value: Boolean) = context.getString(if (value) R.string.backup_value_on else R.string.backup_value_off)
+                    fun enabledLabel(value: Boolean) = resources.getString(if (value) R.string.backup_value_on else R.string.backup_value_off)
                     val themeLabel = stringResource(when (values.themeMode) {
                         "Light" -> R.string.settings_theme_light
                         "Dark" -> R.string.settings_theme_dark
@@ -165,7 +167,7 @@ fun BackupScreen(settings: SettingsRepository, onClose: () -> Unit, onPreference
                                 val count = repository.importConfirmed(pending, applyPreferences, skipDuplicates)
                                 onPreferencesImported()
                                 preview = null; encryptedInput?.fill(0); encryptedInput = null
-                                message = context.getString(R.string.backup_imported, count)
+                                message = resources.getString(R.string.backup_imported, count)
                             } catch (_: Exception) { fail() }
                             finally { busy = false }
                         }
@@ -201,13 +203,13 @@ fun BackupScreen(settings: SettingsRepository, onClose: () -> Unit, onPreference
                     Button(enabled = !busy, onClick = {
                         val encrypt = password.isNotEmpty() || includeKeys
                         if (encrypt && (password.length !in 8..1024 || password != confirmation)) {
-                            message = context.getString(R.string.backup_password_mismatch)
+                            message = resources.getString(R.string.backup_password_mismatch)
                         } else {
                             val pass = password.toCharArray(); clearPassword(); busy = true; message = null
                             scope.launch {
                                 try {
                                     val snapshot = repository.snapshot(includeKeys)
-                                    if (snapshot.profiles.isEmpty()) message = context.getString(R.string.backup_no_profiles)
+                                    if (snapshot.profiles.isEmpty()) message = resources.getString(R.string.backup_no_profiles)
                                     else {
                                         session.exportEncrypted = encrypt
                                         exportBytes = withContext(Dispatchers.IO) {
@@ -216,7 +218,7 @@ fun BackupScreen(settings: SettingsRepository, onClose: () -> Unit, onPreference
                                         }
                                     }
                                 } catch (cancelled: CancellationException) { throw cancelled }
-                                catch (_: UnsupportedExportProfile) { message = context.getString(R.string.backup_no_profiles) }
+                                catch (_: UnsupportedExportProfile) { message = resources.getString(R.string.backup_no_profiles) }
                                 catch (_: Exception) { exportBytes?.fill(0); exportBytes = null; fail() }
                                 finally { pass.fill('\u0000'); busy = false }
                             }

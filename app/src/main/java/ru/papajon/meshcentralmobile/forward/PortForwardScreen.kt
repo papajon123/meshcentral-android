@@ -60,6 +60,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -122,6 +123,7 @@ public fun PortForwardScreen(
     onBack: () -> Unit,
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val clipboard = LocalClipboardManager.current
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
@@ -142,7 +144,7 @@ public fun PortForwardScreen(
     }
 
     fun notify(@StringRes message: Int) {
-        scope.launch { snackbar.showSnackbar(context.getString(message)) }
+        scope.launch { snackbar.showSnackbar(resources.getString(message)) }
     }
 
     fun openRule(rule: PortForwardRule, port: Int) {
@@ -489,7 +491,7 @@ private fun AddRuleDialog(
     onDismiss: () -> Unit,
     onSave: (PortForwardRule) -> Boolean,
 ) {
-    val context = LocalContext.current
+    val resources = LocalResources.current
     val focus = LocalFocusManager.current
     val keyboard = LocalSoftwareKeyboardController.current
 
@@ -515,7 +517,7 @@ private fun AddRuleDialog(
         templateId = template.id
         kindName = template.kind.name
         remotePort = if (template.kind == ForwardKind.CUSTOM) "" else template.port.toString()
-        if (name.isBlank()) name = context.getString(template.label)
+        if (name.isBlank()) name = resources.getString(template.label)
         templateMenu = false
         error = null
     }

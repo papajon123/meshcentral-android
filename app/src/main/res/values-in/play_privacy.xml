@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_privacy_policy">Kebijakan privasi</string>
+    <string name="play_privacy_unavailable">Tidak dapat membuka kebijakan privasi.</string>
+</resources>

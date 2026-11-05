@@ -54,7 +54,12 @@ fun OnboardingScreen(
         modifier = Modifier
             .background(MaterialTheme.colorScheme.background)
             .windowInsetsPadding(WindowInsets.systemBars),
-        introductoryContent = { OnboardingIntroduction() },
+        introductoryContent = {
+            OnboardingIntroduction()
+            if (!ru.papajon.meshcentralmobile.BuildConfig.EXTERNAL_UPDATES_ENABLED) {
+                ru.papajon.meshcentralmobile.ui.components.PlayPrivacyPolicyButton()
+            }
+        },
     )
 }
 

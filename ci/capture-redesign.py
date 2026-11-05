@@ -41,7 +41,7 @@ try:
         old_locales = match[1]
         adb('shell', 'cmd', 'locale', 'set-app-locales', args.package, '--locales', args.locale)
     result = adb('shell', 'am', 'instrument', '-w', '-r', '-e', 'class',
-                 'ru.papajon.meshcentralmobile.ui.RedesignGalleryTest',
+                 'ru.papajon.meshcentralmobile.ui.RedesignGalleryTest#rendersEveryReachableProductionScreenIntoPngs',
                  '-e', 'redesignGallery', 'true', '-e', 'galleryPhase', 'after',
                  '-e', 'galleryTheme', args.theme, '-e', 'galleryLocale', args.locale,
                  args.package + '.test/androidx.test.runner.AndroidJUnitRunner')
@@ -49,7 +49,7 @@ finally:
     if old_locales is not None:
         adb('shell', 'cmd', 'locale', 'set-app-locales', args.package, '--locales', old_locales or '""')
 (args.output / 'instrumentation.log').write_bytes(result)
-if b'OK (1 test)' not in result or b'FAILURES!!!' in result:
+if not re.search(rb'OK \([1-9][0-9]* tests?\)', result) or b'FAILURES!!!' in result:
     raise RuntimeError('Gallery failed; inspect instrumentation.log.')
 raw_manifest = adb('exec-out', 'run-as', args.package, 'cat', 'cache/redesign-after-manifest.json')
 manifest = json.loads(raw_manifest)

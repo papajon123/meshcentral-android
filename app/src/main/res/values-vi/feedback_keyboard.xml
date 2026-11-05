@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">Dùng bố cục bàn phím từ xa</string>
+    <string name="desktop_remote_keyboard_map_help">Các phím vật lý dùng bố cục từ xa. Văn bản soạn bằng bàn phím điện thoại được gửi dưới dạng văn bản.</string>
+</resources>

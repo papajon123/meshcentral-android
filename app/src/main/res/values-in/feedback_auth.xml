@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">Gunakan biometrik atau kunci layar ponsel untuk membuka aplikasi.</string>
+    <string name="auth_unavailable">Autentikasi perangkat tidak tersedia. Periksa setelan keamanan Android dan coba lagi.</string>
+    <string name="auth_security_settings">Buka setelan keamanan Android</string>
+    <string name="auth_setting_title">Autentikasi perangkat</string>
+    <string name="auth_setting_help">Gunakan biometrik atau kunci layar ponsel. PIN aplikasi tetap tersedia jika sudah disiapkan.</string>
+    <string name="auth_unlock_action">Buka kunci dengan autentikasi perangkat</string>
+</resources>

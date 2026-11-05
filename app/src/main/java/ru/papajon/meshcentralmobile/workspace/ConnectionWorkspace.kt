@@ -224,7 +224,9 @@ class ConnectionWorkspace private constructor(private val application: Applicati
     private var currentNetwork = application.getSystemService(ConnectivityManager::class.java).activeNetwork
     var credentialVault = vault(profileId)
         private set
-    var client by mutableStateOf(MeshCentralClient(credentialVault, scope))
+    private val sessionSettings = SettingsRepository(application)
+    var client by mutableStateOf(MeshCentralClient(credentialVault, scope,
+        requestUserConsent = sessionSettings::currentRequestUserConsent))
         private set
     private val lockSettings = SettingsRepository(application)
     val appLockVault = SecureVault(application)
@@ -285,7 +287,8 @@ class ConnectionWorkspace private constructor(private val application: Applicati
         profileId = id
         boundIdentity = null
         credentialVault = vault(id)
-        client = MeshCentralClient(credentialVault, scope)
+        client = MeshCentralClient(credentialVault, scope,
+            requestUserConsent = sessionSettings::currentRequestUserConsent)
         updateAppVisibility(force = true)
         if (!networkAvailable) client.onNetworkLost()
     }
@@ -354,7 +357,11 @@ class ConnectionWorkspace private constructor(private val application: Applicati
             if (!state.devicesCurrent || !device.sessionAvailability(tab.protocol, state.serverCapabilities).canAttempt) return false
             val id = "${device.nodeId}|${tab.name}"
             val session = registry.admit(id) {
-                val options = if (tab == DeviceTab.Terminal) JSONObject().put("xterm", true).put("cols", 80).put("rows", 24) else null
+                // Capture additional consent in the session factory so reconnect cannot silently
+                // drop it when a setting is changed while this session is open.
+                val options = ru.papajon.meshcentralmobile.mesh.AgentConsent.options(tab.protocol.usage,
+                    sessionSettings.currentRequestUserConsent(),
+                    if (tab == DeviceTab.Terminal) JSONObject().put("xterm", true).put("cols", 80).put("rows", 24) else null)
                 val connection = client.createRelayConnection(device, tab.protocol, options)
                 val owner = client
                 val identity = boundIdentity

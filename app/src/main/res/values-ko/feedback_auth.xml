@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">생체 인증 또는 휴대전화 화면 잠금을 사용하여 앱을 여세요.</string>
+    <string name="auth_unavailable">기기 인증을 사용할 수 없습니다. Android 보안 설정을 확인한 후 다시 시도하세요.</string>
+    <string name="auth_security_settings">Android 보안 설정 열기</string>
+    <string name="auth_setting_title">기기 인증</string>
+    <string name="auth_setting_help">생체 인증 또는 휴대전화 화면 잠금을 사용하세요. 앱 PIN이 설정된 경우 계속 사용할 수 있습니다.</string>
+    <string name="auth_unlock_action">기기 인증으로 잠금 해제</string>
+</resources>

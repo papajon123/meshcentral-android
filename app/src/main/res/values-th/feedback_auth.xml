@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">ใช้ไบโอเมตริกหรือการล็อกหน้าจอโทรศัพท์เพื่อเปิดแอป</string>
+    <string name="auth_unavailable">การยืนยันตัวตนด้วยอุปกรณ์ไม่พร้อมใช้งาน ตรวจสอบการตั้งค่าความปลอดภัยของ Android แล้วลองอีกครั้ง</string>
+    <string name="auth_security_settings">เปิดการตั้งค่าความปลอดภัยของ Android</string>
+    <string name="auth_setting_title">การยืนยันตัวตนด้วยอุปกรณ์</string>
+    <string name="auth_setting_help">ใช้ไบโอเมตริกหรือการล็อกหน้าจอโทรศัพท์ PIN ของแอปยังใช้ได้หากตั้งค่าไว้</string>
+    <string name="auth_unlock_action">ปลดล็อกด้วยการยืนยันตัวตนด้วยอุปกรณ์</string>
+</resources>

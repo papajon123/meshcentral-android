@@ -11,6 +11,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okio.BufferedSource
 import ru.papajon.meshcentralmobile.mesh.tls.ServerTls
+import ru.papajon.meshcentralmobile.mesh.tls.serverCertificateFailure
+import ru.papajon.meshcentralmobile.mesh.tls.ServerCertificateException
 import javax.net.ssl.X509TrustManager
 
 class NotificationHttpException(
@@ -69,6 +71,13 @@ class NotificationHttpClient(
             } catch (error: javax.net.ssl.SSLException) {
                 throw error
             } catch (error: IOException) {
+                error.serverCertificateFailure()?.let { rejection ->
+                    // Preserve the TLS classification used to suspend polling, without retaining
+                    // a raw network error that might contain a URL or request metadata.
+                    throw javax.net.ssl.SSLHandshakeException("Server certificate rejected").apply {
+                        initCause(ServerCertificateException(rejection))
+                    }
+                }
                 throw NotificationHttpException(NotificationHttpException.Kind.NETWORK)
             }
             response.use {

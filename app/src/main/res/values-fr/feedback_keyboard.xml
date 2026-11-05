@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">Utiliser la disposition du clavier distant</string>
+    <string name="desktop_remote_keyboard_map_help">Les touches physiques utilisent la disposition distante. Le texte saisi avec le clavier du téléphone est envoyé sous forme de texte.</string>
+</resources>

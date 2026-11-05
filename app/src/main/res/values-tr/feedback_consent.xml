@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">Bilgisayar kullanıcısından izin iste</string>
+    <string name="consent_help">Yeni Mesh Agent masaüstü, terminal ve dosya oturumları için onay isteyin. Onayı sunucu ve aracı denetler; otomatik onay kuralları hâlâ geçerlidir.</string>
+    <string name="consent_requested">Bağlanmak için izin isteniyor…</string>
+    <string name="consent_waiting">Bilgisayar kullanıcısının erişim vermesi bekleniyor…</string>
+    <string name="consent_denied">Bilgisayar kullanıcısı erişim vermedi.</string>
+    <string name="consent_timeout">İzin isteği zaman aşımına uğradı. Yeniden bağlanmayı deneyebilirsiniz.</string>
+</resources>

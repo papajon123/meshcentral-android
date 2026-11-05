@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">リモートキーボードレイアウトを使用</string>
+    <string name="desktop_remote_keyboard_map_help">物理キーはリモートのレイアウトを使用します。スマートフォンのキーボードで入力したテキストはテキストとして送信されます。</string>
+</resources>

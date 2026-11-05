@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">Usar la distribución del teclado remoto</string>
+    <string name="desktop_remote_keyboard_map_help">Las teclas físicas usan la distribución remota. El texto compuesto con el teclado del teléfono se envía como texto.</string>
+</resources>

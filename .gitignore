@@ -21,6 +21,9 @@ __pycache__/
 *.p12
 *.pfx
 *.pem
+# Public Google encryption recipient, pinned by checksum; never an app private key.
+!distribution/google-play/signing/google-encryption-public-key.pem
+!distribution/google-play/signing/owner-delivery-certificate.pem
 .env
 .env.*
 keystore.properties
@@ -34,6 +37,9 @@ Thumbs.db
 # Local verification and release output
 dist/
 verification/
+/.android-home/
+/.gradle-home/
+/.tools/
 .gradle-ci/
 
 # GitLab CI cache of Android Build Tools (restored into the project directory)

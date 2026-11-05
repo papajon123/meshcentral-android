@@ -54,6 +54,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
@@ -175,6 +176,7 @@ fun DeviceScreen(
         ) {
             tabs.forEach { tab ->
                 Tab(
+                    modifier = Modifier.padding(horizontal = 8.dp),
                     selected = selected == tab,
                     onClick = { onSelect(tab) },
                     enabled = available(tab),
@@ -398,6 +400,7 @@ private fun ToolChoice(
     }
     Surface(
         modifier = modifier
+            .testTag("device-tool-${tab.name}")
             .clip(MaterialTheme.shapes.medium)
             .clickable(
                 enabled = enabled,

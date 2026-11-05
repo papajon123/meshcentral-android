@@ -1,0 +1,38 @@
+{
+  "en-US": [
+    {
+      "path": "en-US/phoneScreenshots/1-computers.png",
+      "altText": "Computer list with two demonstration devices and their connection status"
+    },
+    {
+      "path": "en-US/phoneScreenshots/2-tools.png",
+      "altText": "Available tools for a demonstration computer"
+    },
+    {
+      "path": "en-US/phoneScreenshots/3-settings.png",
+      "altText": "Appearance, language and app security settings"
+    },
+    {
+      "path": "en-US/phoneScreenshots/4-lock.png",
+      "altText": "MeshPilot PIN unlock screen"
+    }
+  ],
+  "ru-RU": [
+    {
+      "path": "ru-RU/phoneScreenshots/1-computers.png",
+      "altText": "Два демонстрационных компьютера и состояние их подключения"
+    },
+    {
+      "path": "ru-RU/phoneScreenshots/2-tools.png",
+      "altText": "Доступные инструменты демонстрационного компьютера"
+    },
+    {
+      "path": "ru-RU/phoneScreenshots/3-settings.png",
+      "altText": "Оформление, язык и настройки защиты приложения"
+    },
+    {
+      "path": "ru-RU/phoneScreenshots/4-lock.png",
+      "altText": "Экран разблокировки MeshPilot по PIN"
+    }
+  ]
+}

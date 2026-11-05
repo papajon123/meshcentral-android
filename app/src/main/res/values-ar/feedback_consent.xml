@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">طلب الإذن من مستخدم الكمبيوتر</string>
+    <string name="consent_help">اطلب الموافقة على جلسات سطح المكتب والطرفية والملفات الجديدة لـ Mesh Agent. يتحكم الخادم والوكيل في الموافقة؛ وتظل قواعد الموافقة التلقائية الخاصة بهما سارية.</string>
+    <string name="consent_requested">جارٍ طلب الإذن للاتصال…</string>
+    <string name="consent_waiting">في انتظار أن يمنح مستخدم الكمبيوتر حق الوصول…</string>
+    <string name="consent_denied">لم يمنح مستخدم الكمبيوتر حق الوصول.</string>
+    <string name="consent_timeout">انتهت مهلة طلب الإذن. يمكنك محاولة الاتصال مرة أخرى.</string>
+</resources>

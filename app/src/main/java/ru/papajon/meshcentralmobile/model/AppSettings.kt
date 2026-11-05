@@ -8,6 +8,7 @@ data class AppSettings(
     val trustSelfSignedCertificates: Boolean = false,
     val blockScreenshots: Boolean = false,
     val biometricUnlockEnabled: Boolean = false,
+    val requestUserConsent: Boolean = false,
     val lockTimeoutSeconds: Long = DEFAULT_LOCK_TIMEOUT_SECONDS,
     val stylusPrecisionEnabled: Boolean = true,
     val stylusHintSeen: Boolean = false,

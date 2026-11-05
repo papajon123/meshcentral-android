@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_privacy_policy">గోప్యతా విధానం</string>
+    <string name="play_privacy_unavailable">గోప్యతా విధానాన్ని తెరవలేకపోయాము.</string>
+</resources>

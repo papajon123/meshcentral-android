@@ -90,6 +90,29 @@ class LockScreenTest {
         compose.runOnIdle { assertEquals(1, prompts) }
     }
 
+    @Test fun biometricOnlyLockNeverRequestsANonexistentPinAndCanRetry() {
+        var prompts = 0
+        var callback: ((Boolean, String?) -> Unit)? = null
+        compose.setContent {
+            MeshCentralMobileTheme {
+                LockScreen(true, { submittedPins += it; false }, {
+                    prompts++
+                    callback = it
+                }, pinEnabled = false)
+            }
+        }
+        compose.waitUntil { prompts == 1 }
+        compose.onNodeWithText(compose.activity.getString(R.string.lock_message_locked)).assertDoesNotExist()
+        compose.onNodeWithText("1").assertDoesNotExist()
+        compose.runOnIdle { callback!!(false, null) }
+        compose.onNodeWithText(compose.activity.getString(R.string.auth_unlock_action))
+            .performScrollTo().performClick()
+        compose.runOnIdle {
+            assertEquals(2, prompts)
+            assertEquals(emptyList<String>(), submittedPins)
+        }
+    }
+
     @Test fun recreationDoesNotRestorePinOrReopenDismissedBiometrics() {
         val restoration = StateRestorationTester(compose)
         var prompts = 0

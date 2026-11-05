@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.management
 
+import ru.papajon.meshcentralmobile.testing.hasSameJsonContent
+
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
@@ -33,8 +35,8 @@ class NativeDeviceDataTest {
         assertThrows(IllegalArgumentException::class.java) { InstalledSoftware.parse(JSONObject().put("value", """{"error":"offline"}""")) }
     }
     @Test fun exactReadCommandsAndRights() {
-        assertTrue(JSONObject("""{"action":"software","nodeid":"node//example","type":"installedapps"}""").similar(InstalledSoftware.command(device, true)))
-        assertTrue(JSONObject("""{"action":"msg","type":"cpuinfo","nodeid":"node//example"}""").similar(NativeMetrics.command(device, true)))
+        assertTrue(JSONObject("""{"action":"software","nodeid":"node//example","type":"installedapps"}""").hasSameJsonContent(InstalledSoftware.command(device, true)))
+        assertTrue(JSONObject("""{"action":"msg","type":"cpuinfo","nodeid":"node//example"}""").hasSameJsonContent(NativeMetrics.command(device, true)))
         for (bad in listOf(device.copy(rights = null), device.copy(rights = 0), device.copy(conn = 0), device.copy(agentId = 14), device.copy(connectivityKnown = false))) {
             assertFalse(InstalledSoftware.allowed(bad, true)); assertFalse(NativeMetrics.allowed(bad, true))
         }

@@ -181,6 +181,9 @@ fun RemoteDesktopScreen(
     var twoFingerAction by rememberSaveable(desktopState.device?.nodeId) { mutableStateOf(TwoFingerAction.Default) }
     var pinchEnabled by rememberSaveable(desktopState.device?.nodeId) { mutableStateOf(true) }
     var hardwareKeyboardCaptured by rememberSaveable { mutableStateOf(true) }
+    var useRemoteKeyboardMap by rememberSaveable(shortcutProfileId, desktopState.device?.nodeId) {
+        mutableStateOf(false)
+    }
     val pip = ru.papajon.meshcentralmobile.ui.screens.session.LocalDesktopPip.current
     val inPip = pip?.active == true
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -191,11 +194,18 @@ fun RemoteDesktopScreen(
             displayPreferences.loadDisplay(shortcutProfileId, node)?.let(meshClient::selectRemoteDisplay)
             val saved = displayPreferences.load(shortcutProfileId, node)
             meshClient.setRemoteQuality(saved.jpegQuality, saved.frameRate, saved.scaling)
+            useRemoteKeyboardMap = displayPreferences.loadRemoteKeyboardMap(shortcutProfileId, node)
         }
     }
     fun saveQuality(value: ru.papajon.meshcentralmobile.mesh.DesktopQuality) {
         desktopState.device?.nodeId?.let { displayPreferences.save(shortcutProfileId, it, value) }
         meshClient.setRemoteQuality(value.jpegQuality, value.frameRate, value.scaling)
+    }
+    fun saveRemoteKeyboardMap(enabled: Boolean) {
+        useRemoteKeyboardMap = enabled
+        desktopState.device?.nodeId?.let {
+            displayPreferences.saveRemoteKeyboardMap(shortcutProfileId, it, enabled)
+        }
     }
     fun chooseDisplay(display: Int) {
         desktopState.device?.let { displayPreferences.saveDisplay(shortcutProfileId, it.nodeId, display) }
@@ -215,6 +225,7 @@ fun RemoteDesktopScreen(
         enabled = hardwareKeyboardCaptured && !inPip && desktopState.inputEnabled && desktopState.hasFrame &&
             desktopState.device?.isAndroidAgent != true && sheet == SessionSheet.None,
         onReleaseCapture = { hardwareKeyboardCaptured = false; keyboardActive = false; sheet = SessionSheet.Options },
+        useRemoteKeyboardMap = useRemoteKeyboardMap,
     )
     }
 
@@ -424,6 +435,8 @@ fun RemoteDesktopScreen(
             input = meshClient.remoteInputSink,
             active = !device.isAndroidAgent && keyboardActive && desktopState.inputEnabled,
             modifier = Modifier.align(Alignment.BottomStart),
+            useRemoteKeyboardMap = useRemoteKeyboardMap,
+            isWindows = device.isWindows,
         )
         androidx.compose.material3.SnackbarHost(stylusHint.host,
             Modifier.align(Alignment.TopCenter).windowInsetsPadding(WindowInsets.safeDrawing))
@@ -494,6 +507,8 @@ fun RemoteDesktopScreen(
             onPinchEnabled = { pinchEnabled = it },
             hardwareKeyboardCaptured = hardwareKeyboardCaptured,
             onHardwareKeyboardCaptured = { hardwareKeyboardCaptured = it },
+            useRemoteKeyboardMap = useRemoteKeyboardMap,
+            onUseRemoteKeyboardMap = ::saveRemoteKeyboardMap,
             pipSupported = pip?.supported == true,
             pipAutomatic = pipAutomatic,
             onPipAutomatic = { pipAutomatic = it; displayPreferences.savePipAutomatic(it) },

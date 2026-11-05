@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">కంప్యూటర్ వినియోగదారుని నుండి అనుమతి అడగండి</string>
+    <string name="consent_help">కొత్త Mesh Agent డెస్క్‌టాప్, టెర్మినల్ మరియు ఫైల్ సెషన్లకు ఆమోదం అడగండి. ఆమోదాన్ని సర్వర్ మరియు ఏజెంట్ నియంత్రిస్తాయి; వాటి స్వయంచాలక ఆమోద నియమాలు ఇప్పటికీ వర్తిస్తాయి.</string>
+    <string name="consent_requested">కనెక్ట్ అవ్వడానికి అనుమతి అడుగుతోంది…</string>
+    <string name="consent_waiting">కంప్యూటర్ వినియోగదారు యాక్సెస్ ఇచ్చే వరకు వేచి ఉంది…</string>
+    <string name="consent_denied">కంప్యూటర్ వినియోగదారు యాక్సెస్ ఇవ్వలేదు.</string>
+    <string name="consent_timeout">అనుమతి అభ్యర్థన సమయం ముగిసింది. మళ్లీ కనెక్ట్ అవ్వడానికి ప్రయత్నించవచ్చు.</string>
+</resources>

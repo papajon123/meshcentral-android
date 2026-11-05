@@ -1,5 +1,7 @@
 package ru.papajon.meshcentralmobile.management
 
+import ru.papajon.meshcentralmobile.testing.hasSameJsonContent
+
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
@@ -9,7 +11,7 @@ class DeviceRemovalCommandTest {
     private val device = MeshDevice("node//example", "mesh//example", "Example", agentId = 4, conn = 1, rights = 32768)
     @Test fun exactMessagesAndTwoStageNameConfirmation() {
         for ((action, wire) in listOf(DeviceRemovalAction.UninstallAgent to "uninstallagent", DeviceRemovalAction.RemoveDevice to "removedevices")) {
-            assertTrue(JSONObject("""{"action":"$wire","nodeids":["node//example"]}""").similar(DeviceRemovalCommand.create(device, true, action, true, "Example")))
+            assertTrue(JSONObject("""{"action":"$wire","nodeids":["node//example"]}""").hasSameJsonContent(DeviceRemovalCommand.create(device, true, action, true, "Example")))
             assertThrows(IllegalArgumentException::class.java) { DeviceRemovalCommand.create(device, true, action, false, "Example") }
             assertThrows(IllegalArgumentException::class.java) { DeviceRemovalCommand.create(device, true, action, true, "example") }
         }

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">Uzak klavye düzenini kullan</string>
+    <string name="desktop_remote_keyboard_map_help">Fiziksel tuşlar uzak düzeni kullanır. Telefon klavyesiyle oluşturulan metin metin olarak gönderilir.</string>
+</resources>

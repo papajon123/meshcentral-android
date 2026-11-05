@@ -167,6 +167,12 @@ class SettingsRepository(context: Context, private val preferencesName: String =
         settingsState.value = loadSettings()
     }
 
+    fun updateRequestUserConsent(enabled: Boolean) {
+        prefs.edit().putBoolean(KEY_REQUEST_CONSENT, enabled).apply()
+        settingsState.value = loadSettings()
+    }
+    internal fun currentRequestUserConsent(): Boolean = prefs.getBoolean(KEY_REQUEST_CONSENT, false)
+
     fun updateLockTimeoutSeconds(seconds: Long) {
         require(seconds in AppLockTimeout.range)
         prefs.edit().putLong(KEY_LOCK_TIMEOUT_SECONDS, seconds).apply()
@@ -278,6 +284,7 @@ class SettingsRepository(context: Context, private val preferencesName: String =
             trustSelfSignedCertificates = profile.trustSelfSignedCertificates,
             blockScreenshots = prefs.getBoolean(KEY_BLOCK_SCREENSHOTS, false),
             biometricUnlockEnabled = prefs.getBoolean(KEY_BIOMETRIC_UNLOCK, false),
+            requestUserConsent = currentRequestUserConsent(),
             lockTimeoutSeconds = prefs.getLong(KEY_LOCK_TIMEOUT_SECONDS, DEFAULT_LOCK_TIMEOUT_SECONDS),
             stylusPrecisionEnabled = prefs.getBoolean(KEY_STYLUS_PRECISION, true),
             stylusHintSeen = prefs.getBoolean(KEY_STYLUS_HINT_SEEN, false),
@@ -382,6 +389,7 @@ class SettingsRepository(context: Context, private val preferencesName: String =
         private const val KEY_TRUST_SELF_SIGNED = "trust_self_signed"
         private const val KEY_BLOCK_SCREENSHOTS = "block_screenshots"
         private const val KEY_BIOMETRIC_UNLOCK = "biometric_unlock"
+        private const val KEY_REQUEST_CONSENT = "request_user_consent"
         private const val KEY_LOCK_TIMEOUT_SECONDS = "lock_timeout_seconds"
         private const val KEY_LAST_BACKGROUND_AT = "last_background_at"
         private const val KEY_STYLUS_PRECISION = "stylus_precision"

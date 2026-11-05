@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">தொலைவு விசைப்பலகை அமைப்பைப் பயன்படுத்து</string>
+    <string name="desktop_remote_keyboard_map_help">இயற்பியல் விசைகள் தொலைவு அமைப்பைப் பயன்படுத்துகின்றன. தொலைபேசி விசைப்பலகையில் உருவாக்கப்பட்ட உரை உரையாக அனுப்பப்படுகிறது.</string>
+</resources>

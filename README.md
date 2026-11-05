@@ -161,11 +161,11 @@ Requirements: JDK 17, Android SDK platform 36, build-tools 35.0.0. The Gradle wr
 ```bash
 export JAVA_HOME=/path/to/jdk-17
 export ANDROID_HOME="$HOME/Android/Sdk"
-./gradlew testDebugUnitTest lintDebug assembleDebug
+./gradlew testDirectDebugUnitTest testPlayDebugUnitTest lintDirectDebug lintPlayDebug assembleDirectDebug assemblePlayDebug bundlePlayRelease
 python3 ci/check_translations.py
 ```
 
-On Windows use `.\gradlew.bat` and set the same environment variables. The debug APK is written to `app/build/outputs/apk/debug/app-debug.apk`. A locally built APK is not a public release; the maintainer signs and publishes release builds.
+On Windows use `.\gradlew.bat` and set the same environment variables. Direct-distribution and Google Play debug APKs are written under `app/build/outputs/apk/direct/debug/` and `app/build/outputs/apk/play/debug/`. The Play bundle is `app/build/outputs/bundle/playRelease/app-play-release.aab`. The Play variant disables external update checks and the support link. A locally built artifact is not a published release; the maintainer reviews signing and publication.
 
 </details>
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">Используйте биометрию или блокировку экрана телефона, чтобы открыть приложение.</string>
+    <string name="auth_unavailable">Аутентификация устройства недоступна. Проверьте настройки безопасности Android и повторите попытку.</string>
+    <string name="auth_security_settings">Открыть настройки безопасности Android</string>
+    <string name="auth_setting_title">Вход с помощью устройства</string>
+    <string name="auth_setting_help">Используйте биометрию или блокировку экрана телефона. PIN приложения остаётся доступным, если он задан.</string>
+    <string name="auth_unlock_action">Войти с помощью устройства</string>
+</resources>

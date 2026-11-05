@@ -1,13 +1,12 @@
 package ru.papajon.meshcentralmobile
 
-import android.hardware.biometrics.BiometricPrompt
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.os.CancellationSignal
 import android.content.Intent
 import ru.papajon.meshcentralmobile.workspace.ConnectionWorkspace
 import android.view.WindowManager
-import androidx.activity.ComponentActivity
+import androidx.fragment.app.FragmentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -24,17 +23,21 @@ import ru.papajon.meshcentralmobile.settings.SettingsRepository
 import ru.papajon.meshcentralmobile.ui.MeshCentralApp
 import ru.papajon.meshcentralmobile.ui.theme.MeshCentralMobileTheme
 
-class MainActivity : ComponentActivity() {
+class MainActivity : FragmentActivity() {
     private lateinit var settingsRepository: SettingsRepository
     private lateinit var secureVault: SecureVault
     private lateinit var appLockController: AppLockController
     private var handledChatDelivery = -1L
-    private var biometricCancellation: CancellationSignal? = null
-    private var biometricCompletion: ((Boolean, String?) -> Unit)? = null
+    private lateinit var deviceAuthentication: ru.papajon.meshcentralmobile.security.DeviceAuthentication
     private val desktopPip by lazy { DesktopPipHost(this) }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(ru.papajon.meshcentralmobile.localization.AppLanguage.wrap(newBase))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        deviceAuthentication = ru.papajon.meshcentralmobile.security.DeviceAuthentication(this)
         if (BuildConfig.DEBUG) {
             android.os.StrictMode.setThreadPolicy(android.os.StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads().detectDiskWrites().detectNetwork().penaltyLog().build())
@@ -122,13 +125,13 @@ class MainActivity : ComponentActivity() {
     }
 
     override fun onStop() {
-        cancelBiometricUnlock()
+        // AndroidX owns prompt lifecycle. A system credential Activity may temporarily stop us.
         appLockController.onWindowStopped(this, isChangingConfigurations)
         super.onStop()
     }
 
     override fun onDestroy() {
-        cancelBiometricUnlock()
+        deviceAuthentication.cancel()
         appLockController.onWindowStopped(this, isChangingConfigurations)
         super.onDestroy()
     }
@@ -155,58 +158,6 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun requestBiometricUnlock(onResult: (Boolean, String?) -> Unit) {
-        if (biometricCancellation != null) return
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
-            onResult(false, getString(R.string.biometric_unlock_requires_android9))
-            return
-        }
-
-        val cancellationSignal = CancellationSignal()
-        biometricCancellation = cancellationSignal
-        biometricCompletion = onResult
-        fun finish(success: Boolean, error: String?) {
-            if (biometricCancellation !== cancellationSignal) return
-            biometricCancellation = null
-            biometricCompletion = null
-            val foregroundSuccess = success && lifecycle.currentState.isAtLeast(androidx.lifecycle.Lifecycle.State.RESUMED)
-            onResult(foregroundSuccess, error)
-        }
-        val prompt = BiometricPrompt.Builder(this)
-            .setTitle(getString(R.string.biometric_unlock_title))
-            .setSubtitle(getString(R.string.biometric_unlock_subtitle))
-            .setNegativeButton(
-                getString(if (secureVault.hasPin()) R.string.lock_action_use_pin else R.string.cancel),
-                ContextCompat.getMainExecutor(this),
-            ) { _, _ -> finish(false, null) }
-            .build()
-
-        prompt.authenticate(
-            cancellationSignal,
-            ContextCompat.getMainExecutor(this),
-            object : BiometricPrompt.AuthenticationCallback() {
-                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult?) {
-                    finish(true, null)
-                }
-
-                override fun onAuthenticationError(errorCode: Int, errString: CharSequence?) {
-                    val cancelled = errorCode == BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED ||
-                        errorCode == BiometricPrompt.BIOMETRIC_ERROR_CANCELED
-                    finish(false, if (cancelled) null else errString?.toString() ?: getString(R.string.biometric_unlock_failed))
-                }
-
-                override fun onAuthenticationFailed() {
-                    // A rejected scan is non-terminal. Android keeps the prompt open for retry.
-                }
-            },
-        )
-    }
-
-    private fun cancelBiometricUnlock() {
-        val signal = biometricCancellation ?: return
-        val completion = biometricCompletion
-        biometricCancellation = null
-        biometricCompletion = null
-        signal.cancel()
-        completion?.invoke(false, null)
+        deviceAuthentication.authenticate(secureVault.hasPin(), onResult)
     }
 }

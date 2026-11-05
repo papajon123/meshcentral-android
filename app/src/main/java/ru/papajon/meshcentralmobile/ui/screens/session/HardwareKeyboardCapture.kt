@@ -31,13 +31,16 @@ fun HardwareKeyboardCapture(
     enabled: Boolean,
     isWindows: Boolean = true,
     onReleaseCapture: () -> Unit = {},
+    useRemoteKeyboardMap: Boolean = false,
 ) {
     val context = LocalContext.current
     val activity = remember(context) { context.findActivity() }
     // The activity may be a plain Activity without its own lifecycle property, so the lifecycle
     // owner comes from the composition, which also covers the test activity.
     val lifecycleOwner = LocalLifecycleOwner.current
-    val controller = remember(input, isWindows) { HardwareKeyboardController(input, isWindows) }
+    val controller = remember(input, isWindows, useRemoteKeyboardMap) {
+        HardwareKeyboardController(input, isWindows, useRemoteKeyboardMap)
+    }
     val enabledState = rememberUpdatedState(enabled)
     val releaseCapture = rememberUpdatedState(onReleaseCapture)
 

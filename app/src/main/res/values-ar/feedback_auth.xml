@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">استخدم البيانات الحيوية أو قفل شاشة الهاتف لفتح التطبيق.</string>
+    <string name="auth_unavailable">مصادقة الجهاز غير متاحة. تحقق من إعدادات أمان Android وحاول مرة أخرى.</string>
+    <string name="auth_security_settings">فتح إعدادات أمان Android</string>
+    <string name="auth_setting_title">مصادقة الجهاز</string>
+    <string name="auth_setting_help">استخدم البيانات الحيوية أو قفل شاشة الهاتف. يظل رمز PIN للتطبيق متاحًا إذا كان مُعدًا.</string>
+    <string name="auth_unlock_action">فتح القفل بمصادقة الجهاز</string>
+</resources>

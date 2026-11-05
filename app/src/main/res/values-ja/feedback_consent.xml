@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="consent_setting">コンピューターのユーザーに許可を求める</string>
+    <string name="consent_help">新しい Mesh Agent のデスクトップ、ターミナル、ファイルセッションの承認を求めます。承認はサーバーとエージェントが管理し、自動承認のルールは引き続き適用されます。</string>
+    <string name="consent_requested">接続の許可を要求しています…</string>
+    <string name="consent_waiting">コンピューターのユーザーがアクセスを許可するのを待っています…</string>
+    <string name="consent_denied">コンピューターのユーザーはアクセスを許可しませんでした。</string>
+    <string name="consent_timeout">許可の要求がタイムアウトしました。もう一度接続を試せます。</string>
+</resources>

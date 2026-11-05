@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">Usa la biometría o el bloqueo de pantalla del teléfono para abrir la app.</string>
+    <string name="auth_unavailable">La autenticación del dispositivo no está disponible. Comprueba los ajustes de seguridad de Android e inténtalo de nuevo.</string>
+    <string name="auth_security_settings">Abrir los ajustes de seguridad de Android</string>
+    <string name="auth_setting_title">Autenticación del dispositivo</string>
+    <string name="auth_setting_help">Usa la biometría o el bloqueo de pantalla del teléfono. El PIN de la app sigue disponible si está configurado.</string>
+    <string name="auth_unlock_action">Desbloquear con la autenticación del dispositivo</string>
+</resources>

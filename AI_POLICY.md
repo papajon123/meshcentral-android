@@ -24,10 +24,10 @@ In the maintainer's words:
 
 The repository rules for AI agents are in [AGENTS.md](AGENTS.md). The security rules are the same for agents and people:
 
-- The repository contains no credentials, keys or tokens.
+- The repository contains no credentials, private keys or tokens. Public certificates and encryption-recipient keys may be pinned for verification.
 - The app stores credentials only in Android Keystore-backed storage.
 - The app does not log passwords, cookies, PINs or tokens.
-- Release signing keys are kept only in CI secrets.
+- Release signing keys are kept outside the repository, in protected CI secrets and Google Play App Signing when enrolled. A transfer to Google uses its pinned public encryption key; only encrypted material leaves CI.
 
 ## Contributions made with AI
 

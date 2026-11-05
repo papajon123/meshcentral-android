@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">استخدام تخطيط لوحة المفاتيح البعيد</string>
+    <string name="desktop_remote_keyboard_map_help">تستخدم المفاتيح الفعلية التخطيط البعيد. يُرسل النص الذي تُنشئه لوحة مفاتيح الهاتف كنص.</string>
+</resources>

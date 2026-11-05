@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">অ্যাপ খুলতে বায়োমেট্রিক বা ফোনের স্ক্রিন লক ব্যবহার করুন।</string>
+    <string name="auth_unavailable">ডিভাইস প্রমাণীকরণ উপলব্ধ নেই। Android নিরাপত্তা সেটিংস দেখুন এবং আবার চেষ্টা করুন।</string>
+    <string name="auth_security_settings">Android নিরাপত্তা সেটিংস খুলুন</string>
+    <string name="auth_setting_title">ডিভাইস প্রমাণীকরণ</string>
+    <string name="auth_setting_help">বায়োমেট্রিক বা ফোনের স্ক্রিন লক ব্যবহার করুন। অ্যাপ PIN সেট থাকলে এটি ব্যবহার করা যাবে।</string>
+    <string name="auth_unlock_action">ডিভাইস প্রমাণীকরণ দিয়ে আনলক করুন</string>
+</resources>

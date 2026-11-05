@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="desktop_remote_keyboard_map">ریموٹ کی بورڈ لے آؤٹ استعمال کریں</string>
+    <string name="desktop_remote_keyboard_map_help">فزیکل کلیدیں ریموٹ لے آؤٹ استعمال کرتی ہیں۔ فون کے کی بورڈ سے تیار کردہ متن بطور متن بھیجا جاتا ہے۔</string>
+</resources>

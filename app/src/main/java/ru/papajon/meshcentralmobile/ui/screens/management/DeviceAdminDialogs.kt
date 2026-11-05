@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLocale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -90,8 +91,10 @@ internal fun InviteDialogContent(
     var now by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var copied by remember(invitation) { mutableStateOf(false) }
     val context = LocalContext.current
-    val durationFormat = remember(context.resources.configuration) {
-        android.icu.text.MeasureFormat.getInstance(context.resources.configuration.locales[0], android.icu.text.MeasureFormat.FormatWidth.SHORT)
+    val locale = LocalLocale.current.platformLocale
+    val inviteLabel = stringResource(R.string.admin_invite)
+    val durationFormat = remember(locale) {
+        android.icu.text.MeasureFormat.getInstance(locale, android.icu.text.MeasureFormat.FormatWidth.SHORT)
     }
     var qr by remember(invitation) { mutableStateOf<Bitmap?>(null) }
     LaunchedEffect(invitation) {
@@ -110,7 +113,7 @@ internal fun InviteDialogContent(
     LaunchedEffect(active, invitation) { if (!active) clearInvitationClipboard(context, invitation) }
     AlertDialog(
         modifier = Modifier.testTag("admin_invite_dialog"), onDismissRequest = { if (!busy) onDismiss() },
-        title = { Text(stringResource(R.string.admin_invite)) },
+        title = { Text(inviteLabel) },
         text = {
             Column(Modifier.verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Text(stringResource(R.string.admin_invite_help, groupName))
@@ -127,7 +130,7 @@ internal fun InviteDialogContent(
                 } else {
                     Text(stringResource(R.string.admin_endpoint, invitation.endpointLabel), modifier = Modifier.testTag("admin_endpoint"))
                     Text(stringResource(R.string.admin_expires_at, DateFormat.getDateTimeInstance(
-                        DateFormat.MEDIUM, DateFormat.SHORT, context.resources.configuration.locales[0],
+                        DateFormat.MEDIUM, DateFormat.SHORT, locale,
                     ).format(Date(invitation.expiresAtMillis))))
                     if (active) {
                         qr?.let { Image(it.asImageBitmap(), stringResource(R.string.admin_qr),
@@ -147,7 +150,7 @@ internal fun InviteDialogContent(
                             }
                             TextButton(onClick = {
                                 if (invitation.active()) {
-                                    val clip = ClipData.newPlainText(context.getString(R.string.admin_invite), invitation.url)
+                                    val clip = ClipData.newPlainText(inviteLabel, invitation.url)
                                     clip.description.extras = PersistableBundle().apply { putBoolean("android.content.extra.IS_SENSITIVE", true) }
                                     (context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager).setPrimaryClip(clip)
                                     copied = true

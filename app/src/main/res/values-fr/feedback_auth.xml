@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="auth_device_subtitle">Utilisez la biométrie ou le verrouillage de l’écran du téléphone pour ouvrir l’application.</string>
+    <string name="auth_unavailable">L’authentification de l’appareil n’est pas disponible. Vérifiez les paramètres de sécurité Android et réessayez.</string>
+    <string name="auth_security_settings">Ouvrir les paramètres de sécurité Android</string>
+    <string name="auth_setting_title">Authentification de l’appareil</string>
+    <string name="auth_setting_help">Utilisez la biométrie ou le verrouillage de l’écran du téléphone. Le PIN de l’application reste disponible s’il est configuré.</string>
+    <string name="auth_unlock_action">Déverrouiller avec l’authentification de l’appareil</string>
+</resources>

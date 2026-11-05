@@ -55,6 +55,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
@@ -96,11 +97,12 @@ fun LockScreen(
     var biometricRunning by remember { mutableStateOf(false) }
     val lifecycleState by LocalLifecycleOwner.current.lifecycle.currentStateFlow.collectAsState()
     val resumed = lifecycleState.isAtLeast(Lifecycle.State.RESUMED)
-    val entryHint = if (pinEnabled) R.string.lock_message_locked else R.string.biometric_unlock_subtitle
+    val entryHint = if (pinEnabled) R.string.lock_message_locked else R.string.auth_device_subtitle
     var message by remember { mutableStateOf<UiText>(UiText.resource(entryHint)) }
     var failed by rememberSaveable { mutableStateOf(false) }
     var shakeTrigger by rememberSaveable { mutableIntStateOf(0) }
     val languageTags = LocalConfiguration.current.locales.toLanguageTags()
+    val context = LocalContext.current
     // A keyboard left open by the screen underneath would cover the PIN keypad.
     val softwareKeyboard = LocalSoftwareKeyboardController.current
     LaunchedEffect(Unit) { softwareKeyboard?.hide() }
@@ -181,7 +183,7 @@ fun LockScreen(
                 verticalArrangement = Arrangement.spacedBy(spacing.xs),
             ) {
                 Text(
-                    text = stringResource(R.string.lock_title),
+                    text = stringResource(R.string.app_name),
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.onSurface,
                 )
@@ -218,9 +220,18 @@ fun LockScreen(
                 onUnlock = { manualSubmit += 1 },
             )
             if (!pinEnabled) LockMessage(message.asString(), failed)
+            if (!pinEnabled && failed) {
+                TextButton(onClick = {
+                    try {
+                        context.startActivity(android.content.Intent(android.provider.Settings.ACTION_SECURITY_SETTINGS))
+                    } catch (_: android.content.ActivityNotFoundException) {
+                        message = UiText.resource(R.string.auth_unavailable)
+                    }
+                }) { Text(stringResource(R.string.auth_security_settings)) }
+            }
             if (biometricEnabled && biometricRequested && !biometricRunning) {
                 TextButton(onClick = requestBiometric) {
-                    Text(stringResource(R.string.lock_action_unlock_biometric))
+                    Text(stringResource(if (pinEnabled) R.string.lock_action_unlock_biometric else R.string.auth_unlock_action))
                 }
             }
         }

@@ -309,7 +309,7 @@ class PortForwardLifecycleTest {
                         if (show.value) ru.papajon.meshcentralmobile.ui.MeshCentralApp(settings, vault, lock, {}, {}, {})
                     }
                 }
-                compose.onNodeWithText(app.getString(ru.papajon.meshcentralmobile.R.string.lock_title)).assertIsDisplayed()
+                compose.onNodeWithText(app.getString(ru.papajon.meshcentralmobile.R.string.app_name)).assertIsDisplayed()
                 assertTrue(lock.isLocked)
                 local.getOutputStream().write(18); assertEquals(18, local.getInputStream().read())
                 val notifications = app.getSystemService(NotificationManager::class.java)

@@ -13,7 +13,7 @@ class ChatProtocolTest {
     @Test fun textMatchesMessengerWireFormatWithoutHtmlEncoding() {
         val text = "<b>Hello</b> & \"Привет\"\nمرحبا 🌍"
         val json = JSONObject(ChatProtocol.message(text))
-        assertEquals(setOf("action", "msg"), json.keySet())
+        assertEquals(setOf("action", "msg"), json.keys().asSequence().toSet())
         assertEquals("chat", json.getString("action"))
         assertEquals(text, json.getString("msg"))
         assertEquals(ChatFrame.Text(text), ChatProtocol.parse(json.toString()))
@@ -97,7 +97,7 @@ class ChatProtocolTest {
     }
     @Test fun fileCancelUsesNumericId() {
         val json = JSONObject(ChatProtocol.cancelFile(0.999))
-        assertEquals(setOf("action", "id"), json.keySet())
+        assertEquals(setOf("action", "id"), json.keys().asSequence().toSet())
         assertEquals("fileUploadCancel", json.getString("action"))
         assertTrue(json.get("id") is Number)
         assertEquals(0.999, json.getDouble("id"), 0.0)
@@ -124,7 +124,7 @@ class ChatProtocolTest {
         assertNull(request.header("x-meshauth"))
         assertNull(request.header("Cookie"))
         val invite = ChatProtocol.invite(device.nodeId)
-        assertEquals(setOf("action", "nodeid"), invite.keySet())
+        assertEquals(setOf("action", "nodeid"), invite.keys().asSequence().toSet())
         assertEquals("meshmessenger", invite.getString("action"))
     }
     @Test fun onlyCurrentOnlineComputerWithExplicitChatGrantIsAllowed() {

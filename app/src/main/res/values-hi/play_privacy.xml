@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="play_privacy_policy">गोपनीयता नीति</string>
+    <string name="play_privacy_unavailable">गोपनीयता नीति खोली नहीं जा सकी।</string>
+</resources>
