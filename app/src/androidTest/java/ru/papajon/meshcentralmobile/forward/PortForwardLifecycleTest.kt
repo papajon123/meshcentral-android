@@ -28,6 +28,7 @@ import org.junit.Rule
 import org.junit.Test
 import ru.papajon.meshcentralmobile.background.PortForwardService
 import ru.papajon.meshcentralmobile.mesh.tls.spkiSha256
+import ru.papajon.meshcentralmobile.testing.fixtureServerSocketFactory
 import ru.papajon.meshcentralmobile.workspace.ConnectionWorkspace
 
 class PortForwardLifecycleTest {
@@ -359,7 +360,7 @@ class PortForwardLifecycleTest {
         private val sockets = CopyOnWriteArrayList<WebSocket>()
         fun meshes(rights: Int) = """{"action":"meshes","meshes":[{"_id":"mesh/test/group","mtype":2,"name":"Fixture","links":{"user/test/fixture":{"rights":$rights}}}]}"""
         init {
-            server.useHttps(HandshakeCertificates.Builder().heldCertificate(certificate).build().sslSocketFactory(), false)
+            server.useHttps(HandshakeCertificates.Builder().heldCertificate(certificate).build().fixtureServerSocketFactory(), false)
             server.dispatcher = object : Dispatcher() {
                 override fun dispatch(request: RecordedRequest): MockResponse {
                     val isControl = request.requestUrl?.encodedPath == "/control.ashx"

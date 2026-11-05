@@ -27,6 +27,7 @@ import org.json.JSONObject
 import ru.papajon.meshcentralmobile.mesh.chat.ChatController
 import ru.papajon.meshcentralmobile.mesh.tls.spkiSha256
 import ru.papajon.meshcentralmobile.security.SecureVault
+import ru.papajon.meshcentralmobile.testing.fixtureServerSocketFactory
 
 /**
  * Synthetic MeshCentral pair behind a real HTTPS MockWebServer.
@@ -90,7 +91,7 @@ class ChatRelayFixture(initialAutoOpen: Boolean = true) : AutoCloseable {
 
     init {
         val serverCertificates = HandshakeCertificates.Builder().heldCertificate(certificate).build()
-        web.useHttps(serverCertificates.sslSocketFactory(), false)
+        web.useHttps(serverCertificates.fixtureServerSocketFactory(), false)
         val browserTrust = HandshakeCertificates.Builder()
             .addTrustedCertificate(certificate.certificate)
             .build()

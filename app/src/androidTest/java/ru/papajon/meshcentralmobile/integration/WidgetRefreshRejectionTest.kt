@@ -39,6 +39,7 @@ import ru.papajon.meshcentralmobile.model.ConnectionState
 import ru.papajon.meshcentralmobile.model.ServerProfile
 import ru.papajon.meshcentralmobile.security.SecureVault
 import ru.papajon.meshcentralmobile.settings.SettingsRepository
+import ru.papajon.meshcentralmobile.testing.fixtureServerSocketFactory
 import ru.papajon.meshcentralmobile.workspace.ConnectionWorkspace
 
 /**
@@ -453,7 +454,7 @@ class WidgetRefreshRejectionTest {
                     error("Use an unbound socket")
             }
             server.useHttps(HandshakeCertificates.Builder().heldCertificate(certificate).build()
-                .sslSocketFactory(), false)
+                .fixtureServerSocketFactory(), false)
             server.start(InetAddress.getByName("127.0.0.1"), 0)
         }
 

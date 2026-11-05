@@ -14,7 +14,6 @@ import java.util.UUID
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
-import javax.net.ssl.SSLContext
 import javax.net.ssl.X509ExtendedKeyManager
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -30,6 +29,7 @@ import ru.papajon.meshcentralmobile.mesh.tls.spkiSha256
 import ru.papajon.meshcentralmobile.model.ServerProfile
 import ru.papajon.meshcentralmobile.security.SecureVault
 import ru.papajon.meshcentralmobile.settings.SettingsRepository
+import ru.papajon.meshcentralmobile.testing.fixtureServerSocketFactory
 
 class NotificationTlsPollerTest {
     @Test fun changingTrustDuringHandshakeCancelsBearerWithoutDisablingNewPolicy() = runBlocking {
@@ -52,9 +52,8 @@ class NotificationTlsPollerTest {
             override fun getCertificateChain(alias: String?) = keys.getCertificateChain(alias)
             override fun getPrivateKey(alias: String?) = keys.getPrivateKey(alias)
         }
-        val tls = SSLContext.getInstance("TLS").apply { init(arrayOf(delayedKeys), null, null) }
         MockWebServer().use { server ->
-            server.useHttps(tls.socketFactory, false)
+            server.useHttps(fixtureServerSocketFactory(delayedKeys, null), false)
             server.enqueue(MockResponse().setHeader("Content-Type", "application/json")
                 .setBody("""{"items":[],"cursor":0,"resetCursor":false}"""))
             server.start()
@@ -90,7 +89,7 @@ class NotificationTlsPollerTest {
         val settings = SettingsRepository(context)
         val cert = HeldCertificate.Builder().commonName("private.example").build()
         MockWebServer().use { server ->
-            server.useHttps(HandshakeCertificates.Builder().heldCertificate(cert).build().sslSocketFactory(), false)
+            server.useHttps(HandshakeCertificates.Builder().heldCertificate(cert).build().fixtureServerSocketFactory(), false)
             server.start()
             val profile = settings.createProfile("TLS notification fixture", server.url("/").toString())
             val now = System.currentTimeMillis()
@@ -143,7 +142,7 @@ class NotificationTlsPollerTest {
         val server = MockWebServer()
         server.serverSocketFactory = countingSocketFactory(tcpConnections)
         server.useHttps(HandshakeCertificates.Builder().heldCertificate(certificate).build()
-            .sslSocketFactory(), false)
+            .fixtureServerSocketFactory(), false)
         server.start(InetAddress.getByName("127.0.0.1"), 0)
         var importedId: String? = null
         try {

@@ -48,7 +48,11 @@ checks:
     - python3 ci/check_translations.py
     - python3 ci/prepare_play_assets.py
     - python3 -B -m unittest discover -s ci -p 'test_*.py'
-    - bash gradlew --no-daemon --max-workers=2 --stacktrace testDirectDebugUnitTest testPlayDebugUnitTest lintDirectDebug lintPlayDebug assembleDirectDebug assemblePlayDebug compileDirectDebugAndroidTestKotlin compilePlayDebugAndroidTestKotlin bundlePlayRelease
+    # Release the analysis/compiler heap before ApkFlinger reads inputs for packaging.
+    # A combined invocation can exhaust the bounded 2 GiB heap after both lint variants.
+    - bash gradlew --no-daemon --max-workers=2 --stacktrace testDirectDebugUnitTest testPlayDebugUnitTest lintDirectDebug lintPlayDebug
+    - bash gradlew --no-daemon --max-workers=2 --stacktrace compileDirectDebugAndroidTestKotlin compilePlayDebugAndroidTestKotlin
+    - bash gradlew --no-daemon --max-workers=2 --stacktrace assembleDirectDebug assemblePlayDebug bundlePlayRelease
     - |
       if [ -n "${CI_COMMIT_TAG:-}" ]; then
         python3 ci/publish_github_snapshot.py --source "$CI_PROJECT_DIR" --tag "$CI_COMMIT_TAG" --check-only

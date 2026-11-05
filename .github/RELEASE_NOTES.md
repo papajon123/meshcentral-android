@@ -1,6 +1,8 @@
-## MeshPilot 0.10.1 candidate
+## MeshPilot 0.10.2 candidate
 
 MeshPilot is an independent client for MeshCentral servers, not affiliated with or endorsed by the MeshCentral project.
+
+**Android verification:** this candidate retains the 0.10.1 improvements and corrects the Android 8 TLS test-server fixture. Incomplete instrumentation runs cannot be accepted through partial retries. The application's TLS trust and signing identity are unchanged.
 
 **System file picker:** opening and creating documents use a compatible Fragment library. Real Android picker and cancellation tests cover the Activity Result path, while device-credential fallback remains available.
 

@@ -9,7 +9,9 @@ trap 'rm -f "$keystore"' EXIT
 printf '%s' "$ANDROID_RELEASE_KEYSTORE_B64" | base64 --decode > "$keystore"
 test -s "$keystore"
 export ANDROID_RELEASE_KEYSTORE_FILE="$keystore"
-./gradlew --no-daemon assembleDirectRelease bundlePlayRelease
+# Keep each distribution's compilation/packaging heap bounded independently.
+./gradlew --no-daemon --max-workers=2 --stacktrace assembleDirectRelease
+./gradlew --no-daemon --max-workers=2 --stacktrace bundlePlayRelease
 mkdir -p dist
 cp app/build/outputs/apk/direct/release/app-direct-release.apk "dist/meshcentral-android-${RELEASE_VERSION}.apk"
 cp app/build/outputs/bundle/playRelease/app-play-release.aab "dist/meshpilot-google-play-${RELEASE_VERSION}.aab"

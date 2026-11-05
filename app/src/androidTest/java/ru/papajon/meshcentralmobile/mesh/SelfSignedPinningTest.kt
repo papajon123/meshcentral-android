@@ -37,6 +37,7 @@ import ru.papajon.meshcentralmobile.security.SecureVault
 import ru.papajon.meshcentralmobile.security.RememberedDeviceTrust
 import ru.papajon.meshcentralmobile.mesh.session.RelayProtocol
 import ru.papajon.meshcentralmobile.mesh.session.RelayPhase
+import ru.papajon.meshcentralmobile.testing.fixtureServerSocketFactory
 import ru.papajon.meshcentralmobile.workspace.ConnectionWorkspace
 
 /** No debug TLS bypass: the same pin policy is installed in debug and release. */
@@ -490,7 +491,7 @@ class SelfSignedPinningTest {
                 override fun createServerSocket(port: Int, backlog: Int) = error("Use unbound socket")
                 override fun createServerSocket(port: Int, backlog: Int, address: InetAddress) = error("Use unbound socket")
             }
-            web.useHttps(HandshakeCertificates.Builder().heldCertificate(certificate).build().sslSocketFactory(), false)
+            web.useHttps(HandshakeCertificates.Builder().heldCertificate(certificate).build().fixtureServerSocketFactory(), false)
             web.dispatcher = object : Dispatcher() {
                 override fun dispatch(request: RecordedRequest): MockResponse = MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
                     override fun onOpen(webSocket: WebSocket, response: Response) {
@@ -526,7 +527,7 @@ class SelfSignedPinningTest {
 
         fun replaceCertificate() {
             val replacement = HeldCertificate.Builder().commonName("changed.example").build()
-            web.useHttps(HandshakeCertificates.Builder().heldCertificate(replacement).build().sslSocketFactory(), false)
+            web.useHttps(HandshakeCertificates.Builder().heldCertificate(replacement).build().fixtureServerSocketFactory(), false)
         }
 
         override fun close() = web.close()

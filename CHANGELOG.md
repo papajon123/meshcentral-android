@@ -1,4 +1,13 @@
-# 0.10.1 — 2026-11-05 (candidate)
+# 0.10.2 — 2026-11-05 (candidate)
+
+- Use an isolated TLS provider for Android test servers so MockWebServer can record requests on Android 8 without a platform SNI crash. Keep application TLS and certificate-approval behavior unchanged.
+- Refuse partial test retries after an instrumentation crash and verify that every retried test actually ran and passed.
+- Run CI analysis and packaging in separate Gradle processes to release lint/compiler memory before creating APKs.
+- Retain the document-picker and upload-lifetime fixes and the 0.10.0 features described below. Application identity and signing key are unchanged.
+
+# 0.10.1 — 2026-11-05 (no GitHub APK published)
+
+The Android 8 verification run exposed a test-server TLS compatibility failure. The published source tag is preserved; the corrected candidate is 0.10.2.
 
 - Fix a crash when opening or creating a document after the switch to `FragmentActivity`. Use a compatible Fragment release so real Android Activity Result request codes are accepted.
 - Exercise the real system document picker and cancellation callback, in addition to the existing file-operation fixtures; retain Android device-credential fallback.

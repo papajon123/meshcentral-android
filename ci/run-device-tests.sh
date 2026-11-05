@@ -5,7 +5,7 @@ set -uo pipefail
 adb shell settings put secure show_ime_with_hard_keyboard 1
 results=app/build/outputs/androidTest-results
 test_status=0
-./gradlew --no-daemon connectedDirectDebugAndroidTest || test_status=$?
+./gradlew --no-daemon --max-workers=2 --stacktrace connectedDirectDebugAndroidTest || test_status=$?
 # Shared CI emulators produce occasional timing failures. Rerun only a few failed tests, once; a broad
 # failure is not retried. The first attempt stays in the uploaded results under first-attempt/.
 if [ "$test_status" -ne 0 ] && retry=$(python3 ci/failed_device_tests.py "$results"); then
@@ -13,13 +13,16 @@ if [ "$test_status" -ne 0 ] && retry=$(python3 ci/failed_device_tests.py "$resul
   cp -R "$results/." "$first_attempt/"
   echo "Retrying failed device tests once: $retry"
   test_status=0
-  ./gradlew --no-daemon connectedDirectDebugAndroidTest \
+  ./gradlew --no-daemon --max-workers=2 --stacktrace connectedDirectDebugAndroidTest \
     "-Pandroid.testInstrumentationRunnerArguments.class=$retry" || test_status=$?
+  if [ "$test_status" -eq 0 ]; then
+    python3 ci/failed_device_tests.py --verify-retry "$results" "$retry" || test_status=$?
+  fi
   mkdir -p "$results/first-attempt"
   cp -R "$first_attempt/." "$results/first-attempt/"
 fi
 if [ "$test_status" -eq 0 ]; then
-  ./gradlew --no-daemon connectedPlayDebugAndroidTest \
+  ./gradlew --no-daemon --max-workers=2 --stacktrace connectedPlayDebugAndroidTest \
     '-Pandroid.testInstrumentationRunnerArguments.class=ru.papajon.meshcentralmobile.update.PlayDistributionTest,ru.papajon.meshcentralmobile.update.PlayPrivacyPolicyTest' || test_status=$?
 fi
 mkdir -p app/build/reports/webview

@@ -37,6 +37,7 @@ import ru.papajon.meshcentralmobile.security.SecureVault
 import ru.papajon.meshcentralmobile.settings.AppLockController
 import ru.papajon.meshcentralmobile.settings.ServerCertificateApproval
 import ru.papajon.meshcentralmobile.settings.SettingsRepository
+import ru.papajon.meshcentralmobile.testing.fixtureServerSocketFactory
 import ru.papajon.meshcentralmobile.ui.screens.ServerCertificateDialog
 import ru.papajon.meshcentralmobile.ui.theme.MeshCentralMobileTheme
 import ru.papajon.meshcentralmobile.ui.theme.MeshThemeMode
@@ -296,7 +297,7 @@ class BackupRevisionTest {
 
     private fun httpsServer(certificate: HeldCertificate): MockWebServer {
         val web = MockWebServer()
-        web.useHttps(HandshakeCertificates.Builder().heldCertificate(certificate).build().sslSocketFactory(), false)
+        web.useHttps(HandshakeCertificates.Builder().heldCertificate(certificate).build().fixtureServerSocketFactory(), false)
         web.enqueue(MockResponse().setBody("fixture"))
         web.start(InetAddress.getByName("localhost"), 0)
         return web

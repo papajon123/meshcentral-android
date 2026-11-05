@@ -24,6 +24,7 @@ import ru.papajon.meshcentralmobile.mesh.chat.ChatPhase
 import ru.papajon.meshcentralmobile.mesh.chat.ChatProtocol
 import ru.papajon.meshcentralmobile.mesh.tls.spkiSha256
 import ru.papajon.meshcentralmobile.settings.SettingsRepository
+import ru.papajon.meshcentralmobile.testing.fixtureServerSocketFactory
 import ru.papajon.meshcentralmobile.workspace.ConnectionWorkspace
 
 /** Android service/visibility test; the separate paired fixture validates the wire lifecycle. */
@@ -35,7 +36,7 @@ class ChatServiceTest {
         val previous = settings.activeProfile.id
         val certificate = HeldCertificate.Builder().commonName("service.example").build()
         val server = MockWebServer()
-        server.useHttps(HandshakeCertificates.Builder().heldCertificate(certificate).build().sslSocketFactory(), false)
+        server.useHttps(HandshakeCertificates.Builder().heldCertificate(certificate).build().fixtureServerSocketFactory(), false)
         var relay: WebSocket? = null
         server.dispatcher = object : okhttp3.mockwebserver.Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse = MockResponse().withWebSocketUpgrade(object : WebSocketListener() {
