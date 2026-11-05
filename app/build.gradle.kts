@@ -90,7 +90,7 @@ kotlin {
 dependencies {
     implementation("androidx.biometric:biometric:1.1.0")
     // Biometric 1.1 otherwise selects Fragment 1.2.5, which rejects Activity Result request codes.
-    implementation("androidx.fragment:fragment:1.8.9")
+    implementation("androidx.fragment:fragment:1.9.1")
     implementation("com.google.zxing:core:3.5.4")
     implementation(platform("androidx.compose:compose-bom:2026.09.00"))
     implementation("androidx.activity:activity-compose:1.9.3")
