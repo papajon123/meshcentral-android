@@ -1,33 +1,75 @@
-<h1 align="center"><img src="docs/assets/header.png" alt="MeshPilot" width="100%"></h1>
+<p align="center"><img src="docs/assets/header.jpg" alt="MeshPilot: an independent Android client for MeshCentral servers" width="100%"></p>
 
 <p align="center"><a href="README.md"><strong>English</strong></a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.ru.md">Русский</a></p>
 
-<p align="center"><strong>An independent Android client for your own MeshCentral server: computers and phones, desktop, terminal, files, SSH and SFTP from a phone or tablet.</strong></p>
+<p align="center"><strong>Reach the computers on your own MeshCentral server from an Android phone or tablet:<br>remote desktop, terminal, files, chat with the user, SSH, SFTP and port forwarding.</strong></p>
+
+<p align="center">
+  <a href="https://github.com/papajon123/meshcentral-android/releases/latest"><img src="https://img.shields.io/badge/Download-APK-4FC3F7?style=for-the-badge&amp;logo=android&amp;logoColor=white" alt="Download the signed APK"></a>
+  <a href="https://github.com/ImranR98/Obtainium"><img src="https://img.shields.io/badge/Updates-Obtainium-1F2937?style=for-the-badge" alt="Get updates with Obtainium"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/papajon123/meshcentral-android/releases"><img src="https://img.shields.io/github/v/release/papajon123/meshcentral-android?include_prereleases&amp;label=release" alt="Latest release, including pre-releases"></a>
+  <img src="https://img.shields.io/badge/License-Apache_2.0-blue" alt="Apache License 2.0">
+  <img src="https://img.shields.io/badge/Android-8%2B%20%28API%2026%29-3DDC84" alt="Android 8 or newer, API 26 minimum">
+  <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 Android locale variants">
+  <a href="https://boosty.to/papajon123"><img src="https://img.shields.io/badge/Boosty-support-F15F2C?logo=boosty&amp;logoColor=white" alt="Support MeshPilot on Boosty"></a>
+</p>
 
 > [!NOTE]
 > **MeshPilot is an independent, third-party app** (formerly “MeshCentral Mobile”). It is not affiliated with, endorsed by or supported by the MeshCentral project or its developers. Please report problems with this app in [this repository's issues](https://github.com/papajon123/meshcentral-android/issues), not to the MeshCentral team.
 
-<p align="center">
-  <a href="https://github.com/papajon123/meshcentral-android/releases"><strong>Download APK</strong></a>
-</p>
+## Screenshots
 
-<p align="center">
-  <a href="https://github.com/papajon123/meshcentral-android/releases"><img src="https://img.shields.io/github/v/release/papajon123/meshcentral-android?include_prereleases&label=release" alt="Latest release, including pre-releases"></a>
-  <img src="https://img.shields.io/badge/License-Apache_2.0-blue" alt="Apache License 2.0">
-  <img src="https://img.shields.io/badge/Android-8%2B%20%28API%2026%29-3DDC84" alt="Android 8 or newer, API 26 minimum">
-  <a href="https://boosty.to/papajon123"><img src="https://img.shields.io/badge/Boosty-support-F15F2C?logo=boosty&amp;logoColor=white" alt="Support MeshPilot on Boosty"></a>
-  <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 Android locale variants">
-</p>
+<table align="center">
+  <tr>
+    <td align="center"><img src="docs/screenshots/en/devices.png" width="170" alt="Computer list with group, OS and tag filters"><br><sub>Computers</sub></td>
+    <td align="center"><img src="docs/screenshots/en/details.png" width="170" alt="Computer details and the available tools"><br><sub>Details and tools</sub></td>
+    <td align="center"><img src="docs/screenshots/en/desktop.png" width="170" alt="Remote desktop of a Linux computer"><br><sub>Remote desktop</sub></td>
+    <td align="center"><img src="docs/screenshots/en/terminal.png" width="170" alt="Terminal with the shell picker open"><br><sub>Terminal and shell choice</sub></td>
+    <td align="center"><img src="docs/screenshots/en/files.png" width="170" alt="Remote file browser"><br><sub>Files</sub></td>
+  </tr>
+</table>
 
-> **Version 0.10.6 (code 40)** includes chat with the person at a computer, TCP port forwarding, paged large servers, process and service tools, terminal reconnect, verified folder downloads, desktop picture-in-picture, hardware and DeX input, device invitations and administration, per-session computer-user consent, an in-app language picker, encrypted settings backups, launcher shortcuts and a Favorites widget, and Android 16 targeting. The 0.8 line added MeshPilot naming, sign-in with login tokens and login keys, stylus and S Pen input, phone viewing and files, phone control with an input-capable agent, server-key pinning, remembered two-factor sign-in and expanded computer tools. See the [changelog](CHANGELOG.md) and [validation](docs/RELEASE_0_8_0_VALIDATION.md).
+<p align="center"><sub>Captured from the 0.12.0 release against a synthetic demo server; no real devices or data.</sub></p>
+
+## Highlights
+
+<p align="center"><img src="docs/assets/highlights.jpg" width="720" alt="Remote desktop, terminal, file transfer, chat, app lock and port forwarding"></p>
+
+<table>
+  <tr>
+    <td width="33%" valign="top"><strong>Remote desktop</strong><br>Touch and trackpad modes, keyboard and shortcuts, clipboard text, monitor switching, picture-in-picture, stylus and DeX input.</td>
+    <td width="33%" valign="top"><strong>Terminal</strong><br>Default shell, PowerShell or the signed-in user's shell; a Ctrl/Esc/Tab/arrow row and up to 20 favorite commands. SSH and SFTP through the server relay.</td>
+    <td width="33%" valign="top"><strong>Files</strong><br>Browse, upload, download, rename and delete. Share files from any Android app straight to a computer folder, verified by SHA-256.</td>
+  </tr>
+  <tr>
+    <td valign="top"><strong>Chat with the user</strong><br>Text chat with the person at the computer, which stays connected in the background while you switch apps.</td>
+    <td valign="top"><strong>Private by design</strong><br>Credentials in Android Keystore-backed storage, optional PIN and biometric lock, server-key pinning. No ads, analytics or project backend.</td>
+    <td valign="top"><strong>Port forwarding</strong><br>Forward a TCP port of a computer to the phone for an RDP, VNC, SSH or browser client.</td>
+  </tr>
+</table>
+
+Also: up to 20 server profiles, search with group/OS/tag filters, CSV export, favourites and recent computers, system/BIOS/disk details, processes and services, power actions, device invitations with QR codes, launcher shortcuts and a Favorites widget, and 22 languages.
+
+## What's new in 0.12
+
+- **Choose the terminal shell:** default, PowerShell or the signed-in user's shell (PowerShell variants on Windows only).
+- **Filter computers** by group, operating system and tag; tags are shown on the list and included in search. **Export** the shown list as CSV.
+- **More room while typing:** with the keyboard open, the terminal gets most of the screen. Back keeps a desktop session running; End session is a separate control.
+- A clear message when a computer cannot start a session, instead of reporting a consent refusal.
+
+See the [changelog](CHANGELOG.md) for every release.
 
 This is a client: you manage computers and phones *from* your phone. The managed phone needs the official [MeshCentral Android agent](https://github.com/Ylianst/MeshCentralAndroidAgent), which shares its screen after Android consent and remains view-only. Remote touch, navigation and text entry require a modified agent with input support, enabled accessibility and sufficient rights. That agent support is not yet in the upstream project. See [how the options compare](docs/COMPARISON.md) and [how this app is built](AI_POLICY.md).
 
-## Tour
+<details>
+<summary>Animated tour with demo data</summary>
 
 <p align="center"><img src="docs/assets/demo.gif" width="300" alt="Animated tour with demo data: computer list, tool selection, terminal, files, system information and diagnostics"></p>
 
-<p align="center"><sub>Demo screens rendered by the app with fictional data.</sub></p>
+</details>
 
 ## Why not just the web panel?
 
@@ -54,7 +96,10 @@ This is a small independent project in public preview. The most useful help righ
 
 ## What you can do
 
-### Devices, search and profiles
+<details>
+<summary>Full feature reference</summary>
+
+#### Devices, search and profiles
 
 - Browse groups and computers, filter by online status or favourites, and see OS, address and Agent version.
 - Phones with the official Android agent: live battery, cached system/network information, screen viewing, files and vibration, flashlight, message, link and dial-pad requests after confirmation. Submission is not proof of execution; console actions also need Console permission. Input requires the modified agent described above.
@@ -62,7 +107,7 @@ This is a small independent project in public preview. The most useful help righ
 - Keep up to 20 recently opened computers per profile and account. The scope key is hashed; device names and addresses are not stored in the recent list.
 - Keep several server profiles (up to 20) with separate URLs, credentials, favourites and recent devices. The first profile is migrated from the existing settings. Credentials and favourites are profile-scoped; the app PIN and privacy switches stay global. Switching or deleting a profile closes its sessions.
 
-### Sessions and the remote tools
+#### Sessions and the remote tools
 
 - Keep **two sessions** open: one desktop plus one tool, or two tools. A third session is not admitted until one is closed explicitly.
 - The selected device and tab survive Activity recreation; after process death the app restores the choice, not a fake live connection. Input, commands and file changes are not replayed.
@@ -72,14 +117,14 @@ This is a small independent project in public preview. The most useful help righ
 - Computer files: browse, download, upload, create folders, rename and delete. Phone files: categories and accessible storage, upload/download with size/SHA-256 checks, and deletion; no create/rename. Duplicate media names have restricted actions; select a category before uploading. An isolated one-byte zero download frame fails verification rather than silently changing the file.
 - Standard desktop, terminal, files, SSH and SFTP **do not require a server plugin**. Tabs follow the capabilities reported by the server; a known denial disables a tab, while missing optional data allows an explicit attempt. The server decides.
 
-### Share to a computer
+#### Share to a computer
 
 - Accept `ACTION_SEND` and `ACTION_SEND_MULTIPLE` from a file manager, gallery or mail app, up to **20** `content://` documents.
 - Choose the profile, computer and folder, then upload through a visible queue. Each row has its own state, progress, cancel and explicit retry.
 - Uploads are checked by readback SHA-256. A failed or cancelled transfer is never shown as success. Retry starts **from the beginning**; there is no hidden resume or offset claim.
 - The source URI stays in memory only. After process death, share the file again. A foreground data-sync service keeps an active queue alive while Android permits it.
 
-### System, services and power
+#### System, services and power
 
 - Read cached system, BIOS, motherboard, TPM, disks, memory and network details. Online agents can supply software inventory and CPU/RAM samples without a plugin; Linux CPU is an average since the previous sample. Last boot and estimated uptime can be stale. Missing data stays unknown, including JSON null. Recognized Windows BIOS CIM_DATETIME values display as a localized date without shifting the release day.
 - See reported Windows Security Center/antivirus status and a Needs attention filter, up to 50 device events, the latest 100 power transitions and a seven-day connectivity chart with unknown gaps.
@@ -91,17 +136,19 @@ This is a small independent project in public preview. The most useful help righ
 - Copy or save a localized text report of the Details tab. Device tags are edited in the admin dialog, shown on the computer list and usable as a filter. Export the shown list as CSV.
 - Forward TCP ports of an Agent-hosted service to a local port for an external RDP, VNC, SSH or browser client. TCP only: up to 64 saved and 8 active rules, 16 connections, no UDP or VPN.
 
-### Jobs, history and Quick Help
+#### Jobs, history and Quick Help
 
 - Run only fixed, allowlisted templates: `diagnostics`, `services`, `processes`, `service-start`, `service-stop` and `service-restart`. There is no arbitrary shell or user-supplied command.
 - Jobs keep a status, result, exit code and bounded output. The server retains 7 days of history, at most 40 jobs and 64 KiB of output per job. `operationId` prevents a silent repeat; running jobs cannot be cancelled, and the app does not claim they were killed.
 - Quick Help follows: diagnostics → explanation → confirmed action → recheck → short report. The shareable report omits the device name, IP address, user, hostname, node/job ids and raw output. Unknown findings stay unknown.
 
-### Optional notifications
+#### Optional notifications
 
 - Optional background notifications use WorkManager with a **15-minute** best-effort interval, quiet hours and per-kind filters. There is no FCM, no project push service and no permanent socket.
 - After an explicit opt-in, the app stores a read-only bearer token in Android Keystore-backed storage (30-day TTL) and polls a same-origin HTTPS endpoint using the profile TLS policy, including an explicitly approved private-server key. A trust refusal stops polling before the token is sent. Cookies, redirects, query tokens and unapproved certificates are rejected.
 - Duplicate and expired events are filtered; tapping a notification routes to the right profile, device or job after unlock. A failed online revoke is reported as a limitation, not as success.
+
+</details>
 
 ## Optional server plugin
 

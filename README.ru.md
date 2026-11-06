@@ -1,4 +1,4 @@
-<h1 align="center"><img src="docs/assets/header.png" alt="MeshPilot" width="100%"></h1>
+<p align="center"><img src="docs/assets/header.jpg" alt="MeshPilot — независимый Android-клиент для серверов MeshCentral" width="100%"></p>
 
 <p align="center"><a href="README.md">English</a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.ru.md"><strong>Русский</strong></a></p>
 
@@ -8,7 +8,8 @@
 > **MeshPilot — независимое стороннее приложение** (раньше называлось «MeshCentral Mobile»). Оно не связано с проектом MeshCentral и его разработчиками, не одобрено и не поддерживается ими. О проблемах с приложением сообщайте в [вопросах этого репозитория](https://github.com/papajon123/meshcentral-android/issues), а не команде MeshCentral.
 
 <p align="center">
-  <a href="https://github.com/papajon123/meshcentral-android/releases"><strong>Скачать APK</strong></a>
+  <a href="https://github.com/papajon123/meshcentral-android/releases/latest"><img src="https://img.shields.io/badge/%D0%A1%D0%BA%D0%B0%D1%87%D0%B0%D1%82%D1%8C-APK-4FC3F7?style=for-the-badge&amp;logo=android&amp;logoColor=white" alt="Скачать подписанный APK"></a>
+  <a href="https://github.com/ImranR98/Obtainium"><img src="https://img.shields.io/badge/%D0%9E%D0%B1%D0%BD%D0%BE%D0%B2%D0%BB%D0%B5%D0%BD%D0%B8%D1%8F-Obtainium-1F2937?style=for-the-badge" alt="Получать обновления через Obtainium"></a>
 </p>
 
 <p align="center">
@@ -19,7 +20,14 @@
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 варианта локали Android">
 </p>
 
-> **Версия 0.10.6 (code 40)**: чат с пользователем компьютера, проброс TCP-портов, постраничная загрузка больших серверов, инструменты процессов и служб, переподключение терминала, проверяемое скачивание папок, «картинка в картинке», аппаратный ввод и DeX, приглашения и администрирование устройств, запрос согласия пользователя компьютера, выбор языка в приложении, шифрованная резервная копия настроек, ярлыки и виджет «Избранное», target Android 16. Линейка 0.8 добавила имя MeshPilot, вход по login token и login key, ввод пером и S Pen, просмотр телефона и файлы, управление телефоном с агентом с поддержкой ввода, закрепление ключа сервера, запоминание устройства после 2FA и расширенные инструменты компьютера. См. [историю изменений](CHANGELOG.md) и [проверки](docs/RELEASE_0_8_0_VALIDATION.md).
+## Что нового в 0.12
+
+- **Выбор оболочки терминала:** обычная, PowerShell или от имени вошедшего пользователя (варианты PowerShell — только в Windows).
+- **Фильтры компьютеров** по группе, ОС и тегу; теги видны в списке и участвуют в поиске. **Выгрузка** показанного списка в CSV.
+- **Больше места при наборе:** с открытой клавиатурой терминал занимает почти весь экран. «Назад» сохраняет сеанс рабочего стола, завершение сеанса — отдельная кнопка.
+- Понятное сообщение, если компьютер не смог открыть сеанс, вместо сообщения об отказе в согласии.
+
+Все выпуски — в [истории изменений](CHANGELOG.md).
 
 Это клиент: вы управляете компьютерами *с телефона*. Чтобы управлять самим телефоном, установите на него официальный [агент MeshCentral для Android](https://github.com/Ylianst/MeshCentralAndroidAgent); удалённый рабочий стол в нём пока только для просмотра. Подробнее — в [сравнении вариантов](docs/COMPARISON.md) и в [политике использования ИИ](AI_POLICY.md).
 

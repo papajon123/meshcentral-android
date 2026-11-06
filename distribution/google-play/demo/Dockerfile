@@ -75,6 +75,7 @@ RUN apt-get update \
        ca-certificates \
        fontconfig \
        fonts-dejavu-core \
+       hsetroot \
        libcurl4 \
        libgl1 \
        libssl3 \
@@ -141,6 +142,7 @@ RUN set -eux; \
 
 COPY --from=agent-download /out/meshagent /opt/meshpilot/meshagent
 COPY target-entry.sh /usr/local/bin/meshpilot-target-entry
+COPY wallpaper.jpg /usr/share/meshpilot/wallpaper.jpg
 RUN chmod 0755 /opt/meshpilot/meshagent /usr/local/bin/meshpilot-target-entry
 
 ENV DISPLAY=:99

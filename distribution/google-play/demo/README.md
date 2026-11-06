@@ -122,7 +122,7 @@ database, TLS keys, agent configuration, host keys, and sandbox identity.
   disabled, only `sandbox` may log in, and the image has no `sudo`.
 - The MeshCentral domain enables the confirmed 1.3.1 `ssh` feature flag. This is
   separate from the target's internal `sshd`.
-- Desktop is synthetic: Xvfb at `:99`, 1280x720, openbox and xterm, with no TCP X11.
+- Desktop is synthetic: Xvfb at `:99`, 1280x720, openbox, a static wallpaper (`wallpaper.jpg`, set with hsetroot) and xterm, with no TCP X11.
   Desktop/consent testing needs an interactive user and is not claimed as verified.
 - `smoke.cjs` does not execute terminal/files relay because the exact 1.3.1 relay
   framing was not audited here; it reports `relayTested=false` and

@@ -1,4 +1,4 @@
-<h1 align="center"><img src="docs/assets/header.png" alt="MeshPilot" width="100%"></h1>
+<p align="center"><img src="docs/assets/header.jpg" alt="MeshPilot：面向 MeshCentral 服务器的独立 Android 客户端" width="100%"></p>
 
 <p align="center"><a href="README.md">English</a> · <a href="README.zh-CN.md"><strong>简体中文</strong></a> · <a href="README.ru.md">Русский</a></p>
 
@@ -8,7 +8,8 @@
 > **MeshPilot 是独立的第三方应用**（原名“MeshCentral Mobile”），与 MeshCentral 项目及其开发者没有关联，也未获其认可或支持。请在[本仓库的 Issues](https://github.com/papajon123/meshcentral-android/issues) 中报告本应用的问题，而不要向 MeshCentral 团队报告。
 
 <p align="center">
-  <a href="https://github.com/papajon123/meshcentral-android/releases"><strong>下载 APK</strong></a>
+  <a href="https://github.com/papajon123/meshcentral-android/releases/latest"><img src="https://img.shields.io/badge/%E4%B8%8B%E8%BD%BD-APK-4FC3F7?style=for-the-badge&amp;logo=android&amp;logoColor=white" alt="下载已签名的 APK"></a>
+  <a href="https://github.com/ImranR98/Obtainium"><img src="https://img.shields.io/badge/%E6%9B%B4%E6%96%B0-Obtainium-1F2937?style=for-the-badge" alt="通过 Obtainium 获取更新"></a>
 </p>
 
 <p align="center">
@@ -19,7 +20,14 @@
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 个 Android 区域变体">
 </p>
 
-> **0.10.6 版本（code 40）**包括：与计算机用户聊天、TCP 端口转发、大型服务器分页、进程和服务工具、终端重连、校验文件夹下载、画中画、硬件和 DeX 输入、设备邀请与管理、每会话用户同意请求、应用内语言选择、加密设置备份、启动器快捷方式和“收藏”小部件，以及 Android 16 目标。0.8 系列增加了 MeshPilot 命名、登录令牌和 login key 登录、触控笔和 S Pen 输入、手机查看和文件、使用支持输入的代理控制手机、服务器密钥固定、记住双重验证设备和扩展的计算机工具。参见[更新日志](CHANGELOG.md)和[验证](docs/RELEASE_0_8_0_VALIDATION.md)。
+## 0.12 新功能
+
+- **选择终端 Shell：**默认 Shell、PowerShell 或已登录用户的 Shell（PowerShell 仅限 Windows）。
+- **按组、操作系统和标签筛选计算机**；标签显示在列表中并参与搜索。可将当前列表**导出**为 CSV。
+- **输入时空间更大：**软键盘打开时，终端几乎占满屏幕。“返回”会保留桌面会话，结束会话是单独的按钮。
+- 当计算机无法启动会话时给出明确提示，而不是误报用户拒绝授权。
+
+所有版本见[更新日志](CHANGELOG.md)。
 
 这是一个客户端：你*用手机*控制自己的计算机。若要管理手机本身，请在手机上安装官方的 [MeshCentral Android 代理](https://github.com/Ylianst/MeshCentralAndroidAgent)；它的远程桌面目前只能查看。详见[方案对比](docs/COMPARISON.md)和 [AI 政策](AI_POLICY.md)。
 

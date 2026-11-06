@@ -8,7 +8,7 @@ jobs:
   checks:
     uses: ./.github/workflows/android.yml
   release:
-    if: github.repository == 'papajon123/meshcentral-android'
+    if: (github.repository == 'papajon123/meshcentral-android' || github.repository == 'papajon123/meshpilot')
     needs: checks
     runs-on: ubuntu-24.04
     timeout-minutes: 25

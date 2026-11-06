@@ -26,7 +26,7 @@ class GitHubReleaseSourceTest {
         server.start()
         server.dispatcher = object : Dispatcher() {
             override fun dispatch(request: RecordedRequest): MockResponse = when {
-                request.path!!.startsWith("/repos/") -> MockResponse().setResponseCode(status).setBody(releases.toString())
+                request.path!!.startsWith("/repositories/") -> MockResponse().setResponseCode(status).setBody(releases.toString())
                 request.path!!.endsWith("release-info.json") -> metadataRedirect?.let {
                     MockResponse().setResponseCode(302).addHeader("Location", it)
                 } ?: MockResponse().setBody(info.toString())
@@ -50,7 +50,7 @@ class GitHubReleaseSourceTest {
         assertEquals(20L, source.latest()!!.versionCode)
         assertEquals(3, server.requestCount)
         val request = server.takeRequest(1, TimeUnit.SECONDS)!!
-        assertEquals("/repos/papajon123/meshcentral-android/releases?per_page=10", request.path)
+        assertEquals("/repositories/1428032345/releases?per_page=10", request.path)
         assertEquals("GET", request.method)
         assertTrue(request.getHeader("User-Agent")!!.contains("MeshCentral"))
         assertNull(request.getHeader("Authorization"))
@@ -78,7 +78,7 @@ class GitHubReleaseSourceTest {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 val old = request.path!!.contains("v9.0.0")
                 return MockResponse().setBody(when {
-                    request.path!!.startsWith("/repos/") -> releases.toString()
+                    request.path!!.startsWith("/repositories/") -> releases.toString()
                     request.path!!.endsWith("release-info.json") -> if (old) JSONObject(info.toString()).put("versionName", "9.0.0").put("versionCode", 19).toString() else info.toString()
                     else -> if (old) sums.replace("0.8.0", "9.0.0") else sums
                 })
@@ -110,6 +110,29 @@ class GitHubReleaseSourceTest {
         metadataRedirect = "https://github.com/papajon123/meshcentral-android/releases/download/v0.8.0/meshcentral-android-0.8.0.apk"
         reject(ReleaseRejection.AssetUrl)
         assertEquals(2, server.requestCount)
+    }
+
+    @Test fun acceptsReleaseAfterRepositoryRename() {
+        releases = JSONArray(releases.toString().replace("papajon123/meshcentral-android", "papajon123/meshpilot"))
+        assertEquals(20L, source.latest()!!.versionCode)
+        assertTrue(reasons.isEmpty())
+    }
+
+    @Test fun acceptsMeshPilotApkName() {
+        releases = JSONArray(releases.toString().replace("meshcentral-android-0.8.0.apk", "meshpilot-0.8.0.apk"))
+        sums = sums.replace("meshcentral-android-0.8.0.apk", "meshpilot-0.8.0.apk")
+        assertEquals(20L, source.latest()!!.versionCode)
+    }
+
+    @Test fun rejectsBothApkNames() {
+        val assets = releases.getJSONObject(0).getJSONArray("assets")
+        assets.put(JSONObject(assets.getJSONObject(0).toString().replace("meshcentral-android-0.8.0.apk", "meshpilot-0.8.0.apk")))
+        reject(ReleaseRejection.Assets)
+    }
+
+    @Test fun rejectsOtherRepositoryOfTheSameOwner() {
+        releases = JSONArray(releases.toString().replace("papajon123/meshcentral-android", "papajon123/meshpilot-fork"))
+        reject(ReleaseRejection.AssetUrl)
     }
 
     @Test fun rejectsDuplicateAssets() {

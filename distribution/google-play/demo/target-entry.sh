@@ -50,8 +50,13 @@ runuser -u sandbox -- env HOME=/home/sandbox DISPLAY=:99 XAUTHORITY=/home/sandbo
   openbox >/dev/null 2>&1 &
 openbox_pid=$!
 
+# A static wallpaper makes the synthetic desktop recognisable in screenshots and reviews.
 runuser -u sandbox -- env HOME=/home/sandbox DISPLAY=:99 XAUTHORITY=/home/sandbox/.Xauthority \
-  SHELL=/bin/bash xterm -geometry 110x30+16+16 -title 'MeshPilot demo' \
+  hsetroot -fill /usr/share/meshpilot/wallpaper.jpg >/dev/null 2>&1 || true
+
+runuser -u sandbox -- env HOME=/home/sandbox DISPLAY=:99 XAUTHORITY=/home/sandbox/.Xauthority \
+  SHELL=/bin/bash xterm -geometry 84x24+40+40 -title 'MeshPilot demo' \
+  -bg '#0B1220' -fg '#D6E2EE' -cr '#4FC3F7' -fa 'DejaVu Sans Mono' -fs 11 -b 12 \
   -e /bin/bash -lc 'cat "$HOME/fixture/hello.txt"; exec /bin/bash' >/dev/null 2>&1 &
 xterm_pid=$!
 

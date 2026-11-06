@@ -50,13 +50,18 @@ class GitHubReleaseSource internal constructor(
         val version = tag.removePrefix("v")
         verify(tag.startsWith("v") && UpdatePolicy.VERSION.matches(version), ReleaseRejection.Tag)
         val assets = release.getJSONArray("assets")
-        val apkName = "meshcentral-android-$version.apk"
+        val names = (0 until assets.length()).map { assets.getJSONObject(it).getString("name") }.toSet()
+        // The APK may carry the old repository name or the MeshPilot one, but never both.
+        val apkNames = APK_PREFIXES.map { "$it$version.apk" }.filter { it in names }
+        verify(apkNames.size == 1, ReleaseRejection.Assets)
+        val apkName = apkNames.single()
         fun asset(name: String): JSONObject {
             val matching = (0 until assets.length()).map { assets.getJSONObject(it) }.filter { it.getString("name") == name }
             verify(matching.size == 1, ReleaseRejection.Assets)
             return matching.single().also {
                 verify(it.getString("state") == "uploaded", ReleaseRejection.Assets)
-                verify(it.getString("browser_download_url") == "$RELEASE_ORIGIN/releases/download/$tag/$name", ReleaseRejection.AssetUrl)
+                verify(RELEASE_ORIGINS.any { origin -> it.getString("browser_download_url") == "$origin/releases/download/$tag/$name" },
+                    ReleaseRejection.AssetUrl)
             }
         }
         val apk = asset(apkName)
@@ -112,7 +117,7 @@ class GitHubReleaseSource internal constructor(
     private fun safeUrl(url: HttpUrl): Boolean = url.isHttps && url.port == 443 &&
         url.username.isEmpty() && url.password.isEmpty() && url.fragment == null && when (url.host) {
             "api.github.com" -> url.toString() == API_URL
-            "github.com" -> url.query == null && url.encodedPath.startsWith("/papajon123/meshcentral-android/releases/download/v") &&
+            "github.com" -> url.query == null && REPOSITORY_PATHS.any { url.encodedPath.startsWith("$it/releases/download/v") } &&
                 (url.encodedPath.endsWith("/release-info.json") || url.encodedPath.endsWith("/SHA256SUMS"))
             "release-assets.githubusercontent.com" -> true // GitHub's signed asset redirect; never logged or persisted.
             else -> false
@@ -122,8 +127,11 @@ class GitHubReleaseSource internal constructor(
     private class RejectedRelease(val reason: ReleaseRejection) : IllegalArgumentException("Unverified release: ${reason.name}")
 
     companion object {
-        const val API_URL = "https://api.github.com/repos/papajon123/meshcentral-android/releases?per_page=10"
-        private const val RELEASE_ORIGIN = "https://github.com/papajon123/meshcentral-android"
+        /** Addressed by the numeric repository id, which survives renaming papajon123/meshcentral-android. */
+        const val API_URL = "https://api.github.com/repositories/1428032345/releases?per_page=10"
+        private val REPOSITORY_PATHS = listOf("/papajon123/meshcentral-android", "/papajon123/meshpilot")
+        private val RELEASE_ORIGINS = REPOSITORY_PATHS.map { "https://github.com$it" }
+        private val APK_PREFIXES = listOf("meshcentral-android-", "meshpilot-")
         private const val MAX_LIST_BYTES = 1024 * 1024L
         private const val MAX_METADATA_BYTES = 64 * 1024L
         private val SUM_LINE = Regex("([a-fA-F0-9]{64}) [ *](.+)")

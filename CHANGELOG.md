@@ -1,4 +1,12 @@
-# 0.12.0 — 2026-11-06 (candidate)
+# 0.12.1 — 2026-11-06
+
+- Prepare for renaming the GitHub repository to `papajon123/meshpilot`: the update check reads releases by the
+  repository's numeric id, which survives a rename, and accepts release assets under either repository name
+  and either APK name (`meshcentral-android-*.apk` or `meshpilot-*.apk`, never both). Other repositories are
+  still rejected. The release and privacy-page workflows run under either name.
+- README: new artwork, current screenshots and a short What's new; the demo review server shows a wallpaper.
+
+# 0.12.0 — 2026-11-06
 
 - Choose the agent terminal shell: default, PowerShell, user shell or user PowerShell (MeshCentral protocols 1/6/8/9; PowerShell on Windows only, user variants need a signed-in console user). Switching opens a new terminal process; nothing is replayed.
 - Narrow the computer list by group, operating system and tag (whole-list servers; server-paged lists keep server search). Tags are shown on the list and included in search.

@@ -1,6 +1,10 @@
-## MeshPilot 0.12.0 candidate
+## MeshPilot 0.12.1
 
 MeshPilot is an independent client for MeshCentral servers, not affiliated with or endorsed by the MeshCentral project.
+
+**Why update:** the GitHub repository will soon be renamed from `meshcentral-android` to `meshpilot` to match the app's name. This version keeps the in-app update check working before and after the rename. Older versions will stop seeing new releases once the repository is renamed; install this one to keep update notifications. Nothing else changes in the app.
+
+### Included from 0.12.0
 
 **New in 0.12:** choose the agent terminal shell — default, PowerShell, or the signed-in user's shell or PowerShell (PowerShell on Windows only). Narrow the computer list by group, operating system and tag; tags appear on the list and are searchable. Export the shown list as CSV (formula-safe). When an agent cannot start a session, the app now says so instead of reporting a refused consent.
 
