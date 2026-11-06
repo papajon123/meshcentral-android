@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   deploy:
-    if: (github.repository == 'papajon123/meshcentral-android' || github.repository == 'papajon123/meshpilot') && github.ref == 'refs/heads/main'
+    if: (github.repository == 'papajon123/meshcentral-android' || github.repository == 'papajon123/meshpilot-android') && github.ref == 'refs/heads/main'
     runs-on: ubuntu-24.04
     environment:
       name: github-pages

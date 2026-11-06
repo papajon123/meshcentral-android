@@ -52,7 +52,7 @@ class GitHubReleaseSourceTest {
         val request = server.takeRequest(1, TimeUnit.SECONDS)!!
         assertEquals("/repositories/1428032345/releases?per_page=10", request.path)
         assertEquals("GET", request.method)
-        assertTrue(request.getHeader("User-Agent")!!.contains("MeshCentral"))
+        assertTrue(request.getHeader("User-Agent")!!.contains("MeshPilot"))
         assertNull(request.getHeader("Authorization"))
         assertNull(request.getHeader("Cookie"))
     }
@@ -113,21 +113,26 @@ class GitHubReleaseSourceTest {
     }
 
     @Test fun acceptsReleaseAfterRepositoryRename() {
-        releases = JSONArray(releases.toString().replace("papajon123/meshcentral-android", "papajon123/meshpilot"))
+        releases = JSONArray(releases.toString().replace("papajon123/meshcentral-android", "papajon123/meshpilot-android"))
         assertEquals(20L, source.latest()!!.versionCode)
         assertTrue(reasons.isEmpty())
     }
 
     @Test fun acceptsMeshPilotApkName() {
-        releases = JSONArray(releases.toString().replace("meshcentral-android-0.8.0.apk", "meshpilot-0.8.0.apk"))
-        sums = sums.replace("meshcentral-android-0.8.0.apk", "meshpilot-0.8.0.apk")
+        releases = JSONArray(releases.toString().replace("meshcentral-android-0.8.0.apk", "meshpilot-android-0.8.0.apk"))
+        sums = sums.replace("meshcentral-android-0.8.0.apk", "meshpilot-android-0.8.0.apk")
         assertEquals(20L, source.latest()!!.versionCode)
     }
 
     @Test fun rejectsBothApkNames() {
         val assets = releases.getJSONObject(0).getJSONArray("assets")
-        assets.put(JSONObject(assets.getJSONObject(0).toString().replace("meshcentral-android-0.8.0.apk", "meshpilot-0.8.0.apk")))
+        assets.put(JSONObject(assets.getJSONObject(0).toString().replace("meshcentral-android-0.8.0.apk", "meshpilot-android-0.8.0.apk")))
         reject(ReleaseRejection.Assets)
+    }
+
+    @Test fun rejectsTheShortMeshPilotName() {
+        releases = JSONArray(releases.toString().replace("papajon123/meshcentral-android", "papajon123/meshpilot"))
+        reject(ReleaseRejection.AssetUrl)
     }
 
     @Test fun rejectsOtherRepositoryOfTheSameOwner() {

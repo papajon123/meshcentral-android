@@ -94,7 +94,7 @@ class GitHubReleaseSource internal constructor(
         repeat(4) {
             checkActive()
             verify(safeUrl(url), ReleaseRejection.AssetUrl)
-            val request = Request.Builder().url(url).header("User-Agent", "MeshCentral-Android-UpdateCheck")
+            val request = Request.Builder().url(url).header("User-Agent", "MeshPilot-UpdateCheck")
                 .header("Accept", if (url.host == "api.github.com") "application/vnd.github+json" else "application/octet-stream").build()
             client.newCall(request).execute().use { response ->
                 if (response.code == 403 || response.code == 429) throw ReleaseRateLimitException()
@@ -127,11 +127,11 @@ class GitHubReleaseSource internal constructor(
     private class RejectedRelease(val reason: ReleaseRejection) : IllegalArgumentException("Unverified release: ${reason.name}")
 
     companion object {
-        /** Addressed by the numeric repository id, which survives renaming papajon123/meshcentral-android. */
+        /** The numeric repository id survives the rename to papajon123/meshpilot-android. */
         const val API_URL = "https://api.github.com/repositories/1428032345/releases?per_page=10"
-        private val REPOSITORY_PATHS = listOf("/papajon123/meshcentral-android", "/papajon123/meshpilot")
+        private val REPOSITORY_PATHS = listOf("/papajon123/meshcentral-android", "/papajon123/meshpilot-android")
         private val RELEASE_ORIGINS = REPOSITORY_PATHS.map { "https://github.com$it" }
-        private val APK_PREFIXES = listOf("meshcentral-android-", "meshpilot-")
+        private val APK_PREFIXES = listOf("meshcentral-android-", "meshpilot-android-")
         private const val MAX_LIST_BYTES = 1024 * 1024L
         private const val MAX_METADATA_BYTES = 64 * 1024L
         private val SUM_LINE = Regex("([a-fA-F0-9]{64}) [ *](.+)")

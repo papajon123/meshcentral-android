@@ -98,7 +98,7 @@ then reads `release-info.json` and `SHA256SUMS` from their GitHub release assets
 redirect to GitHub's `release-assets.githubusercontent.com` CDN. These are unauthenticated GET requests
 through a separate HTTP client with no cookies, tokens, MeshCentral server address, credentials,
 device inventory or other session data. GitHub and its CDN see the source IP address, requested public
-paths and ordinary HTTP headers, including the generic `MeshCentral-Android-UpdateCheck` User-Agent.
+paths and ordinary HTTP headers, including the generic `MeshPilot-UpdateCheck` User-Agent.
 The app does not send its installed version or signing fingerprint.
 
 Checks happen on foreground entry or the Settings button, at most once every 24 hours, including after
