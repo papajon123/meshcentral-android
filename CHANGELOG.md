@@ -1,4 +1,9 @@
-# 0.10.4 — 2026-11-06 (candidate)
+# 0.10.5 — 2026-11-06 (candidate)
+
+- Update AndroidX Fragment from 1.8.9 to 1.9.1 (GitHub Dependabot #17). The real system document-picker checks cover the Activity Result path it serves.
+- Run GitHub device tests once per release, in two disjoint shards per API level.
+
+# 0.10.4 — 2026-11-06
 
 - Read the complete `dumpsys window` output in the document-picker focus check. Closing the pipe early made Android 8's UiAutomation connection die with EPIPE and abort the instrumentation run.
 - Retain the application behavior and identity from the 0.10.3 candidate.

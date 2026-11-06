@@ -1,7 +1,8 @@
 name: Android checks
+# GitHub `main` only receives release snapshots: the GitLab bridge pushes `main` and the release tag
+# atomically, and release.yml runs these checks for that exact commit. A separate push trigger would
+# test the same tree twice and make both runs compete for emulator runners.
 on:
-  push:
-    branches: [main]
   pull_request:
   workflow_call:
   workflow_dispatch:
@@ -33,14 +34,16 @@ jobs:
             app/build/test-results/
           retention-days: 14
   device-tests:
+    name: device-tests (${{ matrix.api }}, shard ${{ matrix.shard }}/2)
     runs-on: ubuntu-24.04
-    # The full API 35 suite contains almost 800 cases and a verified run took 29 minutes.
-    # Leave time for emulator startup, both distributions and report upload on slower hosts.
-    timeout-minutes: 45
+    # The full suite has about 800 cases; one unsharded API run took 27-31 minutes, and long runs
+    # occasionally lost the emulator. Two disjoint AndroidJUnitRunner shards per API take ~15 minutes.
+    timeout-minutes: 35
     strategy:
       fail-fast: false
       matrix:
         api: [26, 35]
+        shard: [1, 2]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -81,11 +84,11 @@ jobs:
           # run-device-tests.sh explicitly enables the software IME alongside this keyboard.
           enable-hw-keyboard: true
           disable-animations: true
-          script: bash ci/run-device-tests.sh
+          script: NUM_SHARDS=2 SHARD_INDEX=$(( ${{ matrix.shard }} - 1 )) bash ci/run-device-tests.sh
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
-          name: device-reports-api-${{ matrix.api }}
+          name: device-reports-api-${{ matrix.api }}-shard-${{ matrix.shard }}
           path: |
             app/build/reports/androidTests/
             app/build/reports/webview/

@@ -88,6 +88,21 @@ A connection failure can be ambiguous about whether the atomic transaction compl
 `--check-only`, then retry the same protected release only after its exact tree/tag are verified.
 Never move or delete a published tag to recover. A code change requires a new version and tag.
 
+## GitHub device-test gate
+
+GitHub `main` receives only release snapshots, pushed atomically with their tag, so device tests run
+once per release: `release.yml` calls `android.yml` for the tagged commit, and `android.yml` has no
+separate `main` push trigger. Pull requests and manual runs still use the same checks.
+
+Each API level (26 and 35) runs two disjoint AndroidJUnitRunner shards (`NUM_SHARDS=2`,
+`SHARD_INDEX`) as separate emulator jobs; together they cover the complete suite. The Play-distribution
+checks run once, in the last shard. A shard may retry at most five failed tests once, by name and
+without shard arguments; an incomplete instrumentation run is never retried partially.
+
+When a shard fails for an environmental reason (the emulator went offline, a runner was lost), use
+**Re-run failed jobs** on the same tag run: it repeats the entire failed shard on a fresh emulator,
+and signing still requires every job to pass. Burn the version only when the code or a test changes.
+
 The export refuses traversal/control/case-colliding paths, symlinks, submodules, credential stores,
 environment files (except placeholder examples), private/generated output directories, oversized
 trees and unresolved Git LFS pointers. It preserves legitimate executable modes, UTF-8 source paths,
