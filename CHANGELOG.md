@@ -1,4 +1,11 @@
-# 0.10.3 — 2026-11-05 (candidate)
+# 0.10.4 — 2026-11-06 (candidate)
+
+- Read the complete `dumpsys window` output in the document-picker focus check. Closing the pipe early made Android 8's UiAutomation connection die with EPIPE and abort the instrumentation run.
+- Retain the application behavior and identity from the 0.10.3 candidate.
+
+# 0.10.3 — 2026-11-05 (no GitHub APK published)
+
+Android 8 device checks stopped when the picker focus check closed system output early; the corrected candidate is 0.10.4.
 
 - Correct AAB signature validation: resource filenames in jarsigner's entry listing are not certificate or algorithm errors. Keep strict verification, signer pinning and rejection of expired, disabled and partially signed bundles.
 - Observe the real document picker's foreground window through Window Manager and dismiss it before unregistering its callback, keeping subsequent UI tests isolated.

@@ -106,10 +106,17 @@ internal object WindowFocusParser {
  * accessibility tree that [android.view.accessibility.AccessibilityNodeInfo] exposes.
  */
 internal class SystemFocusOracle(private val automation: UiAutomation) {
-    fun readSnapshot(): WindowFocusSnapshot =
-        ParcelFileDescriptor.AutoCloseInputStream(automation.executeShellCommand(DUMP_COMMAND))
+    /**
+     * Drains the whole command output before parsing. Closing the pipe early (the parser stops at
+     * the first two focus records) makes Android 8's UiAutomationConnection writer thread die with
+     * EPIPE, which disconnects UiAutomation and aborts the entire instrumentation run.
+     */
+    fun readSnapshot(): WindowFocusSnapshot {
+        val output = ParcelFileDescriptor.AutoCloseInputStream(automation.executeShellCommand(DUMP_COMMAND))
             .bufferedReader()
-            .useLines { lines -> WindowFocusParser.parse(lines) }
+            .use { it.readText() }
+        return WindowFocusParser.parse(output.lineSequence())
+    }
 
     fun documentsUiForeground(): Boolean = readSnapshot().documentsUiForeground
 
