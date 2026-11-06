@@ -309,8 +309,9 @@ class MeshCentralClient(
                 requestControl(JSONObject().put("action", "getsysinfo").put("nodeid", nodeId), "getsysinfo", nodeId)
             } catch (cancelled: kotlinx.coroutines.CancellationException) {
                 throw cancelled
-            } catch (_: Exception) {
+            } catch (failure: Exception) {
                 // Unknown stays view-only. Never infer support from a version or cached UI.
+                ru.papajon.meshcentralmobile.model.FailureLog.record(TAG, "Phone input capability query", failure)
             }
         }
     }
@@ -388,7 +389,10 @@ class MeshCentralClient(
             clientState.first { it.socketConnected && it.devicesCurrent && it.userId != null }
             try { resolveDevice(nodeId) }
             catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
-            catch (_: Exception) { /* Card shows the missing state; the retained-device refresh can retry. */ }
+            catch (failure: Exception) {
+                // Card shows the missing state; the retained-device refresh can retry.
+                ru.papajon.meshcentralmobile.model.FailureLog.record(TAG, "Selected device lookup", failure)
+            }
         }
     }
 
@@ -585,7 +589,10 @@ class MeshCentralClient(
                 try { resolveDevice(id, refresh = true, timeoutMillis = 5_000) }
                 catch (_: kotlinx.coroutines.TimeoutCancellationException) { /* Retry on the next bounded pass. */ }
                 catch (cancelled: kotlinx.coroutines.CancellationException) { throw cancelled }
-                catch (_: Exception) { /* Transport/authorization errors must not close unrelated sessions. */ }
+                catch (failure: Exception) {
+                    // Transport/authorization errors must not close unrelated sessions.
+                    ru.papajon.meshcentralmobile.model.FailureLog.record(TAG, "Retained device refresh", failure)
+                }
             }
         }
     }
@@ -884,6 +891,7 @@ class MeshCentralClient(
     private fun sendNodesRequest(request: JSONObject) {
         nodesTimeout?.cancel()
         if (!sendControlJson(request)) {
+            ru.papajon.meshcentralmobile.model.FailureLog.record(TAG, "Device page request send")
             finishNodesFailure()
             return
         }
@@ -898,6 +906,7 @@ class MeshCentralClient(
             synchronized(phoneInfoLock) {
                 if (!nodesWatchdog.expire(ticket)) return@synchronized
                 // Do not free the wire slot. Explicit Retry can replace a genuinely stuck socket.
+                ru.papajon.meshcentralmobile.model.FailureLog.record(TAG, "Device page response (timeout)")
                 finishNodesFailure(keepFlight = true, invalidateSnapshot = externalNodes == null)
             }
         }

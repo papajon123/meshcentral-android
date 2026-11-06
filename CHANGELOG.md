@@ -1,4 +1,11 @@
-# 0.10.5 — 2026-11-06 (candidate)
+# 0.10.6 — 2026-11-06 (candidate)
+
+- Record previously silent handled failures in the system log by exception class name only (no messages, URLs, device names or paths): Files relay and message handling, selected-device lookup, retained-device refresh, phone input query, device page send/timeout, Android task tools probe, launcher updates, sign-out notification revocation and chat notifications.
+- Give the Files multi-select long press an accessibility action label.
+- Bring README (en/ru/zh-CN), comparison, architecture, roadmap and known-limitation documents in line with the app: chat, in-app language picker, events, power, port forwarding, administration and current toolchain versions.
+- Device-test stability: hide system error dialogs on CI emulators, rerun the two-class Play suite completely once on failure, allow 15 s for the Play privacy dialog, align the screen gallery with the distribution-specific Settings, and derive the test documents-provider authority from the test application ID.
+
+# 0.10.5 — 2026-11-06
 
 - Update AndroidX Fragment from 1.8.9 to 1.9.1 (GitHub Dependabot #17). The real system document-picker checks cover the Activity Result path it serves.
 - Run GitHub device tests once per release, in two disjoint shards per API level.

@@ -17,7 +17,8 @@ class PlayPrivacyPolicyTest {
         assumeFalse(BuildConfig.EXTERNAL_UPDATES_ENABLED)
         compose.setContent { MeshCentralMobileTheme { PlayPrivacyPolicyButton() } }
         compose.onNodeWithTag("play-privacy-policy").performClick()
-        compose.waitUntil(5_000) { compose.onAllNodesWithTag("play-privacy-content").fetchSemanticsNodes().size == 1 }
+        // Emulator CI under load can take several seconds to compose the dialog window.
+        compose.waitUntil(15_000) { compose.onAllNodesWithTag("play-privacy-content").fetchSemanticsNodes().size == 1 }
         compose.onNodeWithTag("play-privacy-content").assertIsDisplayed()
         compose.onNodeWithText(compose.activity.getString(R.string.play_privacy_unavailable)).assertDoesNotExist()
         compose.onNodeWithText(compose.activity.getString(R.string.common_action_close)).performClick()

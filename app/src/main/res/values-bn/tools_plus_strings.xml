@@ -5,6 +5,7 @@
     <string name="tools_download_selected">নির্বাচিতগুলি ডাউনলোড করুন</string>
     <string name="tools_delete_selected">নির্বাচিতগুলি মুছুন</string>
     <string name="tools_select_hint">একাধিক আইটেম নির্বাচন করতে চেপে ধরে রাখুন</string>
+    <string name="tools_select_item">নির্বাচন করুন</string>
     <string name="tools_download_folder">ফোল্ডার ডাউনলোড করুন</string>
     <string name="tools_folder_notice">Mesh Agent ফোল্ডার ZIP আর্কাইভ হিসেবে ডাউনলোড হয়। SFTP ফোল্ডার ফাইল ধরে ধরে কপি হয়। একটি গন্তব্য ফোল্ডার বেছে নিন।</string>
     <string name="tools_batch_progress">সম্পন্ন: %2$d-এর মধ্যে %1$d · %3$d বাইট</string>

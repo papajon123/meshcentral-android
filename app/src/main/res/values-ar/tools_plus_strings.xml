@@ -5,6 +5,7 @@
     <string name="tools_download_selected">تنزيل المحدد</string>
     <string name="tools_delete_selected">حذف المحدد</string>
     <string name="tools_select_hint">المس مع الاستمرار لتحديد عدة عناصر</string>
+    <string name="tools_select_item">تحديد</string>
     <string name="tools_download_folder">تنزيل المجلد</string>
     <string name="tools_folder_notice">تُنزَّل مجلدات Mesh Agent كأرشيفات ZIP. تُنسخ مجلدات SFTP ملفًا بملف. اختر مجلد الوجهة.</string>
     <string name="tools_batch_progress">المكتمل: %1$d من %2$d · %3$d بايت</string>

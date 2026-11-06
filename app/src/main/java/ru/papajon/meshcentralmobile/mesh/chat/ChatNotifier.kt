@@ -47,7 +47,10 @@ object ChatNotifier {
         return try {
             NotificationManagerCompat.from(context).notify(tag(profile, session), ID, notification)
             true
-        } catch (_: SecurityException) { false }
+        } catch (failure: SecurityException) {
+            ru.papajon.meshcentralmobile.model.FailureLog.record("ChatNotifier", "Chat notification", failure)
+            false
+        }
     }
 
     fun cancel(context: Context, profile: String, session: String) {

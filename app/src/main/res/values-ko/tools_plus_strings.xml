@@ -5,6 +5,7 @@
     <string name="tools_download_selected">선택 항목 다운로드</string>
     <string name="tools_delete_selected">선택 항목 삭제</string>
     <string name="tools_select_hint">여러 항목을 선택하려면 길게 누르세요</string>
+    <string name="tools_select_item">선택</string>
     <string name="tools_download_folder">폴더 다운로드</string>
     <string name="tools_folder_notice">Mesh Agent 폴더는 ZIP 아카이브로 다운로드됩니다. SFTP 폴더는 파일별로 복사됩니다. 대상 폴더를 선택하세요.</string>
     <string name="tools_batch_progress">완료: %1$d/%2$d · %3$d바이트</string>

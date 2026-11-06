@@ -5,6 +5,7 @@
     <string name="tools_download_selected">Скачать выбранное</string>
     <string name="tools_delete_selected">Удалить выбранное</string>
     <string name="tools_select_hint">Коснитесь и удерживайте, чтобы выбрать несколько элементов</string>
+    <string name="tools_select_item">Выбрать</string>
     <string name="tools_download_folder">Скачать папку</string>
     <string name="tools_folder_notice">Папки Mesh Agent скачиваются ZIP-архивами. Папки SFTP копируются файл за файлом. Выберите папку назначения.</string>
     <string name="tools_batch_progress">Готово: %1$d из %2$d · %3$d байт</string>

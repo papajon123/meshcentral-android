@@ -19,7 +19,7 @@
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 个 Android 区域变体">
 </p>
 
-> **0.7.3 版本**修复了在需要验证码（双重验证）的服务器上无法登录的问题。详见[更新日志](CHANGELOG.md)。
+> **0.10.6 版本（code 40）**包括：与计算机用户聊天、TCP 端口转发、大型服务器分页、进程和服务工具、终端重连、校验文件夹下载、画中画、硬件和 DeX 输入、设备邀请与管理、每会话用户同意请求、应用内语言选择、加密设置备份、启动器快捷方式和“收藏”小部件，以及 Android 16 目标。0.8 系列增加了 MeshPilot 命名、登录令牌和 login key 登录、触控笔和 S Pen 输入、手机查看和文件、使用支持输入的代理控制手机、服务器密钥固定、记住双重验证设备和扩展的计算机工具。参见[更新日志](CHANGELOG.md)和[验证](docs/RELEASE_0_8_0_VALIDATION.md)。
 
 这是一个客户端：你*用手机*控制自己的计算机。若要管理手机本身，请在手机上安装官方的 [MeshCentral Android 代理](https://github.com/Ylianst/MeshCentralAndroidAgent)；它的远程桌面目前只能查看。详见[方案对比](docs/COMPARISON.md)和 [AI 政策](AI_POLICY.md)。
 
@@ -61,6 +61,7 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 ### 设备、搜索和配置文件
 
 - 浏览分组和计算机，按在线状态或收藏筛选，并查看操作系统、地址和 Agent 版本。
+- 使用官方 MeshCentral Android 代理的手机：电池电量、缓存的系统/网络信息、屏幕查看、文件，以及确认后的振动、手电筒、消息、链接和拨号请求。提交不等于执行；控制台操作还需要 Console 权限。输入需要上文所述的修改版代理。
 - 在已加载列表中按设备名、分组、主机/IP 或操作系统搜索。查询按 Unicode 规范化且不区分大小写；每个词都必须匹配（AND）。输入不会向服务器发送请求。
 - 每个配置文件和账户保留最多 20 台最近打开的计算机。作用域键经过哈希；最近列表不保存设备名和地址。
 - 保留多个服务器配置文件（最多 20 个），各自拥有地址、凭据、收藏和最近设备。第一个配置文件由现有设置迁移而来。凭据和收藏按配置文件隔离；应用 PIN 和隐私开关保持全局。切换或删除配置文件会关闭其会话。
@@ -69,8 +70,8 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 
 - 同时保留**两个会话**：一个桌面加一个工具，或两个工具。在明确关闭一个会话之前，不会打开第三个。
 - 选中的设备和标签页在 Activity 重建后保留；进程被终止后恢复的是用户选择，而不是虚假的活动连接。输入、命令和文件更改不会自动重放。
-- 桌面：通过触摸、触控板、键盘、剪贴板文本、显示器切换和重新连接来查看和控制 Agent 桌面。
-- 终端：在 Agent shell 中运行命令。文件：浏览、下载为文档、上传、新建文件夹、重命名和删除。SSH 和 SFTP：通过服务器端中继工作。
+- 桌面：通过触摸、触控板、键盘、剪贴板文本、显示器切换和重新连接来查看和控制 Agent 桌面。还支持画中画、物理鼠标和键盘、类似 DeX 的输入以及远程键盘布局模式。
+- 终端：在 Agent shell 中运行命令，每个配置文件最多 20 条单行收藏命令，并支持显式重连。单独的 Run command 界面提供预览、确认和有界输出；**PowerShell 5+ (UTF-8)** 模式属于该界面，而不属于没有 shell 选择的终端。文件：浏览、下载为文档、上传、新建文件夹、重命名和删除。SSH 和 SFTP：通过服务器端中继工作。
 - 标准桌面、终端、文件、SSH 和 SFTP **不需要服务器插件**。标签页遵循服务器报告的能力：明确拒绝会禁用标签页；缺少可选数据时允许显式尝试。最终由服务器决定。
 
 ### 分享到计算机
@@ -82,9 +83,15 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 
 ### 系统、服务和电源
 
-- 读取 MeshCentral 已为该设备保存的系统、磁盘、内存和网络数据。缺失数据保持未知，不会显示为零。
+- 读取 MeshCentral 已为该设备保存的系统、磁盘、内存和网络数据。缺失数据保持未知，不会显示为零。在线代理还可提供只读软件清单和 CPU/RAM 采样。
+- 显示 Windows Security Center/防病毒状态和“需要关注”筛选、最多 50 条设备事件、最近 100 次电源切换，以及带未知空档的七日连接图表。
 - 使用可选插件可列出服务和进程。只有在 Agent、操作系统和用户权限支持时，才能确认启动、停止或重启服务；操作后会再次检查结果。
-- 仅当报告的权利和在线状态允许时，才提供重启、关机和 Wake-on-LAN。服务器 ACK 不等于已执行：应用会轮询并报告“已重新连接”“仍离线”或“未知”。
+- 仅当报告的权利和在线状态允许时，才提供唤醒、睡眠、重启和关机。服务器 ACK 不等于已执行：应用会轮询并报告“已重新连接”“仍离线”或“未知”。
+- 支持重命名设备、修改描述/标签/备注、在分组间移动、删除或卸载，以及为分组创建带 QR 码或分享的安装链接（1/8/24/168 小时）。分组创建、策略和服务器用户管理仍在网页面板中。
+- 与在线计算机的用户聊天：仅文本，会话内存中最多 200 条消息，可显式关闭和重试。聊天记录不写入磁盘；原生聊天不支持文件、音频/视频或推送消息。
+- 复制或保存“详情”标签页的本地化文本报告。设备标签在管理对话框中编辑，但不在设备列表中显示，也不用于筛选。
+- 将计算机上的 TCP 服务端口转发到本地端口，供外部 RDP、VNC、SSH 或浏览器客户端使用。仅 TCP：最多 64 条保存规则和 8 条活动规则、16 个连接，不支持 UDP 或 VPN。
+- 使用密码加密的设置备份（PBKDF2-HMAC-SHA256 和 AES-256-GCM），包含配置文件、收藏、快捷组合和明确选择的 login key；不包含密码、Cookie、令牌或 PIN。设备启动器快捷方式和“收藏”小部件补充了启动方式。
 
 ### 任务、历史和快速帮助
 
@@ -100,7 +107,7 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 
 ## 可选服务器插件
 
-任务、服务和进程视图、确认的服务操作以及后台通知使用可选的 **`mobilecompanion` 1.1.0** 插件。标准桌面、终端、文件、SSH 和 SFTP 无需该插件。
+任务、服务和进程视图、确认的服务操作以及后台通知使用可选的 **`mobilecompanion` 1.1.2** 插件。标准桌面、终端、文件、SSH 和 SFTP 无需该插件。
 
 - 需要 MeshCentral **1.3.0** 和用户权限 `MESHRIGHT_REMOTECOMMAND (0x20000)`。**24**（Agent 控制台）权限不够。
 - 插件提供固定模板、经 ACL 检查的任务、只读 HTTP 事件和通知令牌。它不修改 MeshCentral 核心，也不接受任意代码或 shell 字符串。
@@ -109,11 +116,11 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 
 ## 验证和限制
 
-- 公开版本已通过本地构建和 240 项 JVM 测试；API 35：135 项通过、4 项可选或兼容性测试跳过、0 项失败。已生成多语言、RTL、双倍字体和平板截图。
-- 已在真实 Windows Mesh Agent 上验证 Companion 1.1.2 的服务和进程读取。其他 Windows 流程、物理手机、systemd 服务操作、TalkBack、设备上的大字体、电池消耗、Doze/OEM 后台限制，以及 Android 8 上的全部 0.7.3 流程仍未验证。
+- 候选构建的确切检查范围记录在 [0.8.0 验证](docs/RELEASE_0_8_0_VALIDATION.md)；已发布的 0.8.1 和 0.8.2 检查、哈希和剩余验收在[发布验证](docs/RELEASE_0_8_2_VALIDATION.md)。API 26/35、多语言、RTL、大字体和平板的历史结果保留在[实现与限制](docs/ROADMAP_IMPLEMENTATION.md)；它们不是对每个 0.8.0 流程的新验收。
+- 实机证据覆盖 Linux CPU/RAM、历史记录和已审阅的命令输出（[一致性检查](docs/PARITY_FIXES_VALIDATION.md)），以及使用官方代理 1.0.23 的手机下载和校验上传（[手机文件检查](docs/PHONE_FILES_FIXES_VALIDATION.md)）。手机输入需要修改版代理；硬件效果、广泛的 Windows/macOS 验收、物理手机、systemd 服务操作、TalkBack、电池消耗、Doze/OEM 限制以及 Android 8 上的全部 0.8.0 流程仍未验证。
 - 手机验收仍需覆盖：在已签名版本上安装/更新、登录/2FA、两个会话、旋转/后台/锁屏/断网/进程终止、从真实应用分享、通知和可选插件。
 - 本版本不包含 WebRTC。该技术已调研，但 MeshCentral 1.3.0 不接受终端 RTC offer；继续使用 WSS 中继。参见[路线图](docs/ROADMAP.md)。
-- Intel AMT KVM、RDP、VNC、聊天、注册表/软件管理和服务器管理仍在网页面板中。应用不管理服务器。
+- Intel AMT KVM、RDP、VNC、软件/注册表管理和服务器管理仍属于网页面板功能。应用不管理服务器。
 
 ## 本应用如何开发
 
@@ -121,8 +128,8 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 
 ## 语言
 
-- **22 种语言、23 个 Android 区域变体**（简体中文和繁体中文是同一种语言的两个变体）。每个变体有 979 条翻译字符串，外加共享的应用名称。
-- Android 8–12 跟随系统语言。Android 13 及更高版本还提供应用单独语言设置；应用内没有单独的语言选择器。
+- **22 种语言、23 个 Android 区域变体**（简体中文和繁体中文是同一种语言的两个变体）。翻译检查会核对每个变体中相同的资源集合；共享的应用名称不翻译。
+- Android 8–12 应用在**设置 → 语言**中选择的语言。Android 13 及更高版本会在系统应用语言设置中反映同一选择。列表包含系统默认和全部 23 个变体；无需离开应用即可切换语言。
 - 如果没有匹配的受支持语言，应用回退到英文。阿拉伯语、波斯语和乌尔都语使用从右到左布局。
 - 翻译由机器生成（DeepSeek），尚未经过所有语言的母语者校对。服务器消息、设备和文件名、终端输出及物理按键说明不会翻译。
 
@@ -153,16 +160,16 @@ MeshCentral 网页面板可以在手机浏览器中打开，但它是为大屏�
 <details>
 <summary>从源码构建</summary>
 
-要求：JDK 17、Android SDK platform 36、build-tools 35.0.0。Gradle wrapper 会下载 Gradle 8.11.1。
+要求：JDK 17、Android SDK platform 37、build-tools 36.0.0。Gradle wrapper 会下载 Gradle 9.8.2。
 
 ```bash
 export JAVA_HOME=/path/to/jdk-17
 export ANDROID_HOME="$HOME/Android/Sdk"
-./gradlew testDebugUnitTest lintDebug assembleDebug
+./gradlew testDirectDebugUnitTest testPlayDebugUnitTest lintDirectDebug lintPlayDebug assembleDirectDebug assemblePlayDebug bundlePlayRelease
 python3 ci/check_translations.py
 ```
 
-Windows 上使用 `.\gradlew.bat`，并设置相同的环境变量。调试 APK 输出到 `app/build/outputs/apk/debug/app-debug.apk`。本地构建的 APK 不是公开发行版；维护者负责签名和发布。
+Windows 上使用 `.\gradlew.bat`，并设置相同的环境变量。Direct 和 Play 调试 APK 输出到 `app/build/outputs/apk/direct/debug/` 和 `app/build/outputs/apk/play/debug/`。Play 包为 `app/build/outputs/bundle/playRelease/app-play-release.aab`。Play 变体禁用外部更新检查和支持链接。本地构建的 APK 不是公开发行版；维护者负责签名和发布。
 
 </details>
 

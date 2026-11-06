@@ -10,7 +10,7 @@ The primary path is Kotlin and Jetpack Compose. The desktop is native KVM; Agent
 
 1. **Onboarding and server settings.** `ServerUrlValidator` accepts the user's own HTTPS URL. Untrusted server keys require explicit, per-profile fingerprint approval; plain HTTP and the legacy certificate bypass remain debug-only. No endpoint is preconfigured.
 2. **Sign-in and control channel.** `MeshCentralClient` opens `wss://<host>/control.ashx` with `x-meshauth`, handles two-factor challenges, requests `serverinfo`, `userinfo`, `meshes`, `nodes` and `authcookie`, and keeps the device list current.
-3. **Device details.** `DeviceScreen` presents Details, Desktop, Terminal, Files, SSH and SFTP. `SessionAvailability` decides `Available`, `Unknown`, `Offline`, `Unsupported` or `Denied`. Known denial is blocked; unknown permits an explicit attempt; the server remains the authority.
+3. **Device details.** `DeviceScreen` presents Details, Desktop, Terminal, Files, SSH, SFTP, Processes, Services, System, Help & jobs, Chat with user and Port forwarding. `SessionAvailability` decides `Available`, `Unknown`, `Offline`, `Unsupported` or `Denied`. Known denial is blocked; unknown permits an explicit attempt; the server remains the authority.
 4. **Desktop.** `MeshDesktopRelay` requests a control-channel tunnel, opens `/meshrelay.ashx?browser=1&p=2`, performs the text `c`/`cr` handshake, sends protocol `2`, then decodes KVM frames. The existing reconnect and framebuffer path is unchanged.
 5. **Agent terminal.** `ManagedRelayConnection` opens the relay with usage `1`, asks the Agent to dial the tunnel, waits for `c`/`cr`, sends the `xterm` options and protocol `1`. `TerminalController` passes raw bytes to the local renderer and sends input/resize back.
 6. **Agent files.** The same relay type opens usage `5`. `FilesController` speaks the Agent file protocol: JSON listing/control messages plus 16,380-byte upload/download chunks. SAF supplies source and destination streams.
@@ -41,7 +41,7 @@ All endpoints are on the configured MeshCentral server. Agent terminal/files als
 | `MeshControlParser` / `MeshModels` | Server capabilities, device rights, Agent capability bits and availability inputs. |
 | `ManagedRelayConnection` | One-shot relay transport: credentials callback, handshake timeout, framing, backpressure, oversize rejection and close. |
 | `SessionAvailability` | Separates known denial from unknown metadata and offline/unsupported states. |
-| `TerminalController` | Terminal protocol, SSH auth state, shell-readiness gate, resize and explicit session close. No automatic reconnect. |
+| `TerminalController` | Terminal protocol, SSH auth state, shell-readiness gate, resize, explicit manual reconnect and explicit session close. No automatic reconnect. |
 | `TerminalOutputBuffer` / `TerminalWebRenderer` | Bounded output queue and locked-down local xterm WebView bridge. |
 | `FilesController` | Agent and SFTP listings, transfers, SAF streams, confirmations and readback verification. |
 | `AgentFilesProtocol` / `SftpFilesAdapter` | Protocol-specific parsing, chunk framing, name safety and SFTP EOF/size rules. |
@@ -173,7 +173,7 @@ tests and is not enabled by the pinning flow; it cannot override an existing pin
 
 ## Deployment expectations
 
-The repository contains no server component. The MeshCentral server must provide:
+The repository contains no MeshCentral server or separate project backend. The optional plugin in `server/mobile-companion` adds jobs, events, notification tokens and a read-only HTTP events endpoint; standard desktop, terminal, files, SSH and SFTP do not require it. The MeshCentral server must provide:
 
 - HTTPS with a platform-trusted certificate valid for the host name, or an independently verified,
   explicitly approved leaf public key for native control/relay connections. Notification polling
@@ -186,10 +186,10 @@ A reverse proxy or certificate problem is reported as a connection failure; the 
 
 ## Tech stack
 
-- Kotlin 2.0.21, Jetpack Compose (BOM 2024.12.01), Material 3.
-- Android Gradle Plugin 8.10.1, Gradle 8.11.1, JDK 17.
-- `compileSdk`/`targetSdk` 36, `minSdk` 26 (Android 8.0).
-- OkHttp 4.12.0, kotlinx.coroutines 1.9.0.
+- Kotlin 2.4.21, Jetpack Compose (BOM 2026.09.00), Material 3.
+- Android Gradle Plugin 9.5.0, Gradle 9.8.2, JDK 17, build-tools 36.0.0.
+- `compileSdk` 37, `targetSdk` 36, `minSdk` 26 (Android 8.0).
+- OkHttp 5.5.1, kotlinx.coroutines 1.11.0.
 - Bundled xterm.js 5.5.0 and addon-fit 0.10.0, MIT.
 
 ## Source layout
@@ -208,4 +208,4 @@ JVM tests cover control parsing, KVM framing, input encoding, relay construction
 
 ## Non-goals
 
-The app does not implement Intel AMT KVM, RDP, VNC, WebRTC, device events, wake/power management, registry/software management, chat, guest sharing, a direct-from-phone SSH product, a MeshCentral server, or an Android Agent. It does not administer MeshCentral users, meshes, policies or server settings.
+The app does not implement Intel AMT KVM, RDP, VNC, WebRTC, registry/software management, guest sharing, a direct-from-phone SSH product, a MeshCentral server, or an Android Agent. It does not administer MeshCentral users, meshes, policies or server settings. Device events, power/Wake-on-LAN, read-only software inventory and chat with the computer user are implemented.

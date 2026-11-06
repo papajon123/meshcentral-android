@@ -691,7 +691,8 @@ private fun FileRow(entry: RemoteFile, enabled: Boolean, selected: Boolean = fal
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .combinedClickable(enabled = enabled, onLongClick = onLongClick, onClick = onClick)
+            .combinedClickable(enabled = enabled, onLongClick = onLongClick,
+                onLongClickLabel = stringResource(R.string.tools_select_item), onClick = onClick)
             .heightIn(min = 56.dp)
             .padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,

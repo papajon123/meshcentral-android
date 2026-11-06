@@ -5,6 +5,7 @@
     <string name="tools_download_selected">Scarica selezione</string>
     <string name="tools_delete_selected">Elimina selezione</string>
     <string name="tools_select_hint">Tieni premuto per selezionare più elementi</string>
+    <string name="tools_select_item">Seleziona</string>
     <string name="tools_download_folder">Scarica cartella</string>
     <string name="tools_folder_notice">Le cartelle Mesh Agent vengono scaricate come archivi ZIP. Le cartelle SFTP vengono copiate file per file. Scegli una cartella di destinazione.</string>
     <string name="tools_batch_progress">Completato: %1$d di %2$d · %3$d byte</string>

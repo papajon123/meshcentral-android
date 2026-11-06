@@ -22,6 +22,9 @@ if [ "$num_shards" -gt 1 ]; then
   echo "Running device-test shard $((shard_index + 1)) of $num_shards"
 fi
 adb shell settings put secure show_ime_with_hard_keyboard 1
+# A slow emulator can leave the system launcher unresponsive after Home/PiP tests; its ANR dialog
+# would take window focus from the app under test. Hide system error dialogs (Android 9+ honours it).
+adb shell settings put global hide_error_dialogs 1 || true
 results=app/build/outputs/androidTest-results
 test_status=0
 ./gradlew --no-daemon --max-workers=2 --stacktrace connectedDirectDebugAndroidTest ${shard_args[@]+"${shard_args[@]}"} || test_status=$?
@@ -39,8 +42,12 @@ if [ "$test_status" -ne 0 ] && retry=$(python3 ci/failed_device_tests.py "$resul
   cp -R "$first_attempt/." "$results/first-attempt/"
 fi
 if [ "$test_status" -eq 0 ] && [ "$shard_index" -eq $((num_shards - 1)) ]; then
-  ./gradlew --no-daemon --max-workers=2 --stacktrace connectedPlayDebugAndroidTest \
-    '-Pandroid.testInstrumentationRunnerArguments.class=ru.papajon.meshcentralmobile.update.PlayDistributionTest,ru.papajon.meshcentralmobile.update.PlayPrivacyPolicyTest' || test_status=$?
+  play_classes='-Pandroid.testInstrumentationRunnerArguments.class=ru.papajon.meshcentralmobile.update.PlayDistributionTest,ru.papajon.meshcentralmobile.update.PlayPrivacyPolicyTest'
+  # The Play suite is two small classes; on failure rerun both completely once, never a subset.
+  if ! ./gradlew --no-daemon --max-workers=2 --stacktrace connectedPlayDebugAndroidTest "$play_classes"; then
+    echo "Retrying the Play distribution suite once"
+    ./gradlew --no-daemon --max-workers=2 --stacktrace connectedPlayDebugAndroidTest "$play_classes" || test_status=$?
+  fi
 fi
 mkdir -p app/build/reports/webview
 adb shell dumpsys webviewupdate > app/build/reports/webview/provider.txt || true

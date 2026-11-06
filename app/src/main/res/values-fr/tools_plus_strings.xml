@@ -5,6 +5,7 @@
     <string name="tools_download_selected">Télécharger la sélection</string>
     <string name="tools_delete_selected">Supprimer la sélection</string>
     <string name="tools_select_hint">Maintenez appuyé pour sélectionner plusieurs éléments</string>
+    <string name="tools_select_item">Sélectionner</string>
     <string name="tools_download_folder">Télécharger le dossier</string>
     <string name="tools_folder_notice">Les dossiers Mesh Agent sont téléchargés sous forme d’archives ZIP. Les dossiers SFTP sont copiés fichier par fichier. Choisissez un dossier de destination.</string>
     <string name="tools_batch_progress">Terminé : %1$d sur %2$d · %3$d octets</string>

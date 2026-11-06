@@ -1,4 +1,4 @@
-# Roadmap implementation — 0.7.1 (code 16)
+# Roadmap implementation — 0.10.6 (code 40)
 
 The implementation of roadmap items 1–8 is in this release candidate. Item 9 is a researched transport decision; item 10 uses an optional plugin, without a permanent MeshCentral fork.
 

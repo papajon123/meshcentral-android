@@ -676,7 +676,10 @@ fun MeshCentralApp(
                                 } catch (cancelled: kotlinx.coroutines.CancellationException) {
                                     if (cancelled !is kotlinx.coroutines.TimeoutCancellationException) throw cancelled
                                     false
-                                } catch (_: Exception) { false }
+                                } catch (failure: Exception) {
+                                    ru.papajon.meshcentralmobile.model.FailureLog.record("MeshCentralApp", "Android task tools probe", failure)
+                                    false
+                                }
                             }
                         }
                         if (device == null) {

@@ -196,7 +196,10 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
                     }
                 }
             } catch (cancelled: CancellationException) { throw cancelled }
-            catch (_: Exception) { mutex.withLock { fail(R.string.files_disconnected) } }
+            catch (failure: Exception) {
+                ru.papajon.meshcentralmobile.model.FailureLog.record("FilesController", "Files relay receive", failure)
+                mutex.withLock { fail(R.string.files_disconnected) }
+            }
         }
         stateJob = worker.launch {
             connection.state.collect { status ->
@@ -889,7 +892,10 @@ class FilesController(connection: RelayConnection, scope: CoroutineScope, contex
     private suspend fun guarded(block: suspend () -> Unit) {
         try { block() }
         catch (cancelled: CancellationException) { throw cancelled }
-        catch (_: Exception) { fail(R.string.files_operation_failed) }
+        catch (failure: Exception) {
+            ru.papajon.meshcentralmobile.model.FailureLog.record("FilesController", "Files message handling", failure)
+            fail(R.string.files_operation_failed)
+        }
     }
     private fun send(message: JSONObject) { check(connection.sendText(message.toString())) }
     private fun list(path: String, after: ((List<RemoteFile>) -> Unit)? = null) {

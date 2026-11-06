@@ -1,8 +1,9 @@
 # Roadmap
 
-## Next release: 0.8.1
+## Current status: 0.10.6 (code 40)
 
-- [Stylus / S Pen (M8)](STYLUS.md): absolute pen input, hover, buttons, palm rejection and precise phone gestures. Local implementation on `mr/stylus`; this work does not delay 0.8.0 or authorize publication.
+- Chat with the computer user, TCP port forwarding, device administration and invitations, consent requests, picture-in-picture, an in-app language picker and encrypted settings backups are implemented; see [the feature comparison](COMPARISON.md).
+- The sections below record earlier directions and releases. They are kept for history and are not a schedule for 0.10.6.
 
 ## Direction for 0.8
 
@@ -90,7 +91,7 @@ implemented.
 ## Optional server plugin
 
 Jobs, services/processes, confirmed service actions and notifications use the optional
-[`mobilecompanion`](../server/mobile-companion/README.md) 1.1.0 plugin on MeshCentral 1.3.0.
+[`mobilecompanion`](../server/mobile-companion/README.md) 1.1.2 plugin on MeshCentral 1.3.0.
 Standard desktop, terminal, files, SSH and SFTP do **not** need it.
 
 - Jobs require `MESHRIGHT_REMOTECOMMAND (0x20000)`; agent-console right 24 is not sufficient.
@@ -117,7 +118,7 @@ Standard desktop, terminal, files, SSH and SFTP do **not** need it.
 
 - No WebRTC. The WSS relay remains; MeshCentral 1.3.0 does not accept the terminal RTC offer. The
   loopback WSS numbers recorded during research are not mobile or desktop performance evidence.
-- No Intel AMT KVM, RDP, VNC, chat, registry/software management or server administration.
+- No Intel AMT KVM, RDP, VNC, software/registry management or server administration.
 - No permanent MeshCentral fork.
 - Publication evidence is recorded separately from local testing.
 

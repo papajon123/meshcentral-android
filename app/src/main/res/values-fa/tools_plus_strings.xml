@@ -5,6 +5,7 @@
     <string name="tools_download_selected">بارگیری موارد انتخاب‌شده</string>
     <string name="tools_delete_selected">حذف موارد انتخاب‌شده</string>
     <string name="tools_select_hint">برای انتخاب چند مورد، لمس کرده و نگه دارید</string>
+    <string name="tools_select_item">انتخاب</string>
     <string name="tools_download_folder">بارگیری پوشه</string>
     <string name="tools_folder_notice">پوشه‌های Mesh Agent به‌صورت بایگانی ZIP بارگیری می‌شوند. پوشه‌های SFTP فایل‌به‌فایل کپی می‌شوند. یک پوشه مقصد انتخاب کنید.</string>
     <string name="tools_batch_progress">تکمیل‌شده: %1$d از %2$d · %3$d بایت</string>

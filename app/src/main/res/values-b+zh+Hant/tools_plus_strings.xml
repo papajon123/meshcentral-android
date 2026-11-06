@@ -5,6 +5,7 @@
     <string name="tools_download_selected">下載所選內容</string>
     <string name="tools_delete_selected">刪除所選內容</string>
     <string name="tools_select_hint">長按可選取多個項目</string>
+    <string name="tools_select_item">選取</string>
     <string name="tools_download_folder">下載資料夾</string>
     <string name="tools_folder_notice">Mesh Agent 資料夾會以 ZIP 壓縮檔下載。SFTP 資料夾則會逐一複製檔案。請選擇目的資料夾。</string>
     <string name="tools_batch_progress">已完成：%1$d / %2$d · %3$d 位元組</string>

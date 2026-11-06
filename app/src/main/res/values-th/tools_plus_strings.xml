@@ -5,6 +5,7 @@
     <string name="tools_download_selected">ดาวน์โหลดรายการที่เลือก</string>
     <string name="tools_delete_selected">ลบรายการที่เลือก</string>
     <string name="tools_select_hint">แตะค้างเพื่อเลือกรายการหลายรายการ</string>
+    <string name="tools_select_item">เลือก</string>
     <string name="tools_download_folder">ดาวน์โหลดโฟลเดอร์</string>
     <string name="tools_folder_notice">โฟลเดอร์ Mesh Agent จะถูกดาวน์โหลดเป็นไฟล์ ZIP ส่วนโฟลเดอร์ SFTP จะถูกคัดลอกทีละไฟล์ เลือกโฟลเดอร์ปลายทาง</string>
     <string name="tools_batch_progress">เสร็จสิ้น: %1$d จาก %2$d · %3$d ไบต์</string>

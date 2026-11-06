@@ -19,7 +19,7 @@
   <img src="https://img.shields.io/badge/23-locales-4B5563" alt="23 Android locale variants">
 </p>
 
-> **Version 0.9.3** adds chat with the person at a computer, port forwarding, paged large servers, process and service tools, terminal reconnect, verified folder downloads, desktop picture-in-picture with touchpad gestures and DeX input, device invitations and administration, launcher shortcuts, a Favorites widget, encrypted settings backups and Android 16 targeting. The 0.8 line added MeshPilot naming, sign-in with login tokens and login keys, stylus and S Pen input, phone viewing and files, phone control with an input-capable agent, server-key pinning, remembered two-factor sign-in and expanded computer tools. See the [changelog](CHANGELOG.md) and [validation](docs/RELEASE_0_8_0_VALIDATION.md).
+> **Version 0.10.6 (code 40)** includes chat with the person at a computer, TCP port forwarding, paged large servers, process and service tools, terminal reconnect, verified folder downloads, desktop picture-in-picture, hardware and DeX input, device invitations and administration, per-session computer-user consent, an in-app language picker, encrypted settings backups, launcher shortcuts and a Favorites widget, and Android 16 targeting. The 0.8 line added MeshPilot naming, sign-in with login tokens and login keys, stylus and S Pen input, phone viewing and files, phone control with an input-capable agent, server-key pinning, remembered two-factor sign-in and expanded computer tools. See the [changelog](CHANGELOG.md) and [validation](docs/RELEASE_0_8_0_VALIDATION.md).
 
 This is a client: you manage computers and phones *from* your phone. The managed phone needs the official [MeshCentral Android agent](https://github.com/Ylianst/MeshCentralAndroidAgent), which shares its screen after Android consent and remains view-only. Remote touch, navigation and text entry require a modified agent with input support, enabled accessibility and sufficient rights. That agent support is not yet in the upstream project. See [how the options compare](docs/COMPARISON.md) and [how this app is built](AI_POLICY.md).
 
@@ -86,6 +86,10 @@ This is a small independent project in public preview. The most useful help righ
 - With the optional plugin, list services and processes. Confirmed service start/stop/restart is available only where the Agent, OS and user rights support it; the result is checked again after the action.
 - Wake, sleep, restart and shutdown follow current rights and connection state. Agent uninstall and device removal require two confirmations and exact device-name entry; Android agents are excluded. A server ACK, disconnection or disappearance is not proof of execution. Destructive-action live acceptance remains pending.
 - Preview and confirm a bounded message to a computer user with Chat/Notify permission; the app reports submission, not delivery.
+- Chat with the person at an online computer: text only, up to 200 messages in session memory, with explicit close and retry. No chat history is written to disk; files, audio/video and push messaging are not supported by the native chat.
+- Rename a device, change its description, tags or notes, move it between groups, remove or uninstall it, and create group install links with a QR code or Android share (1/8/24/168 hours). Group creation, policies and server user administration are handled only in the web panel.
+- Copy or save a localized text report of the Details tab. Device tags are edited in the admin dialog but are not shown in the device list or used as filters.
+- Forward TCP ports of an Agent-hosted service to a local port for an external RDP, VNC, SSH or browser client. TCP only: up to 64 saved and 8 active rules, 16 connections, no UDP or VPN.
 
 ### Jobs, history and Quick Help
 
@@ -115,7 +119,7 @@ Jobs, service/process views, confirmed service actions and background notificati
 - Live evidence covers Linux CPU/RAM, history and reviewed command output ([parity checks](docs/PARITY_FIXES_VALIDATION.md)), and phone downloads/verified uploads with official agent 1.0.23 ([phone file checks](docs/PHONE_FILES_FIXES_VALIDATION.md)). Phone input requires the modified agent; hardware effects, broad Windows/macOS acceptance, physical phones, systemd service actions, TalkBack, battery use, Doze/OEM restrictions and every 0.8.0 flow on Android 8 remain unverified.
 - A physical-phone acceptance must still cover install/update over a signed build, sign-in/2FA, two sessions, rotation/background/lock/network loss/process death, share from real apps, notifications, and the optional plugin.
 - No WebRTC in this release. WebRTC was researched, but MeshCentral 1.3.0 does not accept the terminal RTC offer; the WSS relay remains. See the [roadmap](docs/ROADMAP.md).
-- Intel AMT KVM, RDP, VNC, chat, registry/software management and server administration remain in the web panel. The app does not administer the server.
+- Intel AMT KVM, RDP, VNC, software/registry management and server administration are still web-panel features. The app does not administer the server.
 
 ## How this app is built
 
@@ -123,8 +127,8 @@ Most code, tests and docs are written by AI coding agents (Claude Code and OpenA
 
 ## Languages
 
-- **22 languages in 23 Android locale variants** (Simplified and Traditional Chinese are two variants of one language). The [translation check](ci/check_translations.py) verifies matching resources in every variant; current counts are in the [release validation](docs/RELEASE_0_8_0_VALIDATION.md).
-- Android 8–12 follows the system language. Android 13+ also exposes per-app language settings; there is no separate language picker inside the app.
+- **22 languages in 23 Android locale variants** (Simplified and Traditional Chinese are two variants of one language). The [translation check](ci/check_translations.py) verifies matching resources in every variant.
+- Android 8–12 applies the language chosen in **Settings → Language**. Android 13+ also mirrors that choice in the standard per-app language setting. The picker offers the system default and all 23 variants; there is no need to leave the app to change its language.
 - If no supported language matches, the app falls back to English. Arabic, Persian and Urdu use a right-to-left layout.
 - Translations are machine-produced (DeepSeek) and have not been proofread by native speakers of every language. Server messages, device/file names, terminal output and physical key captions are not translated.
 
@@ -156,7 +160,7 @@ Read [Privacy](PRIVACY.md) and the [Security policy](SECURITY.md).
 <details>
 <summary>Build from source</summary>
 
-Requirements: JDK 17, Android SDK platform 36, build-tools 35.0.0. The Gradle wrapper downloads Gradle 8.11.1.
+Requirements: JDK 17, Android SDK platform 37, build-tools 36.0.0. The Gradle wrapper downloads Gradle 9.8.2.
 
 ```bash
 export JAVA_HOME=/path/to/jdk-17

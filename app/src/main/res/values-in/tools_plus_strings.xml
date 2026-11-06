@@ -5,6 +5,7 @@
     <string name="tools_download_selected">Unduh yang dipilih</string>
     <string name="tools_delete_selected">Hapus yang dipilih</string>
     <string name="tools_select_hint">Sentuh dan tahan untuk memilih beberapa item</string>
+    <string name="tools_select_item">Pilih</string>
     <string name="tools_download_folder">Unduh folder</string>
     <string name="tools_folder_notice">Folder Mesh Agent diunduh sebagai arsip ZIP. Folder SFTP disalin file demi file. Pilih folder tujuan.</string>
     <string name="tools_batch_progress">Selesai: %1$d dari %2$d · %3$d byte</string>

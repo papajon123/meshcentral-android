@@ -5,6 +5,7 @@
     <string name="tools_download_selected">Auswahl herunterladen</string>
     <string name="tools_delete_selected">Auswahl löschen</string>
     <string name="tools_select_hint">Zum Auswählen mehrerer Elemente gedrückt halten</string>
+    <string name="tools_select_item">Auswählen</string>
     <string name="tools_download_folder">Ordner herunterladen</string>
     <string name="tools_folder_notice">Mesh-Agent-Ordner werden als ZIP-Archive heruntergeladen. SFTP-Ordner werden Datei für Datei kopiert. Wählen Sie einen Zielordner.</string>
     <string name="tools_batch_progress">Abgeschlossen: %1$d von %2$d · %3$d Byte</string>

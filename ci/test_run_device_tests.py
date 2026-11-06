@@ -84,6 +84,40 @@ class RunDeviceTestsTest(unittest.TestCase):
         self.assertNotIn(INDEX_FLAG, gradle[1])
         self.assertIn("verify a.B#c", calls)
 
+    def play_failing_gradlew(self, failures):
+        # Fails the Play suite `failures` times, everything else succeeds.
+        self.stub("gradlew", f"""
+            printf 'gradlew' >> "$CALL_LOG"; for a in "$@"; do printf ' %s' "$a" >> "$CALL_LOG"; done; echo >> "$CALL_LOG"
+            case "$*" in *connectedPlayDebugAndroidTest*)
+              count=$(cat "$CALL_LOG.play" 2>/dev/null || echo 0); echo $((count + 1)) > "$CALL_LOG.play"
+              if [ "$count" -lt {failures} ]; then exit 1; fi;;
+            esac
+            exit 0
+        """, directory=self.tmp)
+
+    def test_play_suite_is_rerun_completely_once(self):
+        self.play_failing_gradlew(1)
+        status, gradle, _ = self.run_script(NUM_SHARDS="2", SHARD_INDEX="1")
+        self.assertEqual(0, status)
+        play = [call for call in gradle if "connectedPlayDebugAndroidTest" in call]
+        self.assertEqual(2, len(play))
+        self.assertEqual(play[0], play[1])
+        self.assertIn("PlayDistributionTest,", play[1])
+
+    def test_play_suite_failing_twice_fails_the_shard(self):
+        self.play_failing_gradlew(2)
+        status, gradle, _ = self.run_script(NUM_SHARDS="2", SHARD_INDEX="1")
+        self.assertNotEqual(0, status)
+        self.assertEqual(2, len([call for call in gradle if "connectedPlayDebugAndroidTest" in call]))
+
+    def test_error_dialogs_are_hidden_before_tests(self):
+        self.stub("adb", 'echo "adb $*" >> "$CALL_LOG"')
+        self.run_script()
+        calls = self.log.read_text().splitlines()
+        hide = calls.index("adb shell settings put global hide_error_dialogs 1")
+        first_gradle = next(i for i, c in enumerate(calls) if c.startswith("gradlew"))
+        self.assertLess(hide, first_gradle)
+
     def test_invalid_shard_configuration_fails_before_running_tests(self):
         for env in ({"NUM_SHARDS": "2", "SHARD_INDEX": "2"}, {"NUM_SHARDS": "0", "SHARD_INDEX": "0"},
                     {"NUM_SHARDS": "x", "SHARD_INDEX": "0"}):

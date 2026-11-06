@@ -12,7 +12,7 @@ does not expose job creation or mutation over HTTP.
   `meshagent.js`, `webserver.js`, `db.js`, `meshcentral.js`,
   `agents/meshcore.js`)
 - Node.js: built-ins only, no npm dependencies
-- Version: 1.1.0
+- Version: 1.1.2
 
 ## Reviewed installation
 

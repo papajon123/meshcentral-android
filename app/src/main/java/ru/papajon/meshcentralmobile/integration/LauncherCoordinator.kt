@@ -28,7 +28,8 @@ object LauncherCoordinator {
     @OptIn(ExperimentalCoroutinesApi::class)
     private val queueScope = CoroutineScope(
         SupervisorJob() + Dispatchers.IO.limitedParallelism(1) +
-            CoroutineExceptionHandler { _, _ -> /* Never log launcher metadata or raw errors. */ },
+            // Never log launcher metadata or raw errors: only the exception class names.
+            CoroutineExceptionHandler { _, failure -> ru.papajon.meshcentralmobile.model.FailureLog.record("LauncherCoordinator", "Launcher update", failure) },
     )
     private val pending = MutableStateFlow(0)
 

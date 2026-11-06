@@ -260,10 +260,10 @@ class RedesignGalleryTest {
         show(Screen.Settings)
         requireVisible(string(R.string.settings_title))
         requireVisible(string(R.string.settings_message_pin_configured), scroll = true)
-        if (ru.papajon.meshcentralmobile.BuildConfig.EXTERNAL_UPDATES_ENABLED) {
-            requireVisible(string(R.string.settings_update_action), scroll = true)
-        } else {
-            assertTrue(compose.onAllNodesWithText(string(R.string.settings_update_action)).fetchSemanticsNodes().isEmpty())
+        // Update controls are supplied by the host screen and differ per distribution; the Play
+        // build instead shows its offline privacy policy entry in Settings.
+        if (!ru.papajon.meshcentralmobile.BuildConfig.EXTERNAL_UPDATES_ENABLED) {
+            requireVisible(string(R.string.play_privacy_policy), scroll = true)
         }
         requireExists(string(R.string.settings_pin_status_set))
         requireVisible(string(R.string.settings_title), scroll = true)

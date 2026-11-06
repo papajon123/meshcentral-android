@@ -75,7 +75,10 @@ class ConnectionWorkspace private constructor(private val application: Applicati
                 try { withContext(Dispatchers.IO) { withTimeout(25_000) { disableNotifications() } } }
                 catch (_: TimeoutCancellationException) { /* Always finish the local cleanup. */ }
                 catch (cancelled: CancellationException) { throw cancelled }
-                catch (_: Exception) { /* Offline revocation must not retain local sign-in. */ }
+                catch (failure: Exception) {
+                    // Offline revocation must not retain local sign-in.
+                    ru.papajon.meshcentralmobile.model.FailureLog.record("ConnectionWorkspace", "Notification revocation during sign-out", failure)
+                }
                 // Invalidate callbacks BEFORE deleting credentials so a late userinfo cannot save
                 // them again. RememberedDeviceStore may be locked by an IO cookie read; clear on IO.
                 owner.logout(clearStoredCredentials = false, clearRememberedDevice = false)

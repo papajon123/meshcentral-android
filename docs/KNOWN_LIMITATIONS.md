@@ -8,7 +8,7 @@ Local public build/JVM and API 35 instrumentation passed. Compatibility work use
 
 Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM background delivery and battery measurements remain. Restrictive remote-command ACL and notification-token revocation were exercised; consent/refusal coverage is not exhaustive.
 
-## TCP port forwarding (Unreleased)
+## TCP port forwarding
 
 - TCP only; no UDP or full VPN. Each rule occupies `127.0.0.1` and, when configured and supported,
   `::1` on one port, never a wildcard. An IPv4-only host can use the IPv4 listener; a port occupied
@@ -114,7 +114,7 @@ Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM back
 ## Remote desktop scope
 
 - Only the native Mesh Agent desktop path is supported: `/meshrelay.ashx?p=2`.
-- Intel AMT KVM, RDP, VNC and WebRTC are not native clients. Device events, chat, registry/software and server administration are also outside this release; use the web panel where appropriate.
+- Intel AMT KVM, RDP, VNC and WebRTC are not native clients. Registry/software management and server administration are also outside this release; use the web panel where appropriate. Device events, power/Wake-on-LAN, read-only software inventory and chat with the computer user are implemented.
 - The KVM cursor-shape index is parsed but the app draws its own pointer; the Agent does not paint the cursor into tiles.
 - Touch uses mouse packets, not the KVM touch command. Pinch zoom is bounded at 16×; a tap outside the picture is ignored.
 - View-only desktop sessions do not send input. Input can also be blocked by the remote input lock or keyboard state.
@@ -128,8 +128,8 @@ Physical-phone acceptance, Windows/systemd service mutations, TalkBack, OEM back
 
 ## Interface, language and accessibility
 
-- The 0.5.1 interface has 22 languages in 23 locale variants, with 529 translated strings per variant and a shared application name. English is the default and fallback.
-- Android 8–12 follows the system language; Android 13+ also exposes the standard per-app language setting. There is no in-app language picker.
+- The interface has 22 languages in 23 locale variants, with matching translated strings in every variant and a shared application name. English is the default and fallback.
+- Android 8–12 applies the language chosen in **Settings → Language**; Android 13+ also mirrors that choice in the standard per-app language setting. The picker offers the system default and all 23 variants.
 - Arabic, Persian and Urdu use right-to-left layout. Server messages, device names, terminal output and physical key captions are not translated.
 - Translations were produced with DeepSeek and have not been proofread by native speakers of every language.
 - Phone, tablet, short-landscape, large-font, RTL and TalkBack coverage is not complete for every new device/terminal/files/SSH screen. The emulator checks are not physical-device acceptance.
