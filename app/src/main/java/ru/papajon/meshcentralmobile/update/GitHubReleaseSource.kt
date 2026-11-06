@@ -127,11 +127,11 @@ class GitHubReleaseSource internal constructor(
     private class RejectedRelease(val reason: ReleaseRejection) : IllegalArgumentException("Unverified release: ${reason.name}")
 
     companion object {
-        /** The numeric repository id survives the rename to papajon123/meshpilot-android. */
+        /** The numeric repository id survives the rename to papajon123/meshpilot. */
         const val API_URL = "https://api.github.com/repositories/1428032345/releases?per_page=10"
-        private val REPOSITORY_PATHS = listOf("/papajon123/meshcentral-android", "/papajon123/meshpilot-android")
+        private val REPOSITORY_PATHS = listOf("/papajon123/meshcentral-android", "/papajon123/meshpilot", "/papajon123/meshpilot-android")
         private val RELEASE_ORIGINS = REPOSITORY_PATHS.map { "https://github.com$it" }
-        private val APK_PREFIXES = listOf("meshcentral-android-", "meshpilot-android-")
+        private val APK_PREFIXES = listOf("meshcentral-android-", "meshpilot-", "meshpilot-android-")
         private const val MAX_LIST_BYTES = 1024 * 1024L
         private const val MAX_METADATA_BYTES = 64 * 1024L
         private val SUM_LINE = Regex("([a-fA-F0-9]{64}) [ *](.+)")

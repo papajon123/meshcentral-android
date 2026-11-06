@@ -1,3 +1,9 @@
+# 0.12.3 — 2026-11-06
+
+- The repository will be renamed to `papajon123/meshpilot`. The update check accepts release assets from
+  `papajon123/meshcentral-android`, `papajon123/meshpilot` or `papajon123/meshpilot-android`, and exactly one APK named
+  `meshcentral-android-*.apk`, `meshpilot-*.apk` or `meshpilot-android-*.apk`. Other repositories stay rejected.
+
 # 0.12.2 — 2026-11-06
 
 - The repository will be renamed to `papajon123/meshpilot-android` (not `meshpilot`, as 0.12.1 assumed). The update

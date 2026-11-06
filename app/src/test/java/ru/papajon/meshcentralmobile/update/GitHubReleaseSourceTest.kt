@@ -130,9 +130,15 @@ class GitHubReleaseSourceTest {
         reject(ReleaseRejection.Assets)
     }
 
-    @Test fun rejectsTheShortMeshPilotName() {
+    @Test fun acceptsTheShortMeshPilotName() {
         releases = JSONArray(releases.toString().replace("papajon123/meshcentral-android", "papajon123/meshpilot"))
-        reject(ReleaseRejection.AssetUrl)
+        assertEquals(20L, source.latest()!!.versionCode)
+    }
+
+    @Test fun acceptsShortMeshPilotApkName() {
+        releases = JSONArray(releases.toString().replace("meshcentral-android-0.8.0.apk", "meshpilot-0.8.0.apk"))
+        sums = sums.replace("meshcentral-android-0.8.0.apk", "meshpilot-0.8.0.apk")
+        assertEquals(20L, source.latest()!!.versionCode)
     }
 
     @Test fun rejectsOtherRepositoryOfTheSameOwner() {

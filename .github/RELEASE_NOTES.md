@@ -1,8 +1,8 @@
-## MeshPilot 0.12.2
+## MeshPilot 0.12.3
 
 MeshPilot is an independent client for MeshCentral servers, not affiliated with or endorsed by the MeshCentral project.
 
-**Why update:** the GitHub repository will soon be renamed from `meshcentral-android` to `meshpilot-android` to match the app's name. This version keeps the in-app update check working before and after the rename (0.12.1 expected a different name). Older versions will stop seeing new releases once the repository is renamed; install this one to keep update notifications. Old GitHub links will keep redirecting. Nothing else changes in the app.
+**Why update:** the GitHub repository will soon be renamed from `meshcentral-android` to `meshpilot` to match the app's name. This version keeps the in-app update check working before and after the rename, whichever of the candidate names is used. 0.12.2 does not recognise the final name; older versions will stop seeing new releases once the repository is renamed, so install this one to keep update notifications. Old GitHub links will keep redirecting. Nothing else changes in the app.
 
 ### Included from 0.12.0
 

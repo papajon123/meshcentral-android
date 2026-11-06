@@ -12,8 +12,8 @@ android {
         applicationId = "io.github.papajon123.meshcentral"
         minSdk = 26
         targetSdk = 36
-        versionCode = 44
-        versionName = "0.12.2"
+        versionCode = 45
+        versionName = "0.12.3"
         // Keep dependency-only locales from taking precedence over a supported system fallback.
         resourceConfigurations.addAll(listOf(
             "en", "ru", "zh", "b+zh+Hans", "b+zh+Hant", "es", "fr", "pt", "de", "ar", "hi", "bn", "ur",
