@@ -10,8 +10,8 @@ import java.util.Locale
  *
  * The query is Unicode-normalised and lower-cased with [Locale.ROOT]. Every whitespace-separated
  * token must match at least one searchable field of a device (AND across tokens). Searchable
- * fields are the device name, its mesh name or resolved group name, host/address and OS
- * description. An empty or blank query matches everything.
+ * fields are the device name, its mesh name or resolved group name, host/address, OS
+ * description and tags. An empty or blank query matches everything.
  */
 object DeviceSearch {
     private val whitespace = Regex("\\s+")
@@ -46,11 +46,12 @@ object DeviceSearch {
             device.host,
             device.ipAddress,
             device.osDescription,
-        )
+        ) + device.tags
+        val normalizedFields = fields
             .map(::normalize)
             .filter { it.isNotEmpty() }
 
-        return queryTokens.all { token -> fields.any { field -> field.contains(token) } }
+        return queryTokens.all { token -> normalizedFields.any { field -> field.contains(token) } }
     }
 
     /** Filters [devices] with an optional resolved [groups] list for group-name matching. */

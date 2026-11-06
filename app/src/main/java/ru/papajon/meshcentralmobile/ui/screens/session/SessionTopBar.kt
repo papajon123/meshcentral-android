@@ -9,7 +9,7 @@ import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.icons.outlined.ArrowDropUp
 import androidx.compose.material.icons.outlined.DesktopWindows
-import androidx.compose.material.icons.outlined.Remove
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.SelectAll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -47,8 +47,11 @@ internal fun SessionTopBar(
     ) {
         Column {
             Row(Modifier.fillMaxWidth().heightIn(min = 56.dp), verticalAlignment = Alignment.CenterVertically) {
-                IconButton(onClick = onBack, modifier = Modifier.size(48.dp)) {
-                    Icon(Icons.AutoMirrored.Outlined.ArrowBack, stringResource(R.string.session_action_end))
+                // Back keeps a resumable session running (like the system Back gesture would leave the
+                // screen); ending it is a separate, explicit control in the second row.
+                IconButton(onClick = onMinimize ?: onBack, modifier = Modifier.size(48.dp)) {
+                    Icon(Icons.AutoMirrored.Outlined.ArrowBack,
+                        stringResource(if (onMinimize != null) R.string.workspace_minimize else R.string.session_action_end))
                 }
                 Column(Modifier.weight(1f)) {
                     Text(state.device?.name ?: stringResource(R.string.session_title_fallback),
@@ -65,8 +68,8 @@ internal fun SessionTopBar(
             Row(Modifier.fillMaxWidth().height(48.dp).padding(horizontal = MeshTheme.spacing.xs),
                 verticalAlignment = Alignment.CenterVertically) {
                 SessionDisplaySelector(state, onSelectDisplay, Modifier.weight(1f))
-                if (onMinimize != null) IconButton(onClick = onMinimize, modifier = Modifier.size(48.dp)) {
-                    Icon(Icons.Outlined.Remove, stringResource(R.string.workspace_minimize))
+                if (onMinimize != null) IconButton(onClick = onBack, modifier = Modifier.size(48.dp).testTag("session-end")) {
+                    Icon(Icons.Outlined.Close, stringResource(R.string.session_action_end))
                 }
                 SessionRefreshAction(state, onRefresh, onReconnect)
             }

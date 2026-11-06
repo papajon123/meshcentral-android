@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">Kabuk seç</string>
+    <string name="terminal_shell_default">Varsayılan kabuk</string>
+    <string name="terminal_shell_user">Kullanıcı kabuğu</string>
+    <string name="terminal_shell_user_powershell">Kullanıcı PowerShell</string>
+    <string name="relay_agent_refused">Bilgisayar bu oturumu başlatamadı.</string>
+</resources>

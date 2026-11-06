@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">فلٹر</string>
+    <string name="devices_facet_group">گروپ</string>
+    <string name="devices_facet_os">آپریٹنگ سسٹم</string>
+    <string name="devices_facet_tag">ٹیگ</string>
+    <string name="devices_facet_clear">فلٹر صاف کریں</string>
+    <string name="devices_facet_os_other">دیگر</string>
+    <string name="devices_export">فہرست برآمد کریں (CSV)</string>
+    <string name="devices_export_done">کمپیوٹرز کی فہرست برآمد ہو گئی</string>
+    <string name="devices_export_failed">کمپیوٹرز کی فہرست برآمد نہیں ہو سکی</string>
+</resources>

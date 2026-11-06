@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">شیل منتخب کریں</string>
+    <string name="terminal_shell_default">ڈیفالٹ شیل</string>
+    <string name="terminal_shell_user">صارف شیل</string>
+    <string name="terminal_shell_user_powershell">صارف PowerShell</string>
+    <string name="relay_agent_refused">کمپیوٹر یہ سیشن شروع نہیں کر سکا۔</string>
+</resources>

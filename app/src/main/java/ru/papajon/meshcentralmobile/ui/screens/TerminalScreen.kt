@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.ui.platform.testTag
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -55,6 +57,9 @@ fun TerminalScreen(controller: TerminalController, onBack: () -> Unit, modifier:
     onAddFavorite: (ru.papajon.meshcentralmobile.model.FavoriteCommand) -> Boolean = { false },
     onRemoveFavorite: (Int) -> Unit = {},
     profileId: String = "",
+    shells: List<ru.papajon.meshcentralmobile.mesh.TerminalShell> = emptyList(),
+    shell: ru.papajon.meshcentralmobile.mesh.TerminalShell = ru.papajon.meshcentralmobile.mesh.TerminalShell.Default,
+    onShellSelected: (ru.papajon.meshcentralmobile.mesh.TerminalShell) -> Unit = {},
 ) {
     val state by controller.state.collectAsState()
     val context = LocalContext.current
@@ -140,6 +145,7 @@ fun TerminalScreen(controller: TerminalController, onBack: () -> Unit, modifier:
                             )
                         }
                     }
+                    if (!controller.isSsh && shells.size > 1) TerminalShellPicker(shells, shell, onShellSelected)
                     TextButton(
                         onClick = controller::disconnect,
                         enabled = !ended,
@@ -320,4 +326,43 @@ private fun SshAuthentication(controller: TerminalController, auth: TerminalAuth
         } },
         dismissButton = { TextButton(onClick = { clear(); controller.close() }) { Text(stringResource(R.string.terminal_cancel)) } },
     )
+}
+
+/** Shell choice for the agent terminal; switching opens a new terminal process on the computer. */
+@Composable
+private fun TerminalShellPicker(
+    shells: List<ru.papajon.meshcentralmobile.mesh.TerminalShell>,
+    current: ru.papajon.meshcentralmobile.mesh.TerminalShell,
+    onSelected: (ru.papajon.meshcentralmobile.mesh.TerminalShell) -> Unit,
+) {
+    var open by remember { mutableStateOf(false) }
+    androidx.compose.foundation.layout.Box {
+        TextButton(
+            onClick = { open = true },
+            modifier = Modifier.heightIn(min = 48.dp).testTag("terminal-shell"),
+        ) {
+            Text(terminalShellLabel(current), maxLines = 1)
+            androidx.compose.material3.Icon(
+                androidx.compose.material.icons.Icons.Outlined.ArrowDropDown,
+                contentDescription = stringResource(R.string.terminal_shell_choose),
+            )
+        }
+        androidx.compose.material3.DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+            shells.forEach { shell ->
+                androidx.compose.material3.DropdownMenuItem(
+                    text = { Text(terminalShellLabel(shell)) },
+                    onClick = { open = false; if (shell != current) onSelected(shell) },
+                    modifier = Modifier.testTag("terminal-shell-${shell.name}"),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+internal fun terminalShellLabel(shell: ru.papajon.meshcentralmobile.mesh.TerminalShell): String = when (shell) {
+    ru.papajon.meshcentralmobile.mesh.TerminalShell.Default -> stringResource(R.string.terminal_shell_default)
+    ru.papajon.meshcentralmobile.mesh.TerminalShell.PowerShell -> "PowerShell"
+    ru.papajon.meshcentralmobile.mesh.TerminalShell.User -> stringResource(R.string.terminal_shell_user)
+    ru.papajon.meshcentralmobile.mesh.TerminalShell.UserPowerShell -> stringResource(R.string.terminal_shell_user_powershell)
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">Bộ lọc</string>
+    <string name="devices_facet_group">Nhóm</string>
+    <string name="devices_facet_os">Hệ điều hành</string>
+    <string name="devices_facet_tag">Thẻ</string>
+    <string name="devices_facet_clear">Xóa bộ lọc</string>
+    <string name="devices_facet_os_other">Khác</string>
+    <string name="devices_export">Xuất danh sách (CSV)</string>
+    <string name="devices_export_done">Đã xuất danh sách máy tính</string>
+    <string name="devices_export_failed">Không thể xuất danh sách máy tính</string>
+</resources>

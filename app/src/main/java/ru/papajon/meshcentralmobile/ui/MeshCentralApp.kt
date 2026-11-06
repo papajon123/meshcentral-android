@@ -342,7 +342,9 @@ fun MeshCentralApp(
 
     UpdateLifecycle(updateModel)
     ru.papajon.meshcentralmobile.ui.components.ArchiveCleanupNoticeDialog()
-    if (updateState.needsConsent) UpdateConsentDialog(updateModel::consent)
+    // Ask once the user is signed in: before that the question interrupts first-run setup, and
+    // Settings → Updates offers the same choice at any time.
+    if (updateState.needsConsent && clientState.userId != null) UpdateConsentDialog(updateModel::consent)
 
     // Deliberately below the lock gate. Only opaque local tokens can address a cached device;
     // the current server snapshot and account must authorize it again before opening anything.
@@ -583,6 +585,8 @@ fun MeshCentralApp(
     )
 
     val showMainNavigation = currentDestination != AppDestination.Session || !remoteFullscreen
+    // While typing (terminal, files, sign-in) the server/sessions strip yields its height to content.
+    val keyboardOpen = ru.papajon.meshcentralmobile.ui.components.imeVisible()
     val useNavigationRail = LocalConfiguration.current.screenWidthDp >= 600 && showMainNavigation
     val selectDestination: (AppDestination) -> Unit = { destination ->
         if (currentDestination == AppDestination.Session && destination != AppDestination.Session) {
@@ -594,7 +598,7 @@ fun MeshCentralApp(
     Scaffold(
         contentWindowInsets = if (currentDestination == AppDestination.Session) WindowInsets(0, 0, 0, 0) else WindowInsets.safeDrawing,
         topBar = {
-            if (showMainNavigation) Column(Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
+            if (showMainNavigation && !keyboardOpen) Column(Modifier.windowInsetsPadding(WindowInsets.statusBars)) {
                 Row(Modifier.fillMaxWidth().padding(horizontal = 12.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                     TextButton(onClick = { managingProfiles = true }, modifier = Modifier.weight(1f)) {
                         Text(settingsRepository.activeProfile.name, maxLines = 1, overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis)
@@ -655,7 +659,10 @@ fun MeshCentralApp(
                         onSignIn = { loginDismissed = false },
                         onOpenDevice = {
                             recordRecent(it); sessionViewModel.openDevice(it)
-                            if (workspace.deviceTab == DeviceTab.Desktop && workspace.selectedSession != null) currentDestination = AppDestination.Session
+                            // A running desktop session stays alive but does not take over the screen:
+                            // the computer opens on Details so Files/Terminal stay one tap away, and
+                            // the Desktop tab or the Session destination resumes the session.
+                            if (workspace.deviceTab == DeviceTab.Desktop) sessionViewModel.showOverview()
                         },
                         recentDeviceIds = recentIds,
                         onClearRecents = { recentStore.clear(recentScope); recentIds = emptyList() },
@@ -762,10 +769,17 @@ fun MeshCentralApp(
                                     if (sessionViewModel.connectDesktop(device)) currentDestination = AppDestination.Session
                                 }
                                 DeviceTab.Terminal, DeviceTab.Ssh -> sessionViewModel.terminalController?.let { controller ->
+                                    // A shell switch replaces the controller; keying recreates the WebView host
+                                    // (AndroidView builds its view once) instead of keeping the disposed one.
+                                    androidx.compose.runtime.key(controller) {
                                     TerminalScreen(controller, onBack = sessionViewModel::showOverview, onReopen = ::reopenSelectedTool,
                                         favoriteCommands = profiles.firstOrNull { it.id == activeProfileId }?.favoriteCommands.orEmpty(),
                                         onAddFavorite = { settingsRepository.addFavoriteCommand(activeProfileId, it) },
-                                        onRemoveFavorite = { settingsRepository.removeFavoriteCommand(activeProfileId, it) }, profileId = activeProfileId)
+                                        onRemoveFavorite = { settingsRepository.removeFavoriteCommand(activeProfileId, it) }, profileId = activeProfileId,
+                                        shells = if (sessionViewModel.deviceTab == DeviceTab.Terminal) ru.papajon.meshcentralmobile.mesh.TerminalShell.available(device) else emptyList(),
+                                        shell = workspace.terminalShell(device),
+                                        onShellSelected = { shell -> workspace.selectTerminalShell(device, shell); sessionViewModel.rememberSelection() })
+                                    }
                                 } ?: EndedSession { sessionViewModel.selectDeviceTab(sessionViewModel.deviceTab) }
                                 DeviceTab.Files, DeviceTab.Sftp -> sessionViewModel.filesController?.let { controller ->
                                     Column(Modifier.fillMaxSize()) {

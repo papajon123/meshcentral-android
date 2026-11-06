@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">絞り込み</string>
+    <string name="devices_facet_group">グループ</string>
+    <string name="devices_facet_os">オペレーティング システム</string>
+    <string name="devices_facet_tag">タグ</string>
+    <string name="devices_facet_clear">絞り込みを解除</string>
+    <string name="devices_facet_os_other">その他</string>
+    <string name="devices_export">一覧をエクスポート (CSV)</string>
+    <string name="devices_export_done">コンピューター一覧をエクスポートしました</string>
+    <string name="devices_export_failed">コンピューター一覧をエクスポートできませんでした</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">تصفية</string>
+    <string name="devices_facet_group">المجموعة</string>
+    <string name="devices_facet_os">نظام التشغيل</string>
+    <string name="devices_facet_tag">الوسم</string>
+    <string name="devices_facet_clear">مسح عوامل التصفية</string>
+    <string name="devices_facet_os_other">أخرى</string>
+    <string name="devices_export">تصدير القائمة (CSV)</string>
+    <string name="devices_export_done">تم تصدير قائمة الأجهزة</string>
+    <string name="devices_export_failed">تعذر تصدير قائمة الأجهزة</string>
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">ফিল্টার</string>
+    <string name="devices_facet_group">গ্রুপ</string>
+    <string name="devices_facet_os">অপারেটিং সিস্টেম</string>
+    <string name="devices_facet_tag">ট্যাগ</string>
+    <string name="devices_facet_clear">ফিল্টার মুছুন</string>
+    <string name="devices_facet_os_other">অন্যান্য</string>
+    <string name="devices_export">তালিকা রপ্তানি (CSV)</string>
+    <string name="devices_export_done">কম্পিউটারের তালিকা রপ্তানি হয়েছে</string>
+    <string name="devices_export_failed">কম্পিউটারের তালিকা রপ্তানি করা যায়নি</string>
+</resources>

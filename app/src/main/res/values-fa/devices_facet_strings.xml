@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">فیلتر</string>
+    <string name="devices_facet_group">گروه</string>
+    <string name="devices_facet_os">سیستم‌عامل</string>
+    <string name="devices_facet_tag">برچسب</string>
+    <string name="devices_facet_clear">پاک کردن فیلترها</string>
+    <string name="devices_facet_os_other">سایر</string>
+    <string name="devices_export">خروجی فهرست (CSV)</string>
+    <string name="devices_export_done">فهرست رایانه‌ها خروجی گرفته شد</string>
+    <string name="devices_export_failed">خروجی گرفتن از فهرست رایانه‌ها ممکن نشد</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">選擇 Shell</string>
+    <string name="terminal_shell_default">預設 Shell</string>
+    <string name="terminal_shell_user">使用者 Shell</string>
+    <string name="terminal_shell_user_powershell">使用者 PowerShell</string>
+    <string name="relay_agent_refused">電腦無法啟動此工作階段。</string>
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">షెల్‌ను ఎంచుకోండి</string>
+    <string name="terminal_shell_default">డిఫాల్ట్ షెల్</string>
+    <string name="terminal_shell_user">వినియోగదారు షెల్</string>
+    <string name="terminal_shell_user_powershell">వినియోగదారు PowerShell</string>
+    <string name="relay_agent_refused">కంప్యూటర్ ఈ సెషన్‌ను ప్రారంభించలేకపోయింది.</string>
+</resources>

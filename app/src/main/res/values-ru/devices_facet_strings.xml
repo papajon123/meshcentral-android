@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">Фильтр</string>
+    <string name="devices_facet_group">Группа</string>
+    <string name="devices_facet_os">Операционная система</string>
+    <string name="devices_facet_tag">Тег</string>
+    <string name="devices_facet_clear">Сбросить фильтры</string>
+    <string name="devices_facet_os_other">Другая</string>
+    <string name="devices_export">Экспорт списка (CSV)</string>
+    <string name="devices_export_done">Список компьютеров выгружен</string>
+    <string name="devices_export_failed">Не удалось выгрузить список компьютеров</string>
+</resources>

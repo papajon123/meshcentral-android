@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">筛选</string>
+    <string name="devices_facet_group">组</string>
+    <string name="devices_facet_os">操作系统</string>
+    <string name="devices_facet_tag">标签</string>
+    <string name="devices_facet_clear">清除筛选</string>
+    <string name="devices_facet_os_other">其他</string>
+    <string name="devices_export">导出列表 (CSV)</string>
+    <string name="devices_export_done">计算机列表已导出</string>
+    <string name="devices_export_failed">无法导出计算机列表</string>
+</resources>

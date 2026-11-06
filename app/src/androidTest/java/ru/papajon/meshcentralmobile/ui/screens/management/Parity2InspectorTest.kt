@@ -180,7 +180,13 @@ class Parity2InspectorTest {
         review.performClick()
         assertTrue(sent.isEmpty())
         compose.onNode(isDialog()).assertExists()
-        compose.onNode(hasText("echo example") and hasAnyAncestor(isDialog())).assertIsDisplayed()
+        // Review hides the keyboard; on Android 8 the IME closes asynchronously and the dialog is
+        // laid out above it until the insets settle, so wait for the command text to be visible.
+        val reviewedCommand = hasText("echo example") and hasAnyAncestor(isDialog())
+        compose.waitUntil(timeoutMillis = 10_000) {
+            runCatching { compose.onNode(reviewedCommand).assertIsDisplayed() }.isSuccess
+        }
+        compose.onNode(reviewedCommand).assertIsDisplayed()
         compose.onNodeWithTag("parity2_run_confirm").assertIsDisplayed().performClick()
         compose.runOnIdle { assertEquals(listOf("echo example" to false), sent) }
     }

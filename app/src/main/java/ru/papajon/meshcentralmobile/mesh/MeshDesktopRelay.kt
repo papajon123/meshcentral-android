@@ -707,7 +707,9 @@ class MeshDesktopRelay(
                         message = UiText.Resource(R.string.consent_waiting)) }
                     startConsentTimeout(webSocket)
                 }
-                2 -> stopSessionWithFailure(webSocket, R.string.consent_denied)
+                // msgid 2 is also how the agent reports a desktop it could not start.
+                2 -> stopSessionWithFailure(webSocket,
+                    if (consentWaitJob?.isActive == true) R.string.consent_denied else R.string.relay_agent_refused)
             }
             "ping" -> webSocket.send(
                 JSONObject()

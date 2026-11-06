@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">Filtre</string>
+    <string name="devices_facet_group">Grup</string>
+    <string name="devices_facet_os">İşletim sistemi</string>
+    <string name="devices_facet_tag">Etiket</string>
+    <string name="devices_facet_clear">Filtreleri temizle</string>
+    <string name="devices_facet_os_other">Diğer</string>
+    <string name="devices_export">Listeyi dışa aktar (CSV)</string>
+    <string name="devices_export_done">Bilgisayar listesi dışa aktarıldı</string>
+    <string name="devices_export_failed">Bilgisayar listesi dışa aktarılamadı</string>
+</resources>

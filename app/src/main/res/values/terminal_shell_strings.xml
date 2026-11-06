@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">Choose shell</string>
+    <string name="terminal_shell_default">Default shell</string>
+    <string name="terminal_shell_user">User shell</string>
+    <string name="terminal_shell_user_powershell">User PowerShell</string>
+    <string name="relay_agent_refused">The computer could not start this session.</string>
+</resources>

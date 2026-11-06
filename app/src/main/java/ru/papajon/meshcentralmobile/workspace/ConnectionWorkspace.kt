@@ -362,10 +362,12 @@ class ConnectionWorkspace private constructor(private val application: Applicati
             val session = registry.admit(id) {
                 // Capture additional consent in the session factory so reconnect cannot silently
                 // drop it when a setting is changed while this session is open.
-                val options = ru.papajon.meshcentralmobile.mesh.AgentConsent.options(tab.protocol.usage,
+                // The agent terminal may run a chosen shell (cmd/sh, PowerShell, user variants).
+                val usage = if (tab == DeviceTab.Terminal) terminalShell(device).usage else tab.protocol.usage
+                val options = ru.papajon.meshcentralmobile.mesh.AgentConsent.options(usage,
                     sessionSettings.currentRequestUserConsent(),
                     if (tab == DeviceTab.Terminal) JSONObject().put("xterm", true).put("cols", 80).put("rows", 24) else null)
-                val connection = client.createRelayConnection(device, tab.protocol, options)
+                val connection = client.createRelayConnection(device, tab.protocol, options, usage)
                 val owner = client
                 val identity = boundIdentity
                 val factory: () -> ru.papajon.meshcentralmobile.mesh.session.RelayConnection? = {
@@ -373,7 +375,7 @@ class ConnectionWorkspace private constructor(private val application: Applicati
                     val currentDevice = latest.devices.firstOrNull { it.nodeId == device.nodeId }
                     if (client !== owner || boundIdentity != identity || !latest.devicesCurrent || latest.requiresSignIn ||
                         currentDevice == null || !currentDevice.sessionAvailability(tab.protocol, latest.serverCapabilities).canAttempt) null
-                    else owner.createRelayConnection(currentDevice, tab.protocol, options)
+                    else owner.createRelayConnection(currentDevice, tab.protocol, options, usage)
                 }
                 if (tab == DeviceTab.Terminal || tab == DeviceTab.Ssh) {
                     OpenSession(id, device.nodeId, device.name, tab, terminal = TerminalController(connection, scope, connectionFactory = factory))
@@ -414,6 +416,27 @@ class ConnectionWorkspace private constructor(private val application: Applicati
         if (it.tab == DeviceTab.Desktop) client.setRemotePaused(false)
     }
     fun showOverview() { deviceTab = DeviceTab.Overview }
+
+    /** Shell chosen for each computer's agent terminal in this process; Default when never chosen. */
+    var terminalShells by mutableStateOf(emptyMap<String, ru.papajon.meshcentralmobile.mesh.TerminalShell>())
+        private set
+
+    fun terminalShell(device: MeshDevice): ru.papajon.meshcentralmobile.mesh.TerminalShell =
+        terminalShells[device.nodeId]?.takeIf { it in ru.papajon.meshcentralmobile.mesh.TerminalShell.available(device) }
+            ?: ru.papajon.meshcentralmobile.mesh.TerminalShell.Default
+
+    /**
+     * Switches the computer's agent terminal to [shell]: the open terminal (a different process on
+     * the computer) is closed and a new one is opened. Previous input is never replayed.
+     */
+    fun selectTerminalShell(device: MeshDevice, shell: ru.papajon.meshcentralmobile.mesh.TerminalShell): Boolean {
+        if (shell !in ru.papajon.meshcentralmobile.mesh.TerminalShell.available(device)) return false
+        if (terminalShell(device) == shell) return true
+        terminalShells = terminalShells + (device.nodeId to shell)
+        val id = "${device.nodeId}|${DeviceTab.Terminal.name}"
+        if (registry.get(id) != null) closeSession(id)
+        return selectTab(DeviceTab.Terminal)
+    }
     fun browseDevices() { selectedDeviceId = null; deviceTab = DeviceTab.Overview; client.setRemotePaused(true) }
     fun closeSession(id: String) {
         val old = registry.get(id)

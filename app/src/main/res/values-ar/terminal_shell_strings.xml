@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">اختيار الصدفة</string>
+    <string name="terminal_shell_default">الصدفة الافتراضية</string>
+    <string name="terminal_shell_user">صدفة المستخدم</string>
+    <string name="terminal_shell_user_powershell">PowerShell للمستخدم</string>
+    <string name="relay_agent_refused">تعذر على الكمبيوتر بدء هذه الجلسة.</string>
+</resources>

@@ -1,6 +1,10 @@
-## MeshPilot 0.10.6 candidate
+## MeshPilot 0.12.0 candidate
 
 MeshPilot is an independent client for MeshCentral servers, not affiliated with or endorsed by the MeshCentral project.
+
+**New in 0.12:** choose the agent terminal shell — default, PowerShell, or the signed-in user's shell or PowerShell (PowerShell on Windows only). Narrow the computer list by group, operating system and tag; tags appear on the list and are searchable. Export the shown list as CSV (formula-safe). When an agent cannot start a session, the app now says so instead of reporting a refused consent.
+
+**Phone layout:** while the keyboard is open, the server strip, computer header and tool tabs step aside, so the terminal keeps most of the screen. In a desktop session, Back keeps the session running and returns to the computers; ending the session is a separate × control. Opening a computer with a running desktop session shows its details first. The update question appears after the first sign-in instead of during setup. The remote screen has a hairline edge, the special-keys action has its own icon, the favourite star stays in one column, and the PIN keypad sits within thumb reach on tall phones.
 
 **Diagnostics and documentation:** handled failures that used to be silent (file relay, device lookup, phone input query, task tools probe, launcher updates, chat notifications, device page requests) are now recorded in the system log by exception class only, never with messages, addresses or names. README, comparison, architecture, roadmap and limitation documents now match the current app.
 

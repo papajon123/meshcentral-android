@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">Filter</string>
+    <string name="devices_facet_group">Grup</string>
+    <string name="devices_facet_os">Sistem operasi</string>
+    <string name="devices_facet_tag">Tag</string>
+    <string name="devices_facet_clear">Hapus filter</string>
+    <string name="devices_facet_os_other">Lainnya</string>
+    <string name="devices_export">Ekspor daftar (CSV)</string>
+    <string name="devices_export_done">Daftar komputer diekspor</string>
+    <string name="devices_export_failed">Tidak dapat mengekspor daftar komputer</string>
+</resources>

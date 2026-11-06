@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">셸 선택</string>
+    <string name="terminal_shell_default">기본 셸</string>
+    <string name="terminal_shell_user">사용자 셸</string>
+    <string name="terminal_shell_user_powershell">사용자 PowerShell</string>
+    <string name="relay_agent_refused">컴퓨터가 이 세션을 시작하지 못했습니다.</string>
+</resources>

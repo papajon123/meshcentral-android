@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">Filtrer</string>
+    <string name="devices_facet_group">Groupe</string>
+    <string name="devices_facet_os">Système d\'exploitation</string>
+    <string name="devices_facet_tag">Étiquette</string>
+    <string name="devices_facet_clear">Effacer les filtres</string>
+    <string name="devices_facet_os_other">Autre</string>
+    <string name="devices_export">Exporter la liste (CSV)</string>
+    <string name="devices_export_done">Liste des ordinateurs exportée</string>
+    <string name="devices_export_failed">Impossible d\'exporter la liste des ordinateurs</string>
+</resources>

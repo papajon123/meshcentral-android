@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">Pilih shell</string>
+    <string name="terminal_shell_default">Shell default</string>
+    <string name="terminal_shell_user">Shell pengguna</string>
+    <string name="terminal_shell_user_powershell">PowerShell pengguna</string>
+    <string name="relay_agent_refused">Komputer tidak dapat memulai sesi ini.</string>
+</resources>

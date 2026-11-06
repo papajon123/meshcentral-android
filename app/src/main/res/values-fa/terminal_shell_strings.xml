@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">انتخاب پوسته</string>
+    <string name="terminal_shell_default">پوسته پیش‌فرض</string>
+    <string name="terminal_shell_user">پوسته کاربر</string>
+    <string name="terminal_shell_user_powershell">PowerShell کاربر</string>
+    <string name="relay_agent_refused">رایانه نتوانست این جلسه را آغاز کند.</string>
+</resources>

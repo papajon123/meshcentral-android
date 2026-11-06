@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">ตัวกรอง</string>
+    <string name="devices_facet_group">กลุ่ม</string>
+    <string name="devices_facet_os">ระบบปฏิบัติการ</string>
+    <string name="devices_facet_tag">แท็ก</string>
+    <string name="devices_facet_clear">ล้างตัวกรอง</string>
+    <string name="devices_facet_os_other">อื่นๆ</string>
+    <string name="devices_export">ส่งออกรายการ (CSV)</string>
+    <string name="devices_export_done">ส่งออกรายการคอมพิวเตอร์แล้ว</string>
+    <string name="devices_export_failed">ส่งออกรายการคอมพิวเตอร์ไม่ได้</string>
+</resources>

@@ -159,14 +159,23 @@ fun LockScreen(
         if (!resumed) pin = ""
     }
 
-    Column(
+    androidx.compose.foundation.layout.BoxWithConstraints(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .safeDrawingPadding()
+            .safeDrawingPadding(),
+    ) {
+    // On tall phones the keypad sits in the lower part of the screen, within thumb reach; short or
+    // large-font layouts keep scrolling.
+    val viewportHeight = maxHeight
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
             .verticalScroll(rememberScrollState())
+            .heightIn(min = viewportHeight)
             .padding(horizontal = spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Bottom,
     ) {
         Spacer(modifier = Modifier.height(spacing.xl))
         Column(
@@ -236,6 +245,7 @@ fun LockScreen(
             }
         }
         Spacer(modifier = Modifier.height(spacing.xxl))
+    }
     }
 }
 

@@ -40,6 +40,10 @@ import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material.icons.outlined.FilterList
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.outlined.FileDownload
+import kotlinx.coroutines.launch
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -176,6 +180,9 @@ internal fun DevicesContent(
 ) {
     var filter by rememberSaveable { mutableStateOf(clientState.deviceBrowserFilter) }
     var query by rememberSaveable { mutableStateOf(clientState.deviceBrowserSearch ?: clientState.deviceQuery.filter) }
+    var facetGroup by rememberSaveable { mutableStateOf<String?>(null) }
+    var facetOs by rememberSaveable { mutableStateOf<String?>(null) }
+    var facetTag by rememberSaveable { mutableStateOf<String?>(null) }
     val favoriteIds = remember(favorites) { favorites.map { it.url }.toSet() }
     val page = clientState.devicePage
     val pageDevices = remember(clientState.devices, page.nodeIds) {
@@ -219,9 +226,13 @@ internal fun DevicesContent(
             pageDevices.size,
         )
     }
+    // Group / OS / tag narrowing needs the whole list locally; server-paged lists keep server search.
+    val facets = if (serverSearch) ru.papajon.meshcentralmobile.discovery.DeviceFacets() else ru.papajon.meshcentralmobile.discovery.DeviceFacets(
+        facetGroup, facetOs?.let { name -> ru.papajon.meshcentralmobile.discovery.OsFamily.entries.firstOrNull { it.name == name } }, facetTag)
+    val facetOptions = remember(pageDevices, clientState.groups) { ru.papajon.meshcentralmobile.discovery.DeviceFacets.options(pageDevices, clientState.groups) }
     val visibleDevices = remember(pageDevices, clientState.groups, effectiveFilter, favoriteIds, recentOrder, query, serverSearch, page.filter,
-        current, clientState.agentInstallAllowed, clientState.serverCapabilities) {
-        pageDevices
+        current, clientState.agentInstallAllowed, clientState.serverCapabilities, facets) {
+        facets.filter(pageDevices)
         .filter { device ->
             when (effectiveFilter) {
                 DeviceFilter.All -> true
@@ -262,12 +273,19 @@ internal fun DevicesContent(
     }
 
     Column(modifier = modifier.fillMaxSize()) {
+        val exportable = visibleDevices.values.flatten()
+        // The system save dialog needs an activity result registry; previews and embedded hosts
+        // without one simply do not offer the export.
+        val exportList: ((List<ru.papajon.meshcentralmobile.mesh.MeshDevice>) -> Unit)? =
+            if (androidx.activity.compose.LocalActivityResultRegistryOwner.current != null) rememberDeviceListExport(clientState.groups) else null
         DevicesHeader(
             subtitle = subtitle,
             signedIn = signedIn,
             current = current,
             refreshEnabled = !clientState.requiresSignIn,
             onRefresh = onRefresh,
+            // Exports exactly the computers shown now: search, chips and filters apply.
+            onExport = if (exportable.isEmpty() || exportList == null) null else { { exportList(exportable) } },
         )
 
         if (pageDevices.isEmpty() || !signedIn && clientState.requiresSignIn) updateBanner?.invoke()
@@ -323,6 +341,13 @@ internal fun DevicesContent(
                             recentCount = recentCount,
                             attentionCount = pageDevices.count(NeedsAttentionFilter::matches),
                             showCounts = !serverSearch || page.completeSnapshot && page.requestedIds == null && !page.loading,
+                            trailing = {
+                                if (!serverSearch && (facets.active || !facetOptions.isEmpty)) DeviceFacetChip(
+                                    facets, facetOptions, clientState.groups,
+                                    onGroup = { facetGroup = it }, onOs = { facetOs = it?.name }, onTag = { facetTag = it },
+                                    onClear = { facetGroup = null; facetOs = null; facetTag = null },
+                                )
+                            },
                         )
                     }
                     if (serverSearch) item(key = "devices-pages") {
@@ -460,6 +485,7 @@ private fun DevicesHeader(
     current: Boolean,
     refreshEnabled: Boolean,
     onRefresh: () -> Unit,
+    onExport: (() -> Unit)? = null,
 ) {
     val contextColor = when {
         !signedIn -> MaterialTheme.colorScheme.outline
@@ -470,11 +496,11 @@ private fun DevicesHeader(
         if (maxWidth < 420.dp && LocalDensity.current.fontScale >= 1.4f) {
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                 DevicesHeading(subtitle, contextColor, Modifier.fillMaxWidth())
-                DeviceHeaderActions(refreshEnabled, onRefresh, Modifier.align(Alignment.End))
+                DeviceHeaderActions(refreshEnabled, onRefresh, onExport, Modifier.align(Alignment.End))
             }
         } else Row(verticalAlignment = Alignment.CenterVertically) {
             DevicesHeading(subtitle, contextColor, Modifier.weight(1f))
-            DeviceHeaderActions(refreshEnabled, onRefresh)
+            DeviceHeaderActions(refreshEnabled, onRefresh, onExport)
         }
     }
 }
@@ -491,8 +517,11 @@ private fun DevicesHeading(subtitle: String, contextColor: androidx.compose.ui.g
 }
 
 @Composable
-private fun DeviceHeaderActions(refreshEnabled: Boolean, onRefresh: () -> Unit, modifier: Modifier = Modifier) {
+private fun DeviceHeaderActions(refreshEnabled: Boolean, onRefresh: () -> Unit, onExport: (() -> Unit)? = null, modifier: Modifier = Modifier) {
     Row(modifier) {
+        if (onExport != null) IconButton(onClick = onExport, modifier = Modifier.size(48.dp).testTag("devices-export")) {
+            Icon(Icons.Outlined.FileDownload, contentDescription = stringResource(R.string.devices_export))
+        }
         IconButton(onClick = onRefresh, enabled = refreshEnabled, modifier = Modifier.size(48.dp)) {
             Icon(Icons.Outlined.Refresh, contentDescription = stringResource(R.string.devices_action_refresh))
         }
@@ -548,6 +577,7 @@ private fun FilterRow(
     recentCount: Int,
     attentionCount: Int,
     showCounts: Boolean = true,
+    trailing: @Composable () -> Unit = {},
 ) {
     Row(
         modifier = Modifier
@@ -575,6 +605,7 @@ private fun FilterRow(
                 },
             )
         }
+        trailing()
     }
 }
 
@@ -670,7 +701,7 @@ private fun DeviceRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .heightIn(min = 64.dp)
-                    .padding(start = 12.dp, end = 4.dp, top = 6.dp, bottom = 6.dp),
+                    .padding(start = 12.dp, end = 8.dp, top = 6.dp, bottom = 6.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(Modifier.size(44.dp), contentAlignment = Alignment.Center) {
@@ -708,6 +739,16 @@ private fun DeviceRow(
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
+                    if (device.tags.isNotEmpty()) {
+                        Text(
+                            text = device.tags.joinToString("  ") { "#$it" },
+                            modifier = Modifier.padding(top = 2.dp).testTag("device-tags-${device.nodeId}"),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.tertiary,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                        )
+                    }
                     if (device.ipAddress.isNotBlank()) {
                         Text(
                             text = device.ipAddress,
@@ -753,8 +794,126 @@ private fun DeviceRow(
                             ),
                         )
                     }
+                } else {
+                    // Keep the favourite star in one column whether or not a row can connect.
+                    Spacer(Modifier.size(48.dp))
                 }
             }
         }
+    }
+}
+
+/** One chip that narrows the loaded list by group, operating system and tag. */
+@Composable
+private fun DeviceFacetChip(
+    facets: ru.papajon.meshcentralmobile.discovery.DeviceFacets,
+    options: ru.papajon.meshcentralmobile.discovery.DeviceFacets.Options,
+    groups: List<ru.papajon.meshcentralmobile.mesh.MeshGroup>,
+    onGroup: (String?) -> Unit,
+    onOs: (ru.papajon.meshcentralmobile.discovery.OsFamily?) -> Unit,
+    onTag: (String?) -> Unit,
+    onClear: () -> Unit,
+) {
+    var open by remember { mutableStateOf(false) }
+    val groupName = facets.groupId?.let { id -> groups.firstOrNull { it.id == id }?.name ?: options.groups.firstOrNull { it.first == id }?.second ?: id }
+    val summary = listOfNotNull(groupName, facets.os?.let { osFamilyLabel(it) }, facets.tag?.let { "#$it" }).joinToString(" · ")
+    androidx.compose.foundation.layout.Box {
+        FilterChip(
+            modifier = Modifier.testTag("device_facets"),
+            selected = facets.active,
+            onClick = { open = true },
+            shape = PillShape,
+            leadingIcon = { Icon(Icons.Outlined.FilterList, contentDescription = null) },
+            label = { Text(if (facets.active) summary else stringResource(R.string.devices_facet_filter), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+        )
+        androidx.compose.material3.DropdownMenu(expanded = open, onDismissRequest = { open = false }) {
+            if (options.groups.size > 1 || facets.groupId != null) {
+                FacetHeader(stringResource(R.string.devices_facet_group))
+                options.groups.forEach { (id, name) ->
+                    FacetOption(name, facets.groupId == id, "device_facet_group_$id") { open = false; onGroup(if (facets.groupId == id) null else id) }
+                }
+            }
+            if (options.systems.size > 1 || facets.os != null) {
+                FacetHeader(stringResource(R.string.devices_facet_os))
+                options.systems.forEach { os ->
+                    FacetOption(osFamilyLabel(os), facets.os == os, "device_facet_os_${os.name}") { open = false; onOs(if (facets.os == os) null else os) }
+                }
+            }
+            if (options.tags.isNotEmpty() || facets.tag != null) {
+                FacetHeader(stringResource(R.string.devices_facet_tag))
+                options.tags.forEach { tag ->
+                    val selected = facets.tag.equals(tag, ignoreCase = true)
+                    FacetOption("#$tag", selected, "device_facet_tag_$tag") { open = false; onTag(if (selected) null else tag) }
+                }
+            }
+            if (facets.active) {
+                androidx.compose.material3.HorizontalDivider()
+                androidx.compose.material3.DropdownMenuItem(
+                    text = { Text(stringResource(R.string.devices_facet_clear)) },
+                    onClick = { open = false; onClear() },
+                    modifier = Modifier.testTag("device_facet_clear"),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun FacetHeader(text: String) {
+    Text(
+        text,
+        style = MaterialTheme.typography.labelMedium,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        modifier = Modifier.padding(horizontal = MeshTheme.spacing.lg, vertical = MeshTheme.spacing.xs),
+    )
+}
+
+@Composable
+private fun FacetOption(label: String, selected: Boolean, tag: String, onClick: () -> Unit) {
+    androidx.compose.material3.DropdownMenuItem(
+        text = { Text(label) },
+        onClick = onClick,
+        trailingIcon = { if (selected) Icon(Icons.Filled.Check, contentDescription = null) },
+        modifier = Modifier.testTag(tag),
+    )
+}
+
+@Composable
+private fun osFamilyLabel(os: ru.papajon.meshcentralmobile.discovery.OsFamily): String = when (os) {
+    ru.papajon.meshcentralmobile.discovery.OsFamily.Windows -> "Windows"
+    ru.papajon.meshcentralmobile.discovery.OsFamily.Linux -> "Linux"
+    ru.papajon.meshcentralmobile.discovery.OsFamily.MacOs -> "macOS"
+    ru.papajon.meshcentralmobile.discovery.OsFamily.Android -> "Android"
+    ru.papajon.meshcentralmobile.discovery.OsFamily.Other -> stringResource(R.string.devices_facet_os_other)
+}
+
+/** Saves the given computers as CSV through the system save dialog. */
+@Composable
+private fun rememberDeviceListExport(
+    groups: List<ru.papajon.meshcentralmobile.mesh.MeshGroup>,
+): (List<ru.papajon.meshcentralmobile.mesh.MeshDevice>) -> Unit {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
+    val exportedMessage = stringResource(R.string.devices_export_done)
+    val failedMessage = stringResource(R.string.devices_export_failed)
+    var pendingCsv by remember { mutableStateOf<String?>(null) }
+    val document = androidx.activity.compose.rememberLauncherForActivityResult(
+        androidx.activity.result.contract.ActivityResultContracts.CreateDocument("text/csv"),
+    ) { uri ->
+        val text = pendingCsv
+        pendingCsv = null
+        if (uri == null || text == null) return@rememberLauncherForActivityResult
+        scope.launch {
+            val written = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+                ru.papajon.meshcentralmobile.management.DeviceInfoWriter.write(
+                    openStream = { context.contentResolver.openOutputStream(uri, "wt") }, text = text)
+            }
+            android.widget.Toast.makeText(context, if (written) exportedMessage else failedMessage,
+                android.widget.Toast.LENGTH_SHORT).show()
+        }
+    }
+    return { devices ->
+        pendingCsv = ru.papajon.meshcentralmobile.discovery.DeviceListCsv.build(devices, groups)
+        document.launch("meshpilot-computers.csv")
     }
 }

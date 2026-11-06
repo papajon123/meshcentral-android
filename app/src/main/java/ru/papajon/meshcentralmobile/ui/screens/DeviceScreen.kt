@@ -115,8 +115,11 @@ fun DeviceScreen(
         else -> R.string.common_status_offline
     })
 
+    // With the keyboard open inside a tool, the computer header and tab row step aside so the
+    // terminal or file list keeps its height; both return as soon as the keyboard closes.
+    val compactForKeyboard = ru.papajon.meshcentralmobile.ui.components.imeVisible() && selected != DeviceTab.Overview
     Column(modifier.fillMaxSize()) {
-        Row(
+        if (!compactForKeyboard) Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 4.dp, end = 12.dp, top = 4.dp, bottom = 2.dp),
@@ -168,7 +171,7 @@ fun DeviceScreen(
                 }
             }
         }
-        ScrollableTabRow(
+        if (!compactForKeyboard) ScrollableTabRow(
             modifier = Modifier.fillMaxWidth(),
             selectedTabIndex = tabs.indexOf(selected).coerceAtLeast(0),
             edgePadding = 4.dp,

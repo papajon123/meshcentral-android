@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">फ़िल्टर</string>
+    <string name="devices_facet_group">समूह</string>
+    <string name="devices_facet_os">ऑपरेटिंग सिस्टम</string>
+    <string name="devices_facet_tag">टैग</string>
+    <string name="devices_facet_clear">फ़िल्टर हटाएँ</string>
+    <string name="devices_facet_os_other">अन्य</string>
+    <string name="devices_export">सूची निर्यात करें (CSV)</string>
+    <string name="devices_export_done">कंप्यूटर सूची निर्यात हो गई</string>
+    <string name="devices_export_failed">कंप्यूटर सूची निर्यात नहीं हो सकी</string>
+</resources>

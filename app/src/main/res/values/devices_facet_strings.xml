@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">Filter</string>
+    <string name="devices_facet_group">Group</string>
+    <string name="devices_facet_os">Operating system</string>
+    <string name="devices_facet_tag">Tag</string>
+    <string name="devices_facet_clear">Clear filters</string>
+    <string name="devices_facet_os_other">Other</string>
+    <string name="devices_export">Export list (CSV)</string>
+    <string name="devices_export_done">Computer list exported</string>
+    <string name="devices_export_failed">Could not export the computer list</string>
+</resources>

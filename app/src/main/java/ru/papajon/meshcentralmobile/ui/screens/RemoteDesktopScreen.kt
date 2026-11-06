@@ -55,7 +55,7 @@ import androidx.compose.material.icons.outlined.FitScreen
 import androidx.compose.material.icons.outlined.Fullscreen
 import androidx.compose.material.icons.outlined.FullscreenExit
 import androidx.compose.material.icons.outlined.Keyboard
-import androidx.compose.material.icons.outlined.KeyboardAlt
+import androidx.compose.material.icons.outlined.KeyboardCommandKey
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material.icons.outlined.SwapVert
 import androidx.compose.material.icons.outlined.Mouse
@@ -714,7 +714,8 @@ internal fun SessionDock(
                 modifier = Modifier.width(actionWidth),
             )
             DockAction(
-                Icons.Outlined.KeyboardAlt,
+                // Distinct from the phone-keyboard Input action: this opens special keys and shortcuts.
+                Icons.Outlined.KeyboardCommandKey,
                 stringResource(R.string.session_dock_keys),
                 enabled,
                 onKeys,
@@ -944,6 +945,8 @@ internal fun SessionCanvas(
     }
 
 
+    // A hairline marks the remote screen's edge; a dark desktop otherwise blends into the canvas.
+    val remoteEdge = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f)
     Canvas(
         modifier = modifier
             .onSizeChanged {
@@ -1313,6 +1316,12 @@ internal fun SessionCanvas(
             image = image,
             dstOffset = IntOffset(currentViewport.left.roundToInt(), currentViewport.top.roundToInt()),
             dstSize = IntSize(drawWidth, drawHeight),
+        )
+        drawRect(
+            color = remoteEdge,
+            topLeft = Offset(currentViewport.left, currentViewport.top),
+            size = androidx.compose.ui.geometry.Size(drawWidth.toFloat(), drawHeight.toFloat()),
+            style = Stroke(width = 1.dp.toPx()),
         )
         if (remoteCursor != Offset.Unspecified && desktopState.hasFrame) {
             val (cursorX, cursorY) = currentViewport.toCanvas(remoteCursor.x.toInt(), remoteCursor.y.toInt())

@@ -20,6 +20,8 @@ import okio.ByteString.Companion.toByteString
 import org.json.JSONObject
 import org.junit.Assert.*
 import org.junit.Test
+import ru.papajon.meshcentralmobile.localization.UiText
+import ru.papajon.meshcentralmobile.R
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -45,6 +47,30 @@ class ManagedRelayConnectionTest {
         assertFalse(f.connection.sendText("must-not-run"))
         f.connection.connect()
         assertEquals(1, f.factory.created)
+    }
+
+    @Test fun denialAfterAConsentPromptIsReportedAsConsentDenied() = fixture { f ->
+        f.connection.connect(); f.open(); f.text("c")
+        f.text("""{"ctrlChannel":"102938","type":"console","msgid":1}""")
+        f.text("""{"ctrlChannel":"102938","type":"console","msgid":2,"msg":"denied"}""")
+        assertEquals(RelayPhase.Failed, f.connection.state.value.phase)
+        assertEquals(UiText.Resource(R.string.consent_denied), f.connection.state.value.message)
+    }
+
+    @Test fun agentStartFailureWithoutAPromptIsNotReportedAsConsent() = fixture(RelayProtocol.AgentTerminal) { f ->
+        // meshcore.js terminal_promise_connection_rejected: e.g. no console user for a user shell.
+        f.connection.connect(); f.open(); f.text("c")
+        f.text("""{"ctrlChannel":"102938","type":"console","msgid":2,"msg":"Error: no console user"}""")
+        assertEquals(RelayPhase.Failed, f.connection.state.value.phase)
+        assertEquals(UiText.Resource(R.string.relay_agent_refused), f.connection.state.value.message)
+    }
+
+    @Test fun terminalShellUsageTravelsInUrlTunnelAndFirstFrame() = fixture(RelayProtocol.AgentTerminal, usage = 6) { f ->
+        f.connection.connect(); f.open(); f.text("c")
+        assertEquals("6", f.factory.socket.request().url.queryParameter("p"))
+        assertTrue(f.factory.socket.sentText.contains("6"))
+        assertFalse(f.factory.socket.sentText.contains("1"))
+        assertTrue(f.control.any { it.optString("type") == "tunnel" && it.optInt("usage", -1) == 6 })
     }
 
     @Test fun serverConsentWaitIsBoundedAndNeverReportedAsReady() = fixture(handshakeTimeout = 50) { f ->
@@ -235,12 +261,13 @@ class ManagedRelayConnectionTest {
         assertEquals(RelayPhase.Failed, f.connection.state.value.phase)
     }
 
-    private fun fixture(protocol: RelayProtocol = RelayProtocol.AgentFiles, authTimeout: Long = 20_000, handshakeTimeout: Long = 60_000, test: (Fixture) -> Unit) {
-        val f = Fixture(protocol, authTimeout, handshakeTimeout)
+    private fun fixture(protocol: RelayProtocol = RelayProtocol.AgentFiles, authTimeout: Long = 20_000, handshakeTimeout: Long = 60_000,
+                        usage: Int = protocol.usage, test: (Fixture) -> Unit) {
+        val f = Fixture(protocol, authTimeout, handshakeTimeout, usage)
         try { test(f) } finally { f.connection.close(); f.scope.cancel() }
     }
 
-    private class Fixture(protocol: RelayProtocol, authTimeout: Long, handshakeTimeout: Long) {
+    private class Fixture(protocol: RelayProtocol, authTimeout: Long, handshakeTimeout: Long, usage: Int = protocol.usage) {
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Unconfined)
         val factory = FakeFactory()
         val control = mutableListOf<JSONObject>()
@@ -252,7 +279,7 @@ class ManagedRelayConnectionTest {
             credentials = { if (hasCredentials) RelayCredentials("https://mesh.example/team/".toHttpUrl(), "cookie", "relay-cookie") else null },
             validSession = { valid }, availability = { available }, sendControl = { control.add(it); true },
             onFinished = { finished++ }, options = JSONObject().put("action", "discard").put("consent", 1),
-            authTimeoutMillis = authTimeout, handshakeTimeoutMillis = handshakeTimeout)
+            authTimeoutMillis = authTimeout, handshakeTimeoutMillis = handshakeTimeout, usage = usage)
         fun open() = factory.listener.onOpen(factory.socket, Response.Builder().request(factory.socket.request()).protocol(Protocol.HTTP_1_1).code(101).message("Switching Protocols").build())
         fun text(value: String) = factory.listener.onMessage(factory.socket, value)
     }

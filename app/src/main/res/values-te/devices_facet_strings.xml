@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">ఫిల్టర్</string>
+    <string name="devices_facet_group">సమూహం</string>
+    <string name="devices_facet_os">ఆపరేటింగ్ సిస్టమ్</string>
+    <string name="devices_facet_tag">ట్యాగ్</string>
+    <string name="devices_facet_clear">ఫిల్టర్‌లను క్లియర్ చేయండి</string>
+    <string name="devices_facet_os_other">ఇతర</string>
+    <string name="devices_export">జాబితాను ఎగుమతి చేయండి (CSV)</string>
+    <string name="devices_export_done">కంప్యూటర్ల జాబితా ఎగుమతి అయింది</string>
+    <string name="devices_export_failed">కంప్యూటర్ల జాబితాను ఎగుమతి చేయలేకపోయాం</string>
+</resources>

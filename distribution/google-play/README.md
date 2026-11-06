@@ -18,7 +18,7 @@ python ci/prepare_play_assets.py
 python ci/check_translations.py
 ./gradlew testDirectDebugUnitTest testPlayDebugUnitTest lintDirectDebug lintPlayDebug assembleDirectDebug assemblePlayDebug bundlePlayRelease
 python ci/download_bundletool.py
-python ci/verify_play_bundle.py app/build/outputs/bundle/playRelease/app-play-release.aab --bundletool .tools/bundletool-all-1.18.3.jar --version 0.10.6 --code 40 --output verification/play-bundle-report.json
+python ci/verify_play_bundle.py app/build/outputs/bundle/playRelease/app-play-release.aab --bundletool .tools/bundletool-all-1.18.3.jar --version 0.12.0 --code 42 --output verification/play-bundle-report.json
 ```
 
 Use `gradlew.bat` on Windows and create the `verification` directory first. Local bundles without

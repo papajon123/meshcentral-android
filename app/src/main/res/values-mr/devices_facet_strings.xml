@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="devices_facet_filter">फिल्टर</string>
+    <string name="devices_facet_group">गट</string>
+    <string name="devices_facet_os">ऑपरेटिंग सिस्टम</string>
+    <string name="devices_facet_tag">टॅग</string>
+    <string name="devices_facet_clear">फिल्टर साफ करा</string>
+    <string name="devices_facet_os_other">इतर</string>
+    <string name="devices_export">यादी निर्यात करा (CSV)</string>
+    <string name="devices_export_done">संगणकांची यादी निर्यात झाली</string>
+    <string name="devices_export_failed">संगणकांची यादी निर्यात करता आली नाही</string>
+</resources>

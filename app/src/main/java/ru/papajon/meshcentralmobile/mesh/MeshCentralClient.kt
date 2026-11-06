@@ -1072,7 +1072,8 @@ class MeshCentralClient(
     }
 
     /** Creates a single-use connection. Unknown metadata leaves the decision to the server. */
-    fun createRelayConnection(device: MeshDevice, protocol: RelayProtocol, options: JSONObject? = null): RelayConnection {
+    fun createRelayConnection(device: MeshDevice, protocol: RelayProtocol, options: JSONObject? = null,
+                              usage: Int = protocol.usage): RelayConnection {
         val generation = sessionGeneration.get()
         val server = baseUrl
         val connection = ManagedRelayConnection(
@@ -1097,8 +1098,9 @@ class MeshCentralClient(
             sendControl = ::sendControlJson,
             onFinished = { additionalRelays.remove(it) },
             onCertificateFailure = ::reportRelayCertificateFailure,
-            options = AgentConsent.options(protocol.usage, requestUserConsent(), options),
+            options = AgentConsent.options(usage, requestUserConsent(), options),
             androidFileListings = device.isAndroidAgent && protocol == RelayProtocol.AgentFiles,
+            usage = usage,
         )
         additionalRelays.add(connection)
         // Also covers a concurrent logout during creation; the stale object can never connect.

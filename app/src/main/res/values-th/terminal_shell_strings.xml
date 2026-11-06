@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">เลือกเชลล์</string>
+    <string name="terminal_shell_default">เชลล์เริ่มต้น</string>
+    <string name="terminal_shell_user">เชลล์ของผู้ใช้</string>
+    <string name="terminal_shell_user_powershell">PowerShell ของผู้ใช้</string>
+    <string name="relay_agent_refused">คอมพิวเตอร์เริ่มเซสชันนี้ไม่ได้</string>
+</resources>

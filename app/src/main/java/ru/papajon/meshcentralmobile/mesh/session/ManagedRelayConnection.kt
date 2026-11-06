@@ -51,6 +51,8 @@ internal class ManagedRelayConnection(
     private val handshakeTimeoutMillis: Long = 60_000,
     private val onCertificateFailure: (ServerCertificateFailure) -> Unit = {},
     private val androidFileListings: Boolean = false,
+    /** Agent protocol number; an agent terminal may use a [ru.papajon.meshcentralmobile.mesh.TerminalShell] variant. */
+    private val usage: Int = protocol.usage,
 ) : RelayConnection {
     private val lock = Any()
     private val mutableState = MutableStateFlow(RelayStatus())
@@ -114,7 +116,7 @@ internal class ManagedRelayConnection(
 
     private fun open(auth: RelayCredentials) {
         val url = if (agent) {
-            MeshControlMessages.relayViewerUrl(auth.baseUrl, nodeId, tunnelId, auth.authCookie, auth.relayCookie, protocol.usage)
+            MeshControlMessages.relayViewerUrl(auth.baseUrl, nodeId, tunnelId, auth.authCookie, auth.relayCookie, usage)
         } else {
             MeshControlMessages.sshViewerUrl(auth.baseUrl, nodeId, auth.authCookie, protocol == RelayProtocol.SshFiles)
         }
@@ -124,7 +126,7 @@ internal class ManagedRelayConnection(
         }
         try {
             socket = socketFactory.newWebSocket(Request.Builder().url(url).build(), Listener())
-            if (agent && !sendControl(MeshControlMessages.tunnelRequest(nodeId, tunnelId, auth.relayCookie, protocol.usage, responseId, auth.baseUrl.encodedPath))) {
+            if (agent && !sendControl(MeshControlMessages.tunnelRequest(nodeId, tunnelId, auth.relayCookie, usage, responseId, auth.baseUrl.encodedPath))) {
                 fail(R.string.relay_connection_failed)
             }
         } catch (_: Exception) {
@@ -257,7 +259,7 @@ internal class ManagedRelayConnection(
             if (agent && !protocolStarted && mutableState.value.phase == RelayPhase.Waiting && (text == "c" || text == "cr")) {
                 val sentOptions = optionsText?.let { webSocket.send(it) } ?: true
                 optionsText = null
-                if (!sentOptions || !webSocket.send(protocol.usage.toString())) {
+                if (!sentOptions || !webSocket.send(usage.toString())) {
                     fail(R.string.relay_connection_failed); return
                 }
                 timeoutJob?.cancel()
@@ -276,7 +278,9 @@ internal class ManagedRelayConnection(
                         "close" -> { fail(R.string.relay_remote_closed); return }
                         "console" -> when (control.optInt("msgid", -1)) {
                             1 -> { waitForConsent(); return }
-                            2 -> { fail(R.string.consent_denied); return }
+                            // meshcore.js sends msgid 2 both for a rejected consent prompt and for an agent
+                            // that could not start the session (no console user, spawn failure).
+                            2 -> { fail(if (consentWaiting) R.string.consent_denied else R.string.relay_agent_refused); return }
                             else -> if (control.opt("msg") == JSONObject.NULL) { finishConsentWait(); return }
                         }
                         // pong, RTT, recording and other relay metadata are not file bytes.

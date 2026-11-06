@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="terminal_shell_choose">শেল বেছে নিন</string>
+    <string name="terminal_shell_default">ডিফল্ট শেল</string>
+    <string name="terminal_shell_user">ব্যবহারকারীর শেল</string>
+    <string name="terminal_shell_user_powershell">ব্যবহারকারীর PowerShell</string>
+    <string name="relay_agent_refused">কম্পিউটার এই সেশন শুরু করতে পারেনি।</string>
+</resources>

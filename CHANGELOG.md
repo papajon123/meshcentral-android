@@ -1,4 +1,21 @@
-# 0.10.6 — 2026-11-06 (candidate)
+# 0.12.0 — 2026-11-06 (candidate)
+
+- Choose the agent terminal shell: default, PowerShell, user shell or user PowerShell (MeshCentral protocols 1/6/8/9; PowerShell on Windows only, user variants need a signed-in console user). Switching opens a new terminal process; nothing is replayed.
+- Narrow the computer list by group, operating system and tag (whole-list servers; server-paged lists keep server search). Tags are shown on the list and included in search.
+- Export the computers currently shown as RFC 4180 CSV through the system file picker; cells that spreadsheets would evaluate as formulas are neutralised.
+- Report an agent that could not start a session (MeshCentral `msgid 2` without a consent prompt) as such instead of "the computer user did not grant access".
+
+# 0.11.0 — 2026-11-06 (not released separately; shipped in 0.12.0)
+
+- Give the keyboard's space to content: with the soft keyboard open, the server/sessions strip, the computer header and the tool tabs are hidden, and they return when it closes (about 5 visible terminal lines on a phone become about 20).
+- Desktop session: Back keeps the session and returns to the computers; End session is a separate × control in the second row.
+- Opening a computer with a running desktop session shows its Details instead of jumping into the session; the Desktop tab or Session resumes it.
+- Ask whether to check GitHub for updates after the first successful sign-in rather than during first-run setup.
+- Draw a hairline around the remote screen, give the special-keys dock action a distinct ⌘ icon, keep the favourite star in one column whether or not a computer can connect, and move the PIN keypad toward the bottom on tall screens.
+
+# 0.10.6 — 2026-11-06 (no GitHub APK published)
+
+The API 26 shard stopped on a Parity2InspectorTest that checked the review dialog while Android 8 was still closing the keyboard; the test now waits for the dialog to settle. Shipped in 0.12.0.
 
 - Record previously silent handled failures in the system log by exception class name only (no messages, URLs, device names or paths): Files relay and message handling, selected-device lookup, retained-device refresh, phone input query, device page send/timeout, Android task tools probe, launcher updates, sign-out notification revocation and chat notifications.
 - Give the Files multi-select long press an accessibility action label.
